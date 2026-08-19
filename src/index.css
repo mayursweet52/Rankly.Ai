@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand Theme Colors Extracted from Rankly.ai Logo */
+  --brand-primary: #00E5FF;       /* Electric Cyber Cyan */
+  --brand-secondary: #3B82F6;     /* Vivid Royal Blue */
+  --brand-accent: #6366F1;        /* Indigo Glow */
+  --bg-deep: #060814;             /* Deep Obsidian Navy */
+  --card-surface: rgba(13, 20, 36, 0.75);
+  --card-border: rgba(0, 229, 255, 0.18);
+  --card-border-hover: rgba(0, 229, 255, 0.5);
+}
+
+/* Force Global Body Background with Ambient Glow */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-deep) !important;
+  color: #F8FAFC !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(0, 229, 255, 0.12) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    url('/assets/backgrounds/portal-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* Glassmorphism Cards & Containers */
+.brand-card {
+  background: var(--card-surface) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  transition: all 0.3s ease;
+}
+
+.brand-card:hover {
+  border-color: var(--card-border-hover) !important;
+  box-shadow: 0 10px 40px -10px rgba(0, 229, 255, 0.25);
+}
+
+/* Brand Buttons */
+.brand-btn-primary {
+  background: linear-gradient(135deg, #00E5FF 0%, #3B82F6 50%, #6366F1 100%) !important;
+  color: #060814 !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4) !important;
+  transition: all 0.25s ease !important;
+}
+
+.brand-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.7) !important;
+}
+
+/* Gradient Text for Logo & Headers */
+.brand-gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 20%, #00E5FF 70%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Active Sidebar Tab */
+.brand-tab-active {
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.18) 0%, rgba(59, 130, 246, 0.08) 100%) !important;
+  border-left: 4px solid var(--brand-primary) !important;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.12);
+}

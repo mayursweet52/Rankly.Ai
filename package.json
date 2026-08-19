@@ -1,0 +1,48 @@
+{
+  "name": "rankly-ai",
+  "version": "0.1.0",
+  "description": "Rankly.ai \u2014 Executive OS (local dev)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "ollama": "ollama serve",
+    "start:all": "concurrently \"ollama serve\" \"node server.js\"",
+    "start:public": "concurrently \"ollama serve\" \"node server.js\" \"npx localtunnel --port 3000 --subdomain rankly\"",
+    "tunnel": "ssh -p 443 -R0:localhost:3000 a.pinggy.io",
+    "tunnel:rankly": "npx localtunnel --port 3000 --subdomain rankly",
+    "app": "scripts\\launch-rankly.bat",
+    "app:public": "scripts\\launch-rankly-public.bat",
+    "setup:desktop": "node scripts/create-desktop-shortcut.js",
+    "setup:domain": "scripts\\setup-domain.bat",
+    "watch:guardian": "node scripts/guardian.js",
+    "test:system": "node scripts/test-system.js",
+    "start:clean": "scripts\\launch-rankly-clean.bat",
+    "build": "npm install",
+    "push:git": "scripts\\push-to-github.bat"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.0.0",
+    "express-session": "^1.19.0",
+    "mammoth": "^1.12.1",
+    "mongoose": "^9.9.3",
+    "multer": "^2.2.0",
+    "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pdf-parse": "^1.1.1",
+    "socket.io": "^4.8.1",
+    "sqlite3": "^5.1.6",
+    "tesseract.js": "^7.0.0",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "nodemon": "^3.0.1"
+  }
+}

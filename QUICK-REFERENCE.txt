@@ -1,0 +1,106 @@
+# Rankly.ai - Quick Reference Card
+
+## 🚀 LAUNCH APP
+```
+1. Double-click: Rankly.ai (Desktop Shortcut)
+   OR
+2. Run: start.bat in app folder
+   OR
+3. Run: setup.bat (first time only)
+```
+
+## 🌐 OPEN IN BROWSER
+```
+http://localhost:3000
+```
+
+## 🔑 API KEY
+```
+Default: rankly-secret-key
+(Change in .env for production)
+```
+
+## ⚙️ CONFIGURATION (.env)
+```
+PORT=3000                           (Server port)
+OLLAMA_URL=http://localhost:11434  (AI engine URL)
+OLLAMA_MODEL=llama3.2:3b           (AI model)
+API_KEY=rankly-secret-key          (Authentication)
+```
+
+## 📁 KEY FILES
+```
+start.bat              → Launch server
+setup.bat              → Initial setup
+server.js              → Main application
+package.json           → Dependencies
+.env                   → Configuration
+rankly-icon.ico        → Custom icon
+rankly_candidates.db   → Database
+```
+
+## ⚡ COMMANDS
+```
+npm install            Install dependencies
+node server.js         Start server manually
+npm run dev           Run with auto-reload
+Ctrl + C              Stop server
+```
+
+## 🔧 TROUBLESHOOTING
+```
+Issue: Port in use
+→ Change PORT in .env
+
+Issue: Node not found
+→ Install from nodejs.org
+
+Issue: Dependencies error
+→ npm cache clean --force
+→ npm install
+
+Issue: Icon missing
+→ python create_icon.py
+→ Run Create-Shortcut.ps1
+```
+
+## 📊 FEATURES
+```
+✓ PDF Resume Upload
+✓ AI-Powered Ranking (Ollama)
+✓ Real-time Socket.io Updates
+✓ SQLite Database
+✓ Rate Limiting
+✓ Authentication (API Key)
+✓ Web Dashboard
+```
+
+## 🎨 CUSTOMIZE ICON
+```
+Option 1: python create_icon.py
+Option 2: Upload PNG to icoconvert.com
+Option 3: Use Windows icon (automatic)
+```
+
+## 📝 LOGS
+```
+combined.log   → All logs
+error.log      → Errors only
+Check in app folder
+```
+
+## 🌍 DEFAULT URL
+```
+http://localhost:3000
+(Opens automatically on launch)
+```
+
+## ❓ NEED HELP?
+1. Check ONE-CLICK-SETUP.md for detailed guide
+2. Run setup.bat again
+3. Check combined.log for errors
+4. Ensure Node.js is installed
+5. Verify Ollama is running
+
+---
+**Everything you need is in this folder!** 🎯

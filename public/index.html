@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Rankly.ai — Ranked to be Hired &bull; Dual-Ecosystem AI ATS</title>
+    <link rel="icon" type="image/png" href="/assets/brand/icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#060814" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Rankly AI" />
+    <link rel="apple-touch-icon" href="/assets/brand/icon.png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Direct Brand Palette Injection ── */
+        :root {
+            --brand-primary: #00E5FF;       /* Electric Cyber Cyan */
+            --brand-secondary: #3B82F6;     /* Vivid Royal Blue */
+            --brand-accent: #6366F1;        /* Indigo Glow */
+            --bg-deep: #060814;             /* Deep Obsidian Navy */
+            --card-surface: rgba(13, 20, 36, 0.75);
+            --card-border: rgba(0, 229, 255, 0.18);
+            --card-border-hover: rgba(0, 229, 255, 0.5);
+        }
+
+        /* ── Reset & Global Typography ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            height: 100%; margin: 0; padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep) !important;
+            color: #F8FAFC !important;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(0, 229, 255, 0.12) 0px, transparent 50%),
+                radial-gradient(at 85% 85%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                url('/assets/backgrounds/portal-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── High-Contrast Form Inputs ── */
+        input, select, textarea, .form-input {
+            background-color: rgba(0, 0, 0, 0.60) !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(0, 229, 255, 0.25) !important;
+            border-radius: 10px;
+            padding: 0.65rem 0.85rem;
+            width: 100%;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            caret-color: var(--brand-primary) !important;
+            font-family: inherit;
+        }
+        input::placeholder, textarea::placeholder { color: #94A3B8 !important; }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--brand-primary) !important;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.35) !important;
+            outline: none !important;
+            background-color: rgba(13, 20, 36, 0.90) !important;
+        }
+
+        /* ── Page Viewport Layering ── */
+        .page {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            overflow: hidden; display: none; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        .page-visible {
+            display: flex !important; opacity: 1 !important; pointer-events: auto !important; z-index: 10 !important;
+        }
+
+        /* ── Glassmorphism Cards & Containers ── */
+        .brand-card, .glass-card {
+            background: var(--card-surface) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid var(--card-border) !important;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+            transition: all 0.3s ease;
+            padding: 1.25rem;
+        }
+        .brand-card:hover, .glass-card:hover {
+            border-color: var(--card-border-hover) !important;
+            box-shadow: 0 10px 40px -10px rgba(0, 229, 255, 0.25);
+        }
+
+        /* ── Brand Buttons ── */
+        .brand-btn-primary {
+            background: linear-gradient(135deg, #00E5FF 0%, #3B82F6 50%, #6366F1 100%) !important;
+            color: #060814 !important;
+            font-weight: 700 !important;
+            border: none !important;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4) !important;
+            transition: all 0.25s ease !important;
+            cursor: pointer;
+        }
+        .brand-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.7) !important;
+        }
+
+        /* ── Gradient Text for Logo & Headers ── */
+        .brand-gradient-text {
+            background: linear-gradient(135deg, #FFFFFF 20%, #00E5FF 70%, #60A5FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ── Active Sidebar Tab ── */
+        .brand-tab-active {
+            background: linear-gradient(90deg, rgba(0, 229, 255, 0.18) 0%, rgba(59, 130, 246, 0.08) 100%) !important;
+            border-left: 4px solid var(--brand-primary) !important;
+            color: #FFFFFF !important;
+            box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.12);
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 270px; min-width: 270px; height: 100%;
+            background: #0B0F19; border-right: 1px solid rgba(0, 229, 255, 0.15);
+            display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; z-index: 40;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Score Badges & Chips ── */
+        .score-badge-green { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .score-badge-yellow { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.35); }
+        .score-badge-red { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.35); }
+
+        .badge-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+        .badge-admin { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-hr { background: rgba(0, 229, 255, 0.15); color: #00E5FF; border: 1px solid rgba(0, 229, 255, 0.3); }
+        .badge-hm { background: rgba(168, 85, 247, 0.15); color: #A855F7; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-cand { background: rgba(0, 229, 255, 0.15); color: #00E5FF; border: 1px solid rgba(0, 229, 255, 0.3); }
+
+        .chip-emerald { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34D399; }
+        .chip-rose { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); color: #FB7185; }
+
+        /* ── Brand Logo Ring ── */
+        .brand-logo-ring {
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .brand-logo-ring:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.75);
+        }
+
+        /* ── Kanban Column Dropzones ── */
+        .kanban-col {
+            width: 280px; min-width: 280px;
+            background: rgba(13, 20, 36, 0.75);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            border-radius: 14px;
+            display: flex; flex-direction: column;
+            max-height: calc(100vh - 160px);
+        }
+        .kanban-dropzone {
+            flex: 1; overflow-y: auto; padding: 0.75rem; min-height: 250px;
+            display: flex; flex-direction: column; gap: 0.75rem;
+        }
+        .candidate-card {
+            background: #111827; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px;
+            padding: 0.85rem; cursor: grab; transition: all 0.2s ease;
+        }
+        .candidate-card:hover { border-color: var(--brand-primary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 229, 255, 0.25); }
+
+        /* ── Modals & Overlays ── */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: rgba(6, 8, 20, 0.85); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: #0B0F19; border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px;
+            padding: 1.5rem; max-width: 520px; width: 90%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 999999; display: flex; flex-direction: column; gap: 8px; }
+        .toast {
+            background: #0B0F19; border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 10px;
+            padding: 12px 18px; font-size: 0.88rem; font-weight: 600; color: #F9FAFB;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 8px;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* ── AI Screening Loader Animations ── */
+        @keyframes laserScan {
+            0% { top: 0%; opacity: 0.7; }
+            50% { top: 96%; opacity: 1; }
+            100% { top: 0%; opacity: 0.7; }
+        }
+        .animate-laser-scan {
+            animation: laserScan 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="app" class="relative z-10 w-full h-full">
+        <div id="toast-container"></div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- ──── SCREEN 1: DUAL AUTHENTICATION & REGISTRATION ──────── -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div id="authPage" class="page page-visible items-center justify-center min-h-screen p-4 overflow-y-auto">
+            <div class="brand-card relative z-10 w-full max-w-[490px] p-6 sm:p-7 space-y-4 shadow-2xl">
+                
+                <!-- Brand Header with Logo & Glow Ring -->
+                <div class="text-center space-y-1.5">
+                    <div class="inline-flex items-center justify-center p-1.5 rounded-2xl bg-gradient-to-tr from-cyan-950/60 to-blue-950/60 border border-cyan-500/40 ring-2 ring-cyan-400/50 brand-logo-ring mb-1">
+                        <img src="/assets/brand/icon.png" alt="Rankly.ai" class="w-12 h-12 rounded-xl object-contain" onerror="this.style.display='none'; document.getElementById('fallbackBrandLogo').style.display='flex';" />
+                        <div id="fallbackBrandLogo" style="display:none;" class="w-12 h-12 rounded-xl bg-cyan-600 text-black font-extrabold flex items-center justify-center text-lg">R</div>
+                    </div>
+                    <h1 class="text-3xl font-black brand-gradient-text drop-shadow-md">Rankly.ai</h1>
+                    <p class="text-xs text-cyan-300 font-bold uppercase tracking-wider">Ranked to be Hired &bull; Dual-Ecosystem AI ATS</p>
+                </div>
+
+                <!-- Dual Auth Screen Toggle: [Normal User (Job Seeker)] | [Company Workspace] -->
+                <div class="flex p-1 bg-black/60 border border-cyan-500/20 rounded-xl">
+                    <button id="pBtnNormal" onclick="setPortalTrack('normal_user')" class="flex-1 py-2 text-xs font-bold rounded-lg brand-btn-primary shadow flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                        <span>Normal User (Job Seeker)</span>
+                    </button>
+                    <button id="pBtnEmp" onclick="setPortalTrack('employee')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">corporate_fare</span>
+                        <span>Company Workspace</span>
+                    </button>
+                </div>
+
+                <!-- ── TRACK 1: NORMAL USER (JOB SEEKER) FORMS ────────── -->
+                <div id="trackNormalContainer" class="space-y-3">
+                    <div class="flex justify-center gap-4 text-xs font-bold border-b border-slate-800 pb-2">
+                        <button id="candSignInToggle" onclick="setCandAuthMode('signin')" class="text-cyan-400 border-b-2 border-cyan-400 pb-1">Sign In</button>
+                        <button id="candSignUpToggle" onclick="setCandAuthMode('signup')" class="text-slate-400 hover:text-white pb-1">Create Job Seeker Account</button>
+                    </div>
+
+                    <!-- Normal User Sign In (Dual Login: Email+Pass OR Phone+Pass) -->
+                    <form id="candLoginForm" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Email, Phone Number or Username</label>
+                            <input type="text" id="candLoginId" placeholder="you@email.com or +1 555 0192" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Password</label>
+                            <input type="password" id="candLoginPass" placeholder="••••••••" required />
+                        </div>
+                        <button type="submit" class="w-full py-2.5 brand-btn-primary rounded-xl text-xs">
+                            Sign In as Job Seeker
+                        </button>
+                    </form>
+
+                    <!-- Normal User Sign Up (Full Registration) -->
+                    <form id="candRegisterForm" class="space-y-3" style="display:none;">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">First Name *</label>
+                                <input type="text" id="candRegFirst" placeholder="Elena" required />
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Last Name</label>
+                                <input type="text" id="candRegLast" placeholder="Rostova" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Preferred Username *</label>
+                            <input type="text" id="candRegUsername" placeholder="elenarostova" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Email Address *</label>
+                            <input type="email" id="candRegEmail" placeholder="elena@example.com" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Phone Number *</label>
+                            <input type="tel" id="candRegPhone" placeholder="+1 (555) 019-2834" required />
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Date of Birth (DOB)</label>
+                                <input type="date" id="candRegDob" onchange="autoCalcAge(this.value)" />
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Gender</label>
+                                <select id="candRegGender">
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Non-binary">Non-binary</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Current Profession / Target Domain</label>
+                            <input type="text" id="candRegProfession" placeholder="e.g. Senior Full Stack Engineer" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Password (min. 6 characters) *</label>
+                            <input type="password" id="candRegPass" placeholder="••••••••" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Security Captcha: <span id="candCaptchaLabel" class="text-cyan-400 font-extrabold">5 + 7 = ?</span></label>
+                            <input type="text" id="candRegCaptcha" placeholder="Answer" required />
+                        </div>
+                        <button type="submit" class="w-full py-2.5 brand-btn-primary rounded-xl text-xs">
+                            Create Job Seeker Account
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ── TRACK 2: COMPANY WORKSPACE (ENTERPRISE) FORMS ───── -->
+                <div id="trackEmpContainer" class="space-y-3" style="display:none;">
+                    <div class="flex justify-between gap-1 text-[11px] font-bold border-b border-slate-800 pb-2">
+                        <button id="empSignSub" onclick="setEmpAuthMode('signin')" class="text-cyan-400 border-b-2 border-cyan-400 pb-1">Sign In</button>
+                        <button id="empJoinSub" onclick="setEmpAuthMode('join')" class="text-slate-400 hover:text-white pb-1">Join with Referral</button>
+                        <button id="empCreateSub" onclick="setEmpAuthMode('create')" class="text-slate-400 hover:text-white pb-1">Create New Org</button>
+                    </div>
+
+                    <!-- Company Workspace Sign In -->
+                    <form id="empLoginForm" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Corporate Work Email *</label>
+                            <input type="email" id="empLoginEmail" placeholder="admin@rankly.ai" value="admin@rankly.ai" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Password *</label>
+                            <input type="password" id="empLoginPass" placeholder="••••••••" value="admin123" required />
+                        </div>
+                        <button type="submit" class="w-full py-2.5 brand-btn-primary rounded-xl text-xs">
+                            Sign In to Enterprise Workspace
+                        </button>
+                    </form>
+
+                    <!-- Option 2: Join Existing Organization with Referral Code -->
+                    <form id="empRegisterForm" class="space-y-3" style="display:none;">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Full Name *</label>
+                            <input type="text" id="empRegName" placeholder="David Chen" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Corporate Work Email *</label>
+                            <input type="email" id="empRegEmail" placeholder="david@company.com" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Role Selection *</label>
+                            <select id="empRegRole">
+                                <option value="hr">💼 HR (Recruiter)</option>
+                                <option value="hiring_manager">📝 Hiring Manager (HM)</option>
+                                <option value="admin">👑 Admin</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-amber-400 mb-1">Admin Referral / Invite Code (Required) *</label>
+                            <input type="text" id="empRegRefCode" placeholder="e.g. RNK-XXXXXX" class="border-amber-500/50" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Password *</label>
+                            <input type="password" id="empRegPass" placeholder="••••••••" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Security Captcha: <span id="empCaptchaLabel" class="text-cyan-400 font-extrabold">8 + 4 = ?</span></label>
+                            <input type="text" id="empRegCaptcha" placeholder="Answer" required />
+                        </div>
+                        <button type="submit" class="w-full py-2.5 brand-btn-primary rounded-xl text-xs">
+                            Join Organization with Referral Code
+                        </button>
+                    </form>
+
+                    <!-- Option 1: Create New Organization (First-Time Admin Setup) -->
+                    <form id="empCreateOrgForm" class="space-y-3" style="display:none;">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Executive Admin Name *</label>
+                            <input type="text" id="empCreateAdminName" placeholder="Sarah Jenkins" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Corporate Work Email *</label>
+                            <input type="email" id="empCreateWorkEmail" placeholder="sarah@techcorp.io" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Company / Organization Name *</label>
+                            <input type="text" id="empCreateCompanyName" placeholder="TechCorp Global Inc." required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Department / Division</label>
+                            <input type="text" id="empCreateDepartment" placeholder="Talent Acquisition &amp; Engineering" />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Admin Password *</label>
+                            <input type="password" id="empCreatePass" placeholder="••••••••" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Security Captcha: <span id="empCreateCaptchaLabel" class="text-cyan-400 font-extrabold">8 + 4 = ?</span></label>
+                            <input type="text" id="empCreateCaptcha" placeholder="Answer" required />
+                        </div>
+                        <button type="submit" class="w-full py-2.5 brand-btn-primary rounded-xl text-xs">
+                            Create New Organization &amp; Admin Account
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Social Login Row -->
+                <div class="space-y-2 pt-1 border-t border-slate-800">
+                    <div class="flex justify-between gap-2">
+                        <a href="/auth/google" class="flex-1 py-2 px-3 rounded-xl border border-cyan-500/20 bg-black/60 hover:bg-slate-900 text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-google text-red-500"></i> Google
+                        </a>
+                        <a href="/auth/facebook" class="flex-1 py-2 px-3 rounded-xl border border-cyan-500/20 bg-black/60 hover:bg-slate-900 text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-facebook text-blue-500"></i> Facebook
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pt-1 text-center text-xs text-slate-500">
+                    🔒 Multi-Tier Hybrid AI Engine &bull; Groq / Gemini / Local Ollama
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- ──── SCREEN 2: MAIN WORKSPACE APPLICATION DASHBOARD ────── -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div id="mainAppPage" class="page flex h-full">
+
+            <!-- SIDEBAR -->
+            <nav class="sidebar">
+                <div class="p-4 border-b border-cyan-500/20 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <img src="/assets/brand/icon.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain ring-2 ring-cyan-400/40" onerror="this.style.display='none'; document.getElementById('sbFallbackLogo').style.display='flex';" />
+                        <div id="sbFallbackLogo" style="display:none;" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-black font-extrabold text-sm shadow-md">R</div>
+                        <div>
+                            <h2 class="text-base font-extrabold brand-gradient-text leading-none">Rankly.ai</h2>
+                            <span id="sbPortalLabel" class="text-[9px] text-cyan-400 font-bold uppercase tracking-wider">Candidate Portal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Navigation List -->
+                <ul class="flex-1 p-3 space-y-1.5" id="navMenuList">
+                    <!-- NORMAL USER (CANDIDATE) MENU ITEMS -->
+                    <li class="nav-cand-item"><a href="#" onclick="switchTab('tab-cand-matrix')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl brand-tab-active font-bold text-xs"><span class="material-symbols-outlined text-base">task_alt</span><span>Personal ATS Scanner</span></a></li>
+                    <li class="nav-cand-item"><a href="#" onclick="switchTab('tab-cand-coach')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-cyan-400">smart_toy</span><span>Career &amp; Platform AI Coach</span></a></li>
+                    <li class="nav-cand-item"><a href="#" onclick="switchTab('tab-cand-settings')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-blue-400">settings</span><span>Profile &amp; Settings</span></a></li>
+
+                    <!-- ENTERPRISE (ADMIN / HR / HM) MENU ITEMS -->
+                    <li class="nav-ent-item"><a href="#" onclick="switchTab('tab-matrix')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl brand-tab-active font-bold text-xs"><span class="material-symbols-outlined text-base">grid_view</span><span>Screening Matrix</span></a></li>
+                    <li class="nav-ent-item"><a href="#" onclick="switchTab('tab-pipeline')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-amber-400">view_kanban</span><span>Talent Pipeline</span></a></li>
+                    <li class="nav-ent-item"><a href="#" onclick="switchTab('tab-analytics')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-green-400">leaderboard</span><span>Enterprise Analytics</span></a></li>
+                    <li class="nav-ent-item"><a href="#" onclick="switchTab('tab-studio')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-cyan-400">smart_toy</span><span>AI Copilot Studio</span></a></li>
+                    
+                    <!-- ADMIN ONLY MENU ITEMS (Strictly hidden for HR and HM) -->
+                    <li id="sbNavReferrals" class="nav-admin-only"><a href="#" onclick="switchTab('tab-admin-referrals')" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><span class="material-symbols-outlined text-base text-amber-500">vpn_key</span><span>Referral Code Engine</span></a></li>
+                    <li id="sbNavApprovals" class="nav-admin-only"><a href="#" onclick="switchTab('tab-approvals')" class="flex items-center justify-between px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 font-semibold text-xs"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-base text-blue-500">how_to_reg</span><span>Pending Approvals</span></div><span id="sbApprovalsBadge" class="bg-cyan-500 text-black text-[10px] font-bold px-1.5 rounded-full">0</span></a></li>
+                </ul>
+
+                <!-- User Profile & Log Out Footer -->
+                <div class="p-3 border-t border-cyan-500/20 flex items-center justify-between bg-black/40">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-cyan-600 text-black flex items-center justify-center font-bold text-xs" id="uAvatar">U</div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-white truncate" id="uName">User</p>
+                            <span id="uRolePill" class="badge-pill badge-cand">Job Seeker</span>
+                        </div>
+                    </div>
+                    <a href="/auth/logout" class="p-1.5 text-red-400 hover:text-red-300" title="Sign Out">
+                        <span class="material-symbols-outlined text-sm">logout</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="flex-1 h-full overflow-y-auto p-4 md:p-6 space-y-4" id="mainWorkspaceContainer">
+                
+                <header class="flex items-center justify-between pb-3 border-b border-cyan-500/20 flex-wrap gap-3">
+                    <div>
+                        <h2 class="text-xl font-black brand-gradient-text" id="mainHeaderTitle">Personal ATS Scanner</h2>
+                        <p class="text-xs text-gray-400" id="mainHeaderSub">Upload your resume to check your Capableness Percentage and role match.</p>
+                    </div>
+                    <div id="entHeaderActions" style="display:none;">
+                        <button onclick="openModal('inviteModal')" class="px-3.5 py-1.5 brand-btn-primary rounded-xl text-xs flex items-center gap-1.5 shadow-md">
+                            <span class="material-symbols-outlined text-sm">person_add</span>
+                            <span>Invite Colleague</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <!-- ──── CANDIDATE WORKSPACE: PERSONAL ATS SCANNER ────── -->
+                <!-- ══════════════════════════════════════════════════════ -->
+
+                <!-- TAB: CANDIDATE PERSONAL ATS SCANNER -->
+                <div id="tab-cand-matrix" class="tab-content active space-y-4">
+                    
+                    <!-- Auto-Detected Role Confirmation Banner -->
+                    <div id="candRoleDetectBanner" style="display:none;" class="p-3.5 rounded-xl bg-gradient-to-r from-cyan-950/60 via-blue-950/40 to-slate-900 border border-cyan-500/40 flex items-center justify-between flex-wrap gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-cyan-400 text-2xl">auto_awesome</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">
+                                    🎯 Auto-Detected Role: <span id="candDetectedRoleText" class="text-cyan-300 font-black">Frontend React Developer</span> 
+                                    <span id="candDetectConfidence" class="badge-pill bg-cyan-500/20 text-cyan-300 ml-1.5">95% Confidence</span>
+                                </h4>
+                                <p class="text-[11px] text-slate-300" id="candDetectReason">Extensive experience in React UI, state management, and modern frontend tools.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="confirmDetectedRole()" class="px-3 py-1.5 brand-btn-primary rounded-lg text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">check</span> Confirm Role
+                            </button>
+                            <button onclick="document.getElementById('candTargetRoleSelect').focus()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                                Edit Role
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        
+                        <!-- Upload & Role Selector Card -->
+                        <div class="lg:col-span-1 brand-card space-y-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-cyan-400">upload_file</span> Target Role &amp; Resume Ingestion
+                            </h3>
+                            
+                            <!-- Target Role Dropdown Selector -->
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Target Job Role / Domain</label>
+                                <select id="candTargetRoleSelect">
+                                    <option value="Senior Full Stack & AI Engineer" selected>Senior Full Stack &amp; AI Engineer</option>
+                                    <option value="Frontend React Developer">Frontend React Developer</option>
+                                    <option value="AI / ML & PyTorch Engineer">AI / ML &amp; PyTorch Engineer</option>
+                                    <option value="Backend Distributed Systems Engineer">Backend Distributed Systems Engineer</option>
+                                    <option value="Cloud DevOps & Kubernetes Architect">Cloud DevOps &amp; Kubernetes Architect</option>
+                                    <option value="Data Scientist & Quantitative Analyst">Data Scientist &amp; Quantitative Analyst</option>
+                                    <option value="Product Manager (Technical)">Product Manager (Technical)</option>
+                                </select>
+                            </div>
+
+                            <!-- Multi-Format Upload Zone (.pdf, .docx, .png, .jpg, .jpeg) -->
+                            <div id="candDropzone" class="p-6 border-2 border-dashed border-cyan-500/30 hover:border-cyan-400 rounded-xl text-center cursor-pointer bg-black/40 transition-all" onclick="document.getElementById('candFileInput').click()">
+                                <input type="file" id="candFileInput" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleCandidateFileUpload(this.files)" />
+                                <span class="material-symbols-outlined text-3xl text-cyan-400 mb-1">cloud_upload</span>
+                                <h4 class="text-xs font-bold text-white">Upload Resume (PDF, DOCX, JPG, PNG OCR)</h4>
+                                <p class="text-[10px] text-slate-400 mt-1">Multi-format Text &amp; OCR Pipeline (Max 10MB)</p>
+                                <div id="candUploadStatus" class="mt-2 text-xs font-semibold text-cyan-400">Click or drag &amp; drop file</div>
+                            </div>
+                        </div>
+
+                        <!-- Redesigned Screening Matrix View -->
+                        <div class="lg:col-span-2 brand-card space-y-4">
+                            <div class="flex justify-between items-center pb-2 border-b border-cyan-500/20">
+                                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-emerald-400">speed</span> Personal Screening Matrix
+                                </h3>
+                                <span id="candScanDate" class="text-[10px] text-slate-400">Ready for scan</span>
+                            </div>
+
+                            <!-- Header Score Card: Overall Match Circle & Dynamic Fit Badge -->
+                            <div id="candEvalResult" class="space-y-4">
+                                <div class="p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 via-blue-950/40 to-slate-900 border border-cyan-500/30 flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[10px] uppercase font-bold text-cyan-300">Overall ATS Match Score</span>
+                                        <div class="text-3xl font-black text-cyan-400 mt-0.5" id="candMatchScore">0%</div>
+                                        <p class="text-xs text-slate-300 mt-1" id="candSummary">Upload your resume to receive a comprehensive analysis.</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span id="candScoreBadge" class="badge-pill bg-slate-800 text-slate-400">Pending Evaluation</span>
+                                    </div>
+                                </div>
+
+                                <!-- 4 Transparent Score Bars: Skills (/40 Blue), Experience (/30 Purple), Tools (/20 Cyan), Education (/10 Indigo) -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-black/60 border border-cyan-500/20 text-xs">
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                            <span>Skills</span>
+                                            <span id="scoreSkillsVal" class="text-blue-400 font-bold">0 / 40</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="barSkills" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                            <span>Experience</span>
+                                            <span id="scoreExpVal" class="text-purple-400 font-bold">0 / 30</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="barExp" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                            <span>Tools Fit</span>
+                                            <span id="scoreToolsVal" class="text-cyan-400 font-bold">0 / 20</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="barTools" class="bg-cyan-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                            <span>Education</span>
+                                            <span id="scoreEduVal" class="text-indigo-400 font-bold">0 / 10</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="barEdu" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Skills Comparison Grid: Matched Strengths (Emerald) vs Missing Keywords (Rose) -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+                                        <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                                            <span class="material-symbols-outlined text-sm">check_circle</span> Matched Strengths
+                                        </h4>
+                                        <div class="flex flex-wrap gap-1.5" id="candStrengths">
+                                            <span class="text-xs text-slate-500">Scan your resume to discover strengths</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+                                        <h4 class="text-xs font-bold text-rose-400 flex items-center gap-1.5">
+                                            <span class="material-symbols-outlined text-sm">warning</span> Missing Keywords &amp; Gaps
+                                        </h4>
+                                        <div class="flex flex-wrap gap-1.5" id="candGaps">
+                                            <span class="text-xs text-slate-500">No missing gaps identified yet</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Actionable AI Recommendations -->
+                                <div class="space-y-2">
+                                    <h4 class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-sm">lightbulb</span> Actionable AI Recommendations
+                                    </h4>
+                                    <div id="candRecommendationsList" class="space-y-2">
+                                        <div class="border-l-4 border-cyan-400 bg-slate-800/40 p-3.5 rounded-r-xl text-xs text-slate-300">
+                                            Upload your resume to generate structured recommendations.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TAB: CANDIDATE CAREER AI CHATBOT -->
+                <div id="tab-cand-coach" class="tab-content space-y-4">
+                    <div class="brand-card flex flex-col h-[75vh]">
+                        <div class="p-3.5 flex justify-between items-center mb-2 border-b border-cyan-500/20">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-cyan-400">smart_toy</span>
+                                <div>
+                                    <h3 class="text-sm font-bold text-white">Career &amp; Platform AI Coach</h3>
+                                    <p class="text-[10px] text-slate-400">Actionable resume tips, bullet point builder, and Rankly Q&amp;A (Hybrid AI Engine)</p>
+                                </div>
+                            </div>
+                            <span class="badge-pill badge-cand">AI Ready</span>
+                        </div>
+
+                        <div id="candChatStream" class="flex-1 p-4 overflow-y-auto space-y-3">
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs max-w-[85%]">
+                                <p class="font-bold text-cyan-400 mb-1">Rankly Career Coach</p>
+                                <p>Hi! I am your AI Career Coach. Ask me how to optimize your resume for high ATS scores, format bullet points with impact metrics, or explain any platform features!</p>
+                            </div>
+                        </div>
+
+                        <form id="candChatForm" class="p-3 border-t border-cyan-500/20 flex gap-2">
+                            <input type="text" id="candChatInput" placeholder="Ask Career Coach... (e.g. How do I highlight distributed PyTorch inference on my resume?)" required />
+                            <button type="submit" class="px-4 brand-btn-primary rounded-xl text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-base">send</span> Send
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB: CANDIDATE PROFILE & SETTINGS PAGE -->
+                <div id="tab-cand-settings" class="tab-content space-y-4">
+                    <div class="brand-card max-w-2xl mx-auto space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b border-cyan-500/20">
+                            <div>
+                                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-blue-400">manage_accounts</span> Candidate Profile &amp; Settings
+                                </h3>
+                                <p class="text-xs text-slate-400">Manage your profile, verification status, and theme preferences.</p>
+                            </div>
+                        </div>
+
+                        <form id="candSettingsForm" class="space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">First Name</label>
+                                    <input type="text" id="setFirstName" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Last Name</label>
+                                    <input type="text" id="setLastName" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Profession / Target Domain</label>
+                                <input type="text" id="setProfession" />
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Date of Birth</label>
+                                    <input type="date" id="setDob" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Gender</label>
+                                    <select id="setGender">
+                                        <option value="Female">Female</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Non-binary">Non-binary</option>
+                                        <option value="Prefer not to say">Prefer not to say</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Phone Number</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="tel" id="setPhone" class="flex-1" />
+                                    <span class="badge-pill badge-cand">✓ Verified</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Email Address</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="email" id="setEmail" readonly class="flex-1 opacity-70 cursor-not-allowed" />
+                                    <span class="badge-pill badge-cand">✓ Verified</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">LinkedIn Profile URL</label>
+                                <input type="url" id="setLinkedIn" placeholder="https://linkedin.com/in/username" />
+                            </div>
+
+                            <div class="flex justify-between items-center pt-3 border-t border-cyan-500/20">
+                                <button type="button" onclick="deleteNormalUserAccount()" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold">
+                                    Delete Account
+                                </button>
+                                <button type="submit" class="px-5 py-2 brand-btn-primary rounded-xl text-xs">
+                                    Save Profile Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════════════════════════════ -->
+                <!-- ──── ENTERPRISE WORKSPACE TABS ────────────────────── -->
+                <!-- ══════════════════════════════════════════════════════ -->
+
+                <!-- TAB: ENTERPRISE SCREENING MATRIX -->
+                <div id="tab-matrix" class="tab-content space-y-4">
+                    <div class="brand-card space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-cyan-500/20 flex-wrap gap-2">
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-amber-400">military_tech</span> Enterprise ATS Candidate Leaderboard
+                                </h3>
+                                <span id="matrixCountBadge" class="badge-pill bg-slate-800 text-slate-300">0 Screened</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Sort By:</label>
+                                <select id="matrixSortSelect" onchange="renderMatrixTable()" class="py-1 px-2 text-xs w-auto">
+                                    <option value="score_desc" selected>Match Score (Highest First)</option>
+                                    <option value="score_asc">Match Score (Lowest First)</option>
+                                    <option value="date_desc">Newest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Enterprise Ingestion Bar -->
+                        <div class="p-4 rounded-xl bg-black/50 border border-cyan-500/20 flex justify-between items-center flex-wrap gap-3">
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Batch Candidate Resume Ingestion</h4>
+                                <p class="text-[10px] text-slate-400">Supports PDF, DOCX, PNG, JPG (OCR Enabled, Max 10MB)</p>
+                            </div>
+                            <button onclick="document.getElementById('entBatchFileInput').click()" class="px-4 py-2 brand-btn-primary rounded-xl text-xs flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">cloud_upload</span> Upload Resumes
+                            </button>
+                            <input type="file" id="entBatchFileInput" multiple accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleEnterpriseBatchUpload(this.files)" />
+                        </div>
+
+                        <!-- Candidate Table with HM Forwarding Action -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="text-[10px] uppercase text-cyan-300 border-b border-cyan-500/20">
+                                        <th class="p-2.5">Candidate</th>
+                                        <th class="p-2.5">Target Role</th>
+                                        <th class="p-2.5">ATS Match</th>
+                                        <th class="p-2.5">Key Strengths</th>
+                                        <th class="p-2.5">Stage</th>
+                                        <th class="p-2.5 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matrixTableBody">
+                                    <tr><td colspan="6" class="p-6 text-center text-slate-500">No candidate evaluations yet.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: TALENT PIPELINE KANBAN -->
+                <div id="tab-pipeline" class="tab-content space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-cyan-500/20">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-400">view_kanban</span> Talent Pipeline Stage Board
+                        </h3>
+                    </div>
+                    <div class="flex gap-3 overflow-x-auto pb-4">
+                        <div class="kanban-col" data-stage="applied"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-slate-300">📥 Applied</span><span class="badge-pill bg-slate-800 text-slate-400" id="kbCount-applied">0</span></div><div class="kanban-dropzone" id="kbZone-applied" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'applied')"></div></div>
+                        <div class="kanban-col" data-stage="ai_screened"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-cyan-400">🤖 AI Screened</span><span class="badge-pill bg-cyan-500/20 text-cyan-300" id="kbCount-ai_screened">0</span></div><div class="kanban-dropzone" id="kbZone-ai_screened" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'ai_screened')"></div></div>
+                        <div class="kanban-col" data-stage="hm_review"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-purple-400">📝 HM Review</span><span class="badge-pill bg-purple-500/20 text-purple-300" id="kbCount-hm_review">0</span></div><div class="kanban-dropzone" id="kbZone-hm_review" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'hm_review')"></div></div>
+                        <div class="kanban-col" data-stage="interview"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-blue-400">🎯 Interview</span><span class="badge-pill bg-blue-500/20 text-blue-300" id="kbCount-interview">0</span></div><div class="kanban-dropzone" id="kbZone-interview" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'interview')"></div></div>
+                        <div class="kanban-col" data-stage="offered"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-green-400">🎉 Offered</span><span class="badge-pill bg-green-500/20 text-green-300" id="kbCount-offered">0</span></div><div class="kanban-dropzone" id="kbZone-offered" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'offered')"></div></div>
+                        <div class="kanban-col" data-stage="rejected"><div class="p-3 border-b border-cyan-500/20 flex justify-between items-center"><span class="text-xs font-bold text-red-400">✕ Rejected</span><span class="badge-pill bg-red-500/20 text-red-300" id="kbCount-rejected">0</span></div><div class="kanban-dropzone" id="kbZone-rejected" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'rejected')"></div></div>
+                    </div>
+                </div>
+
+                <!-- TAB: ENTERPRISE HIRING ANALYTICS -->
+                <div id="tab-analytics" class="tab-content space-y-4">
+                    <div class="brand-card space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b border-cyan-500/20">
+                            <div>
+                                <h3 class="text-base font-bold text-green-400 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">leaderboard</span> Enterprise Hiring Analytics Hub
+                                </h3>
+                                <p class="text-xs text-slate-400">Organization-wide recruitment velocity &amp; ATS quality metrics.</p>
+                            </div>
+                            <span class="badge-pill badge-admin" id="analyticsOrgBadge">Organization</span>
+                        </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="p-4 rounded-xl bg-black/50 border border-cyan-500/20"><span class="text-[10px] uppercase font-bold text-cyan-300">Total Screened</span><div class="text-2xl font-black text-white mt-1" id="anTotalScreened">0</div></div>
+                            <div class="p-4 rounded-xl bg-black/50 border border-cyan-500/20"><span class="text-[10px] uppercase font-bold text-cyan-300">Average ATS Match</span><div class="text-2xl font-black text-cyan-400 mt-1" id="anAvgScore">0%</div></div>
+                            <div class="p-4 rounded-xl bg-black/50 border border-cyan-500/20"><span class="text-[10px] uppercase font-bold text-cyan-300">In Interview</span><div class="text-2xl font-black text-blue-400 mt-1" id="anInterviewCount">0</div></div>
+                            <div class="p-4 rounded-xl bg-black/50 border border-cyan-500/20"><span class="text-[10px] uppercase font-bold text-cyan-300">Offered</span><div class="text-2xl font-black text-green-400 mt-1" id="anOffersCount">0</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: AI COPILOT STUDIO -->
+                <div id="tab-studio" class="tab-content space-y-4">
+                    <div class="brand-card flex flex-col h-[75vh]">
+                        <div class="p-3.5 flex justify-between items-center mb-2 border-b border-cyan-500/20">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-cyan-400">smart_toy</span>
+                                <div><h3 class="text-sm font-bold text-white">AI Copilot Recruitment Studio</h3><p class="text-[10px] text-slate-400">Hybrid AI Chat Engine (Groq / Gemini / Ollama)</p></div>
+                            </div>
+                            <span class="badge-pill badge-admin">Active</span>
+                        </div>
+                        <div id="studioChatStream" class="flex-1 p-4 overflow-y-auto space-y-3">
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs max-w-[85%]">
+                                <p class="font-bold text-cyan-400 mb-1">Rankly Copilot</p>
+                                <p>Hello! Ask me to draft JDs, create interview rubrics, or benchmark candidate competencies.</p>
+                            </div>
+                        </div>
+                        <form id="studioChatForm" class="p-3 border-t border-cyan-500/20 flex gap-2">
+                            <input type="text" id="studioChatInput" placeholder="Ask Copilot..." required />
+                            <button type="submit" class="px-4 brand-btn-primary rounded-xl text-xs">Send</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB: ADMIN ONLY - REFERRAL / EMPLOYEE ID GENERATOR (3-DAY VALIDITY) -->
+                <div id="tab-admin-referrals" class="tab-content space-y-4">
+                    <div class="brand-card space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b border-cyan-500/20">
+                            <div>
+                                <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">vpn_key</span> Referral Code / Invite Engine (Admin Only)
+                                </h3>
+                                <p class="text-xs text-slate-400">Generate unique invite codes with assigned roles and 3-day (72-hour) auto-expiry.</p>
+                            </div>
+                        </div>
+
+                        <form id="genRefCodeForm" class="p-4 rounded-xl bg-black/50 border border-cyan-500/20 space-y-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Assigned Role</label>
+                                    <select id="refAssignedRole">
+                                        <option value="hr" selected>💼 HR (Recruiter)</option>
+                                        <option value="hiring_manager">📝 Hiring Manager (HM)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Max Uses</label>
+                                    <input type="number" id="refMaxUses" value="1" min="1" max="50" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Validity (Hours)</label>
+                                    <input type="number" id="refHours" value="72" readonly class="opacity-75" />
+                                </div>
+                            </div>
+                            <button type="submit" class="px-4 py-2 brand-btn-primary rounded-xl text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">add_circle</span> Generate 72-Hour Referral Code
+                            </button>
+                        </form>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="text-[10px] uppercase text-cyan-300 border-b border-cyan-500/20">
+                                        <th class="p-2.5">Referral Code</th>
+                                        <th class="p-2.5">Role</th>
+                                        <th class="p-2.5">Uses</th>
+                                        <th class="p-2.5">Time Left</th>
+                                        <th class="p-2.5 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminRefTableBody">
+                                    <tr><td colspan="5" class="p-4 text-center text-slate-500">No active referral codes.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: ADMIN ONLY - PENDING APPROVALS -->
+                <div id="tab-approvals" class="tab-content space-y-4">
+                    <div class="brand-card space-y-3">
+                        <h3 class="text-base font-bold text-blue-400 flex items-center gap-2">
+                            <span class="material-symbols-outlined">how_to_reg</span> Pending Team Approvals (72h Queue)
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="text-[10px] uppercase text-cyan-300 border-b border-cyan-500/20">
+                                        <th class="p-2.5">Invitee Email</th>
+                                        <th class="p-2.5">Invited By</th>
+                                        <th class="p-2.5">Time Remaining</th>
+                                        <th class="p-2.5">Role</th>
+                                        <th class="p-2.5 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="approvalsTableBody">
+                                    <tr><td colspan="5" class="p-4 text-center text-slate-500">No pending approvals.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div><!-- end mainAppPage -->
+
+        <!-- Team Colleague Invite Modal -->
+        <div id="inviteModal" class="modal-overlay" onclick="if(event.target===this) closeModal('inviteModal')">
+            <div class="modal-box space-y-3">
+                <h3 class="text-base font-bold text-cyan-400 flex items-center gap-2">
+                    <span class="material-symbols-outlined">person_add</span> Invite Team Colleague
+                </h3>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Colleague Work Email *</label>
+                    <input type="email" id="invModalEmail" placeholder="colleague@company.com" required />
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-cyan-300 mb-1">Assigned Role</label>
+                    <select id="invModalRole">
+                        <option value="hr">💼 HR / Recruiter</option>
+                        <option value="hiring_manager">📝 Hiring Manager</option>
+                    </select>
+                </div>
+                <div id="invResultContainer" style="display:none;" class="p-3 bg-slate-900 border border-cyan-500/20 rounded-xl space-y-1 text-xs">
+                    <span class="text-[10px] uppercase font-bold text-green-400">✓ Copyable Invitation Link (72h Expiry):</span>
+                    <div class="flex gap-2 items-center">
+                        <input type="text" id="invGeneratedUrl" readonly class="text-[11px] font-mono select-all" />
+                        <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('invGeneratedUrl').value); showToast('📋 Link copied!', 'success');" class="px-3 py-1.5 brand-btn-primary rounded-lg text-xs">Copy</button>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('inviteModal')" class="px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-bold text-slate-300">Close</button>
+                    <button type="button" onclick="submitTeamInvite()" class="px-4 py-1.5 brand-btn-primary rounded-lg text-xs">Generate Link</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- ──── MODULE 4: INTERACTIVE AI SCANNING LOADER OVERLAY ─── -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div id="aiScreeningLoaderModal" class="modal-overlay" style="z-index: 99999;">
+            <div class="relative w-full max-w-md p-8 rounded-2xl bg-[#0B0F19]/95 border border-cyan-500/40 shadow-[0_0_60px_rgba(0,229,255,0.35)] text-center flex flex-col items-center backdrop-blur-2xl">
+                
+                <!-- Pulsing AI Glow Orb / Radar Icon -->
+                <div class="relative mb-5 flex items-center justify-center">
+                    <div class="absolute w-24 h-24 rounded-full bg-cyan-500/20 animate-ping opacity-75"></div>
+                    <div class="absolute w-20 h-20 rounded-full bg-blue-500/30 blur-md animate-pulse"></div>
+                    <div class="relative w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center shadow-lg border border-cyan-400/40">
+                        <span class="material-symbols-outlined text-black text-3xl animate-bounce">smart_toy</span>
+                    </div>
+                    <div class="absolute -top-1 -right-1 text-cyan-400 animate-spin" style="animation-duration: 4s;">
+                        <span class="material-symbols-outlined text-lg">sparkles</span>
+                    </div>
+                </div>
+
+                <!-- Simulated Document Skeleton with Animated Glowing Laser Line -->
+                <div class="relative w-48 h-24 bg-black/90 rounded-xl border border-cyan-500/30 p-3 mb-4 overflow-hidden shadow-inner flex flex-col justify-between">
+                    <div class="space-y-1.5 opacity-60">
+                        <div class="h-2 w-3/4 bg-cyan-500/40 rounded"></div>
+                        <div class="h-1.5 w-full bg-slate-800 rounded"></div>
+                        <div class="h-1.5 w-5/6 bg-slate-800 rounded"></div>
+                        <div class="h-1.5 w-2/3 bg-slate-800 rounded"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[9px] text-slate-400 font-mono">
+                        <span>OCR_STREAM</span>
+                        <span class="text-cyan-400 font-bold">SCANNING...</span>
+                    </div>
+                    <!-- Glowing Laser Line -->
+                    <div class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00e5ff] animate-laser-scan"></div>
+                </div>
+
+                <!-- Dynamic Step Text (Progression every 1.8s) -->
+                <h3 class="text-lg font-bold brand-gradient-text mb-1 tracking-wide">Rankly AI is Screening</h3>
+                <p id="aiLoaderStepText" class="text-xs font-semibold text-cyan-300 min-h-[22px] transition-all duration-300">
+                    📄 Parsing resume text &amp; OCR extraction...
+                </p>
+
+                <!-- Smooth Progress Bar -->
+                <div class="w-full bg-slate-800 rounded-full h-2 mt-4 overflow-hidden border border-cyan-500/30 shadow-inner">
+                    <div id="aiLoaderProgressBar" class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 transition-all duration-300 ease-out" style="width: 15%;"></div>
+                </div>
+
+                <div class="flex justify-between items-center w-full mt-2 text-[10px] text-slate-400 font-mono">
+                    <span>Inference: <span id="aiLoaderProgressPercent" class="text-cyan-400 font-bold">15%</span></span>
+                    <span>Hybrid AI Service</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end app -->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        (function() {
+            'use strict';
+
+            let currentUser = null;
+            let currentPortalTrack = 'normal_user'; // 'normal_user' | 'employee'
+            let allCandidates = [];
+            let lastAutoDetectedRole = '';
+
+            // ── Captcha Generator ──
+            const num1 = Math.floor(Math.random() * 9) + 1;
+            const num2 = Math.floor(Math.random() * 9) + 1;
+            const expectedCaptcha = String(num1 + num2);
+            document.getElementById('candCaptchaLabel').textContent = `${num1} + ${num2} = ?`;
+            document.getElementById('empCaptchaLabel').textContent = `${num1} + ${num2} = ?`;
+            document.getElementById('empCreateCaptchaLabel').textContent = `${num1} + ${num2} = ?`;
+
+            // ── Session Check ──
+            fetch('/auth/me')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.authenticated && data.user) {
+                        currentUser = data.user;
+                        renderDashboard();
+                    }
+                })
+                .catch(() => {});
+
+            function renderDashboard() {
+                document.getElementById('authPage').classList.remove('page-visible');
+                document.getElementById('mainAppPage').classList.add('page-visible');
+
+                const isNormal = (currentUser.accountType === 'normal_user');
+                document.getElementById('uName').textContent = currentUser.name || currentUser.firstName || 'User';
+                document.getElementById('uAvatar').textContent = (currentUser.firstName || currentUser.name || 'U').substring(0, 2).toUpperCase();
+
+                const role = currentUser.role || (isNormal ? 'candidate' : 'hr');
+                const roleMap = {
+                    admin: { cls: 'badge-admin', text: '👑 Admin' },
+                    hr: { cls: 'badge-hr', text: '💼 HR (Recruiter)' },
+                    hiring_manager: { cls: 'badge-hm', text: '📝 Hiring Manager' },
+                    candidate: { cls: 'badge-cand', text: 'Job Seeker' }
+                };
+                const meta = roleMap[role] || roleMap.candidate;
+                const pill = document.getElementById('uRolePill');
+                pill.className = `badge-pill ${meta.cls}`;
+                pill.textContent = meta.text;
+
+                const wsContainer = document.getElementById('mainWorkspaceContainer');
+
+                if (isNormal) {
+                    document.getElementById('sbPortalLabel').textContent = 'Candidate Portal';
+                    document.querySelectorAll('.nav-cand-item').forEach(el => el.style.display = 'block');
+                    document.querySelectorAll('.nav-ent-item').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('.nav-admin-only').forEach(el => el.style.display = 'none');
+                    document.getElementById('entHeaderActions').style.display = 'none';
+                    if (wsContainer) wsContainer.className = 'flex-1 h-full overflow-y-auto p-4 md:p-6 space-y-4';
+                    switchTab('tab-cand-matrix');
+                    loadCandidateProfile();
+                } else {
+                    document.getElementById('sbPortalLabel').textContent = 'Enterprise ATS';
+                    document.querySelectorAll('.nav-cand-item').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('.nav-ent-item').forEach(el => el.style.display = 'block');
+                    document.getElementById('entHeaderActions').style.display = 'block';
+                    if (wsContainer) wsContainer.className = 'flex-1 h-full overflow-y-auto p-4 md:p-6 space-y-4';
+
+                    // Strict Role Gating: Hide Referral Engine & Approvals for HR and HM
+                    const isAdmin = (role === 'admin');
+                    document.querySelectorAll('.nav-admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
+
+                    switchTab('tab-matrix');
+                    fetchCandidates();
+                    fetchAnalytics();
+                    if (isAdmin) {
+                        fetchAdminReferralCodes();
+                        fetchPendingApprovals();
+                    }
+                }
+            }
+
+            // ── Portal Switchers ──
+            window.setPortalTrack = function(track) {
+                currentPortalTrack = track;
+                const bN = document.getElementById('pBtnNormal');
+                const bE = document.getElementById('pBtnEmp');
+                const tN = document.getElementById('trackNormalContainer');
+                const tE = document.getElementById('trackEmpContainer');
+
+                if (track === 'employee') {
+                    bN.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5';
+                    bE.className = 'flex-1 py-2 text-xs font-bold rounded-lg brand-btn-primary shadow flex items-center justify-center gap-1.5';
+                    tN.style.display = 'none';
+                    tE.style.display = 'block';
+                } else {
+                    bE.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5';
+                    bN.className = 'flex-1 py-2 text-xs font-bold rounded-lg brand-btn-primary shadow flex items-center justify-center gap-1.5';
+                    tE.style.display = 'none';
+                    tN.style.display = 'block';
+                }
+            };
+
+            window.setCandAuthMode = function(mode) {
+                const isSignIn = (mode === 'signin');
+                document.getElementById('candSignInToggle').className = isSignIn ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-slate-400 hover:text-white pb-1';
+                document.getElementById('candSignUpToggle').className = !isSignIn ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-slate-400 hover:text-white pb-1';
+                document.getElementById('candLoginForm').style.display = isSignIn ? 'block' : 'none';
+                document.getElementById('candRegisterForm').style.display = !isSignIn ? 'block' : 'none';
+            };
+
+            window.setEmpAuthMode = function(mode) {
+                const bSign = document.getElementById('empSignSub');
+                const bJoin = document.getElementById('empJoinSub');
+                const bCreate = document.getElementById('empCreateSub');
+
+                bSign.className = (mode === 'signin') ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-slate-400 hover:text-white pb-1';
+                bJoin.className = (mode === 'join') ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-slate-400 hover:text-white pb-1';
+                bCreate.className = (mode === 'create') ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-slate-400 hover:text-white pb-1';
+
+                document.getElementById('empLoginForm').style.display = (mode === 'signin') ? 'block' : 'none';
+                document.getElementById('empRegisterForm').style.display = (mode === 'join') ? 'block' : 'none';
+                document.getElementById('empCreateOrgForm').style.display = (mode === 'create') ? 'block' : 'none';
+            };
+
+            window.autoCalcAge = function(dob) {
+                if (!dob) return;
+                const age = Math.floor((Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 3600 * 1000));
+            };
+
+            // ── Form Handlers ──
+            document.getElementById('candLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const identifier = document.getElementById('candLoginId').value.trim();
+                const password = document.getElementById('candLoginPass').value;
+                fetch('/auth/candidate/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier, password })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.error) return showToast('❌ ' + d.error, 'error');
+                    currentUser = d.user;
+                    renderDashboard();
+                    showToast(`✨ Welcome back, ${currentUser.name || currentUser.firstName}!`, 'success');
+                });
+            });
+
+            document.getElementById('candRegisterForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const payload = {
+                    firstName: document.getElementById('candRegFirst').value.trim(),
+                    lastName: document.getElementById('candRegLast').value.trim(),
+                    username: document.getElementById('candRegUsername').value.trim(),
+                    email: document.getElementById('candRegEmail').value.trim(),
+                    phone: document.getElementById('candRegPhone').value.trim(),
+                    dob: document.getElementById('candRegDob').value,
+                    gender: document.getElementById('candRegGender').value,
+                    profession: document.getElementById('candRegProfession').value.trim(),
+                    password: document.getElementById('candRegPass').value,
+                    captcha: document.getElementById('candRegCaptcha').value.trim(),
+                    expectedCaptcha
+                };
+
+                fetch('/auth/candidate/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.error) return showToast('❌ ' + d.error, 'error');
+                    currentUser = d.user;
+                    renderDashboard();
+                    showToast('🎉 Candidate account created successfully!', 'success');
+                });
+            });
+
+            document.getElementById('empLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('empLoginEmail').value.trim();
+                const password = document.getElementById('empLoginPass').value;
+                fetch('/auth/enterprise/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.error) return showToast('❌ ' + d.error, 'error');
+                    currentUser = d.user;
+                    renderDashboard();
+                    showToast(`🏢 Signed into Enterprise: ${currentUser.name}`, 'success');
+                });
+            });
+
+            document.getElementById('empRegisterForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const payload = {
+                    name: document.getElementById('empRegName').value.trim(),
+                    workEmail: document.getElementById('empRegEmail').value.trim(),
+                    role: document.getElementById('empRegRole').value,
+                    referralCode: document.getElementById('empRegRefCode').value.trim(),
+                    password: document.getElementById('empRegPass').value,
+                    captcha: document.getElementById('empRegCaptcha').value.trim(),
+                    expectedCaptcha
+                };
+
+                fetch('/auth/enterprise/join-org', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.error) return showToast('❌ ' + d.error, 'error');
+                    currentUser = d.user;
+                    renderDashboard();
+                    showToast(`🏢 Welcome to ${d.organization.name}!`, 'success');
+                });
+            });
+
+            document.getElementById('empCreateOrgForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const payload = {
+                    adminName: document.getElementById('empCreateAdminName').value.trim(),
+                    workEmail: document.getElementById('empCreateWorkEmail').value.trim(),
+                    companyName: document.getElementById('empCreateCompanyName').value.trim(),
+                    department: document.getElementById('empCreateDepartment').value.trim(),
+                    password: document.getElementById('empCreatePass').value,
+                    captcha: document.getElementById('empCreateCaptcha').value.trim(),
+                    expectedCaptcha
+                };
+
+                fetch('/auth/enterprise/create-org', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.error) return showToast('❌ ' + d.error, 'error');
+                    currentUser = d.user;
+                    renderDashboard();
+                    showToast(`🏢 Organization created! Welcome, ${currentUser.name}!`, 'success');
+                });
+            });
+
+            // ── Tab Switcher ──
+            window.switchTab = function(tabId) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                const target = document.getElementById(tabId);
+                if (target) target.classList.add('active');
+
+                const titleMap = {
+                    'tab-cand-matrix': { title: 'Personal ATS Scanner', sub: 'Upload resume to check Capableness Percentage and role fit' },
+                    'tab-cand-coach': { title: 'Career & Platform AI Coach', sub: 'Actionable resume optimization tips & platform Q&A' },
+                    'tab-cand-settings': { title: 'Profile & Account Settings', sub: 'Manage personal details and verification badges' },
+                    'tab-matrix': { title: 'Screening Matrix Leaderboard', sub: 'Comprehensive enterprise evaluation leaderboard' },
+                    'tab-pipeline': { title: 'Talent Pipeline Kanban', sub: 'Candidate stages: Applied, AI Screened, HM Review, Interview, Offered, Rejected' },
+                    'tab-analytics': { title: 'Enterprise Hiring Analytics Hub', sub: 'Recruitment velocity and organization benchmarks' },
+                    'tab-studio': { title: 'AI Copilot Studio', sub: 'Hybrid AI recruitment canvas (Groq / Gemini / Ollama)' },
+                    'tab-admin-referrals': { title: 'Referral Code Engine', sub: 'Admin 3-day (72h) invite code engine' },
+                    'tab-approvals': { title: 'Pending Team Approvals (72h Queue)', sub: 'Review colleague access requests' }
+                };
+                const m = titleMap[tabId] || { title: 'Dashboard', sub: '' };
+                document.getElementById('mainHeaderTitle').textContent = m.title;
+                document.getElementById('mainHeaderSub').textContent = m.sub;
+
+                if (tabId === 'tab-pipeline') renderKanbanBoard();
+                if (tabId === 'tab-analytics') fetchAnalytics();
+                if (tabId === 'tab-admin-referrals') fetchAdminReferralCodes();
+                if (tabId === 'tab-approvals') fetchPendingApprovals();
+            };
+
+            // ── Interactive AI Screening Loader State Manager ──
+            const screeningSteps = [
+                "📄 Parsing resume text & OCR extraction...",
+                "🧠 Connecting to AI Engine...",
+                "🔍 Benchmarking technical competencies...",
+                "📊 Generating ATS Screening Matrix..."
+            ];
+            let screeningStepIndex = 0;
+            let screeningProgress = 15;
+            let screeningStepTimer = null;
+            let screeningProgressTimer = null;
+
+            window.showScreeningLoader = function() {
+                const modal = document.getElementById('aiScreeningLoaderModal');
+                const stepText = document.getElementById('aiLoaderStepText');
+                const pBar = document.getElementById('aiLoaderProgressBar');
+                const pPercent = document.getElementById('aiLoaderProgressPercent');
+                if (!modal) return;
+
+                screeningStepIndex = 0;
+                screeningProgress = 15;
+                stepText.textContent = screeningSteps[0];
+                pBar.style.width = '15%';
+                pPercent.textContent = '15%';
+
+                modal.classList.add('active');
+
+                // Step cycling every 1.8 seconds
+                clearInterval(screeningStepTimer);
+                screeningStepTimer = setInterval(() => {
+                    if (screeningStepIndex < screeningSteps.length - 1) {
+                        screeningStepIndex++;
+                        stepText.textContent = screeningSteps[screeningStepIndex];
+                    }
+                }, 1800);
+
+                // Progress advancement
+                clearInterval(screeningProgressTimer);
+                screeningProgressTimer = setInterval(() => {
+                    if (screeningProgress < 90) {
+                        screeningProgress += Math.floor(Math.random() * 8 + 3);
+                        if (screeningProgress > 90) screeningProgress = 90;
+                        pBar.style.width = `${screeningProgress}%`;
+                        pPercent.textContent = `${screeningProgress}%`;
+                    }
+                }, 400);
+            };
+
+            window.hideScreeningLoader = function(callback) {
+                const modal = document.getElementById('aiScreeningLoaderModal');
+                const pBar = document.getElementById('aiLoaderProgressBar');
+                const pPercent = document.getElementById('aiLoaderProgressPercent');
+                const stepText = document.getElementById('aiLoaderStepText');
+
+                clearInterval(screeningStepTimer);
+                clearInterval(screeningProgressTimer);
+
+                if (pBar && pPercent && stepText) {
+                    pBar.style.width = '100%';
+                    pPercent.textContent = '100%';
+                    stepText.textContent = '✓ Evaluation Complete!';
+                }
+
+                setTimeout(() => {
+                    if (modal) modal.classList.remove('active');
+                    if (typeof callback === 'function') callback();
+                }, 350);
+            };
+
+            // ── Candidate Resume Upload & Auto Role Detection ──
+            window.handleCandidateFileUpload = function(files) {
+                if (!files || files.length === 0) return;
+                const file = files[0];
+                const statusEl = document.getElementById('candUploadStatus');
+                statusEl.textContent = `⏳ Scanning & analyzing ${file.name}...`;
+
+                showScreeningLoader();
+
+                // Trigger detect-role in parallel
+                const detectForm = new FormData();
+                detectForm.append('resume', file);
+                fetch('/api/ai/detect-role', { method: 'POST', body: detectForm })
+                    .then(res => res.json())
+                    .then(d => {
+                        if (d.success && d.data) {
+                            showDetectedRoleBanner(d.data);
+                        }
+                    })
+                    .catch(() => {});
+
+                const formData = new FormData();
+                formData.append('resume', file);
+                formData.append('targetRole', document.getElementById('candTargetRoleSelect').value);
+
+                fetch('/api/ai/screen-resume', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(d => {
+                    hideScreeningLoader(() => {
+                        if (d.error) {
+                            statusEl.textContent = '❌ Upload failed';
+                            return showToast('❌ ' + d.error, 'error');
+                        }
+                        statusEl.textContent = `✓ Evaluated: ${file.name}`;
+                        showToast('🎉 Resume analyzed successfully!', 'success');
+                        displayCandidateEvaluation(d.evaluation || d.data);
+                    });
+                })
+                .catch(() => {
+                    hideScreeningLoader(() => {
+                        statusEl.textContent = '❌ Upload failed';
+                        showToast('❌ Server error uploading resume', 'error');
+                    });
+                });
+            };
+
+            function showDetectedRoleBanner(data) {
+                const banner = document.getElementById('candRoleDetectBanner');
+                if (!banner) return;
+                lastAutoDetectedRole = data.detectedRole || 'Software Engineer';
+                document.getElementById('candDetectedRoleText').textContent = lastAutoDetectedRole;
+                document.getElementById('candDetectConfidence').textContent = `${data.confidenceScore || 90}% Confidence`;
+                document.getElementById('candDetectReason').textContent = data.briefReason || 'Extensive technical experience matching core requirements.';
+                banner.style.display = 'flex';
+            }
+
+            window.confirmDetectedRole = function() {
+                if (!lastAutoDetectedRole) return;
+                const select = document.getElementById('candTargetRoleSelect');
+                let found = false;
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value.toLowerCase() === lastAutoDetectedRole.toLowerCase()) {
+                        select.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const opt = document.createElement('option');
+                    opt.value = lastAutoDetectedRole;
+                    opt.textContent = lastAutoDetectedRole;
+                    opt.selected = true;
+                    select.appendChild(opt);
+                }
+                showToast(`✓ Target Role updated to "${lastAutoDetectedRole}"!`, 'success');
+                document.getElementById('candRoleDetectBanner').style.display = 'none';
+            };
+
+            // Redesigned Screening Matrix Display
+            function displayCandidateEvaluation(ev) {
+                const score = ev.matchScore || 75;
+                document.getElementById('candMatchScore').textContent = `${score}%`;
+                document.getElementById('candSummary').textContent = ev.summary || 'Comprehensive ATS evaluation generated.';
+                document.getElementById('candScanDate').textContent = `Last Scanned: ${new Date().toLocaleTimeString()}`;
+
+                // Dynamic fit verdict badge
+                const badge = document.getElementById('candScoreBadge');
+                if (score >= 80) {
+                    badge.className = 'badge-pill score-badge-green';
+                    badge.textContent = ev.fitVerdict || '🟢 High Fit (>=80%)';
+                } else if (score >= 60) {
+                    badge.className = 'badge-pill score-badge-yellow';
+                    badge.textContent = ev.fitVerdict || '🟡 Moderate Fit (60-79%)';
+                } else {
+                    badge.className = 'badge-pill score-badge-red';
+                    badge.textContent = ev.fitVerdict || '🔴 Skill Gap (<60%)';
+                }
+
+                // 4 Transparent Score Bars
+                const breakdown = ev.scoreBreakdown || { skills: Math.round(score * 0.4), experience: Math.round(score * 0.3), tools: Math.round(score * 0.2), education: Math.round(score * 0.1) };
+                const skillsVal = breakdown.skills || 30;
+                const expVal = breakdown.experience || 22;
+                const toolsVal = breakdown.tools || 15;
+                const eduVal = breakdown.education || 8;
+
+                document.getElementById('scoreSkillsVal').textContent = `${skillsVal} / 40`;
+                document.getElementById('scoreExpVal').textContent = `${expVal} / 30`;
+                document.getElementById('scoreToolsVal').textContent = `${toolsVal} / 20`;
+                document.getElementById('scoreEduVal').textContent = `${eduVal} / 10`;
+
+                document.getElementById('barSkills').style.width = `${(skillsVal / 40) * 100}%`;
+                document.getElementById('barExp').style.width = `${(expVal / 30) * 100}%`;
+                document.getElementById('barTools').style.width = `${(toolsVal / 20) * 100}%`;
+                document.getElementById('barEdu').style.width = `${(eduVal / 10) * 100}%`;
+
+                // Two Equal Columns: Matched Strengths (Emerald) vs Missing Keywords (Rose)
+                const strengths = ev.matchedSkills || ev.strengths || [];
+                document.getElementById('candStrengths').innerHTML = strengths.map(s => `<span class="chip-emerald"><span class="material-symbols-outlined text-xs">check</span>${s}</span>`).join('') || '<span class="text-xs text-slate-400">Core Domain Competency</span>';
+
+                const gaps = ev.missingSkills || [];
+                document.getElementById('candGaps').innerHTML = gaps.map(g => `<span class="chip-rose"><span class="material-symbols-outlined text-xs">close</span>${g}</span>`).join('') || '<span class="text-xs text-slate-400">None detected</span>';
+
+                // Actionable AI Recommendations
+                const recsList = document.getElementById('candRecommendationsList');
+                const recs = Array.isArray(ev.recommendations) ? ev.recommendations : (ev.tips ? [ev.tips] : ['Highlight measurable project achievements.']);
+                recsList.innerHTML = recs.map(r => `
+                    <div class="border-l-4 border-cyan-400 bg-slate-800/40 p-3.5 rounded-r-xl text-xs text-slate-300 flex items-start gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-cyan-400 text-sm mt-0.5">arrow_forward</span>
+                        <span>${r}</span>
+                    </div>
+                `).join('');
+            }
+
+            // ── Candidate AI Chatbot ──
+            document.getElementById('candChatForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const inp = document.getElementById('candChatInput');
+                const text = inp.value.trim();
+                if (!text) return;
+                inp.value = '';
+
+                const stream = document.getElementById('candChatStream');
+                stream.insertAdjacentHTML('beforeend', `<div class="p-3 rounded-xl brand-btn-primary text-xs max-w-[85%] ml-auto"><p>${text.replace(/</g, '&lt;')}</p></div>`);
+                stream.scrollTop = stream.scrollHeight;
+
+                fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: text })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    stream.insertAdjacentHTML('beforeend', `<div class="p-3 rounded-xl bg-slate-900 border border-cyan-500/20 text-xs max-w-[85%]"><p class="font-bold text-cyan-400 mb-1">Career Coach</p><p>${d.reply.replace(/</g, '&lt;')}</p></div>`);
+                    stream.scrollTop = stream.scrollHeight;
+                });
+            });
+
+            // ── Candidate Profile Settings ──
+            function loadCandidateProfile() {
+                if (!currentUser) return;
+                document.getElementById('setFirstName').value = currentUser.firstName || '';
+                document.getElementById('setLastName').value = currentUser.lastName || '';
+                document.getElementById('setProfession').value = currentUser.profession || '';
+                document.getElementById('setDob').value = currentUser.dob || '';
+                document.getElementById('setGender').value = currentUser.gender || 'Female';
+                document.getElementById('setPhone').value = currentUser.phone || '';
+                document.getElementById('setEmail').value = currentUser.email || '';
+                document.getElementById('setLinkedIn').value = currentUser.linkedInUrl || '';
+            }
+
+            document.getElementById('candSettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const payload = {
+                    firstName: document.getElementById('setFirstName').value.trim(),
+                    lastName: document.getElementById('setLastName').value.trim(),
+                    profession: document.getElementById('setProfession').value.trim(),
+                    dob: document.getElementById('setDob').value,
+                    gender: document.getElementById('setGender').value,
+                    phone: document.getElementById('setPhone').value.trim(),
+                    linkedInUrl: document.getElementById('setLinkedIn').value.trim()
+                };
+
+                fetch('/api/user/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.success) {
+                        currentUser = d.user;
+                        showToast('✓ Profile updated successfully!', 'success');
+                        document.getElementById('uName').textContent = currentUser.name;
+                    }
+                });
+            });
+
+            window.deleteNormalUserAccount = function() {
+                if (!confirm('Are you sure you want to permanently delete your account and all data?')) return;
+                fetch('/api/user/account', { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(d => {
+                        alert('Account deleted.');
+                        window.location.reload();
+                    });
+            };
+
+            // ── Enterprise Candidate Evaluations & HM Forwarding ──
+            function fetchCandidates() {
+                fetch('/api/evaluations')
+                    .then(res => res.json())
+                    .then(candidates => {
+                        allCandidates = Array.isArray(candidates) ? candidates : [];
+                        renderMatrixTable();
+                        renderKanbanBoard();
+                    });
+            }
+
+            window.renderMatrixTable = function() {
+                const sortMode = document.getElementById('matrixSortSelect').value;
+                const tbody = document.getElementById('matrixTableBody');
+                document.getElementById('matrixCountBadge').textContent = `${allCandidates.length} Screened`;
+
+                if (allCandidates.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-500">No candidate evaluations yet.</td></tr>';
+                    return;
+                }
+
+                const sorted = [...allCandidates].sort((a, b) => {
+                    if (sortMode === 'score_desc') return (b.matchScore || 0) - (a.matchScore || 0);
+                    if (sortMode === 'score_asc') return (a.matchScore || 0) - (b.matchScore || 0);
+                    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                });
+
+                const role = currentUser ? currentUser.role : 'hr';
+                const isHM = (role === 'hiring_manager');
+
+                tbody.innerHTML = sorted.map(c => {
+                    const score = c.matchScore || 50;
+                    let badgeCls = score >= 80 ? 'score-badge-green' : (score >= 60 ? 'score-badge-yellow' : 'score-badge-red');
+
+                    return `
+                        <tr class="border-b border-cyan-500/20 hover:bg-black/30">
+                            <td class="p-2.5 font-bold text-white">${c.candidateName}</td>
+                            <td class="p-2.5 text-slate-400">${c.targetRole}</td>
+                            <td class="p-2.5"><span class="badge-pill ${badgeCls}">${score}% Match</span></td>
+                            <td class="p-2.5 text-slate-400">${(c.matchedSkills || []).slice(0, 3).join(', ') || 'Core Skills'}</td>
+                            <td class="p-2.5">
+                                <span class="badge-pill ${c.status === 'sent_to_hr' ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-800 text-slate-300'}">${c.status}</span>
+                            </td>
+                            <td class="p-2.5 text-right">
+                                ${isHM ? `
+                                    <button onclick="sendCandidateToHR(${c.id})" class="px-2.5 py-1 brand-btn-primary rounded text-xs">
+                                        Select Candidate &amp; Send Data to HR
+                                    </button>
+                                ` : `
+                                    <button onclick="updateCandidateStage(${c.id}, 'interview')" class="px-2 py-1 bg-cyan-600 hover:bg-cyan-700 text-black font-bold rounded text-[10px] mr-1">Interview</button>
+                                    <button onclick="updateCandidateStage(${c.id}, 'offered')" class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-[10px] font-bold">Offer</button>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            };
+
+            // Dedicated HM Action: [Select Candidate & Send Data to HR]
+            window.sendCandidateToHR = function(evalId) {
+                const hmNotes = prompt('Enter evaluation notes for HR recruiter:', 'Strong technical score and domain fit. Recommend for offer stage.');
+                if (hmNotes === null) return;
+
+                fetch(`/api/evaluations/${evalId}/send-to-hr`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hmNotes })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    showToast('✉️ Candidate profile & notes forwarded directly to HR!', 'success');
+                    fetchCandidates();
+                });
+            };
+
+            // ── Enterprise Batch Upload ──
+            window.handleEnterpriseBatchUpload = function(files) {
+                if (!files || files.length === 0) return;
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) formData.append('resumes', files[i]);
+                formData.append('targetRole', 'Enterprise Software Architect');
+
+                showScreeningLoader();
+                fetch('/api/upload', { method: 'POST', body: formData })
+                    .then(res => res.json())
+                    .then(d => {
+                        hideScreeningLoader(() => {
+                            showToast(`✓ Ingested ${files.length} candidate resumes!`, 'success');
+                            fetchCandidates();
+                        });
+                    })
+                    .catch(() => {
+                        hideScreeningLoader(() => {
+                            showToast('❌ Error during batch upload', 'error');
+                        });
+                    });
+            };
+
+            // ── Admin Referral Code Generator ──
+            document.getElementById('genRefCodeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const assignedRole = document.getElementById('refAssignedRole').value;
+                const maxUses = document.getElementById('refMaxUses').value;
+
+                fetch('/api/referral/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ assignedRole, maxUses, hoursValid: 72 })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    if (d.success) {
+                        showToast(`✓ Referral Code ${d.referral.code} generated (72h validity)!`, 'success');
+                        fetchAdminReferralCodes();
+                    }
+                });
+            });
+
+            function fetchAdminReferralCodes() {
+                fetch('/api/referral/list')
+                    .then(res => res.json())
+                    .then(codes => {
+                        const tbody = document.getElementById('adminRefTableBody');
+                        if (!Array.isArray(codes) || codes.length === 0) {
+                            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No active referral codes.</td></tr>';
+                            return;
+                        }
+                        tbody.innerHTML = codes.map(c => `
+                            <tr class="border-b border-cyan-500/20">
+                                <td class="p-2.5 font-mono font-bold text-amber-400">${c.code}</td>
+                                <td class="p-2.5 font-bold">${c.assignedRole.toUpperCase()}</td>
+                                <td class="p-2.5">${c.usedCount} / ${c.maxUses}</td>
+                                <td class="p-2.5 ${c.isExpired ? 'text-red-400' : 'text-green-400'}">${c.remainingText}</td>
+                                <td class="p-2.5 text-right">
+                                    <button onclick="navigator.clipboard.writeText('${c.code}'); showToast('📋 Code copied!', 'success');" class="text-xs text-cyan-400 hover:underline">Copy Code</button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    });
+            }
+
+            // ── Kanban Pipeline ──
+            window.renderKanbanBoard = function() {
+                const stages = ['applied', 'ai_screened', 'hm_review', 'interview', 'offered', 'rejected'];
+                stages.forEach(st => {
+                    const zone = document.getElementById(`kbZone-${st}`);
+                    const countEl = document.getElementById(`kbCount-${st}`);
+                    if (!zone) return;
+
+                    const inStage = allCandidates.filter(c => (c.pipelineStage || 'ai_screened') === st);
+                    if (countEl) countEl.textContent = inStage.length;
+
+                    if (inStage.length === 0) {
+                        zone.innerHTML = '<div class="text-[10px] text-slate-500 text-center py-6">No candidates</div>';
+                    } else {
+                        zone.innerHTML = inStage.map(c => `
+                            <div class="candidate-card" draggable="true" ondragstart="handleDragStart(event, ${c.id})">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h4 class="font-bold text-white text-xs">${c.candidateName}</h4>
+                                    <span class="badge-pill bg-cyan-500/20 text-cyan-300">${c.matchScore}%</span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 mb-1">${c.targetRole}</p>
+                                <select onchange="updateCandidateStage(${c.id}, this.value)" class="text-[9px] p-0.5 rounded bg-slate-900 border border-cyan-500/20 mt-1">
+                                    ${stages.map(s => `<option value="${s}" ${s === st ? 'selected' : ''}>${s}</option>`).join('')}
+                                </select>
+                            </div>
+                        `).join('');
+                    }
+                });
+            };
+
+            window.allowDrop = (e) => e.preventDefault();
+            window.handleDragStart = (e, id) => e.dataTransfer.setData('text/plain', String(id));
+            window.handleDrop = (e, targetStage) => {
+                e.preventDefault();
+                const id = e.dataTransfer.getData('text/plain');
+                if (id) updateCandidateStage(id, targetStage);
+            };
+
+            window.updateCandidateStage = function(id, stage) {
+                fetch(`/api/candidates/${id}/stage`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ stage })
+                })
+                .then(res => res.json())
+                .then(d => {
+                    showToast(`✓ Candidate moved to ${stage}!`, 'success');
+                    fetchCandidates();
+                    fetchAnalytics();
+                });
+            };
+
+            // ── Analytics Hub ──
+            function fetchAnalytics() {
+                fetch('/api/analytics/overview')
+                    .then(res => res.json())
+                    .then(an => {
+                        document.getElementById('anTotalScreened').textContent = an.totalScreened || allCandidates.length;
+                        document.getElementById('anAvgScore').textContent = an.avgMatchRate || '75%';
+                        document.getElementById('analyticsOrgBadge').textContent = an.organization || 'Rankly AI';
+                        const stgs = an.pipelineStages || {};
+                        document.getElementById('anInterviewCount').textContent = stgs.interview || 0;
+                        document.getElementById('anOffersCount').textContent = stgs.offered || 0;
+                    })
+                    .catch(() => {});
+            }
+
+            // ── Pending Approvals ──
+            function fetchPendingApprovals() {
+                fetch('/api/team/invitations')
+                    .then(res => res.json())
+                    .then(invites => {
+                        const tbody = document.getElementById('approvalsTableBody');
+                        const badge = document.getElementById('sbApprovalsBadge');
+                        if (!Array.isArray(invites) || invites.length === 0) {
+                            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No pending approvals.</td></tr>';
+                            badge.textContent = '0';
+                            return;
+                        }
+                        const pending = invites.filter(i => i.status === 'pending');
+                        badge.textContent = pending.length;
+                        tbody.innerHTML = invites.map(inv => `
+                            <tr class="border-b border-cyan-500/20">
+                                <td class="p-2.5 font-bold text-white">${inv.email}</td>
+                                <td class="p-2.5 text-slate-400">${inv.invitedBy || 'Admin'}</td>
+                                <td class="p-2.5 ${inv.isExpired ? 'text-red-400' : 'text-amber-400'}">${inv.remainingText}</td>
+                                <td class="p-2.5 uppercase font-bold">${inv.assignedRole}</td>
+                                <td class="p-2.5 text-right">
+                                    ${inv.status === 'pending' ? `
+                                        <button onclick="approveInvite('${inv.email}', '${inv.assignedRole}')" class="px-2 py-1 bg-green-600 text-white rounded text-xs font-bold mr-1">Approve</button>
+                                        <button onclick="rejectInvite('${inv.email}')" class="px-2 py-1 bg-red-600 text-white rounded text-xs font-bold">Reject</button>
+                                    ` : `<span class="badge-pill badge-hr">${inv.status}</span>`}
+                                </td>
+                            </tr>
+                        `).join('');
+                    });
+            }
+
+            window.approveInvite = (email, role) => {
+                fetch('/api/team/approve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, role }) })
+                    .then(res => res.json())
+                    .then(d => { showToast(`✅ ${d.message}`, 'success'); fetchPendingApprovals(); });
+            };
+
+            window.rejectInvite = (email) => {
+                fetch('/api/team/reject', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+                    .then(res => res.json())
+                    .then(d => { showToast(`🚫 ${d.message}`, 'info'); fetchPendingApprovals(); });
+            };
+
+            // ── AI Studio Chat ──
+            document.getElementById('studioChatForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const inp = document.getElementById('studioChatInput');
+                const text = inp.value.trim();
+                if (!text) return;
+                inp.value = '';
+                const stream = document.getElementById('studioChatStream');
+                stream.insertAdjacentHTML('beforeend', `<div class="p-3 rounded-xl brand-btn-primary text-xs max-w-[85%] ml-auto"><p>${text.replace(/</g, '&lt;')}</p></div>`);
+                stream.scrollTop = stream.scrollHeight;
+                fetch('/api/ai/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: text }) })
+                    .then(res => res.json())
+                    .then(d => {
+                        stream.insertAdjacentHTML('beforeend', `<div class="p-3 rounded-xl bg-slate-900 border border-cyan-500/20 text-xs max-w-[85%]"><p class="font-bold text-cyan-400 mb-1">Copilot</p><p>${d.reply.replace(/</g, '&lt;')}</p></div>`);
+                        stream.scrollTop = stream.scrollHeight;
+                    });
+            });
+
+            // ── Modals & Toast ──
+            window.openModal = (id) => document.getElementById(id).classList.add('active');
+            window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+
+            function showToast(msg, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.textContent = msg;
+                container.appendChild(t);
+                setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3200);
+            }
+            window.showToast = showToast;
+
+        })();
+    </script>
+</body>
+</html>
