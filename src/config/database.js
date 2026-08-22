@@ -1,3 +1,8 @@
+// Ensure DATABASE_URL is defined before initializing Prisma Client
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./rankly.db';
+}
+
 const { PrismaClient } = require('@prisma/client');
 
 let prisma;

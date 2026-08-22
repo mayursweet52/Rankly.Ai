@@ -1,4 +1,10 @@
 require('dotenv').config();
+
+// Ensure DATABASE_URL fallback for cloud hosts (Render/Railway/Vercel)
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./rankly.db';
+}
+
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
@@ -24,6 +30,9 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 
+// Fix 3: Enable Reverse Proxy Trust for Render/Heroku load balancers
+app.set('trust proxy', 1);
+
 // Ensure upload directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -43,11 +52,12 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 const passport = require('./src/config/passport');
 
-// Session-based Authentication Setup (express-session, no JWT)
+// Fix 2: Session-based Authentication Setup with Cloud Proxy support
 app.use(session({
   secret: process.env.SESSION_SECRET || 'rankly_secure_session_key_2026_super_secret',
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
