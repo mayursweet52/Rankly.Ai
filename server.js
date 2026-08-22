@@ -290,9 +290,9 @@ app.use((err, req, res, next) => {
 // -----------------------------------------------------------------------------
 // Graceful Server Startup & Shutdown
 // -----------------------------------------------------------------------------
-server.listen(PORT, () => {
-  console.log(`\n🚀 Rankly.ai Backend Server is live on http://localhost:${PORT}`);
-  console.log(`🔒 Session Authentication: Active (No JWT)`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🚀 Rankly.ai Backend Server is live on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
+  console.log(`🔒 Session Authentication: Active (SQLite Store)`);
   console.log(`💾 Database: SQLite (Prisma ORM)`);
   console.log(`🤖 AI Engine: Groq / Gemini / OpenRouter / Ollama / Heuristic Tiered Fallback\n`);
 });
