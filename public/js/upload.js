@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Delete candidate handler
     window.deleteCandidate = function(dbId, domId) {
         if (!confirm('Are you sure you want to delete this candidate?')) return;
-        fetch(`/api/candidates/${dbId}?apiKey=rankly-secret-key`, { method: 'DELETE' })
+        fetch(`/api/candidates/${dbId}?apiKey=rankly-secret-key`, { method: 'DELETE', credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {

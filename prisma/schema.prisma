@@ -1,13 +1,208 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// Prisma Schema for Rankly.ai
+// Database: SQLite with Prisma ORM
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------
+// User Model (Dual Track: Normal Jobseeker vs HR/Enterprise)
+// ---------------------------------------------------------
+model User {
+  id              String        @id @default(uuid())
+  accountType     String        @default("normal_user") // "normal_user" | "employee"
+  firstName       String
+  lastName        String?
+  username        String?       @unique
+  email           String        @unique
+  phone           String?       @unique
+  password        String
+  
+  // Normal Jobseeker Details
+  dob             DateTime?
+  age             Int?
+  gender          String?
+  profession      String?
+  linkedInUrl     String?
+  isEmailVerified Boolean       @default(false)
+  isPhoneVerified Boolean       @default(false)
+
+  // Enterprise / HR Specific
+  role            String        @default("normal_user") // "admin" | "hr" | "hiring_manager" | "normal_user"
+  workEmail       String?
+  status          String        @default("active")      // "active" | "pending_approval" | "suspended"
+  organizationId  String?
+  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  // Relations
+  evaluations      Evaluation[]
+  candidates       Candidate[]
+  chatMessages     ChatMessage[]
+  createdReferrals ReferralCode[] @relation("CreatedReferrals")
+  administeredOrgs Organization[] @relation("AdminOrgs")
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------
+// Organization Model
+// ---------------------------------------------------------
+model Organization {
+  id          String           @id @default(uuid())
+  name        String
+  adminId     String
+  admin       User             @relation("AdminOrgs", fields: [adminId], references: [id], onDelete: Cascade)
+  
+  members     User[]
+  evaluations Evaluation[]
+  candidates  Candidate[]
+  referrals   ReferralCode[]
+  invitations TeamInvitation[]
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+// ---------------------------------------------------------
+// Referral Code Model (For inviting HR / Hiring Managers)
+// ---------------------------------------------------------
+model ReferralCode {
+  id             String       @id @default(uuid())
+  code           String       @unique
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedRole   String       @default("hr") // "hr" | "hiring_manager"
+  createdById    String
+  createdBy      User         @relation("CreatedReferrals", fields: [createdById], references: [id], onDelete: Cascade)
+  expiresAt      DateTime
+  maxUses        Int          @default(1)
+  usedCount      Int          @default(0)
+  isUsed         Boolean      @default(false)
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+// ---------------------------------------------------------
+// Candidate / Resume Evaluation Model
+// ---------------------------------------------------------
+model Evaluation {
+  id              String        @id @default(uuid())
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId  String?
+  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  
+  isPractice      Boolean       @default(false)
+  candidateName   String?
+  candidateEmail  String?
+  candidatePhone  String?
+  targetRole      String
+  resumeFileName  String?
+  resumeFilePath  String?
+  extractedText   String?
+
+  matchScore      Float         @default(0)
+  skillsScore     Float         @default(0)
+  experienceScore Float         @default(0)
+  toolsScore      Float         @default(0)
+  educationScore  Float         @default(0)
+  fitVerdict      String?       // "Strong Fit", "Moderate Fit", "Potential Fit", "Not a Fit"
+
+  summary         String?
+  matchedSkills   String?       // Stored as JSON array string
+  missingSkills   String?       // Stored as JSON array string
+  recommendations String?       // Stored as JSON array string
+
+  pipelineStage   String        @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
+  status          String        @default("screened") // "submitted" | "screened" | "sent_to_hr" | "shortlisted" | "rejected"
+  hmNotes         String?
+  rawAiResponse   String?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------
+// Pipeline Candidate Model (For ATS Kanban & Tracking)
+// ---------------------------------------------------------
+model Candidate {
+  id              String        @id @default(uuid())
+  name            String
+  email           String?
+  phone           String?
+  targetRole      String
+  stage           String        @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
+  
+  score           Float         @default(0)
+  skillsScore     Float         @default(0)
+  experienceScore Float         @default(0)
+  toolsScore      Float         @default(0)
+  educationScore  Float         @default(0)
+  fitVerdict      String?
+  summary         String?
+  matchedSkills   String?       // JSON array string
+  missingSkills   String?       // JSON array string
+  recommendations String?       // JSON array string
+  notes           String?
+  resumeUrl       String?
+  extractedText   String?
+
+  organizationId  String?
+  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  evaluationId    String?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------
+// OTP Verification Model
+// ---------------------------------------------------------
+model OTP {
+  id        String   @id @default(uuid())
+  email     String?
+  phone     String?
+  otp       String
+  type      String   @default("email_verification") // "email_verification" | "password_reset" | "phone_verification"
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------
+// Chat History Model (For AI Career Counselor & Q&A)
+// ---------------------------------------------------------
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   // "user" | "assistant" | "system"
+  content   String
+  meta      String?  // JSON metadata (e.g., target role, match context)
+  createdAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------
+// Team Invitation Model
+// ---------------------------------------------------------
+model TeamInvitation {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String       @default("hr") // "hr" | "hiring_manager"
+  token          String       @unique
+  status         String       @default("pending") // "pending" | "accepted" | "rejected" | "expired"
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
