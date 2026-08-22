@@ -8,6 +8,7 @@ if (!process.env.DATABASE_URL) {
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
@@ -52,8 +53,14 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 const passport = require('./src/config/passport');
 
-// Fix 2: Session-based Authentication Setup with Cloud Proxy support
+// Fix 1 & 2: Persistent SQLite Session Store with Cloud Proxy support
 app.use(session({
+  store: new SQLiteStore({
+    db: 'sessions.db',
+    dir: './',
+    table: 'sessions',
+    concurrentDB: true
+  }),
   secret: process.env.SESSION_SECRET || 'rankly_secure_session_key_2026_super_secret',
   resave: false,
   saveUninitialized: false,
