@@ -239,14 +239,39 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Explicit Web Page Routes
+app.get('/dashboard', (req, res) => {
+  const user = req.session?.user || (req.isAuthenticated && req.isAuthenticated() ? req.user : null);
+  if (!user) {
+    return res.redirect('/login');
+  }
+  const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
+  if (fs.existsSync(cleanIndexPath)) {
+    return res.sendFile(cleanIndexPath);
+  }
+  return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/login', (req, res) => {
+  const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
+  if (fs.existsSync(cleanIndexPath)) {
+    return res.sendFile(cleanIndexPath);
+  }
+  return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // SPA Fallback for Web UI
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
     return next();
   }
-  const indexPath = path.join(__dirname, 'public', 'index.html');
+  const indexPath = path.join(__dirname, 'public', 'index-3.html');
   if (fs.existsSync(indexPath)) {
     return res.sendFile(indexPath);
+  }
+  const defaultIndexPath = path.join(__dirname, 'public', 'index.html');
+  if (fs.existsSync(defaultIndexPath)) {
+    return res.sendFile(defaultIndexPath);
   }
   return res.send('<h1>Rankly.ai Backend API Running</h1><p>Frontend assets not found in /public directory.</p>');
 });
