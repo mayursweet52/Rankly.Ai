@@ -23,7 +23,8 @@ passport.deserializeUser(async (id, done) => {
 // -----------------------------------------------------------------------------
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '297396891792-ntk15lp8ibflkun8emhkh8tc2s85h1cr.apps.googleusercontent.com';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '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';
-const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback';
+const baseUrl = process.env.BASE_URL || process.env.APP_URL || '';
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || (baseUrl ? `${baseUrl}/auth/google/callback` : '/auth/google/callback');
 
 if (googleClientId && googleClientSecret) {
   passport.use(
@@ -88,7 +89,7 @@ if (googleClientId && googleClientSecret) {
 // -----------------------------------------------------------------------------
 const fbAppId = process.env.FACEBOOK_APP_ID || '2621377384978326';
 const fbAppSecret = process.env.FACEBOOK_APP_SECRET || 'cc113a43994046b98f300330204e9104';
-const fbCallbackUrl = process.env.FACEBOOK_CALLBACK_URL || 'http://localhost:3000/auth/facebook/callback';
+const fbCallbackUrl = process.env.FACEBOOK_CALLBACK_URL || (baseUrl ? `${baseUrl}/auth/facebook/callback` : '/auth/facebook/callback');
 
 if (fbAppId && fbAppSecret) {
   passport.use(
