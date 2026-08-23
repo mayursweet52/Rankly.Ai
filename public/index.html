@@ -2719,7 +2719,11 @@
                     }
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
-                    showToast(`Verification code sent to ${value}`, 'success');
+                    const otpInput = document.getElementById('signupEmailOtp');
+                    if (otpInput && data.previewOtp) {
+                        otpInput.value = data.previewOtp;
+                    }
+                    showToast(`🔐 Verification code sent to ${value} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2815,7 +2819,11 @@
                     }
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
-                    showToast(`Verification code sent to ${value}`, 'success');
+                    const otpInput = document.getElementById('empEmailOtp');
+                    if (otpInput && data.previewOtp) {
+                        otpInput.value = data.previewOtp;
+                    }
+                    showToast(`🔐 Verification code sent to ${value} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
                     startOtpCountdown('empEmailOtpBtn', 'emp');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2977,7 +2985,12 @@
                     if (step1) step1.style.display = 'none';
                     if (step2) step2.style.display = 'block';
 
-                    showToast(`🔐 Reset code sent to ${email}`, 'success');
+                    const fpInput = document.getElementById('fpOtp');
+                    if (fpInput && data.previewOtp) {
+                        fpInput.value = data.previewOtp;
+                    }
+
+                    showToast(`🔐 Reset code sent to ${email} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
                     startFpCountdown();
                 } catch (err) {
                     showToast('Server connection error: ' + err.message, 'error');

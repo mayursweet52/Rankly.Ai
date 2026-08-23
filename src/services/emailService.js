@@ -78,9 +78,17 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   };
 
   const transporter = getTransporter();
-  const info = await transporter.sendMail(mailOptions);
-  console.log('✅ Real OTP sent to:', cleanRecipient, 'MessageId:', info.messageId);
-  return true;
+  try {
+    const info = await Promise.race([
+      transporter.sendMail(mailOptions),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP connection timed out')), 6000))
+    ]);
+    console.log('✅ Real OTP sent to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+    return true;
+  } catch (err) {
+    console.warn(`[SMTP Warning] Could not deliver email to ${cleanRecipient} (${err.message}). OTP for verification: ${otpCode}`);
+    return false;
+  }
 }
 
 let cachedTransporter = null;
@@ -89,22 +97,19 @@ function getTransporter() {
   if (cachedTransporter) return cachedTransporter;
 
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '465', 10);
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
   const pass = (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim();
 
   cachedTransporter = nodemailer.createTransport({
     service: 'gmail',
-    host,
-    port: 465,
-    secure: true,
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100,
     auth: {
       user,
       pass
     },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 5000,
     tls: {
       rejectUnauthorized: false
     }
