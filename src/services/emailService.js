@@ -61,8 +61,11 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
 </html>
   `;
 
+  const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
+  const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
   const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-  const fromAddress = `"Rankly.ai Security" <${senderUser}>`;
+  const senderPass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim();
+  const fromAddress = process.env.SMTP_FROM || `"Rankly.ai Security" <${senderUser}>`;
 
   const mailOptions = {
     from: fromAddress,
@@ -103,12 +106,12 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   // 2. Try Port 587 with STARTTLS (Standard Cloud SMTP)
   try {
     const transporter587 = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
         user: senderUser,
-        pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+        pass: senderPass
       },
       connectionTimeout: 5000,
       greetingTimeout: 5000,
@@ -129,12 +132,12 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     // 3. Try Port 465 SSL
     try {
       const transporter465 = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: smtpHost,
         port: 465,
         secure: true,
         auth: {
           user: senderUser,
-          pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+          pass: senderPass
         },
         connectionTimeout: 5000,
         greetingTimeout: 5000,
