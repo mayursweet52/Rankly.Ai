@@ -76,12 +76,13 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   };
 
   // 1. Try Resend HTTPS REST API (Port 443 - Never blocked by Railway/Cloud firewalls)
-  if (process.env.RESEND_API_KEY) {
+  const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
+  if (resendApiKey) {
     try {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Authorization': `Bearer ${resendApiKey}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
