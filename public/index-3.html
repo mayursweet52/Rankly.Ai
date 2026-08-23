@@ -1139,241 +1139,216 @@
             .login-card { padding: 32px 20px; }
         }
 
+        /* ─── LOGIN PAGE – THEME TOGGLE ─── */
         #loginPage {
-            background-color: #FAFAF8 !important;
-            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px) !important;
-            background-size: 24px 24px !important;
+            position: relative;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 32px;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* ─── 3D TEXT HOVER EFFECT – SIRF LOGIN PAGE (DARK MODE) ─── */
-        #loginPage.dark-theme .login-3d-title {
-          display: inline-flex;
-          gap: 0.05em;
-          font-size: 2.8rem;
-          font-weight: 900;
-          color: #e2e8f0;
-          perspective: 600px;
-          justify-content: center;
-          cursor: default;
+        /* Light Mode (Default) */
+        #loginPage.light-mode {
+            background: #f0f4f8;
         }
 
-        #loginPage.dark-theme .login-3d-title .char {
-          display: inline-block;
-          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                      color 0.4s ease,
-                      text-shadow 0.4s ease;
-          transform-style: preserve-3d;
+        #loginPage.light-mode .login-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
         }
 
-        #loginPage.dark-theme .login-3d-title:hover .char {
-          color: #818cf8;
-          text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        #loginPage.light-mode .login-heading {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
         }
 
-        #loginPage.dark-theme .login-3d-title .char:hover {
-          transform: translateZ(30px) rotateX(10deg) rotateY(10deg) scale(1.2);
-          color: #a78bfa;
-          text-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
+        /* Dark Mode */
+        #loginPage.dark-mode {
+            background: radial-gradient(ellipse at 20% 50%, #1a1a3e, #0a0a12);
         }
 
-        /* ─── LIGHT MODE (Normal) ─── */
-        #loginPage:not(.dark-theme) .login-3d-title {
-          font-size: 2.8rem;
-          font-weight: 900;
-          background: linear-gradient(135deg, #4f46e5, #7c3aed);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+        #loginPage.dark-mode .login-card {
+            background: rgba(18, 18, 35, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            color: #e2e8f0;
         }
 
-        #loginPage:not(.dark-theme) .login-3d-title .char {
-          display: inline-block;
-          transition: none;
+        #loginPage.dark-mode .login-heading {
+            display: inline-flex;
+            gap: 0.05em;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #e2e8f0;
+            perspective: 600px;
+            cursor: default;
+            background: none !important;
+            -webkit-text-fill-color: #e2e8f0 !important;
         }
 
-        #loginPage:not(.dark-theme) .login-3d-title:hover .char,
-        #loginPage:not(.dark-theme) .login-3d-title .char:hover {
-          transform: none;
-          color: inherit;
-          text-shadow: none;
+        #loginPage.dark-mode .login-heading .char {
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        color 0.4s ease,
+                        text-shadow 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        #loginPage.dark-mode .login-heading:hover .char {
+            color: #818cf8;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        #loginPage.dark-mode .login-heading .char:hover {
+            transform: translateZ(30px) rotateX(10deg) rotateY(10deg) scale(1.2);
+            color: #a78bfa;
+            text-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
+        }
+
+        #loginPage.dark-mode .form-input {
+            background: #1e1e38;
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        #loginPage.dark-mode .oauth-btn {
+            background: #1e1e38;
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+        }
+        #loginPage.dark-mode .oauth-btn:hover {
+            background: #28284c;
+            border-color: #818cf8;
+        }
+
+        /* ─── THEME TOGGLE BUTTON STYLE ─── */
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 0.3rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4b5563;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        #loginPage.dark-mode .theme-toggle-btn {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .theme-toggle-btn:hover {
+            border-color: #818cf8;
         }
     </style>
 </head>
 <body class="rankly-bg">
     <div id="toast-container"></div>
 
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- LOGIN SCREEN (COHERE STYLE WITH 3D PEBBLES & CELLULAR MESH)        -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <div id="loginPage" class="page active">
-        <!-- Top Navigation Header -->
-        <header class="w-full flex justify-between items-center z-10">
-            <div class="flex items-center gap-2.5">
-                <!-- Custom Gradient Emblem Logo for Rankly.ai -->
-                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                    <defs>
-                        <linearGradient id="rankly-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#B588F7"/>
-                            <stop offset="100%" stop-color="#8E65DF"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#FFA14A"/>
-                            <stop offset="100%" stop-color="#F06A4A"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#81E4DA"/>
-                            <stop offset="100%" stop-color="#45A89E"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="32" height="32" rx="8" fill="#111111" />
-                    <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-g1)"/>
-                    <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-                    <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-g2)"/>
-                    <circle cx="24" cy="8" r="3" fill="url(#rankly-g3)" />
-                </svg>
-                <span class="font-extrabold text-xl tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span></span>
-            </div>
-            <div>
-                <button onclick="openModal('signupModal')" class="text-sm font-semibold text-[#111111] hover:text-[#444440] px-3.5 py-1.5 rounded-lg transition-all">Sign Up</button>
-            </div>
-        </header>
-
-        <!-- ─── 3D PEBBLES LAYER (COHERE ACCENTS) ─── -->
-        <!-- Bottom-Left Realistic 3D Cluster -->
-        <div class="pebble-cluster-bottom-left hidden md:block">
-            <div class="pebble-3d-grey"></div>
-            <div class="pebble-3d-coral"></div>
-            <div class="pebble-3d-iridescent"></div>
-            <div class="pebble-3d-sage"></div>
+    <!-- ─── LOGIN PAGE ─── -->
+    <div id="loginPage" class="page active light-mode" style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1rem; position:relative;">
+        
+        <!-- Theme Toggle Button (Top-Right) -->
+        <div class="absolute top-4 right-4 z-10">
+            <button type="button" onclick="toggleLoginTheme()" class="theme-toggle-btn">
+                <i class="fas fa-moon" id="loginThemeIcon"></i>
+                <span id="loginThemeLabel">Dark</span>
+            </button>
         </div>
 
-        <!-- Top-Right Floating Terracotta Prism -->
-        <div class="pebble-floating-top-right hidden md:block"></div>
+        <!-- Login Card -->
+        <div class="login-card" style="max-width:420px; width:100%;">
+            <div class="text-center mb-6">
+                <!-- 3D Heading – Effect Sirf Dark Mode Mein -->
+                <h1 class="login-heading text-3xl font-extrabold" id="loginHeading">Rankly.ai</h1>
+                <p class="text-sm text-gray-500 mt-1">AI-Powered Recruitment Platform</p>
+            </div>
 
-        <!-- Middle-Right Floating Sage Stone -->
-        <div class="pebble-floating-mid-right hidden md:block"></div>
+            <!-- Login Tabs -->
+            <div class="flex gap-2 mb-6 bg-gray-100 p-1 rounded-full dark:bg-gray-800">
+                <button type="button" class="login-tab active flex-1 text-center" data-tab="normal">Normal User</button>
+                <button type="button" class="login-tab flex-1 text-center" data-tab="company">Company / Employee</button>
+            </div>
 
-        <!-- Center Login Card -->
-        <div class="w-full flex justify-center items-center my-auto z-10">
-            <div class="login-card">
-                <div class="text-center mb-6">
-                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111]">Log in</h1>
-                </div>
-
-                <!-- Tabs: Normal User vs Company / Employee -->
-                <div class="login-tabs">
-                    <button class="login-tab active" data-tab="normal">Normal User</button>
-                    <button class="login-tab" data-tab="company">Company / Employee</button>
-                </div>
-
-                <!-- Normal User Login -->
-                <div class="tab-panel" id="normalLogin">
-                    <form id="normalLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>EMAIL</label>
-                                <input id="normalLoginIdentifier" placeholder="yourname@email.com" required type="text"/>
-                            </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="normalLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('normalLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+            <!-- Normal Login -->
+            <div id="normalLogin" class="tab-panel">
+                <form id="normalLoginForm">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Email</label>
+                            <input class="form-input" id="normalLoginIdentifier" type="text" placeholder="yourname@email.com" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Password</label>
+                            <div class="password-toggle">
+                                <input class="form-input" id="normalLoginPassword" type="password" placeholder="**********" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('normalLoginPassword', this)"><i class="fa-regular fa-eye"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
+                        <div class="text-right">
+                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-indigo-600 hover:underline">Forgot Password</button>
                         </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Log in</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Log In -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
-                            </button>
-                        </div>
-                    </form>
+                        <button type="submit" class="btn-primary w-full">Login</button>
+                    </div>
+                </form>
+                <div class="mt-4 flex gap-3">
+                    <button type="button" onclick="oauthLogin('Google')" class="oauth-btn"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
+                    <button type="button" onclick="oauthLogin('Github')" class="oauth-btn"><i class="fa-brands fa-github text-gray-700"></i> Continue with Github</button>
                 </div>
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    By signing up, you agree to the <a href="#" class="text-indigo-600">Terms of Use</a> and <a href="#" class="text-indigo-600">Privacy Policy</a>.
+                </p>
+                <p class="text-center text-sm text-gray-500 mt-2">
+                    New user? <button type="button" onclick="openModal('signupModal')" class="text-indigo-600 font-semibold hover:underline">Sign up</button>
+                </p>
+            </div>
 
-                <!-- Company / Employee Login -->
-                <div class="tab-panel" id="companyLogin" style="display:none;">
-                    <form id="companyLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>WORK EMAIL</label>
-                                <input id="companyLoginEmail" placeholder="name@company.com" required type="email"/>
-                            </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="companyLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('companyLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+            <!-- Company Login -->
+            <div id="companyLogin" class="tab-panel" style="display:none;">
+                <form id="companyLoginForm">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Work Email</label>
+                            <input class="form-input" id="companyLoginEmail" type="email" placeholder="name@company.com" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Password</label>
+                            <div class="password-toggle">
+                                <input class="form-input" id="companyLoginPassword" type="password" placeholder="**********" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('companyLoginPassword', this)"><i class="fa-regular fa-eye"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
+                        <div class="text-right">
+                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-indigo-600 hover:underline">Forgot Password</button>
                         </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Access Workspace</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Access Workspace -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
-                            </button>
-                        </div>
-                    </form>
+                        <button type="submit" class="btn-primary w-full">Access Workspace</button>
+                    </div>
+                </form>
+                <div class="mt-4 flex gap-3">
+                    <button type="button" onclick="oauthLogin('Google')" class="oauth-btn"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
+                    <button type="button" onclick="oauthLogin('Github')" class="oauth-btn"><i class="fa-brands fa-github text-gray-700"></i> Continue with Github</button>
                 </div>
-
-                <!-- Footer Terms & Links -->
-                <div class="text-center mt-6 pt-4 border-t border-[#EAEAE4]">
-                    <p class="text-xs text-[#777770] mb-2">
-                        By signing up, you agree to the <a href="#" class="underline hover:text-[#111111]">Terms of Use</a> and <a href="#" class="underline hover:text-[#111111]">Privacy Policy</a>.
-                    </p>
-                    <p class="text-sm text-[#444440]" id="loginFooterSignupContainer">
-                        New user? <button onclick="openModal('signupModal')" class="font-bold text-[#111111] hover:underline">Sign up</button>
-                    </p>
-                </div>
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    By signing up, you agree to the <a href="#" class="text-indigo-600">Terms of Use</a> and <a href="#" class="text-indigo-600">Privacy Policy</a>.
+                </p>
+                <p class="text-center text-sm text-gray-500 mt-2">
+                    New company? <button type="button" onclick="openModal('employeeSignupModal')" class="text-indigo-600 font-semibold hover:underline">Sign up</button>
+                </p>
             </div>
         </div>
-
-        <footer class="w-full text-center text-xs text-[#888880] z-10 py-2">
-            © 2026 Rankly.ai Inc. Enterprise Recruitment Intelligence Platform.
-        </footer>
     </div>
 
     <!-- ─── FORGOT PASSWORD MODAL ─── -->
@@ -4038,7 +4013,65 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 showToast('Copied Resume Blueprint to clipboard!', 'success');
             };
 
+            // ─── LOGIN PAGE THEME TOGGLE ───
+            window.toggleLoginTheme = function() {
+                const loginPage = document.getElementById('loginPage');
+                const icon = document.getElementById('loginThemeIcon');
+                const label = document.getElementById('loginThemeLabel');
+
+                if (!loginPage) return;
+
+                if (loginPage.classList.contains('dark-mode')) {
+                    loginPage.classList.remove('dark-mode');
+                    loginPage.classList.add('light-mode');
+                    if (icon) icon.className = 'fas fa-moon';
+                    if (label) label.textContent = 'Dark';
+                    localStorage.setItem('login_theme', 'light');
+                } else {
+                    loginPage.classList.remove('light-mode');
+                    loginPage.classList.add('dark-mode');
+                    if (icon) icon.className = 'fas fa-sun text-amber-400';
+                    if (label) label.textContent = 'Light';
+                    localStorage.setItem('login_theme', 'dark');
+                }
+            };
+
+            // ─── INIT LOGIN HEADING (Split Letters) ───
+            window.initLoginHeading = function() {
+                const heading = document.getElementById('loginHeading');
+                if (!heading) return;
+                const text = heading.textContent.trim();
+                heading.innerHTML = text.split('').map(char => 
+                    char === ' ' ? ' ' : `<span class="char">${char}</span>`
+                ).join('');
+            };
+
+            // ─── LOAD SAVED THEME ───
+            window.loadLoginTheme = function() {
+                const loginPage = document.getElementById('loginPage');
+                const icon = document.getElementById('loginThemeIcon');
+                const label = document.getElementById('loginThemeLabel');
+                const saved = localStorage.getItem('login_theme');
+
+                if (!loginPage) return;
+
+                if (saved === 'dark') {
+                    loginPage.classList.add('dark-mode');
+                    loginPage.classList.remove('light-mode');
+                    if (icon) icon.className = 'fas fa-sun text-amber-400';
+                    if (label) label.textContent = 'Light';
+                } else {
+                    loginPage.classList.add('light-mode');
+                    loginPage.classList.remove('dark-mode');
+                    if (icon) icon.className = 'fas fa-moon';
+                    if (label) label.textContent = 'Dark';
+                }
+            };
+
             document.addEventListener('DOMContentLoaded', function() {
+                initLoginHeading();
+                loadLoginTheme();
+
                 document.querySelectorAll('.login-tab').forEach(tab => {
                     tab.addEventListener('click', function() {
                         document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
