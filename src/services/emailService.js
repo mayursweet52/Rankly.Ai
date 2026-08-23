@@ -1,187 +1,154 @@
 const nodemailer = require('nodemailer');
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
+        pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+    },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 5000,
+    tls: { rejectUnauthorized: false }
+});
+
 /**
- * Send OTP Verification Email
+ * Send OTP Verification Email with Professional HTML Template
  */
-async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
-  if (!toEmail) {
-    throw new Error('Recipient email address (toEmail) is required.');
-  }
+async function sendOTPEmail(to, otp, type = 'email_verification') {
+    if (!to) return false;
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const isReset = type === 'password_reset';
+    const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+    const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
+    const subject = isReset ? '🔐 Your Rankly.ai Password Reset Code' : '🔐 Your Rankly.ai OTP Code';
 
-  const cleanRecipient = toEmail.toString().toLowerCase().trim();
-  const isReset = type === 'password_reset';
-  const subject = isReset 
-    ? `Rankly.ai Password Reset Code: ${otpCode}` 
-    : `Rankly.ai Verification Code: ${otpCode}`;
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OTP Verification</title>
+        <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; padding: 40px; margin: 0; }
+            .container { max-width: 520px; margin: auto; background: #ffffff; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-top: 6px solid #4f46e5; }
+            .logo { font-size: 28px; font-weight: 800; color: #4f46e5; text-align: center; }
+            .tagline { text-align: center; color: #6b7280; font-size: 14px; margin-top: 4px; }
+            .greeting { color: #1e293b; font-size: 16px; margin: 20px 0 10px; }
+            .otp-box { background: #f0f4ff; padding: 16px; text-align: center; font-size: 36px; font-weight: 700; letter-spacing: 8px; border-radius: 12px; margin: 20px 0; color: #1e293b; border: 1px dashed #c7d2fe; font-family: monospace; }
+            .validity { text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+            .footer { text-align: center; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 24px; }
+            .footer a { color: #4f46e5; text-decoration: none; }
+            .brand-box { background: #f8fafc; border-radius: 12px; padding: 16px; margin-top: 20px; border: 1px solid #e2e8f0; text-align: center; }
+            .brand-box h4 { margin: 0; color: #0f172a; font-size: 16px; }
+            .brand-box p { margin: 6px 0 0; color: #475569; font-size: 14px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">🚀 Rankly.ai</div>
+            <div class="tagline">AI-Powered Recruitment Platform</div>
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rankly.ai Verification Code</title>
-</head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 24px 10px; margin: 0;">
-  <div style="max-width: 460px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 4px solid #111111;">
-    
-    <!-- Brand Header -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <h2 style="color: #111111; margin: 0; font-size: 22px; font-weight: 800;">Rankly.ai</h2>
-      <p style="color: #64748b; font-size: 12px; margin: 4px 0 0 0;">AI-Powered Recruitment Intelligence</p>
-    </div>
+            <div class="greeting">Hi <strong style="color: #111111;">${cleanRecipient}</strong>,</div>
+            <p style="color: #1e293b; font-size: 16px;">${isReset ? 'Your password reset code is:' : 'Your one-time verification code is:'}</p>
 
-    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
+            <div class="otp-box">${otp}</div>
 
-    <!-- Greeting & Message -->
-    <p style="color: #1e293b; font-size: 14px; margin: 16px 0 8px 0;">Hi <strong style="color: #111111;">${cleanRecipient}</strong>,</p>
-    <p style="color: #1e293b; font-size: 14px; margin: 0 0 16px 0;">
-      ${isReset ? 'Your password reset code for Rankly.ai is:' : 'Your one-time email verification code (OTP) for Rankly.ai is:'}
-    </p>
+            <div class="validity">⏳ This OTP is valid for <strong>5 minutes</strong>. Do not share it with anyone.</div>
 
-    <!-- OTP Display Box -->
-    <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 16px; text-align: center; font-size: 32px; font-weight: 800; letter-spacing: 8px; border-radius: 8px; margin: 20px 0; color: #0f172a; font-family: monospace;">
-      ${otpCode}
-    </div>
+            <div class="brand-box">
+                <h4>💡 Hire Smarter, Faster & Fairer</h4>
+                <p>Rankly.ai helps you screen resumes, manage pipelines, and make data-driven hiring decisions.</p>
+            </div>
 
-    <p style="color: #64748b; font-size: 12px; text-align: center; margin: 0 0 20px 0;">
-      This code is valid for <strong>10 minutes</strong>. For security, please do not share it with anyone.
-    </p>
+            <div class="footer">
+                <p>© 2026 Rankly.ai — All rights reserved.</p>
+                <p><a href="https://rankly-ai-production.up.railway.app">rankly-ai-production.up.railway.app</a> &bull; <a href="#">Privacy Policy</a></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    `;
 
-    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0 16px 0;" />
-
-    <!-- Footer -->
-    <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.5;">
-      <p style="margin: 0 0 4px 0;">© ${new Date().getFullYear()} Rankly.ai Inc. All rights reserved.</p>
-      <p style="margin: 0;">Automated notification sent to ${cleanRecipient}</p>
-    </div>
-
-  </div>
-</body>
-</html>
-  `;
-
-  const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
-  const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
-  const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-  const senderPass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim();
-  const fromAddress = process.env.SMTP_FROM || `"Rankly.ai Security" <${senderUser}>`;
-
-  const mailOptions = {
-    from: fromAddress,
-    to: cleanRecipient,
-    subject,
-    text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otpCode}\n\nThis OTP is valid for 10 minutes.\n\nBest regards,\nRankly.ai Security`,
-    html
-  };
-
-  // 1. Try Brevo HTTPS REST API (Free 300 emails/day to ANY recipient, Port 443)
-  if (process.env.BREVO_API_KEY) {
-    try {
-      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
+    const mailOptions = {
+        from: fromAddress,
+        to: cleanRecipient,
+        subject: subject,
+        text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otp}\n\nThis OTP is valid for 5 minutes.\n\nBest regards,\nRankly.ai Security`,
+        html: html,
         headers: {
-          'api-key': process.env.BREVO_API_KEY.trim(),
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          sender: { name: 'Rankly.ai Security', email: 'rankly.ai.com@gmail.com' },
-          to: [{ email: cleanRecipient }],
-          subject: subject,
-          htmlContent: html
-        })
-      });
-      const resData = await res.json();
-      if (res.ok && (resData.messageId || resData.id)) {
-        console.log('✅ Real OTP email delivered via Brevo HTTPS API to:', cleanRecipient, 'ID:', resData.messageId || resData.id);
-        return true;
-      } else {
-        console.warn('[Brevo API Response]:', resData);
-      }
-    } catch (brevoErr) {
-      console.warn('[Brevo API Error]:', brevoErr.message);
-    }
-  }
+            'X-Priority': '1',
+            'X-MSMail-Priority': 'High',
+            'Importance': 'high'
+        }
+    };
 
-  // 2. Try Google Mail Apps Script Webhook (Port 443 - 100% Free, sends from rankly.ai.com@gmail.com to ANY email)
-  if (process.env.GOOGLE_MAIL_WEBHOOK_URL) {
+    // 1. Try Resend HTTPS REST API (Port 443)
+    const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
+    if (resendApiKey) {
+        try {
+            const res = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${resendApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
+                    to: [cleanRecipient],
+                    subject: subject,
+                    html: html
+                })
+            });
+            const resData = await res.json();
+            if (res.ok && resData.id) {
+                console.log('✅ Real OTP email delivered via Resend API to:', cleanRecipient, 'ID:', resData.id);
+                return true;
+            }
+        } catch (apiErr) {
+            console.warn('[Resend API Error]:', apiErr.message);
+        }
+    }
+
+    // 2. Try Brevo HTTPS REST API (Port 443)
+    if (process.env.BREVO_API_KEY) {
+        try {
+            const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+                method: 'POST',
+                headers: {
+                    'api-key': process.env.BREVO_API_KEY.trim(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sender: { name: 'Rankly.ai', email: senderUser },
+                    to: [{ email: cleanRecipient }],
+                    subject: subject,
+                    htmlContent: html
+                })
+            });
+            const resData = await res.json();
+            if (res.ok && (resData.messageId || resData.id)) {
+                console.log('✅ Real OTP email delivered via Brevo API to:', cleanRecipient, 'ID:', resData.messageId || resData.id);
+                return true;
+            }
+        } catch (brevoErr) {
+            console.warn('[Brevo API Error]:', brevoErr.message);
+        }
+    }
+
+    // 3. Try Gmail Transporter
     try {
-      const res = await fetch(process.env.GOOGLE_MAIL_WEBHOOK_URL.trim(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: cleanRecipient,
-          subject: subject,
-          html: html,
-          otp: otpCode
-        })
-      });
-      const resData = await res.json();
-      if (resData.success) {
-        console.log('✅ Real OTP email delivered via Google Webhook to:', cleanRecipient);
+        const info = await Promise.race([
+            transporter.sendMail(mailOptions),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Gmail SMTP timeout')), 4000))
+        ]);
+        console.log('✅ OTP sent to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
         return true;
-      }
-    } catch (gErr) {
-      console.warn('[Google Webhook Error]:', gErr.message);
+    } catch (error) {
+        console.error('❌ Email send failed:', error.message);
+        return false;
     }
-  }
-
-  // 3. Try Resend HTTPS REST API (Port 443 - Never blocked by Railway/Cloud firewalls)
-  const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
-  if (resendApiKey) {
-    try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
-          to: [cleanRecipient],
-          subject: subject,
-          html: html
-        })
-      });
-      const resData = await res.json();
-      if (res.ok && resData.id) {
-        console.log('✅ Real OTP email delivered via Resend HTTPS API to:', cleanRecipient, 'ID:', resData.id);
-        return true;
-      } else {
-        console.warn('[Resend API Response]:', resData);
-      }
-    } catch (apiErr) {
-      console.warn('[Resend API Error]:', apiErr.message);
-    }
-  }
-
-  // 2. Real SMTP Transporter (Port 587 STARTTLS / Port 465 SSL) with fast 3s timeout
-  try {
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465,
-      auth: {
-        user: senderUser,
-        pass: senderPass
-      },
-      connectionTimeout: 3000,
-      greetingTimeout: 3000,
-      socketTimeout: 3000,
-      tls: { rejectUnauthorized: false }
-    });
-
-    const info = await Promise.race([
-      transporter.sendMail(mailOptions),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP connection timed out')), 3500))
-    ]);
-
-    console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-    return true;
-  } catch (smtpErr) {
-    console.warn(`[SMTP Delivery Notice] (${smtpErr.message}) - Request processed successfully.`);
-    return false;
-  }
 }
 
 /**

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const prisma = require('../config/database');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
-const { sendOtpEmail } = require('../services/emailService');
+const { sendOTPEmail, sendOtpEmail } = require('../services/emailService');
 
 /**
  * Validate Email Format, Domain Structure, and Gmail Requirement
@@ -487,11 +487,14 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Send real verification email directly to user's entered email address
-    try {
-      await sendOtpEmail(recipientEmail, otpCode, type);
-    } catch (mailErr) {
-      console.warn('Email delivery notice:', mailErr.message);
+    // Send real verification email directly to user's entered email address (No dummy fallback, no console.log)
+    const emailSent = await sendOTPEmail(recipientEmail, otpCode, type);
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to send OTP email. Please try again later.',
+        message: 'Failed to send OTP email. Please try again later.'
+      });
     }
 
     return res.json({
