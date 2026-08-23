@@ -19,12 +19,11 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // -----------------------------------------------------------------------------
-// Google OAuth Strategy
-// -----------------------------------------------------------------------------
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '297396891792-ntk15lp8ibflkun8emhkh8tc2s85h1cr.apps.googleusercontent.com';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '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';
-const baseUrl = process.env.BASE_URL || process.env.APP_URL || '';
-const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || (baseUrl ? `${baseUrl}/auth/google/callback` : '/auth/google/callback');
+const isProduction = process.env.NODE_ENV === 'production';
+const baseUrl = process.env.BASE_URL || process.env.APP_URL || (isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000');
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || `${baseUrl}/auth/google/callback`;
 
 if (googleClientId && googleClientSecret) {
   passport.use(
