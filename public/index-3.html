@@ -2173,6 +2173,81 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ─── TAB 7: FEEDBACK (In-App Tab View) ─── -->
+                    <div class="tab-content" id="tab-feedback" style="display:none;">
+                        <div class="max-w-2xl space-y-6">
+                            <!-- Feedback Form Card -->
+                            <div class="card border border-[#E5E5DF] shadow-sm">
+                                <div class="flex justify-between items-center mb-5 pb-4 border-b border-[#E5E5DF]">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-[#F4F4F0] text-[#D95D39] flex items-center justify-center border border-[#E5E5DF] shadow-sm">
+                                            <i class="fas fa-comment-dots text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="card-title text-[#111111] mb-0">Share Your Feedback</h3>
+                                            <p class="text-xs text-[#666660] font-mono mt-0.5">Help us build the next generation of Rankly.ai</p>
+                                        </div>
+                                    </div>
+                                    <span class="tag-pill tag-pill-coral font-mono text-[10px]">Community Feedback</span>
+                                </div>
+
+                                <form id="inPageFeedbackForm" onsubmit="submitInPageFeedback(event)" class="space-y-4">
+                                    <!-- Category -->
+                                    <div>
+                                        <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Feedback Category</label>
+                                        <select id="inPageFeedbackCategory" class="form-input" style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 14px; color: #111111; padding: 10px 14px;">
+                                            <option value="general">✨ General Experience</option>
+                                            <option value="feature">💡 Feature Suggestion</option>
+                                            <option value="bug">🐛 Bug / Issue Report</option>
+                                            <option value="ui_ux">🎨 UI / UX Experience</option>
+                                            <option value="performance">⚡ Speed & Performance</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Rating -->
+                                    <div>
+                                        <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Rate Your Experience</label>
+                                        <div class="flex items-center gap-2 mt-1.5 p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl" id="inPageStarRatingContainer">
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(1)"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(2)"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(3)"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(4)"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(5)"><i class="fas fa-star"></i></button>
+                                            <span style="font-size: 13px; font-weight: 600; color: #111111; margin-left: 10px;" id="inPageFeedbackRatingLabel">5 / 5 - Excellent</span>
+                                        </div>
+                                        <input type="hidden" id="inPageFeedbackRating" value="5" />
+                                    </div>
+
+                                    <!-- Name & Email (2-column) -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Your Name</label>
+                                            <input type="text" id="inPageFeedbackName" class="form-input" style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 14px; color: #111111; padding: 10px 14px;" placeholder="Optional" />
+                                        </div>
+                                        <div>
+                                            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Your Email</label>
+                                            <input type="email" id="inPageFeedbackEmail" class="form-input" style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 14px; color: #111111; padding: 10px 14px;" placeholder="Optional" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Detailed Message -->
+                                    <div>
+                                        <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Your Feedback & Suggestions *</label>
+                                        <textarea id="inPageFeedbackMessage" class="form-input" rows="4" required style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 14px; color: #111111; padding: 12px 14px; resize: vertical;" placeholder="Tell us what you like, what is missing, or how we can improve your recruitment & ATS screening experience..."></textarea>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="pt-2 flex justify-end">
+                                        <button type="submit" class="btn-primary flex items-center justify-center gap-2" id="inPageSubmitFeedbackBtn" style="background: #111111; color: #FFFFFF; padding: 12px 28px; font-size: 14px; border-radius: 10px; font-weight: 600;">
+                                            <i class="fas fa-paper-plane text-xs"></i>
+                                            <span>Submit Feedback</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
@@ -2908,7 +2983,8 @@
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
-                        { id: 'settings', label: 'Settings', target: 'settings' }
+                        { id: 'settings', label: 'Settings', target: 'settings' },
+                        { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
                 } else {
                     currentTabsList = [
@@ -2916,7 +2992,8 @@
                         { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
                         { id: 'resume', label: 'Resume Builder', target: 'resume' },
-                        { id: 'settings', label: 'Settings', target: 'settings' }
+                        { id: 'settings', label: 'Settings', target: 'settings' },
+                        { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
                 }
 
@@ -2928,12 +3005,7 @@
                             <span class="nav-dot" style="display: ${index === 0 ? 'inline-block' : 'none'};"></span>
                             <span>${tab.label}</span>
                         </div>
-                    `).join('') + `
-                        <div class="nav-item nav-feedback-link" onclick="openFeedbackModal()" style="cursor: pointer; gap: 8px; color: #555550; margin-top: 4px;">
-                            <i class="fas fa-comment-alt" style="font-size: 13px; color: #D95D39; width: 14px; text-align: center;"></i>
-                            <span>Feedback</span>
-                        </div>
-                    `;
+                    `).join('');
                 }
 
                 // Render Topbar Links
@@ -3122,6 +3194,83 @@
                         if (emailInput && !emailInput.value) {
                             emailInput.value = window.currentUser.email || '';
                         }
+                    }
+                }
+            };
+
+            window.setInPageFeedbackRating = function(rating) {
+                const ratingInput = document.getElementById('inPageFeedbackRating');
+                const label = document.getElementById('inPageFeedbackRatingLabel');
+                const stars = document.querySelectorAll('#inPageStarRatingContainer .star-btn i');
+                if (ratingInput) ratingInput.value = rating;
+
+                const ratingTexts = {
+                    1: '1 / 5 - Needs Improvement',
+                    2: '2 / 5 - Fair',
+                    3: '3 / 5 - Good',
+                    4: '4 / 5 - Very Good',
+                    5: '5 / 5 - Excellent'
+                };
+                if (label) label.textContent = ratingTexts[rating] || `${rating} / 5`;
+
+                stars.forEach((star, idx) => {
+                    if (idx < rating) {
+                        star.className = 'fas fa-star';
+                        star.style.color = '#D95D39';
+                    } else {
+                        star.className = 'far fa-star';
+                        star.style.color = '#D1D5DB';
+                    }
+                });
+            };
+
+            window.submitInPageFeedback = async function(e) {
+                if (e) e.preventDefault();
+                const btn = document.getElementById('inPageSubmitFeedbackBtn');
+                const messageInput = document.getElementById('inPageFeedbackMessage');
+                const categoryInput = document.getElementById('inPageFeedbackCategory');
+                const ratingInput = document.getElementById('inPageFeedbackRating');
+                const nameInput = document.getElementById('inPageFeedbackName');
+                const emailInput = document.getElementById('inPageFeedbackEmail');
+
+                if (!messageInput || !messageInput.value.trim()) {
+                    showToast('Please enter your feedback message.', 'error');
+                    return;
+                }
+
+                const payload = {
+                    message: messageInput.value.trim(),
+                    category: categoryInput ? categoryInput.value : 'general',
+                    rating: ratingInput ? parseInt(ratingInput.value, 10) : 5,
+                    name: nameInput ? nameInput.value.trim() : (window.currentUser ? `${window.currentUser.fname || ''} ${window.currentUser.lname || ''}`.trim() : ''),
+                    email: emailInput ? emailInput.value.trim() : (window.currentUser ? window.currentUser.email || '' : '')
+                };
+
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Submitting...';
+                }
+
+                try {
+                    const res = await fetch('/api/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        showToast('Thank you! Your feedback has been received. 🚀', 'success');
+                        messageInput.value = '';
+                    } else {
+                        showToast(data.message || 'Failed to submit feedback', 'error');
+                    }
+                } catch (err) {
+                    showToast('Error submitting feedback: ' + err.message, 'error');
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> <span>Submit Feedback</span>';
                     }
                 }
             };
