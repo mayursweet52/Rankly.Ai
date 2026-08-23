@@ -20,7 +20,7 @@ passport.deserializeUser(async (id, done) => {
 
 // -----------------------------------------------------------------------------
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '297396891792-cia4kjguid6dpbe4vmmpmt16nomh50uh.apps.googleusercontent.com';
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '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';
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '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';
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = process.env.BASE_URL || process.env.APP_URL || (isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000');
 
