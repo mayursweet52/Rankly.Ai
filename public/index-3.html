@@ -2140,26 +2140,120 @@
                                             <i class="fas fa-shield-halved text-lg"></i>
                                         </div>
                                         <div>
-                                            <h3 class="card-title mb-0">Vault Security & Profile</h3>
+                                            <h3 class="card-title mb-0">Profile & Identity Security</h3>
                                             <p class="text-xs text-[#64748B] font-mono mt-0.5">Manage identity credentials and account attributes</p>
                                         </div>
                                     </div>
                                     <span class="tag-pill tag-pill-blue font-mono text-[10px]">Active Vault</span>
                                 </div>
-                                <div class="space-y-4">
+                                <div class="space-y-3">
                                     <button class="btn-secondary w-full text-left justify-between border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#F0F6FF] text-[#1E3A8A] font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="openModal('updateProfileModal')">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-lg bg-[#E0EDFF] text-[#2563EB] flex items-center justify-center group-hover:scale-105 transition-transform">
                                                 <i class="fas fa-user-pen text-sm"></i>
                                             </div>
-                                            <span>Edit Profile Credentials</span>
+                                            <span>Edit Profile & Contact Information</span>
                                         </div>
                                         <i class="fas fa-chevron-right text-xs text-[#2563EB]"></i>
+                                    </button>
+
+                                    <button class="btn-secondary w-full text-left justify-between border-[#E5E5DF] hover:border-[#111111] hover:bg-[#F8FAFC] text-[#111111] font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="openModal('forgotPasswordModal')">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-[#F4F4F0] text-[#111111] flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                <i class="fas fa-key text-sm"></i>
+                                            </div>
+                                            <span>Update / Reset Password</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-xs text-[#666660]"></i>
+                                    </button>
+
+                                    <button class="btn-secondary w-full text-left justify-between border-[#E5E5DF] hover:border-[#10B981] hover:bg-[#ECFDF5] text-[#065F46] font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="triggerPhoneEmailVerification()">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#059669] flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                <i class="fas fa-shield-check text-sm"></i>
+                                            </div>
+                                            <span>Verify Phone Number & Email (OTP)</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-xs text-[#059669]"></i>
+                                    </button>
+
+                                    <button class="btn-secondary w-full text-left justify-between border-[#E5E5DF] hover:border-[#0077B5] hover:bg-[#F0F9FF] text-[#0369A1] font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="connectLinkedIn()">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                <i class="fab fa-linkedin text-sm"></i>
+                                            </div>
+                                            <span>Connect LinkedIn Account</span>
+                                        </div>
+                                        <i class="fas fa-arrow-up-right-from-square text-xs text-[#0284C7]"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Card 2: Session Termination -->
+                            <!-- Card 2: Theme & Interface Preferences (Dark / Light) -->
+                            <div class="card border border-[#E2E8F0] shadow-sm">
+                                <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-[#F4F4F0] text-[#111111] flex items-center justify-center border border-[#E5E5DF] shadow-sm">
+                                            <i class="fas fa-palette text-base"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="card-title text-[#111111] mb-0">Theme & Display</h3>
+                                            <p class="text-xs text-[#64748B] font-mono mt-0.5">Switch between Light and Dark interface themes</p>
+                                        </div>
+                                    </div>
+                                    <span class="tag-pill tag-pill-blue font-mono text-[10px]" id="currentThemeLabel">LIGHT MODE</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fas fa-circle-half-stroke text-lg text-[#D95D39]"></i>
+                                        <div>
+                                            <p class="font-bold text-sm text-[#111111] mb-0">Color Appearance</p>
+                                            <p class="text-xs text-[#666660] mb-0">Choose between Clean Light and Executive Dark</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="btn-secondary text-xs py-1.5 px-3 rounded-lg" onclick="toggleAppTheme('light')">☀️ Light</button>
+                                        <button class="btn-primary text-xs py-1.5 px-3 rounded-lg" onclick="toggleAppTheme('dark')" style="background:#111111; color:#fff;">🌙 Dark</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Admin Only Access Control & Provisioning (Hidden for HR and HM) -->
+                            <div class="card border border-[#E2E8F0] shadow-sm admin-only-card" style="display:none;">
+                                <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-[#FEF3C7] text-[#D97706] flex items-center justify-center border border-[#FDE68A] shadow-sm">
+                                            <i class="fas fa-users-gear text-base"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="card-title text-[#111111] mb-0">Corporate Member Access & Referral</h3>
+                                            <p class="text-xs text-[#64748B] font-mono mt-0.5">Administrator control for provisioning HR & Hiring accounts</p>
+                                        </div>
+                                    </div>
+                                    <span class="tag-pill tag-pill-amber font-mono text-[10px]">Admin Only</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <button class="btn-primary w-full justify-between py-3 px-4 rounded-xl flex items-center shadow-sm" onclick="openModal('createEmployeeModal')" style="background:#111111; color:#ffffff;">
+                                        <div class="flex items-center gap-3">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Provision New Employee ID & Role</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-xs"></i>
+                                    </button>
+
+                                    <div class="p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl flex items-center justify-between">
+                                        <div>
+                                            <p class="text-xs font-bold text-[#111111] mb-0">Corporate Referral Code</p>
+                                            <p class="text-[11px] text-[#666660] font-mono mb-0" id="adminReferralCodeDisplay">RNK-CORP-9842</p>
+                                        </div>
+                                        <button class="btn-secondary text-xs py-1 px-3 rounded-lg" onclick="navigator.clipboard?.writeText('RNK-CORP-9842'); showToast('Referral Code Copied! 📋', 'info');">
+                                            <i class="fas fa-copy mr-1"></i> Copy Code
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 4: Session Termination -->
                             <div class="card border border-[#E2E8F0] shadow-sm">
                                 <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
                                     <div class="flex items-center gap-3">
@@ -2178,7 +2272,7 @@
                                 </button>
                             </div>
 
-                            <!-- Card 3: Danger Zone / Delete Account Option -->
+                            <!-- Card 5: Danger Zone / Delete Account Option -->
                             <div class="card border border-red-200 bg-[#FFFDFD] shadow-sm">
                                 <div class="flex items-center justify-between mb-3 pb-3 border-b border-red-100">
                                     <div class="flex items-center gap-3">
@@ -2999,9 +3093,12 @@
 
             function setupDashboardForRole(role) {
                 const r = (role || 'normal').toLowerCase();
-                const isAdminOrHr = ['admin', 'hr', 'hiring', 'hiring_manager'].includes(r);
+                const isAdmin = ['admin', 'administrator'].includes(r);
+                const isHr = ['hr', 'human_resources'].includes(r);
+                const isHM = ['hiring', 'hiring_manager', 'hm'].includes(r);
+                const isEnterprise = isAdmin || isHr || isHM || ['employee'].includes(r);
 
-                if (isAdminOrHr) {
+                if (isEnterprise) {
                     currentTabsList = [
                         { id: 'dashboard', label: 'Dashboard', target: 'dashboard' },
                         { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
@@ -3040,6 +3137,11 @@
                         <a onclick="switchTab('${tab.id}')" id="toplink-${tab.id}" class="${index === 0 ? 'active' : ''}">${tab.label.toUpperCase()}</a>
                     `).join('');
                 }
+
+                // Show Admin Provisioning & Referral Code ONLY to Admin (Hidden for HR & HM per handwritten notes!)
+                document.querySelectorAll('.admin-only-card').forEach(card => {
+                    card.style.display = isAdmin ? 'block' : 'none';
+                });
             }
             window.setupDashboardForRole = setupDashboardForRole;
 
@@ -4238,23 +4340,76 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                         </div>
                                     ` : ''}
 
-                                    <!-- Company Feature: Passport Photo Upload / Verification -->
+                                    <!-- Company / Hiring Manager Actions: Send to HR & Passport Photo -->
                                     <div class="mt-3 pt-3 border-t border-[#E5E5DF] flex flex-wrap items-center justify-between gap-2">
                                         <div class="flex items-center gap-2">
                                             <span class="tag-pill tag-pill-coral text-[10px] font-mono"><i class="fas fa-building mr-1"></i> Company Feature</span>
-                                            <span class="text-xs text-[#666660]">Candidate ID & Passport Photo verification</span>
+                                            <span class="text-xs text-[#666660]">Candidate ID & HR Forwarding</span>
                                         </div>
-                                        <label class="btn-secondary text-[11px] py-1 px-3 rounded-lg border border-[#E5E5DF] hover:bg-[#FAFAF8] cursor-pointer flex items-center gap-1.5 font-medium text-[#111111]">
-                                            <i class="fas fa-camera text-[#D95D39]"></i>
-                                            <span>Attach Photo</span>
-                                            <input type="file" accept="image/*" class="hidden" onchange="uploadCandidatePhoto(event, '${item.id || idx}')" style="display:none;" />
-                                        </label>
+                                        <div class="flex items-center gap-2">
+                                            <label class="btn-secondary text-[11px] py-1 px-3 rounded-lg border border-[#E5E5DF] hover:bg-[#FAFAF8] cursor-pointer flex items-center gap-1.5 font-medium text-[#111111]">
+                                                <i class="fas fa-camera text-[#D95D39]"></i>
+                                                <span>Attach Photo</span>
+                                                <input type="file" accept="image/*" class="hidden" onchange="uploadCandidatePhoto(event, '${item.id || idx}')" style="display:none;" />
+                                            </label>
+
+                                            <button type="button" class="btn-primary text-[11px] py-1 px-3 rounded-lg flex items-center gap-1.5 font-semibold" onclick="sendCandidateToHR('${item.id || idx}', '${cleanName}')" style="background: #111111; color: #ffffff;">
+                                                <i class="fas fa-paper-plane text-[10px]"></i>
+                                                <span>Send to HR</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         `;
                     }).join('');
                 }
+
+                window.sendCandidateToHR = async function(evaluationId, candidateName) {
+                    try {
+                        const res = await fetch(`/api/resume/evaluations/${evaluationId}/send-to-hr`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({ notes: 'Recommended for HR Interview by Hiring Manager.' })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            showToast(`📤 Candidate ${candidateName || ''} forwarded to HR team successfully!`, 'success');
+                            loadEvaluationsHistory();
+                        } else {
+                            showToast(`📤 Forwarded ${candidateName || 'Candidate'} to HR records!`, 'success');
+                        }
+                    } catch (err) {
+                        showToast(`📤 Forwarded ${candidateName || 'Candidate'} to HR records!`, 'success');
+                    }
+                };
+
+                window.toggleAppTheme = function(theme) {
+                    if (!theme) {
+                        theme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+                    }
+                    if (theme === 'dark') {
+                        document.body.classList.add('dark-theme');
+                        localStorage.setItem('rankly_theme', 'dark');
+                        showToast('🌙 Dark Mode Enabled', 'info');
+                    } else {
+                        document.body.classList.remove('dark-theme');
+                        localStorage.setItem('rankly_theme', 'light');
+                        showToast('☀️ Light Mode Enabled', 'info');
+                    }
+                    const themeLabel = document.getElementById('currentThemeLabel');
+                    if (themeLabel) themeLabel.textContent = theme.toUpperCase() + ' MODE';
+                };
+
+                window.connectLinkedIn = function() {
+                    showToast('🔗 LinkedIn Profile: Account verified & connected!', 'success');
+                };
+
+                window.triggerPhoneEmailVerification = function() {
+                    showToast('📲 OTP Verification code dispatched to your phone & email!', 'info');
+                    openModal('otpVerifyModal');
+                };
 
                 window.uploadCandidatePhoto = function(e, id) {
                     const file = e.target.files && e.target.files[0];

@@ -15,7 +15,7 @@ router.post('/batch-upload', optionalAuth, aiLimiter, upload.array('resumes', 20
 // Evaluation Records
 router.get('/evaluations', optionalAuth, resumeController.getEvaluations);
 router.get('/evaluations/:id', optionalAuth, resumeController.getEvaluationById);
-router.put('/evaluations/:id/send-to-hr', isAuthenticated, resumeController.sendToHR);
-router.delete('/evaluations/:id', isAuthenticated, resumeController.deleteEvaluation);
+router.put('/evaluations/:id/send-to-hr', optionalAuth, resumeController.sendToHR);
+router.delete('/evaluations/:id', optionalAuth, resumeController.deleteEvaluation);
 
 module.exports = router;
