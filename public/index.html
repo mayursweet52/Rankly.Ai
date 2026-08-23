@@ -1809,21 +1809,13 @@
 
             <!-- Main Content Area -->
             <div class="dash-content-wrapper">
-                <!-- Topbar with Header Links & Active Page Title -->
+                <!-- Topbar with Active Page Title & Profile -->
                 <header class="dash-topbar">
                     <div class="flex items-center gap-4">
                         <button class="md:hidden text-[#666660] hover:text-[#111111]" id="sidebarToggle"><i class="fas fa-bars"></i></button>
                         <h1 class="text-base font-bold text-[#111111]" id="dashPageTitle">Dashboard</h1>
                     </div>
-                    <div class="flex items-center gap-8">
-                        <div class="dash-topbar-links hidden sm:flex">
-                            <a onclick="switchTab('dashboard')" id="toplink-dashboard" class="active">DASHBOARD</a>
-                            <a onclick="switchTab('chatbot')" id="toplink-chatbot">PLAYGROUND</a>
-                            <a onclick="switchTab('screening')" id="toplink-screening">DATASETS</a>
-                            <a onclick="switchTab('pipeline')" id="toplink-pipeline">PIPELINE</a>
-                            <a onclick="switchTab('analytics')" id="toplink-analytics">API KEYS</a>
-                            <a onclick="switchTab('settings')" id="toplink-settings">VAULTS</a>
-                        </div>
+                    <div class="flex items-center gap-4">
                         <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] p-1" title="User Profile">
                             <i class="fas fa-user-circle text-xl text-[#444440]"></i>
                         </button>
@@ -3184,14 +3176,6 @@
                     `).join('');
                 }
 
-                // Render Topbar Links
-                const topbar = document.querySelector('.dash-topbar-links');
-                if (topbar) {
-                    topbar.innerHTML = currentTabsList.map((tab, index) => `
-                        <a onclick="switchTab('${tab.id}')" id="toplink-${tab.id}" class="${index === 0 ? 'active' : ''}">${tab.label.toUpperCase()}</a>
-                    `).join('');
-                }
-
                 // Show Admin Provisioning & Referral Code ONLY to Admin (Hidden for HR & HM per handwritten notes!)
                 document.querySelectorAll('.admin-only-card').forEach(card => {
                     card.style.display = isAdmin ? 'block' : 'none';
@@ -3209,12 +3193,6 @@
                     const dot = item.querySelector('.nav-dot');
                     if (dot) dot.style.display = isMatch ? 'inline-block' : 'none';
                 });
-
-                document.querySelectorAll('.dash-topbar-links a').forEach(link => {
-                    link.classList.remove('active');
-                });
-                const activeToplink = document.getElementById(`toplink-${matched.id}`);
-                if (activeToplink) activeToplink.classList.add('active');
 
                 document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
                 const targetEl = document.getElementById(`tab-${actualTarget}`);
