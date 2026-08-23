@@ -485,14 +485,20 @@ async function sendOtp(req, res) {
     });
 
     // Send real verification email directly to user's entered email address
-    sendOtpEmail(recipientEmail, otpCode, type).catch(err => {
-      console.warn('Background OTP email dispatch:', err.message);
-    });
+    try {
+      await sendOtpEmail(recipientEmail, otpCode, type);
+    } catch (mailErr) {
+      console.error('OTP email delivery error:', mailErr.message);
+      return res.status(500).json({
+        success: false,
+        error: `Could not deliver verification email to ${recipientEmail}. Please verify your email address.`,
+        message: `Could not deliver verification email to ${recipientEmail}. Please verify your email address.`
+      });
+    }
 
     return res.json({
       success: true,
-      message: `Verification code dispatched to ${recipientEmail}.`,
-      previewOtp: otpCode
+      message: `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
     });
   } catch (error) {
     console.error('Send OTP Error:', error);

@@ -11,8 +11,8 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   const cleanRecipient = toEmail.toString().toLowerCase().trim();
   const isReset = type === 'password_reset';
   const subject = isReset 
-    ? '🔐 Your Rankly.ai Password Reset Code' 
-    : '🔐 Your Rankly.ai OTP Code';
+    ? `Rankly.ai Password Reset Code: ${otpCode}` 
+    : `Rankly.ai Verification Code: ${otpCode}`;
 
   const html = `
 <!DOCTYPE html>
@@ -20,38 +20,38 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rankly.ai OTP</title>
+  <title>Rankly.ai Verification Code</title>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f9; padding: 30px 10px; margin: 0;">
-  <div style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-top: 5px solid #4f46e5;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 24px 10px; margin: 0;">
+  <div style="max-width: 460px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 4px solid #111111;">
     
     <!-- Brand Header -->
     <div style="text-align: center; margin-bottom: 20px;">
-      <h2 style="color: #4f46e5; margin: 0; font-size: 24px; font-weight: 800;">🚀 Rankly.ai</h2>
-      <p style="color: #6b7280; font-size: 13px; margin: 4px 0 0 0;">AI-Powered Recruitment Intelligence</p>
+      <h2 style="color: #111111; margin: 0; font-size: 22px; font-weight: 800;">Rankly.ai</h2>
+      <p style="color: #64748b; font-size: 12px; margin: 4px 0 0 0;">AI-Powered Recruitment Intelligence</p>
     </div>
 
-    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;" />
+    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
 
     <!-- Greeting & Message -->
-    <p style="color: #1e293b; font-size: 15px; margin: 16px 0 8px 0;">Hi <strong style="color: #4f46e5;">${cleanRecipient}</strong>,</p>
-    <p style="color: #1e293b; font-size: 15px; margin: 0 0 16px 0;">
-      ${isReset ? 'Your password reset OTP code for Rankly.ai is:' : 'Your one-time password (OTP) for Rankly.ai is:'}
+    <p style="color: #1e293b; font-size: 14px; margin: 16px 0 8px 0;">Hi <strong style="color: #111111;">${cleanRecipient}</strong>,</p>
+    <p style="color: #1e293b; font-size: 14px; margin: 0 0 16px 0;">
+      ${isReset ? 'Your password reset code for Rankly.ai is:' : 'Your one-time email verification code (OTP) for Rankly.ai is:'}
     </p>
 
     <!-- OTP Display Box -->
-    <div style="background-color: #f0f4ff; border: 1px dashed #c7d2fe; padding: 16px; text-align: center; font-size: 32px; font-weight: 800; letter-spacing: 8px; border-radius: 8px; margin: 20px 0; color: #1e293b;">
+    <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 16px; text-align: center; font-size: 32px; font-weight: 800; letter-spacing: 8px; border-radius: 8px; margin: 20px 0; color: #0f172a; font-family: monospace;">
       ${otpCode}
     </div>
 
-    <p style="color: #6b7280; font-size: 13px; text-align: center; margin: 0 0 20px 0;">
-      This code is valid for <strong>5 minutes</strong>. For security, please do not share it with anyone.
+    <p style="color: #64748b; font-size: 12px; text-align: center; margin: 0 0 20px 0;">
+      This code is valid for <strong>10 minutes</strong>. For security, please do not share it with anyone.
     </p>
 
-    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0 16px 0;" />
+    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0 16px 0;" />
 
     <!-- Footer -->
-    <div style="text-align: center; color: #94a3b8; font-size: 12px; line-height: 1.5;">
+    <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.5;">
       <p style="margin: 0 0 4px 0;">© ${new Date().getFullYear()} Rankly.ai Inc. All rights reserved.</p>
       <p style="margin: 0;">Automated notification sent to ${cleanRecipient}</p>
     </div>
@@ -62,33 +62,20 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   `;
 
   const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-  const fromAddress = `"Rankly.ai" <${senderUser}>`;
+  const fromAddress = `"Rankly.ai Security" <${senderUser}>`;
 
   const mailOptions = {
     from: fromAddress,
     to: cleanRecipient,
     subject,
-    text: `Hi ${cleanRecipient},\n\nYour Rankly.ai OTP is: ${otpCode}\n\nThis OTP is valid for 5 minutes. Do not share it with anyone.\n\nBest regards,\nRankly.ai Team`,
-    html,
-    headers: {
-      'X-Priority': '1',
-      'X-MSMail-Priority': 'High',
-      'Importance': 'high'
-    }
+    text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otpCode}\n\nThis OTP is valid for 10 minutes.\n\nBest regards,\nRankly.ai Security`,
+    html
   };
 
   const transporter = getTransporter();
-  try {
-    const info = await Promise.race([
-      transporter.sendMail(mailOptions),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP connection timed out')), 6000))
-    ]);
-    console.log('✅ Real OTP sent to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-    return true;
-  } catch (err) {
-    console.warn(`[SMTP Warning] Could not deliver email to ${cleanRecipient} (${err.message}). OTP for verification: ${otpCode}`);
-    return false;
-  }
+  const info = await transporter.sendMail(mailOptions);
+  console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+  return true;
 }
 
 let cachedTransporter = null;
@@ -96,8 +83,6 @@ let cachedTransporter = null;
 function getTransporter() {
   if (cachedTransporter) return cachedTransporter;
 
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
   const pass = (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim();
 
@@ -106,12 +91,6 @@ function getTransporter() {
     auth: {
       user,
       pass
-    },
-    connectionTimeout: 5000,
-    greetingTimeout: 5000,
-    socketTimeout: 5000,
-    tls: {
-      rejectUnauthorized: false
     }
   });
 
