@@ -4252,25 +4252,30 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const recommendations = Array.isArray(item.recommendations) ? item.recommendations : (typeof item.recommendations === 'string' ? JSON.parse(item.recommendations || '[]') : []);
 
                         // Thorough Candidate Name Normalization
-                        let rawName = item.candidateName || item.resumeFileName || `Candidate #${idx + 1}`;
-                        let cleanName = rawName
+                        let rawName = item.candidateName || '';
+                        const invalidNameTerms = ['availability', 'open source', 'contributions', 'remote', 'analytics', 'teams', 'team', 'experience', 'developer', 'engineer', 'curriculum', 'resume document', 'software'];
+                        const isInvalidName = !rawName || invalidNameTerms.some(t => rawName.toLowerCase().includes(t));
+                        
+                        let cleanName = isInvalidName ? (item.resumeFileName || `Candidate #${idx + 1}`) : rawName;
+                        cleanName = cleanName
                             .replace(/^https?:\/\/[^\s]+/gi, '')
                             .replace(/\.[^/.]+$/, '')
-                            .replace(/^(CV|Resume|Curriculum_Vitae|Bio)[\s_-]*/i, '')
-                            .replace(/[\s_-]*(CV|Resume|Profile)[\s_-]*$/i, '')
-                            .replace(/[-_]/g, ' ')
+                            .replace(/^(CV|Resume|Curriculum_Vitae|Bio|Profile)[\s_-]*/i, '')
+                            .replace(/[\s_-]*(CV|Resume|Profile|Doc|Document|File|Final|Updated|Latest|202[4-9]|20[0-2][0-9])[\s_-]*/gi, '')
+                            .replace(/[-_.]+/g, ' ')
                             .replace(/Mobile/gi, '')
                             .replace(/\s+/g, ' ')
                             .trim();
 
-                        if (!cleanName || cleanName.length < 2) {
-                            cleanName = `Candidate #${idx + 1}`;
+                        const nameWords = cleanName.split(' ').filter(w => w.length >= 2 && !/^(for|and|the|with|to|in|of|by|draft|copy)$/i.test(w));
+                        if (nameWords.length >= 1 && nameWords.length <= 4) {
+                            cleanName = nameWords.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
                         } else {
-                            cleanName = cleanName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+                            cleanName = `Candidate #${idx + 1}`;
                         }
 
                         const targetRole = item.targetRole || 'Software Engineer';
-                        const fitVerdict = item.fitVerdict || (score >= 80 ? 'Strong Fit' : (score >= 65 ? 'Potential Fit' : 'Moderate Fit'));
+                        const fitVerdict = item.fitVerdict || (score >= 82 ? 'Strong Fit' : (score >= 68 ? 'Potential Fit' : (score >= 52 ? 'Moderate Fit' : 'Needs Development')));
                         const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Evaluated';
 
                         const rowId = `eval-detail-${item.id || idx}`;

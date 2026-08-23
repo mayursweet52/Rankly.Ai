@@ -160,25 +160,31 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
 /**
  * Screen Resume Against Target Role & Job Requirements
  */
-async function screenResume(resumeText, targetRole, jobDescription = '') {
+async function screenResume(resumeText, targetRole, jobDescription = '', filename = '') {
   const prompt = `
-Analyze the candidate's resume text against the target role "${targetRole}".
-Job Description context: "${jobDescription || 'Standard industry requirements for ' + targetRole}".
+You are an expert ATS (Applicant Tracking System) Evaluation Engine.
+Analyze the candidate's resume text against the target benchmark role "${targetRole}".
+Job Context: "${jobDescription || 'Standard industry production requirements for ' + targetRole}".
 
-Return a valid JSON object ONLY with the following structure:
+CRITICAL INSTRUCTIONS:
+1. Extract the candidate's REAL first and last name from the resume or filename. Do NOT extract section headers (like "Availability", "Open Source", "Experience").
+2. Calculate a REALISTIC, DYNAMIC match percentage (0 to 100) based on actual technical skill coverage, years of experience, and project metrics. Do not output a fixed or flat score.
+3. Classify fitVerdict as "Strong Fit" (>=82%), "Potential Fit" (68-81%), or "Moderate Fit" (<68%).
+
+Return a valid JSON object ONLY with the following schema:
 {
-  "candidateName": "Extracted Candidate Full Name",
+  "candidateName": "First Last",
   "targetRole": "${targetRole}",
-  "matchScore": 85,
+  "matchScore": 76,
   "scoreBreakdown": {
-    "skills": 88,
-    "experience": 82,
-    "tools": 90,
-    "education": 80
+    "skills": 78,
+    "experience": 72,
+    "tools": 80,
+    "education": 75
   },
-  "fitVerdict": "Strong Fit",
-  "summary": "2-3 sentences concise executive evaluation summary.",
-  "matchedSkills": ["Skill1", "Skill2", "Skill3", "Skill4"],
+  "fitVerdict": "Potential Fit",
+  "summary": "Concise executive evaluation summary highlighting key competencies and gaps.",
+  "matchedSkills": ["Skill1", "Skill2", "Skill3"],
   "missingSkills": ["MissingSkill1", "MissingSkill2"],
   "recommendations": [
     "Actionable improvement tip 1",
@@ -196,13 +202,17 @@ ${resumeText.slice(0, 7000)}
   try {
     const aiResult = await executeAiInference(prompt, true);
     if (aiResult && typeof aiResult === 'object' && aiResult.matchScore !== undefined) {
+      // Ensure candidate name is realistic
+      if (!aiResult.candidateName || aiResult.candidateName.toLowerCase().includes('extracted') || aiResult.candidateName.length < 2) {
+        aiResult.candidateName = extractCandidateInfoFromText(resumeText, filename).name;
+      }
       return aiResult;
     }
   } catch (error) {
     console.warn('AI Screening fallback triggered:', error.message);
   }
 
-  return evaluateResumeRuleBased(resumeText, targetRole);
+  return evaluateResumeRuleBased(resumeText, targetRole, filename);
 }
 
 /**

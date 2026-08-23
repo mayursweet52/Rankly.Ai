@@ -43,7 +43,7 @@ async function screenResumeHandler(req, res) {
     const candidatePhone = inputPhone || extractedInfo.phone;
 
     // Execute Multi-Tier AI Screening
-    const evaluation = await screenResume(resumeText, targetRole, jobDescription);
+    const evaluation = await screenResume(resumeText, targetRole, jobDescription, resumeFileName);
 
     const userId = req.user ? req.user.id : null;
     const organizationId = req.user ? req.user.organizationId : null;
@@ -186,7 +186,7 @@ async function batchUploadHandler(req, res) {
         const resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
         const extracted = extractCandidateInfoFromText(resumeText, file.originalname);
 
-        const evaluation = await screenResume(resumeText, targetRole);
+        const evaluation = await screenResume(resumeText, targetRole, '', file.originalname);
 
         const savedEval = await prisma.evaluation.create({
           data: {
