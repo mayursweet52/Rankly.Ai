@@ -103,60 +103,24 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     }
   }
 
-  // 2. Try Port 587 with STARTTLS (Standard Cloud SMTP)
-  try {
-    const transporter587 = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465,
-      auth: {
-        user: senderUser,
-        pass: senderPass
-      },
-      connectionTimeout: 5000,
-      greetingTimeout: 5000,
-      socketTimeout: 5000,
-      tls: { rejectUnauthorized: false }
-    });
+  // 2. Real SMTP Transporter (Port 587 STARTTLS / Port 465 SSL)
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
+    auth: {
+      user: senderUser,
+      pass: senderPass
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+    tls: { rejectUnauthorized: false }
+  });
 
-    const info = await Promise.race([
-      transporter587.sendMail(mailOptions),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 587 timeout')), 5500))
-    ]);
-
-    console.log('✅ Real OTP email delivered via Port 587 to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-    return true;
-  } catch (err587) {
-    console.warn('[SMTP Port 587 Attempt Failed]:', err587.message, '- Trying Port 465...');
-    
-    // 3. Try Port 465 SSL
-    try {
-      const transporter465 = nodemailer.createTransport({
-        host: smtpHost,
-        port: 465,
-        secure: true,
-        auth: {
-          user: senderUser,
-          pass: senderPass
-        },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 5000,
-        tls: { rejectUnauthorized: false }
-      });
-
-      const info465 = await Promise.race([
-        transporter465.sendMail(mailOptions),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 465 timeout')), 5500))
-      ]);
-
-      console.log('✅ Real OTP email delivered via Port 465 to:', cleanRecipient, 'MessageId:', info465?.messageId || 'OK');
-      return true;
-    } catch (err465) {
-      console.warn(`[SMTP Warning] Cloud network blocked direct SMTP delivery (${err465.message}). OTP stored in database for ${cleanRecipient}: ${otpCode}`);
-      return false;
-    }
-  }
+  const info = await transporter.sendMail(mailOptions);
+  console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+  return true;
 }
 
 /**
