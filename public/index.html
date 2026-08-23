@@ -893,136 +893,45 @@
             flex-shrink: 0;
         }
 
-        /* ─── CHAT & ASSISTANT (DEEP PLUM ATMOSPHERIC THEME) ─── */
-        .chat-card-plum {
-            background-color: #140d1e !important;
-            background-image: radial-gradient(circle at 92% 20%, rgba(192, 132, 252, 0.22) 0%, rgba(147, 51, 234, 0.08) 40%, transparent 70%),
-                              linear-gradient(135deg, rgba(18, 12, 26, 0.92) 0%, rgba(36, 18, 48, 0.88) 50%, rgba(14, 9, 20, 0.94) 100%),
-                              url('/assets/chatbot-bg.jpg') !important;
-            background-size: cover !important;
-            background-position: center right !important;
-            background-repeat: no-repeat !important;
-            border: 1px solid rgba(192, 132, 252, 0.25) !important;
-            box-shadow: 0 25px 60px rgba(12, 6, 20, 0.6) !important;
-            border-radius: 20px !important;
-            color: #ffffff !important;
-            position: relative;
-            overflow: hidden;
-        }
-        .chat-sidebar-panel {
-            background: rgba(22, 14, 32, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(192, 132, 252, 0.18);
-            border-radius: 14px;
-        }
-        .chat-sidebar-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(192, 132, 252, 0.15);
-            color: #e9d5ff;
-            transition: all 0.2s ease;
-            text-align: left;
-            border-radius: 10px;
-            padding: 10px 14px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-        }
-        .chat-sidebar-btn:hover {
-            background: rgba(147, 51, 234, 0.25);
-            border-color: #c084fc;
-            color: #ffffff;
-            transform: translateX(3px);
-        }
+        /* ─── CHAT & ASSISTANT (ORIGINAL CLEAN LIGHT THEME) ─── */
         .chat-container {
-            min-height: 480px;
-            max-height: 520px;
+            max-height: 480px;
+            min-height: 380px;
             overflow-y: auto;
-            padding: 22px;
-            border: 1px solid rgba(192, 132, 252, 0.18);
-            border-radius: 14px;
-            background: rgba(16, 10, 24, 0.72);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            padding: 1.25rem;
+            border: 1px solid var(--border-color, #E5E5DF);
+            border-radius: 12px;
+            background: var(--bg-card, #FFFFFF);
         }
         .chat-msg {
-            padding: 14px 18px;
+            padding: 12px 16px;
             border-radius: 12px;
-            margin-bottom: 14px;
-            max-width: 88%;
+            margin-bottom: 12px;
+            max-width: 85%;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
             word-break: break-word;
-            transition: all 0.2s ease;
         }
         .chat-msg.bot {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            color: #F8FAFC;
+            background: rgba(79, 70, 229, 0.08);
+            color: #1F2937;
+            border: 1px solid rgba(79, 70, 229, 0.15);
             align-self: flex-start;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
         }
         .chat-msg.bot strong {
-            color: #FFFFFF;
-            font-weight: 700;
+            color: #111827;
         }
         .chat-msg.user {
-            background: linear-gradient(135deg, #7E22CE 0%, #9333EA 100%);
+            background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
             color: #FFFFFF;
             align-self: flex-end;
             margin-left: auto;
-            border: 1px solid rgba(216, 180, 254, 0.35);
-            box-shadow: 0 4px 18px rgba(147, 51, 234, 0.35);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
         }
-        .chat-plum-input {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(192, 132, 252, 0.3) !important;
-            color: #ffffff !important;
-            border-radius: 10px !important;
-            transition: all 0.2s ease;
-        }
-        .chat-plum-input:focus {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: #C084FC !important;
-            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.25) !important;
-            outline: none !important;
-        }
-        .chat-plum-input::placeholder {
-            color: rgba(233, 213, 255, 0.5) !important;
-        }
-        .chat-plum-btn {
-            background: linear-gradient(135deg, #7E22CE 0%, #9333EA 100%) !important;
-            border: 1px solid rgba(216, 180, 254, 0.4) !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 14px rgba(147, 51, 234, 0.4) !important;
-            border-radius: 10px !important;
-            transition: all 0.2s ease;
-        }
-        .chat-plum-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.6) !important;
-        }
-        .chat-plum-upload-btn {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(192, 132, 252, 0.3) !important;
-            color: #C084FC !important;
-            border-radius: 10px !important;
-            transition: all 0.2s ease;
-        }
-        .chat-plum-upload-btn:hover {
-            background: rgba(192, 132, 252, 0.18) !important;
-            border-color: #C084FC !important;
-            color: #FFFFFF !important;
-            transform: translateY(-1px);
-        }
-        .chat-plum-tag {
-            background: rgba(147, 51, 234, 0.15);
-            border: 1px solid rgba(192, 132, 252, 0.25);
-            color: #E9D5FF;
+        .tag-suggestion {
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            color: #4B5563;
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 12px;
@@ -1030,11 +939,10 @@
             transition: all 0.2s ease;
             white-space: nowrap;
         }
-        .chat-plum-tag:hover {
-            background: rgba(147, 51, 234, 0.3);
-            border-color: #C084FC;
-            color: #FFFFFF;
-            transform: translateY(-1px);
+        .tag-suggestion:hover {
+            background: #EEF2FF;
+            border-color: #C7D2FE;
+            color: #4F46E5;
         }
 
         /* ─── SCREENING UPLOAD (BLUE THEME) ─── */
@@ -1886,133 +1794,55 @@
 
                     <!-- ─── TAB 2: PLAYGROUND (Chatbot) ─── -->
                     <div class="tab-content" id="tab-chatbot" style="display:none;">
-                        <div class="chat-card-plum w-full max-w-7xl mx-auto min-h-[760px] flex flex-col p-6 md:p-8">
-                            <!-- Top Header -->
-                            <div class="flex flex-wrap justify-between items-center mb-5 pb-4 border-b border-purple-500/20 gap-3">
+                        <div class="card max-w-4xl mx-auto flex flex-col p-6 shadow-sm border border-[#E5E5DF] bg-white rounded-xl">
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
                                 <div>
-                                    <h3 class="text-white text-xl md:text-2xl font-extrabold mb-0 flex items-center gap-2.5">
-                                        <i class="fas fa-sparkles text-purple-400 text-lg"></i>
-                                        <span>Ready to put AI to work?</span>
+                                    <h3 class="card-title mb-0 flex items-center gap-2 text-[#111111] font-bold text-lg">
+                                        <i class="fas fa-sparkles text-[#4F46E5]"></i>
+                                        <span>Rankly AI Career & Screening Assistant</span>
                                     </h3>
-                                    <p class="text-xs md:text-sm text-purple-200/80 font-mono mt-1">Autonomous candidate evaluation, ATS resume screening & talent intelligence</p>
+                                    <p class="text-xs text-[#666660] font-mono mt-0.5">Real-time candidate evaluation, resume screening & career advisory</p>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="bg-purple-900/70 border border-purple-400/40 text-purple-200 text-xs px-3.5 py-1.5 rounded-full font-mono font-semibold flex items-center gap-1.5 shadow-lg">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                        <span>Rankly AI v2.5</span>
-                                    </span>
-                                </div>
+                                <span class="badge badge-blue font-mono">🤖 AI Assistant</span>
+                            </div>
+                            
+                            <div class="chat-container flex-1 mb-4" id="chatContainer" style="min-height:380px; max-height:480px;">
+                                <div class="chat-msg bot">👋 <strong>Welcome to Rankly AI Career & Screening Assistant.</strong><br/><br/>You can ask strategic career questions, technical interview prep, or click the <i class="fas fa-cloud-arrow-up text-indigo-600"></i> button below to attach a resume for instant ATS match scoring!</div>
                             </div>
 
-                            <!-- 2-Column Wide Layout -->
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-                                <!-- Left Column: Quick Intelligence Hub (3 cols) -->
-                                <div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
-                                    <div class="chat-sidebar-panel p-4.5 flex flex-col gap-3">
-                                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-purple-300 flex items-center gap-2">
-                                            <i class="fas fa-bolt text-purple-400"></i>
-                                            <span>Quick AI Commands</span>
-                                        </span>
-                                        
-                                        <button type="button" class="chat-sidebar-btn" onclick="document.getElementById('chatFileInput').click()">
-                                            <i class="fas fa-cloud-arrow-up text-purple-400 text-sm"></i>
-                                            <div class="truncate">
-                                                <strong class="block text-white text-xs">Screen Resume</strong>
-                                                <span class="text-[11px] text-purple-300/70">Upload PDF / DOCX</span>
-                                            </div>
-                                        </button>
-
-                                        <button type="button" class="chat-sidebar-btn" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">
-                                            <i class="fas fa-chart-line text-emerald-400 text-sm"></i>
-                                            <div class="truncate">
-                                                <strong class="block text-white text-xs">ATS Score Optimizer</strong>
-                                                <span class="text-[11px] text-purple-300/70">Target >90% match</span>
-                                            </div>
-                                        </button>
-
-                                        <button type="button" class="chat-sidebar-btn" onclick="quickChat('Top behavioral and system design interview questions')">
-                                            <i class="fas fa-user-tie text-blue-400 text-sm"></i>
-                                            <div class="truncate">
-                                                <strong class="block text-white text-xs">Interview Prep</strong>
-                                                <span class="text-[11px] text-purple-300/70">System design & behavioral</span>
-                                            </div>
-                                        </button>
-
-                                        <button type="button" class="chat-sidebar-btn" onclick="quickChat('Summarize key technical skills for a Senior Full Stack engineer')">
-                                            <i class="fas fa-code text-amber-400 text-sm"></i>
-                                            <div class="truncate">
-                                                <strong class="block text-white text-xs">Technical Skills Gap</strong>
-                                                <span class="text-[11px] text-purple-300/70">Senior benchmark stack</span>
-                                            </div>
-                                        </button>
-
-                                        <button type="button" class="chat-sidebar-btn" onclick="quickChat('How to negotiate a higher compensation package?')">
-                                            <i class="fas fa-hand-holding-dollar text-emerald-300 text-sm"></i>
-                                            <div class="truncate">
-                                                <strong class="block text-white text-xs">Salary Strategy</strong>
-                                                <span class="text-[11px] text-purple-300/70">Offer negotiation guide</span>
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <!-- Candidate Context Card -->
-                                    <div class="chat-sidebar-panel p-4 flex flex-col gap-2 mt-auto">
-                                        <div class="flex items-center justify-between text-xs text-purple-200">
-                                            <span class="font-mono text-purple-300/80">Active Target Role:</span>
-                                            <span class="font-bold text-white truncate max-w-[120px]" id="chatSidebarRoleText">Software Engineer</span>
-                                        </div>
-                                        <div class="flex items-center justify-between text-xs text-purple-200 pt-2 border-t border-purple-500/20">
-                                            <span class="font-mono text-purple-300/80">ATS Target:</span>
-                                            <span class="font-bold text-emerald-400">≥ 85% Match</span>
-                                        </div>
-                                        <button type="button" onclick="clearChatMessages()" class="mt-2 text-xs text-purple-400 hover:text-purple-200 flex items-center justify-center gap-1.5 py-1.5 rounded bg-purple-950/40 border border-purple-500/20 hover:border-purple-400/40 transition">
-                                            <i class="fas fa-trash-alt text-[10px]"></i>
-                                            <span>Reset Chat Canvas</span>
-                                        </button>
-                                    </div>
+                            <!-- Attached File Preview Badge -->
+                            <div id="chatFilePreview" style="display:none;" class="mb-3 p-2.5 bg-indigo-50 border border-indigo-200 rounded-lg flex items-center justify-between text-xs font-mono text-indigo-900">
+                                <div class="flex items-center gap-2 truncate">
+                                    <i class="fas fa-file-lines text-indigo-600 text-base"></i>
+                                    <span id="chatFileName" class="truncate font-bold">resume.pdf</span>
+                                    <span class="text-[10px] text-indigo-500" id="chatFileSize"></span>
                                 </div>
+                                <button type="button" onclick="clearChatFile()" class="text-red-500 hover:text-red-700 ml-2 p-1 font-bold" title="Remove attachment">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
 
-                                <!-- Right Column: Main Chat Interface (8/9 cols) -->
-                                <div class="lg:col-span-8 xl:col-span-9 flex flex-col">
-                                    <div class="chat-container flex-1 mb-4" id="chatContainer">
-                                        <div class="chat-msg bot">👋 <strong>Welcome to Rankly AI Career & Screening Playground.</strong><br/><br/>You can ask strategic career questions, technical interview prep, or click the <i class="fas fa-cloud-arrow-up text-purple-400"></i> button below to attach a resume for instant ATS match scoring!</div>
-                                    </div>
+                            <!-- Input Row with Cloud Upload Button -->
+                            <div class="flex gap-2 items-center">
+                                <input type="file" id="chatFileInput" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" style="display:none" onchange="handleChatFileSelected(this)" />
+                                
+                                <button type="button" class="btn-secondary px-3.5 py-2.5 flex-shrink-0 cursor-pointer text-indigo-600 hover:text-indigo-700 border border-[#E5E5DF] rounded-lg" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
+                                    <i class="fas fa-cloud-arrow-up text-base"></i>
+                                </button>
 
-                                    <!-- Attached File Preview Badge -->
-                                    <div id="chatFilePreview" style="display:none;" class="mb-2 p-2.5 bg-purple-950/60 border border-purple-500/30 rounded-lg flex items-center justify-between text-xs font-mono text-purple-200">
-                                        <div class="flex items-center gap-2 truncate">
-                                            <i class="fas fa-file-lines text-purple-400 text-base"></i>
-                                            <span id="chatFileName" class="truncate font-bold">resume.pdf</span>
-                                            <span class="text-[10px] text-purple-300/70" id="chatFileSize"></span>
-                                        </div>
-                                        <button type="button" onclick="clearChatFile()" class="text-red-400 hover:text-red-300 ml-2 p-1 font-bold" title="Remove attachment">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
+                                <input class="form-input flex-1 py-2.5 px-4 text-sm border border-[#E5E5DF] rounded-lg text-[#111111]" id="chatInput" onkeydown="if(event.key==='Enter') sendChat()" placeholder="Ask Rankly AI anything or attach a resume to screen..." type="text"/>
+                                
+                                <button class="btn-primary px-5 py-2.5 flex-shrink-0 cursor-pointer rounded-lg bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium flex items-center gap-2" onclick="sendChat()" title="Send Message">
+                                    <span>Send</span>
+                                    <i class="fas fa-arrow-up text-xs"></i>
+                                </button>
+                            </div>
 
-                                    <!-- Input Row with Cloud Upload Button -->
-                                    <div class="flex gap-2 items-center">
-                                        <input type="file" id="chatFileInput" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" style="display:none" onchange="handleChatFileSelected(this)" />
-                                        
-                                        <button type="button" class="chat-plum-upload-btn px-4 py-3 text-base flex-shrink-0 cursor-pointer" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
-                                            <i class="fas fa-cloud-arrow-up"></i>
-                                        </button>
-
-                                        <input class="chat-plum-input form-input flex-1 py-3 px-4 text-sm" id="chatInput" onkeydown="if(event.key==='Enter') sendChat()" placeholder="Ask Rankly AI anything or attach a resume to screen..." type="text"/>
-                                        
-                                        <button class="chat-plum-btn px-6 py-3 flex-shrink-0 cursor-pointer text-sm font-semibold flex items-center gap-2" onclick="sendChat()" title="Send Message">
-                                            <span>Send</span>
-                                            <i class="fas fa-arrow-up text-xs"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="flex gap-2 mt-4 pt-3 border-t border-purple-500/20 overflow-x-auto pb-1">
-                                        <button type="button" class="chat-plum-tag" onclick="quickChat('Summarize key technical skills for a Senior Full Stack engineer')">Key skills</button>
-                                        <button type="button" class="chat-plum-tag" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">ATS score tips</button>
-                                        <button type="button" class="chat-plum-tag" onclick="quickChat('Top behavioral and system design interview questions')">Interview questions</button>
-                                        <button type="button" class="chat-plum-tag" onclick="quickChat('How to negotiate a higher compensation package?')">Salary strategy</button>
-                                    </div>
-                                </div>
+                            <div class="flex gap-2 mt-4 pt-3 border-t border-[#E5E5DF] overflow-x-auto pb-1">
+                                <button type="button" class="tag-suggestion" onclick="quickChat('Summarize key technical skills for a Senior Full Stack engineer')">Key skills</button>
+                                <button type="button" class="tag-suggestion" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">ATS score tips</button>
+                                <button type="button" class="tag-suggestion" onclick="quickChat('Top behavioral and system design interview questions')">Interview questions</button>
+                                <button type="button" class="tag-suggestion" onclick="quickChat('How to negotiate a higher compensation package?')">Salary strategy</button>
                             </div>
                         </div>
                     </div>
@@ -3391,38 +3221,38 @@
                             const recommendations = Array.isArray(ev.recommendations) ? ev.recommendations : (typeof ev.recommendations === 'string' ? JSON.parse(ev.recommendations || '[]') : []);
 
                             botDiv.innerHTML = `
-                                <div class="space-y-3 text-purple-100">
-                                    <div class="flex items-center justify-between pb-2 border-b border-purple-500/20">
+                                <div class="space-y-3 text-gray-800">
+                                    <div class="flex items-center justify-between pb-2 border-b border-indigo-100">
                                         <div>
-                                            <strong class="text-white text-sm">🎯 Screening Report: ${data.candidateName || fileToUpload.name}</strong>
-                                            <p class="text-xs text-purple-300/80">Target Role: ${data.targetRole || 'Software Engineer'}</p>
+                                            <strong class="text-gray-900 text-sm font-bold">🎯 Screening Report: ${data.candidateName || fileToUpload.name}</strong>
+                                            <p class="text-xs text-gray-500">Target Role: ${data.targetRole || 'Software Engineer'}</p>
                                         </div>
-                                        <span class="bg-emerald-950/80 border border-emerald-400/30 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-mono font-bold">${ev.matchScore || 85}% Match</span>
+                                        <span class="bg-emerald-50 border border-emerald-300 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-mono font-bold">${ev.matchScore || 85}% Match</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-bold text-white mb-1">Fit Verdict: <span class="bg-purple-900/60 border border-purple-400/30 text-purple-200 text-[11px] px-2 py-0.5 rounded font-mono">${ev.fitVerdict || 'Potential Fit'}</span></p>
-                                        <p class="text-xs text-purple-200 leading-relaxed">${ev.summary || 'Candidate demonstrates solid foundational capabilities with strong domain competencies.'}</p>
+                                        <p class="text-xs font-bold text-gray-900 mb-1">Fit Verdict: <span class="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] px-2 py-0.5 rounded font-mono">${ev.fitVerdict || 'Potential Fit'}</span></p>
+                                        <p class="text-xs text-gray-700 leading-relaxed">${ev.summary || 'Candidate demonstrates solid foundational capabilities with strong domain competencies.'}</p>
                                     </div>
                                     ${matchedSkills.length ? `
                                         <div>
-                                            <span class="text-[11px] font-mono uppercase font-bold text-emerald-400 block mb-1">Matched Skills:</span>
+                                            <span class="text-[11px] font-mono uppercase font-bold text-emerald-700 block mb-1">Matched Skills:</span>
                                             <div class="flex flex-wrap gap-1.5">
-                                                ${matchedSkills.slice(0, 8).map(s => `<span class="bg-emerald-950/60 border border-emerald-500/30 text-emerald-200 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
+                                                ${matchedSkills.slice(0, 8).map(s => `<span class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
                                             </div>
                                         </div>
                                     ` : ''}
                                     ${missingSkills.length ? `
                                         <div>
-                                            <span class="text-[11px] font-mono uppercase font-bold text-rose-400 block mb-1">Missing / Improvement Areas:</span>
+                                            <span class="text-[11px] font-mono uppercase font-bold text-rose-700 block mb-1">Missing / Improvement Areas:</span>
                                             <div class="flex flex-wrap gap-1.5">
-                                                ${missingSkills.slice(0, 6).map(s => `<span class="bg-rose-950/60 border border-rose-500/30 text-rose-200 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
+                                                ${missingSkills.slice(0, 6).map(s => `<span class="bg-rose-50 border border-rose-200 text-rose-800 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
                                             </div>
                                         </div>
                                     ` : ''}
                                     ${recommendations.length ? `
-                                        <div class="pt-2 border-t border-purple-500/20 text-xs text-purple-200">
-                                            <strong class="text-white">💡 Recommendations:</strong>
-                                            <ul class="list-disc ml-4 mt-1 space-y-0.5">
+                                        <div class="pt-2 border-t border-indigo-100 text-xs text-gray-700">
+                                            <strong class="text-gray-900">💡 Recommendations:</strong>
+                                            <ul class="list-disc ml-4 mt-1 space-y-0.5 text-gray-600">
                                                 ${recommendations.slice(0, 3).map(r => `<li>${r}</li>`).join('')}
                                             </ul>
                                         </div>
@@ -3444,7 +3274,7 @@
                         botDiv.textContent = '❌ Error communicating with screening engine. Please check connection.';
                     }
                 } else {
-                    botDiv.innerHTML = `<div class="flex items-center gap-2 text-purple-200 text-xs font-mono"><i class="fas fa-spinner fa-spin text-purple-400"></i> Rankly AI is thinking...</div>`;
+                    botDiv.innerHTML = `<div class="flex items-center gap-2 text-indigo-600 text-xs font-mono"><i class="fas fa-spinner fa-spin text-indigo-600"></i> Rankly AI is thinking...</div>`;
                     container.appendChild(botDiv);
                     container.scrollTop = container.scrollHeight;
 
