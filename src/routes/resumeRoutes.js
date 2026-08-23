@@ -10,7 +10,7 @@ router.post('/detect-role', optionalAuth, aiLimiter, upload.single('resume'), re
 router.post('/screen-resume', optionalAuth, aiLimiter, upload.single('resume'), resumeController.screenResumeHandler);
 router.post('/screen', optionalAuth, aiLimiter, upload.single('resume'), resumeController.screenResumeHandler);
 router.post('/upload', optionalAuth, aiLimiter, upload.single('resume'), resumeController.screenResumeHandler);
-router.post('/batch-upload', isAuthenticated, aiLimiter, upload.array('resumes', 20), resumeController.batchUploadHandler);
+router.post('/batch-upload', optionalAuth, aiLimiter, upload.array('resumes', 20), resumeController.batchUploadHandler);
 
 // Evaluation Records
 router.get('/evaluations', optionalAuth, resumeController.getEvaluations);
