@@ -61,6 +61,8 @@ async function register(req, res) {
       profession,
       linkedInUrl,
       orgName,
+      organizationName,
+      company,
       referralCode,
       role
     } = req.body;
@@ -70,7 +72,8 @@ async function register(req, res) {
     const effectiveLastName = (lastName || lname || '').trim();
     const effectivePassword = (password || '').trim();
     const effectivePhone = (phone || '').trim() || null;
-    const isEmp = isEmployee === true || isEmployee === 'true' || accountType === 'employee' || !!orgName || !!referralCode;
+    const effectiveOrgName = (organizationName || company || orgName || '').trim();
+    const isEmp = isEmployee === true || isEmployee === 'true' || accountType === 'employee' || !!effectiveOrgName || !!referralCode;
     const effectiveAccountType = isEmp ? 'employee' : 'normal_user';
     const effectiveRole = isEmp ? (role === 'normal' ? 'hr' : (role || 'hr')) : 'normal_user';
 
@@ -239,10 +242,10 @@ async function register(req, res) {
     });
 
     // If Enterprise Admin provided a new organization name
-    if (orgName && !assignedOrgId) {
+    if (effectiveOrgName && !assignedOrgId) {
       const newOrg = await prisma.organization.create({
         data: {
-          name: orgName.trim(),
+          name: effectiveOrgName,
           adminId: newUser.id
         }
       });

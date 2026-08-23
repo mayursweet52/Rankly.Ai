@@ -1483,23 +1483,29 @@
             
             <form id="employeeSignupForm" novalidate>
                 <!-- Corporate Email with OTP (Step 1: Verify first) -->
-                <div class="mb-4 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl">
-                    <label class="form-label font-bold text-indigo-900">Corporate Email (Verify to unlock profile) *</label>
+                <div class="mb-4 p-3.5 bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl">
+                    <label class="form-label font-bold text-[#111111]">Corporate Email (Verify to unlock workspace) *</label>
                     <div class="otp-row">
                         <input type="email" id="empEmail" class="form-input bg-white" required placeholder="you@company.com" />
                         <button type="button" onclick="sendEmpOTP('email')" class="btn-secondary whitespace-nowrap" id="empEmailOtpBtn">Send OTP</button>
                     </div>
-                    <div id="empEmailOtpRow" style="display:none; margin-top:6px;">
+                    <div id="empEmailOtpRow" style="display:none; margin-top:8px;">
                         <div class="otp-row">
                             <input type="text" id="empEmailOtp" class="form-input bg-white" placeholder="Enter 6-digit OTP" maxlength="6" />
-                            <button type="button" id="empEmailVerifyBtn" onclick="verifyEmpOTP('email')" class="btn-primary" style="padding:8px 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 600;">Verify</button>
+                            <button type="button" id="empEmailVerifyBtn" onclick="verifyEmpOTP('email')" class="btn-primary" style="padding:8px 16px; font-weight: 600;">Verify</button>
                         </div>
                     </div>
                 </div>
 
-                <div id="empProfileFieldsNotice" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2.5 mb-4 flex items-center gap-2">
+                <div id="empProfileFieldsNotice" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl p-2.5 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-lock text-amber-600"></i>
-                    <span>Please verify your corporate email above to auto-fill & edit company profile fields.</span>
+                    <span>Please verify your corporate email above to unlock and configure company workspace fields.</span>
+                </div>
+
+                <!-- Company / Organization Name -->
+                <div class="mb-4">
+                    <label class="form-label">Company / Organization Name *</label>
+                    <input type="text" id="empOrgName" class="form-input emp-locked-field" disabled required placeholder="e.g. Acme Corp / Infosys / Google" />
                 </div>
 
                 <!-- Profile Fields (Unlocked after OTP) -->
@@ -2517,6 +2523,13 @@
 
                     if (usernameInput && !usernameInput.value) {
                         usernameInput.value = localPart;
+                    }
+
+                    const orgInput = document.getElementById('empOrgName');
+                    const domain = (email.split('@')[1] || '').split('.')[0] || '';
+                    if (domain && !['gmail', 'yahoo', 'hotmail', 'outlook', 'icloud'].includes(domain.toLowerCase())) {
+                        const orgName = domain.charAt(0).toUpperCase() + domain.slice(1);
+                        if (orgInput && !orgInput.value) orgInput.value = orgName;
                     }
                 }
             }
@@ -4117,6 +4130,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 if (empSignupForm) {
                     empSignupForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
+                        const orgName = document.getElementById('empOrgName')?.value.trim();
                         const fname = document.getElementById('empFname')?.value.trim();
                         const lname = document.getElementById('empLname')?.value.trim();
                         const username = document.getElementById('empUsername')?.value.trim();
@@ -4130,7 +4144,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const password = document.getElementById('empPassword')?.value;
                         const confirm = document.getElementById('empConfirmPassword')?.value;
 
-                        if (!fname || !email || !password || !dob) { showToast('Please fill required fields (including Date of Birth)', 'error'); return; }
+                        if (!fname || !email || !password || !dob || !orgName) { showToast('Please fill required fields (Company Name, Name, DOB, Password)', 'error'); return; }
                         if (!empOtpVerified.email) { showToast('⚠️ Please verify your corporate email with OTP first', 'error'); return; }
                         if (!validateEmail(email, true)) return;
                         if (!validateCompanyAge(dob)) return;
@@ -4144,6 +4158,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 credentials: 'include',
                                 body: JSON.stringify({
                                     fname, lname, firstName: fname, lastName: lname,
+                                    organizationName: orgName, company: orgName,
                                     username: username || email.split('@')[0],
                                     email, phone, dob, age, profession: role, password,
                                     role: role, accountType: 'employee', isEmployee: true
