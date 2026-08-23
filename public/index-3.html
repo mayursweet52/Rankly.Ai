@@ -627,10 +627,10 @@
             font-size: 14px;
             transition: all 0.2s ease;
         }
-        .form-input:focus {
-            outline: none;
-            border-color: #111111;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        .form-input:focus, select:focus, input:focus, textarea:focus, button:focus {
+            outline: none !important;
+            border-color: #111111 !important;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05) !important;
         }
         .form-input::placeholder {
             color: #999990;
@@ -945,21 +945,22 @@
             color: #4F46E5;
         }
 
-        /* ─── SCREENING UPLOAD (BLUE THEME) ─── */
+        /* ─── SCREENING UPLOAD (RANKLY SIGNATURE THEME) ─── */
         .upload-zone {
-            border: 2px dashed #93C5FD;
-            background: linear-gradient(180deg, #F4F8FF 0%, #FFFFFF 100%);
+            border: 2px dashed #E5E5DF;
+            background: #FAFAF8;
             border-radius: 16px;
             padding: 44px 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            outline: none !important;
         }
-        .upload-zone:hover {
-            border-color: #2563EB;
-            background: #EEF4FF;
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: #D95D39;
+            background: #FDFBF7;
+            box-shadow: 0 8px 24px rgba(217, 93, 57, 0.08);
             transform: translateY(-2px);
         }
 
@@ -1975,7 +1976,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <select id="targetScreeningRole" class="form-input text-xs py-1.5 px-3 bg-white border border-[#E5E5DF] rounded-xl font-medium text-[#111111] shadow-sm">
+                                    <select id="targetScreeningRole" class="form-input text-xs py-1.5 px-3 bg-white border border-[#E5E5DF] rounded-xl font-semibold text-[#111111] shadow-sm hover:border-[#111111] focus:border-[#111111] focus:ring-0 focus:outline-none transition-all cursor-pointer" style="outline: none !important; box-shadow: none !important;">
                                         <option value="Software Engineer">💻 Software Engineer</option>
                                         <option value="Full Stack Developer">🌐 Full Stack Developer</option>
                                         <option value="Frontend Developer">🎨 Frontend Developer</option>
