@@ -108,17 +108,17 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
       secure: false,
       auth: {
         user: senderUser,
-        pass: (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim()
+        pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
       },
-      connectionTimeout: 4000,
-      greetingTimeout: 4000,
-      socketTimeout: 4000,
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+      socketTimeout: 5000,
       tls: { rejectUnauthorized: false }
     });
 
     const info = await Promise.race([
       transporter587.sendMail(mailOptions),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 587 timeout')), 4500))
+      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 587 timeout')), 5500))
     ]);
 
     console.log('✅ Real OTP email delivered via Port 587 to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
@@ -134,17 +134,17 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
         secure: true,
         auth: {
           user: senderUser,
-          pass: (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim()
+          pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
         },
-        connectionTimeout: 4000,
-        greetingTimeout: 4000,
-        socketTimeout: 4000,
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 5000,
         tls: { rejectUnauthorized: false }
       });
 
       const info465 = await Promise.race([
         transporter465.sendMail(mailOptions),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 465 timeout')), 4500))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 465 timeout')), 5500))
       ]);
 
       console.log('✅ Real OTP email delivered via Port 465 to:', cleanRecipient, 'MessageId:', info465?.messageId || 'OK');
