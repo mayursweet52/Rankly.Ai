@@ -1306,6 +1306,59 @@
             background: #1E1E22;
             color: #FFFFFF;
         }
+
+        /* ─── 3D TEXT HOVER EFFECT (Sirf Dark Mode Mein) ─── */
+        body.dark-theme .text-3d-hover {
+          display: inline-flex;
+          gap: 0.05em;
+          font-size: 3.8rem;
+          font-weight: 900;
+          color: #e2e8f0;
+          perspective: 600px;
+          justify-content: center;
+          cursor: default;
+        }
+
+        body.dark-theme .text-3d-hover .char {
+          display: inline-block;
+          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                      color 0.4s ease,
+                      text-shadow 0.4s ease;
+          transform-style: preserve-3d;
+        }
+
+        body.dark-theme .text-3d-hover:hover .char {
+          color: #818cf8;
+          text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        body.dark-theme .text-3d-hover .char:hover {
+          transform: translateZ(30px) rotateX(10deg) rotateY(10deg) scale(1.2);
+          color: #a78bfa;
+          text-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
+        }
+
+        /* ─── LIGHT MODE (Normal, koi effect nahi) ─── */
+        body:not(.dark-theme) .text-3d-hover {
+          font-size: 3.8rem;
+          font-weight: 900;
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        body:not(.dark-theme) .text-3d-hover .char {
+          display: inline-block;
+          transition: none;
+        }
+
+        body:not(.dark-theme) .text-3d-hover:hover .char,
+        body:not(.dark-theme) .text-3d-hover .char:hover {
+          transform: none;
+          color: inherit;
+          text-shadow: none;
+        }
     </style>
 </head>
 <body class="rankly-bg">
