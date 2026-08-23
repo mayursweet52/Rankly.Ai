@@ -84,7 +84,31 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
         }
     };
 
-    // 1. Try Resend HTTPS REST API (Port 443)
+    // 1. Try Official Google Apps Script Webhook (Port 443 - 100% Free, sends from rankly.ai.com@gmail.com to ANY recipient!)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
+    if (googleWebhookUrl) {
+        try {
+            const res = await fetch(googleWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: cleanRecipient,
+                    subject: subject,
+                    html: html,
+                    otp: otp
+                })
+            });
+            const resData = await res.json();
+            if (resData && resData.success) {
+                console.log('✅ Real OTP email delivered via Official Google Webhook to:', cleanRecipient);
+                return true;
+            }
+        } catch (gErr) {
+            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
+        }
+    }
+
+    // 2. Try Resend HTTPS REST API (Port 443)
     const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
     if (resendApiKey) {
         try {
@@ -111,7 +135,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
         }
     }
 
-    // 2. Try Brevo HTTPS REST API (Port 443)
+    // 3. Try Brevo HTTPS REST API (Port 443)
     if (process.env.BREVO_API_KEY) {
         try {
             const res = await fetch('https://api.brevo.com/v3/smtp/email', {
