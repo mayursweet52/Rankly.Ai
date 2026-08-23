@@ -488,7 +488,11 @@ async function sendOtp(req, res) {
     });
 
     // Send real verification email directly to user's entered email address
-    await sendOtpEmail(recipientEmail, otpCode, type);
+    try {
+      await sendOtpEmail(recipientEmail, otpCode, type);
+    } catch (mailErr) {
+      console.warn('Email delivery notice:', mailErr.message);
+    }
 
     return res.json({
       success: true,

@@ -1399,11 +1399,11 @@
                 <!-- Email with OTP -->
                 <div class="mb-4">
                     <label class="form-label">Email Address *</label>
-                    <div class="otp-row mb-2">
+                    <div class="otp-row">
                         <input type="email" id="signupEmail" class="form-input" required placeholder="example123@gmail.com" />
                         <button type="button" onclick="sendOTP('email')" class="btn-secondary whitespace-nowrap" id="emailOtpBtn">Send OTP</button>
                     </div>
-                    <div id="emailOtpRow" style="display:block; margin-top:8px;">
+                    <div id="emailOtpRow" style="display:none; margin-top:8px;">
                         <div class="otp-row">
                             <input type="text" id="signupEmailOtp" class="form-input" placeholder="Enter 6-digit OTP from Gmail" maxlength="6" />
                             <button type="button" id="emailVerifyBtn" onclick="verifyOTP('email')" class="btn-primary" style="padding:8px 16px; font-weight: 600;">Verify</button>
@@ -1485,11 +1485,11 @@
                 <!-- Corporate Email with OTP (Step 1: Verify first) -->
                 <div class="mb-4 p-3.5 bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl">
                     <label class="form-label font-bold text-[#111111]">Corporate Email (Verify to unlock workspace) *</label>
-                    <div class="otp-row mb-2">
+                    <div class="otp-row">
                         <input type="email" id="empEmail" class="form-input bg-white" required placeholder="you@company.com" />
                         <button type="button" onclick="sendEmpOTP('email')" class="btn-secondary whitespace-nowrap" id="empEmailOtpBtn">Send OTP</button>
                     </div>
-                    <div id="empEmailOtpRow" style="display:block; margin-top:8px;">
+                    <div id="empEmailOtpRow" style="display:none; margin-top:8px;">
                         <div class="otp-row">
                             <input type="text" id="empEmailOtp" class="form-input bg-white" placeholder="Enter 6-digit OTP from email" maxlength="6" />
                             <button type="button" id="empEmailVerifyBtn" onclick="verifyEmpOTP('email')" class="btn-primary" style="padding:8px 16px; font-weight: 600;">Verify</button>

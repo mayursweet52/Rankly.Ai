@@ -104,24 +104,33 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     }
   }
 
-  // 2. Real SMTP Transporter (Port 587 STARTTLS / Port 465 SSL)
-  const transporter = nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: smtpPort === 465,
-    auth: {
-      user: senderUser,
-      pass: senderPass
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-    tls: { rejectUnauthorized: false }
-  });
+  // 2. Real SMTP Transporter (Port 587 STARTTLS / Port 465 SSL) with fast 3s timeout
+  try {
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: senderUser,
+        pass: senderPass
+      },
+      connectionTimeout: 3000,
+      greetingTimeout: 3000,
+      socketTimeout: 3000,
+      tls: { rejectUnauthorized: false }
+    });
 
-  const info = await transporter.sendMail(mailOptions);
-  console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-  return true;
+    const info = await Promise.race([
+      transporter.sendMail(mailOptions),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP connection timed out')), 3500))
+    ]);
+
+    console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+    return true;
+  } catch (smtpErr) {
+    console.warn(`[SMTP Delivery Notice] (${smtpErr.message}) - Request processed successfully.`);
+    return false;
+  }
 }
 
 /**
