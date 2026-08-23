@@ -75,7 +75,58 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     html
   };
 
-  // 1. Try Resend HTTPS REST API (Port 443 - Never blocked by Railway/Cloud firewalls)
+  // 1. Try Brevo HTTPS REST API (Free 300 emails/day to ANY recipient, Port 443)
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': process.env.BREVO_API_KEY.trim(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'Rankly.ai Security', email: 'rankly.ai.com@gmail.com' },
+          to: [{ email: cleanRecipient }],
+          subject: subject,
+          htmlContent: html
+        })
+      });
+      const resData = await res.json();
+      if (res.ok && (resData.messageId || resData.id)) {
+        console.log('✅ Real OTP email delivered via Brevo HTTPS API to:', cleanRecipient, 'ID:', resData.messageId || resData.id);
+        return true;
+      } else {
+        console.warn('[Brevo API Response]:', resData);
+      }
+    } catch (brevoErr) {
+      console.warn('[Brevo API Error]:', brevoErr.message);
+    }
+  }
+
+  // 2. Try Google Mail Apps Script Webhook (Port 443 - 100% Free, sends from rankly.ai.com@gmail.com to ANY email)
+  if (process.env.GOOGLE_MAIL_WEBHOOK_URL) {
+    try {
+      const res = await fetch(process.env.GOOGLE_MAIL_WEBHOOK_URL.trim(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: cleanRecipient,
+          subject: subject,
+          html: html,
+          otp: otpCode
+        })
+      });
+      const resData = await res.json();
+      if (resData.success) {
+        console.log('✅ Real OTP email delivered via Google Webhook to:', cleanRecipient);
+        return true;
+      }
+    } catch (gErr) {
+      console.warn('[Google Webhook Error]:', gErr.message);
+    }
+  }
+
+  // 3. Try Resend HTTPS REST API (Port 443 - Never blocked by Railway/Cloud firewalls)
   const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
   if (resendApiKey) {
     try {
