@@ -72,29 +72,59 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     html
   };
 
-  const transporter = getTransporter();
-  const info = await transporter.sendMail(mailOptions);
-  console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-  return true;
-}
+  // Try Port 587 with STARTTLS first, then Port 465 SSL
+  try {
+    const transporter587 = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: senderUser,
+        pass: (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim()
+      },
+      connectionTimeout: 4000,
+      greetingTimeout: 4000,
+      socketTimeout: 4000,
+      tls: { rejectUnauthorized: false }
+    });
 
-let cachedTransporter = null;
+    const info = await Promise.race([
+      transporter587.sendMail(mailOptions),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 587 timeout')), 4500))
+    ]);
 
-function getTransporter() {
-  if (cachedTransporter) return cachedTransporter;
+    console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+    return true;
+  } catch (err587) {
+    console.warn('[SMTP Port 587 Attempt Failed]:', err587.message, '- Trying Port 465...');
+    
+    try {
+      const transporter465 = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: senderUser,
+          pass: (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim()
+        },
+        connectionTimeout: 4000,
+        greetingTimeout: 4000,
+        socketTimeout: 4000,
+        tls: { rejectUnauthorized: false }
+      });
 
-  const user = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-  const pass = (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim();
+      const info465 = await Promise.race([
+        transporter465.sendMail(mailOptions),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 465 timeout')), 4500))
+      ]);
 
-  cachedTransporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user,
-      pass
+      console.log('✅ Real OTP email delivered via Port 465 to:', cleanRecipient, 'MessageId:', info465?.messageId || 'OK');
+      return true;
+    } catch (err465) {
+      console.warn(`[SMTP Warning] Network/Firewall blocked direct SMTP delivery (${err465.message}). OTP stored in database for ${cleanRecipient}: ${otpCode}`);
+      return false;
     }
-  });
-
-  return cachedTransporter;
+  }
 }
 
 /**
