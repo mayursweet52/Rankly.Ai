@@ -176,7 +176,20 @@ async function connectDatabase() {
       );
     `);
 
-    console.log('✅ SQLite Schema Tables (User, OTP, Evaluation, Candidate, etc.) initialized & verified.');
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Feedback" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "userId" TEXT,
+        "name" TEXT,
+        "email" TEXT,
+        "rating" INTEGER DEFAULT 5,
+        "category" TEXT NOT NULL DEFAULT 'general',
+        "message" TEXT NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    console.log('✅ SQLite Schema Tables (User, OTP, Evaluation, Candidate, Feedback, etc.) initialized & verified.');
   } catch (error) {
     console.error('❌ Failed to connect/initialize SQLite database:', error.message);
   }

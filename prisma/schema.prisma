@@ -43,6 +43,7 @@ model User {
   evaluations      Evaluation[]
   candidates       Candidate[]
   chatMessages     ChatMessage[]
+  feedbacks        Feedback[]
   createdReferrals ReferralCode[] @relation("CreatedReferrals")
   administeredOrgs Organization[] @relation("AdminOrgs")
 
@@ -206,3 +207,19 @@ model TeamInvitation {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
+
+// ---------------------------------------------------------
+// Feedback Model (For User & Recruiter Feedback)
+// ---------------------------------------------------------
+model Feedback {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name      String?
+  email     String?
+  rating    Int?     @default(5)
+  category  String   @default("general") // "general" | "bug" | "feature" | "ui_ux"
+  message   String
+  createdAt DateTime @default(now())
+}
+

@@ -1653,6 +1653,79 @@
         </div>
     </div>
 
+    <!-- ─── USER FEEDBACK MODAL ─── -->
+    <div id="feedbackModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeFeedbackModal()">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-gray-900 m-0">Send Us Feedback</h3>
+                        <p class="text-xs text-gray-500 m-0">Help us improve Rankly.ai for everyone</p>
+                    </div>
+                </div>
+                <button type="button" class="text-gray-400 hover:text-gray-600 text-lg leading-none" onclick="closeFeedbackModal()">×</button>
+            </div>
+
+            <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                <!-- Feedback Category -->
+                <div class="mb-3">
+                    <label class="form-label text-xs font-semibold text-gray-700">Category</label>
+                    <select id="feedbackCategory" class="form-input text-sm">
+                        <option value="general">✨ General Feedback</option>
+                        <option value="feature">💡 Feature Request</option>
+                        <option value="bug">🐛 Bug / Issue Report</option>
+                        <option value="ui_ux">🎨 UI / UX Experience</option>
+                        <option value="performance">⚡ Performance / Speed</option>
+                    </select>
+                </div>
+
+                <!-- Rating -->
+                <div class="mb-3">
+                    <label class="form-label text-xs font-semibold text-gray-700">How would you rate your experience?</label>
+                    <div class="flex items-center gap-2 mt-1" id="starRatingContainer">
+                        <button type="button" class="star-btn text-2xl text-amber-400 focus:outline-none transition-transform hover:scale-110" onclick="setFeedbackRating(1)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn text-2xl text-amber-400 focus:outline-none transition-transform hover:scale-110" onclick="setFeedbackRating(2)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn text-2xl text-amber-400 focus:outline-none transition-transform hover:scale-110" onclick="setFeedbackRating(3)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn text-2xl text-amber-400 focus:outline-none transition-transform hover:scale-110" onclick="setFeedbackRating(4)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn text-2xl text-amber-400 focus:outline-none transition-transform hover:scale-110" onclick="setFeedbackRating(5)"><i class="fas fa-star"></i></button>
+                        <span class="text-xs font-semibold text-gray-500 ml-2" id="feedbackRatingLabel">5 / 5 - Excellent</span>
+                    </div>
+                    <input type="hidden" id="feedbackRating" value="5" />
+                </div>
+
+                <!-- Name & Email -->
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label text-xs font-semibold text-gray-700">Your Name</label>
+                        <input type="text" id="feedbackName" class="form-input text-sm" placeholder="Optional" />
+                    </div>
+                    <div>
+                        <label class="form-label text-xs font-semibold text-gray-700">Your Email</label>
+                        <input type="email" id="feedbackEmail" class="form-input text-sm" placeholder="Optional" />
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="mb-4">
+                    <label class="form-label text-xs font-semibold text-gray-700">Your Feedback *</label>
+                    <textarea id="feedbackMessage" class="form-input text-sm" rows="3" required placeholder="What do you like, or what would you like to see improved?"></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="modal-actions flex justify-end gap-2">
+                    <button type="button" class="btn-secondary text-sm" onclick="closeFeedbackModal()">Cancel</button>
+                    <button type="submit" class="btn-primary text-sm flex items-center gap-2" id="submitFeedbackBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Submit Feedback</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ─── DASHBOARD WORKSPACE (Rankly.ai Branded) ─── -->
     <div class="page" id="dashboardPage" style="display:none;">
         <div class="dash-layout">
@@ -1689,7 +1762,7 @@
                     <!-- Dynamic Navigation Items with Active Dot generated by setupDashboardForRole() -->
                 </nav>
 
-                <!-- Bottom User Card with Pill & Sign Out Button -->
+                <!-- Bottom User Card with Feedback & Sign Out Button -->
                 <div class="p-6 mt-auto border-t border-[#E5E5DF]">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="user-avatar" id="dashAvatar">G</div>
@@ -1698,6 +1771,13 @@
                             <span class="tag-pill tag-pill-coral mt-1" id="dashRoleBadge">NORMAL</span>
                         </div>
                     </div>
+                    
+                    <!-- Feedback Button -->
+                    <button onclick="openFeedbackModal()" class="flex items-center gap-2 text-[#666660] hover:text-[#4F46E5] w-full py-2 mb-2 text-sm font-medium transition-colors" style="cursor: pointer; background: transparent; border: none;">
+                        <i class="fas fa-comment-alt text-indigo-500"></i> 
+                        <span>Feedback</span>
+                    </button>
+                    
                     <button class="btn-signout" onclick="logoutUser()">
                         <i class="fas fa-arrow-right-from-bracket"></i> SIGN OUT
                     </button>
@@ -3029,6 +3109,106 @@
                 updateDashboard();
                 switchTab('dashboard');
             }
+
+            window.openFeedbackModal = function() {
+                const modal = document.getElementById('feedbackModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    if (window.currentUser) {
+                        const nameInput = document.getElementById('feedbackName');
+                        const emailInput = document.getElementById('feedbackEmail');
+                        if (nameInput && !nameInput.value) {
+                            nameInput.value = `${window.currentUser.fname || ''} ${window.currentUser.lname || ''}`.trim() || window.currentUser.username || '';
+                        }
+                        if (emailInput && !emailInput.value) {
+                            emailInput.value = window.currentUser.email || '';
+                        }
+                    }
+                }
+            };
+
+            window.closeFeedbackModal = function() {
+                const modal = document.getElementById('feedbackModal');
+                if (modal) modal.style.display = 'none';
+            };
+
+            window.setFeedbackRating = function(rating) {
+                const ratingInput = document.getElementById('feedbackRating');
+                const label = document.getElementById('feedbackRatingLabel');
+                const stars = document.querySelectorAll('#starRatingContainer .star-btn i');
+                if (ratingInput) ratingInput.value = rating;
+
+                const ratingTexts = {
+                    1: '1 / 5 - Needs Improvement',
+                    2: '2 / 5 - Fair',
+                    3: '3 / 5 - Good',
+                    4: '4 / 5 - Very Good',
+                    5: '5 / 5 - Excellent'
+                };
+                if (label) label.textContent = ratingTexts[rating] || `${rating} / 5`;
+
+                stars.forEach((star, idx) => {
+                    if (idx < rating) {
+                        star.className = 'fas fa-star';
+                        star.style.color = '#F59E0B';
+                    } else {
+                        star.className = 'far fa-star';
+                        star.style.color = '#D1D5DB';
+                    }
+                });
+            };
+
+            window.submitFeedback = async function(e) {
+                if (e) e.preventDefault();
+                const btn = document.getElementById('submitFeedbackBtn');
+                const messageInput = document.getElementById('feedbackMessage');
+                const categoryInput = document.getElementById('feedbackCategory');
+                const ratingInput = document.getElementById('feedbackRating');
+                const nameInput = document.getElementById('feedbackName');
+                const emailInput = document.getElementById('feedbackEmail');
+
+                if (!messageInput || !messageInput.value.trim()) {
+                    showToast('Please enter your feedback message.', 'error');
+                    return;
+                }
+
+                const payload = {
+                    message: messageInput.value.trim(),
+                    category: categoryInput ? categoryInput.value : 'general',
+                    rating: ratingInput ? parseInt(ratingInput.value, 10) : 5,
+                    name: nameInput ? nameInput.value.trim() : '',
+                    email: emailInput ? emailInput.value.trim() : ''
+                };
+
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                }
+
+                try {
+                    const res = await fetch('/api/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        showToast('Thank you! Your feedback has been received.', 'success');
+                        messageInput.value = '';
+                        closeFeedbackModal();
+                    } else {
+                        showToast(data.message || 'Failed to submit feedback', 'error');
+                    }
+                } catch (err) {
+                    showToast('Error submitting feedback: ' + err.message, 'error');
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Feedback';
+                    }
+                }
+            };
 
             window.logoutUser = function() {
                 fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});

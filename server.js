@@ -119,6 +119,54 @@ app.delete('/api/candidates/:id', async (req, res) => {
   }
 });
 
+// -----------------------------------------------------------------------------
+// Feedback API (Collect user thoughts, bug reports, feature requests)
+// -----------------------------------------------------------------------------
+app.post(['/api/feedback', '/api/user/feedback'], async (req, res) => {
+  try {
+    const { message, category = 'general', rating = 5, email, name } = req.body;
+    if (!message || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'Feedback message is required.' });
+    }
+
+    const userId = req.session && req.session.userId ? req.session.userId : null;
+    const sessionEmail = req.session && req.session.user ? req.session.user.email : null;
+    const sessionName = req.session && req.session.user ? `${req.session.user.fname || ''} ${req.session.user.lname || ''}`.trim() : null;
+
+    const feedback = await prisma.feedback.create({
+      data: {
+        userId,
+        name: name || sessionName || 'Anonymous',
+        email: email || sessionEmail || null,
+        category: String(category).toLowerCase(),
+        rating: Number(rating) || 5,
+        message: message.trim()
+      }
+    });
+
+    return res.json({
+      success: true,
+      message: 'Thank you for your feedback! It helps us make Rankly.ai better.',
+      feedbackId: feedback.id
+    });
+  } catch (err) {
+    console.error('Feedback Submission Error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to record feedback: ' + err.message });
+  }
+});
+
+app.get('/api/feedback', async (req, res) => {
+  try {
+    const feedbacks = await prisma.feedback.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 50
+    });
+    return res.json({ success: true, count: feedbacks.length, feedbacks });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ─── AI STATUS CHECK (10 PROVIDERS) ───
 app.get('/api/ai/status', async (req, res) => {
   const results = {};
