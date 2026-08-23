@@ -1139,10 +1139,190 @@
             .login-card { padding: 32px 20px; }
         }
 
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D5D5CF; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #AAAAA5; }
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* EXECUTIVE RESEND-STYLE PITCH BLACK DARK THEME                   */
+        /* ═══════════════════════════════════════════════════════════════ */
+        body.dark-theme {
+            background: #000000 !important;
+            color: #EDEDED !important;
+        }
+        body.dark-theme #loginPage {
+            background: radial-gradient(circle at 85% 15%, rgba(50, 50, 60, 0.45) 0%, transparent 55%),
+                        radial-gradient(circle at 10% 85%, rgba(35, 35, 42, 0.4) 0%, transparent 50%),
+                        #000000 !important;
+        }
+
+        /* 3D Movable Logo Tilt Container */
+        .rankly-3d-logo-wrapper {
+            display: inline-block;
+            perspective: 800px;
+            transform-style: preserve-3d;
+            transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .rankly-3d-logo-glow {
+            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45)) drop-shadow(0 0 24px rgba(249, 115, 22, 0.25));
+            animation: logoAmbientGlow 4s ease-in-out infinite alternate;
+        }
+        @keyframes logoAmbientGlow {
+            0% { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 16px rgba(249, 115, 22, 0.2)); }
+            100% { filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.65)) drop-shadow(0 0 30px rgba(249, 115, 22, 0.4)); }
+        }
+
+        /* Transparent Frameless Minimalist Login Card (Resend Style) */
+        body.dark-theme .login-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            padding: 16px 0 !important;
+            max-width: 420px !important;
+        }
+        body.dark-theme .login-card h1 {
+            color: #FFFFFF !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.02em !important;
+        }
+        body.dark-theme .login-tabs {
+            border-bottom: 1px solid #222226 !important;
+        }
+        body.dark-theme .login-tab {
+            color: #71717A !important;
+        }
+        body.dark-theme .login-tab.active {
+            color: #FFFFFF !important;
+            border-bottom-color: #FFFFFF !important;
+        }
+        body.dark-theme .login-tab:hover:not(.active) {
+            color: #A1A1AA !important;
+        }
+
+        /* Dark Translucent Input Box */
+        body.dark-theme .cohere-input-box {
+            background: #0E0E10 !important;
+            border: 1px solid #222226 !important;
+            border-radius: 12px !important;
+        }
+        body.dark-theme .cohere-input-box:focus-within {
+            border-color: #52525B !important;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .cohere-field:not(:last-child) {
+            border-bottom: 1px solid #1A1A1E !important;
+        }
+        body.dark-theme .cohere-field label {
+            color: #71717A !important;
+        }
+        body.dark-theme .cohere-field input {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .cohere-field input::placeholder {
+            color: #52525B !important;
+        }
+
+        /* Buttons in Dark Mode */
+        body.dark-theme .btn-cohere-submit {
+            background: #18181B !important;
+            border: 1px solid #27272A !important;
+            color: #FFFFFF !important;
+            border-radius: 10px !important;
+        }
+        body.dark-theme .btn-cohere-submit:hover {
+            background: #27272A !important;
+            border-color: #3F3F46 !important;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05) !important;
+        }
+        body.dark-theme .oauth-btn {
+            background: #0E0E10 !important;
+            border: 1px solid #222226 !important;
+            color: #D4D4D8 !important;
+            border-radius: 10px !important;
+        }
+        body.dark-theme .oauth-btn:hover {
+            background: #18181B !important;
+            border-color: #3F3F46 !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .oauth-btn i.fa-github {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme #loginPage header button {
+            color: #E4E4E7 !important;
+            background: #121214 !important;
+            border-color: #27272A !important;
+        }
+        body.dark-theme #loginPage header span {
+            color: #FFFFFF !important;
+        }
+
+        /* Dim 3D pebbles in dark mode */
+        body.dark-theme .pebble-cluster-bottom-left,
+        body.dark-theme .pebble-floating-top-right,
+        body.dark-theme .pebble-floating-mid-right {
+            opacity: 0.12 !important;
+            filter: grayscale(1) contrast(1.4) !important;
+        }
+
+        /* Dashboard Obsidian Dark Theme */
+        body.dark-theme .dash-layout {
+            background: #000000 !important;
+        }
+        body.dark-theme .dash-sidebar {
+            background: #09090B !important;
+            border-right-color: #1A1A1E !important;
+        }
+        body.dark-theme .dash-topbar {
+            background: #09090B !important;
+            border-bottom-color: #1A1A1E !important;
+        }
+        body.dark-theme .dash-main {
+            background: #000000 !important;
+        }
+        body.dark-theme .card,
+        body.dark-theme .stat-card {
+            background: #0D0D0E !important;
+            border-color: #1A1A1E !important;
+            color: #EDEDED !important;
+        }
+        body.dark-theme .card-title,
+        body.dark-theme .stat-value,
+        body.dark-theme #dashPageTitle,
+        body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4 {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .nav-item {
+            color: #71717A !important;
+        }
+        body.dark-theme .nav-item.active {
+            color: #FFFFFF !important;
+            background: #141416 !important;
+        }
+        body.dark-theme .upload-zone {
+            background: #0A0A0C !important;
+            border-color: #222226 !important;
+        }
+        body.dark-theme .upload-zone:hover {
+            border-color: #D95D39 !important;
+            background: #120F0E !important;
+        }
+        body.dark-theme .modal-box {
+            background: #0D0D0E !important;
+            border-color: #27272A !important;
+            color: #EDEDED !important;
+        }
+        body.dark-theme .form-input,
+        body.dark-theme select.form-input {
+            background: #141416 !important;
+            border-color: #27272A !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .security-verification-card {
+            background: #141416 !important;
+            border-color: #27272A !important;
+        }
+        body.dark-theme .security-label-text {
+            color: #E4E4E7 !important;
+        }
     </style>
 </head>
 <body class="rankly-bg">
@@ -1154,33 +1334,52 @@
     <div id="loginPage" style="min-height:100vh; display:flex; flex-direction:column; justify-content:space-between; padding:24px 32px; position:relative; overflow:hidden;">
         <!-- Top Navigation Header -->
         <header class="w-full flex justify-between items-center z-10">
-            <div class="flex items-center gap-2.5">
-                <!-- Custom Gradient Emblem Logo for Rankly.ai -->
-                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                    <defs>
-                        <linearGradient id="rankly-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#B588F7"/>
-                            <stop offset="100%" stop-color="#8E65DF"/>
+            <div class="flex items-center gap-3 cursor-pointer select-none" id="loginLogoWrapper">
+                <!-- 3D Movable Logo for Rankly.ai -->
+                <div class="rankly-3d-logo-wrapper" id="rankly3dLogoHolder">
+                    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg rankly-3d-logo-glow flex-shrink-0">
+                      <defs>
+                        <linearGradient id="r3d-base-h" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#282830"/>
+                          <stop offset="50%" stop-color="#16161A"/>
+                          <stop offset="100%" stop-color="#0A0A0D"/>
                         </linearGradient>
-                        <linearGradient id="rankly-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#FFA14A"/>
-                            <stop offset="100%" stop-color="#F06A4A"/>
+                        <linearGradient id="r3d-rim-h" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+                          <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+                          <stop offset="100%" stop-color="#000000" stop-opacity="0.8"/>
                         </linearGradient>
-                        <linearGradient id="rankly-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#81E4DA"/>
-                            <stop offset="100%" stop-color="#45A89E"/>
+                        <linearGradient id="r3d-violet-h" x1="16" y1="12" x2="48" y2="38" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#D8B4FE"/>
+                          <stop offset="30%" stop-color="#A855F7"/>
+                          <stop offset="100%" stop-color="#6B21A8"/>
                         </linearGradient>
-                    </defs>
-                    <rect width="32" height="32" rx="8" fill="#111111" />
-                    <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-g1)"/>
-                    <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-                    <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-g2)"/>
-                    <circle cx="24" cy="8" r="3" fill="url(#rankly-g3)" />
-                </svg>
-                <span class="font-extrabold text-xl tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span></span>
+                        <linearGradient id="r3d-coral-h" x1="28" y1="32" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#FDBA74"/>
+                          <stop offset="40%" stop-color="#FB923C"/>
+                          <stop offset="100%" stop-color="#EA580C"/>
+                        </linearGradient>
+                        <linearGradient id="r3d-gem-h" x1="42" y1="10" x2="54" y2="22" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#5EEAD4"/>
+                          <stop offset="50%" stop-color="#14B8A6"/>
+                          <stop offset="100%" stop-color="#0F766E"/>
+                        </linearGradient>
+                      </defs>
+                      <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base-h)" stroke="url(#r3d-rim-h)" stroke-width="1.5" />
+                      <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+                      <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet-h)"/>
+                      <circle cx="32" cy="23.5" r="4" fill="#FFFFFF" opacity="0.95"/>
+                      <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral-h)"/>
+                      <circle cx="48" cy="14" r="5" fill="url(#r3d-gem-h)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="font-extrabold text-xl tracking-tight text-[#111111]" id="brandTextTitle">Rankly<span class="text-[#D95D39]">.ai</span></span>
             </div>
-            <div>
-                <button onclick="openModal('signupModal')" class="text-sm font-semibold text-[#111111] hover:text-[#444440] px-3.5 py-1.5 rounded-lg transition-all">Sign Up</button>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="toggleAppTheme()" class="theme-quick-btn flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5DF] text-[#111111] hover:border-[#111111] transition-all" id="loginThemeToggleBtn" title="Toggle Light / Dark Mode">
+                    <i class="fas fa-moon text-sm"></i> <span>Dark</span>
+                </button>
+                <button onclick="openModal('signupModal')" class="text-sm font-semibold text-[#111111] hover:text-[#444440] px-3.5 py-1.5 rounded-lg transition-all border border-transparent hover:border-[#E5E5DF]">Sign Up</button>
             </div>
         </header>
 
@@ -1203,6 +1402,15 @@
         <div class="w-full flex justify-center items-center my-auto z-10">
             <div class="login-card">
                 <div class="text-center mb-6">
+                    <div class="inline-block rankly-3d-logo-wrapper mb-3" id="loginCenter3dLogo">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg rankly-3d-logo-glow">
+                          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base-h)" stroke="url(#r3d-rim-h)" stroke-width="1.5" />
+                          <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet-h)"/>
+                          <circle cx="32" cy="23.5" r="4" fill="#FFFFFF" opacity="0.95"/>
+                          <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral-h)"/>
+                          <circle cx="48" cy="14" r="5" fill="url(#r3d-gem-h)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                        </svg>
+                    </div>
                     <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111]">Log in</h1>
                 </div>
 
@@ -4435,15 +4643,48 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (theme === 'dark') {
                         document.body.classList.add('dark-theme');
                         localStorage.setItem('rankly_theme', 'dark');
-                        showToast('🌙 Dark Mode Enabled', 'info');
+                        const loginBtn = document.getElementById('loginThemeToggleBtn');
+                        if (loginBtn) loginBtn.innerHTML = '<i class="fas fa-sun text-amber-400 text-sm"></i> <span>Light</span>';
+                        const themeLabel = document.getElementById('currentThemeLabel');
+                        if (themeLabel) themeLabel.textContent = 'DARK MODE';
+                        showToast('🌙 Executive Dark Theme Activated', 'info');
                     } else {
                         document.body.classList.remove('dark-theme');
                         localStorage.setItem('rankly_theme', 'light');
-                        showToast('☀️ Light Mode Enabled', 'info');
+                        const loginBtn = document.getElementById('loginThemeToggleBtn');
+                        if (loginBtn) loginBtn.innerHTML = '<i class="fas fa-moon text-sm"></i> <span>Dark</span>';
+                        const themeLabel = document.getElementById('currentThemeLabel');
+                        if (themeLabel) themeLabel.textContent = 'LIGHT MODE';
+                        showToast('☀️ Clean Light Theme Activated', 'info');
                     }
-                    const themeLabel = document.getElementById('currentThemeLabel');
-                    if (themeLabel) themeLabel.textContent = theme.toUpperCase() + ' MODE';
                 };
+
+                // Initialize saved theme on load
+                const initialSavedTheme = localStorage.getItem('rankly_theme');
+                if (initialSavedTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    const loginBtn = document.getElementById('loginThemeToggleBtn');
+                    if (loginBtn) loginBtn.innerHTML = '<i class="fas fa-sun text-amber-400 text-sm"></i> <span>Light</span>';
+                    const themeLabel = document.getElementById('currentThemeLabel');
+                    if (themeLabel) themeLabel.textContent = 'DARK MODE';
+                }
+
+                // 3D Movable Logo Mouse Tracking Physics
+                document.addEventListener('mousemove', (e) => {
+                    const wrappers = document.querySelectorAll('.rankly-3d-logo-wrapper');
+                    if (!wrappers.length) return;
+                    
+                    const { clientX, clientY } = e;
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2;
+                    
+                    const tiltX = Math.max(-25, Math.min(25, ((clientY - centerY) / centerY) * -20));
+                    const tiltY = Math.max(-25, Math.min(25, ((clientX - centerX) / centerX) * 20));
+                    
+                    wrappers.forEach(w => {
+                        w.style.transform = `perspective(800px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) scale3d(1.05, 1.05, 1.05)`;
+                    });
+                });
 
                 window.connectLinkedIn = function() {
                     showToast('🔗 LinkedIn Profile: Account verified & connected!', 'success');
