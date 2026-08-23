@@ -1,0 +1,767 @@
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T20:01:46.744Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T20:01:46.746Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T20:01:46.747Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T20:01:46.748Z"}
+{"details":"FormatError: bad XRef entry","level":"error","message":"PDF parsing error for test_resume.pdf: bad XRef entry","name":"UnknownErrorException","stack":"Error\n    at UnknownErrorExceptionClosure (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:443:37)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:446:2)\n    at __w_pdfjs_require__ (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:45:30)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:7939:23)\n    at __w_pdfjs_require__ (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:45:30)\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:88:18\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:91:10\n    at webpackUniversalModuleDefinition (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:18:20)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:25:3)\n    at Module._compile (node:internal/modules/cjs/loader:1871:14)","timestamp":"2026-08-18T20:02:01.633Z"}
+{"level":"info","message":"Upload test_upload_1 completed: 1 candidates processed.","timestamp":"2026-08-18T20:02:02.928Z"}
+{"level":"info","message":"Socket connected: 6d-crJh5XGyd9z0bAAAB","timestamp":"2026-08-18T20:05:30.909Z"}
+{"level":"info","message":"Client disconnected: 6d-crJh5XGyd9z0bAAAB (transport close)","timestamp":"2026-08-18T20:05:58.304Z"}
+{"details":"FormatError: bad XRef entry","level":"error","message":"PDF parsing error for sarah_connor.pdf: bad XRef entry","name":"UnknownErrorException","stack":"Error\n    at UnknownErrorExceptionClosure (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:443:37)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:446:2)\n    at __w_pdfjs_require__ (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:45:30)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:7939:23)\n    at __w_pdfjs_require__ (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:45:30)\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:88:18\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:91:10\n    at webpackUniversalModuleDefinition (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:18:20)\n    at Object.<anonymous> (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\pdf-parse\\lib\\pdf.js\\v1.10.100\\build\\pdf.js:25:3)\n    at Module._compile (node:internal/modules/cjs/loader:1871:14)","timestamp":"2026-08-18T20:11:14.983Z"}
+{"level":"info","message":"Upload upload_sarah_1 completed: 1 candidates processed.","timestamp":"2026-08-18T20:11:24.016Z"}
+{"level":"info","message":"Socket connected: oJEtNWsvMTDz68nEAAAD","timestamp":"2026-08-18T20:11:50.351Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T20:16:35.009Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T20:16:35.012Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T20:16:35.012Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T20:16:35.014Z"}
+{"level":"info","message":"Socket connected: TORugoYJKzGvPDl-AAAB","timestamp":"2026-08-18T20:16:39.948Z"}
+{"level":"info","message":"Upload upload_multiformat_test completed: 2 candidates processed.","timestamp":"2026-08-18T20:17:16.380Z"}
+{"level":"info","message":"Client disconnected: TORugoYJKzGvPDl-AAAB (transport close)","timestamp":"2026-08-18T20:23:27.415Z"}
+{"level":"info","message":"Socket connected: 2FxgPD92aHsZL10jAAAD","timestamp":"2026-08-18T20:23:27.831Z"}
+{"level":"info","message":"Client disconnected: 2FxgPD92aHsZL10jAAAD (transport close)","timestamp":"2026-08-18T20:23:30.530Z"}
+{"level":"info","message":"Socket connected: LumZ7ZafvHAqaFWKAAAF","timestamp":"2026-08-18T20:23:30.614Z"}
+{"level":"info","message":"Client disconnected: LumZ7ZafvHAqaFWKAAAF (transport close)","timestamp":"2026-08-18T20:30:54.410Z"}
+{"level":"info","message":"Socket connected: xS8PVsRfawdqtEHJAAAH","timestamp":"2026-08-18T20:30:54.867Z"}
+{"level":"info","message":"Client disconnected: xS8PVsRfawdqtEHJAAAH (transport close)","timestamp":"2026-08-18T20:38:30.316Z"}
+{"level":"info","message":"Socket connected: 7SgRBZaZer1rl8qcAAAJ","timestamp":"2026-08-18T20:38:30.505Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T20:46:27.865Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T20:46:27.869Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T20:46:27.870Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T20:46:27.874Z"}
+{"level":"info","message":"Socket connected: eRVSngb1se0ax3I1AAAB","timestamp":"2026-08-18T20:46:27.957Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T20:46:39.560Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T20:46:39.562Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T20:46:39.562Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T20:46:39.564Z"}
+{"level":"info","message":"Socket connected: TPuG2lbwu7NrceD2AAAB","timestamp":"2026-08-18T20:46:39.941Z"}
+{"level":"info","message":"✓ Google OAuth strategy active (Callback: http://localhost:3000/auth/google/callback)","timestamp":"2026-08-18T22:26:23.678Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active (Callback: http://localhost:3000/auth/facebook/callback)","timestamp":"2026-08-18T22:26:23.682Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T22:26:23.704Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T22:26:23.705Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T22:26:23.705Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T22:26:23.707Z"}
+{"level":"info","message":"Socket connected: aMEAyVh1YU67zxSbAAAB","timestamp":"2026-08-18T22:26:28.308Z"}
+{"level":"info","message":"Client disconnected: aMEAyVh1YU67zxSbAAAB (transport close)","timestamp":"2026-08-18T22:28:08.147Z"}
+{"level":"info","message":"Socket connected: zoOsVyLcth2CKKw7AAAD","timestamp":"2026-08-18T22:28:08.543Z"}
+{"level":"info","message":"Socket connected: yEkNZ7BLz3eL4zceAAAF","timestamp":"2026-08-18T22:28:17.436Z"}
+{"level":"info","message":"Client disconnected: zoOsVyLcth2CKKw7AAAD (ping timeout)","timestamp":"2026-08-18T22:28:53.556Z"}
+{"level":"info","message":"Client disconnected: yEkNZ7BLz3eL4zceAAAF (transport close)","timestamp":"2026-08-18T22:30:11.283Z"}
+{"level":"info","message":"Socket connected: ZSLDakbKTdTld_XGAAAH","timestamp":"2026-08-18T22:30:11.645Z"}
+{"level":"info","message":"Socket connected: GbMT-JbqUN1uOszbAAAJ","timestamp":"2026-08-18T22:30:23.729Z"}
+{"level":"info","message":"Client disconnected: ZSLDakbKTdTld_XGAAAH (transport close)","timestamp":"2026-08-18T22:30:25.947Z"}
+{"level":"info","message":"Client disconnected: GbMT-JbqUN1uOszbAAAJ (transport close)","timestamp":"2026-08-18T22:30:27.506Z"}
+{"level":"info","message":"Socket connected: W-mEjBhPaGkQYr9cAAAL","timestamp":"2026-08-18T22:30:27.764Z"}
+{"level":"info","message":"Client disconnected: W-mEjBhPaGkQYr9cAAAL (transport close)","timestamp":"2026-08-18T22:30:29.968Z"}
+{"level":"info","message":"Socket connected: wt1GvqVHZOMPwKnNAAAN","timestamp":"2026-08-18T22:30:35.117Z"}
+{"level":"info","message":"✓ Google OAuth strategy active (Callback: http://localhost:3000/auth/google/callback)","timestamp":"2026-08-18T22:44:13.353Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active (Callback: http://localhost:3000/auth/facebook/callback)","timestamp":"2026-08-18T22:44:13.355Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T22:44:13.371Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T22:44:13.372Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T22:44:13.372Z"}
+{"level":"info","message":"🛡️ RBAC & 3-Day Admin Approvals active","timestamp":"2026-08-18T22:44:13.372Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T22:44:13.373Z"}
+{"level":"info","message":"Socket connected: SmTOqsXMq6HrNChaAAAB","timestamp":"2026-08-18T22:44:18.947Z"}
+{"level":"info","message":"Invitation created for candidate_test_1787093073411@example.com by Lead Executive Admin (Expires: 2026-08-21T22:44:33.414Z)","timestamp":"2026-08-18T22:44:33.418Z"}
+{"level":"info","message":"Admin approved member: candidate_test_1787093073411@example.com as hr","timestamp":"2026-08-18T22:44:33.439Z"}
+{"level":"info","message":"Invitation created for candidate_test_1787093083141@example.com by Lead Executive Admin (Expires: 2026-08-21T22:44:43.142Z)","timestamp":"2026-08-18T22:44:43.146Z"}
+{"level":"info","message":"Admin approved member: candidate_test_1787093083141@example.com as hr","timestamp":"2026-08-18T22:44:43.165Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=local_726576696577, role=jr_manager, required=admin,hr","timestamp":"2026-08-18T22:44:47.704Z"}
+{"code":"SQLITE_ERROR","errno":1,"level":"error","message":"Database insert error: SQLITE_ERROR: table candidates has no column named keyStrengths","stack":"Error: SQLITE_ERROR: table candidates has no column named keyStrengths","timestamp":"2026-08-18T22:44:53.561Z"}
+{"level":"info","message":"Upload test_1787093083171 completed: 0 candidates processed for user invited_7d21913f.","timestamp":"2026-08-18T22:44:53.562Z"}
+{"level":"info","message":"Invitation created for candidate_test_1787093104218@example.com by Lead Executive Admin (Expires: 2026-08-21T22:45:04.220Z)","timestamp":"2026-08-18T22:45:04.223Z"}
+{"level":"info","message":"Admin approved member: candidate_test_1787093104218@example.com as hr","timestamp":"2026-08-18T22:45:04.242Z"}
+{"level":"info","message":"Upload test_1787093104248 completed: 1 candidates processed for user invited_730fc976.","timestamp":"2026-08-18T22:45:05.441Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=local_726576696577, role=jr_manager, required=admin,hr","timestamp":"2026-08-18T22:45:08.767Z"}
+{"level":"info","message":"Client disconnected: SmTOqsXMq6HrNChaAAAB (transport close)","timestamp":"2026-08-18T22:46:07.941Z"}
+{"level":"info","message":"Socket connected: fRCsQN9YMJ-3X7nxAAAD","timestamp":"2026-08-18T22:46:08.268Z"}
+{"level":"info","message":"Socket connected: gNEya6V1HqvoKS_fAAAF","timestamp":"2026-08-18T22:46:16.093Z"}
+{"level":"info","message":"Client disconnected: fRCsQN9YMJ-3X7nxAAAD (ping timeout)","timestamp":"2026-08-18T22:46:53.258Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-18T22:47:52.639Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-18T22:47:59.547Z"}
+{"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-18T22:50:31.297Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-18T22:50:31.299Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T22:50:31.315Z"}
+{"level":"info","message":"🔑 API Key required: rankly-secret-key","timestamp":"2026-08-18T22:50:31.315Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T22:50:31.315Z"}
+{"level":"info","message":"🛡️ RBAC & 3-Day Admin Approvals active","timestamp":"2026-08-18T22:50:31.315Z"}
+{"level":"info","message":"✨ AI Copilot Studio endpoint: /api/ai/studio-chat active","timestamp":"2026-08-18T22:50:31.315Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T22:50:31.316Z"}
+{"level":"info","message":"Socket connected: xaVJJ24RxYp5FlVLAAAB","timestamp":"2026-08-18T22:50:31.508Z"}
+{"level":"info","message":"Client disconnected: xaVJJ24RxYp5FlVLAAAB (transport close)","timestamp":"2026-08-18T22:53:42.452Z"}
+{"level":"info","message":"Socket connected: Lh5ivQ_FUBoCTxY4AAAD","timestamp":"2026-08-18T22:53:42.735Z"}
+{"level":"info","message":"Invitation created for mayursweet416@gmail.com by Lead Executive Admin (Expires: 2026-08-21T22:54:55.901Z)","timestamp":"2026-08-18T22:54:55.913Z"}
+{"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-18T22:57:49.534Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-18T22:57:49.535Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T22:57:49.551Z"}
+{"level":"info","message":"🔑 API Key: rankly-secret-key","timestamp":"2026-08-18T22:57:49.551Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T22:57:49.551Z"}
+{"level":"info","message":"✨ Unified Registration & Profile Onboarding active","timestamp":"2026-08-18T22:57:49.551Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T22:57:49.552Z"}
+{"level":"info","message":"Socket connected: dXv-oqYPjRYRLr2oAAAB","timestamp":"2026-08-18T22:57:49.762Z"}
+{"level":"info","message":"Profile onboarding completed for user local_746563682e72 (tech.recruiter.1787093885273@nexustech.io)","timestamp":"2026-08-18T22:58:05.329Z"}
+{"level":"info","message":"Client disconnected: dXv-oqYPjRYRLr2oAAAB (transport close)","timestamp":"2026-08-18T22:59:07.031Z"}
+{"level":"info","message":"Socket connected: LDC2HkL8cohmq4L-AAAD","timestamp":"2026-08-18T22:59:07.537Z"}
+{"level":"info","message":"Socket connected: bOn67wxjCU9loTsDAAAF","timestamp":"2026-08-18T23:00:13.160Z"}
+{"level":"info","message":"Client disconnected: LDC2HkL8cohmq4L-AAAD (ping timeout)","timestamp":"2026-08-18T23:00:42.542Z"}
+{"level":"info","message":"Profile onboarding completed for user google_116682905356385489710 (mayursweet52@gmail.com)","timestamp":"2026-08-18T23:00:47.103Z"}
+{"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-18T23:03:16.267Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-18T23:03:16.269Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T23:03:16.285Z"}
+{"level":"info","message":"🔑 API Key: rankly-secret-key","timestamp":"2026-08-18T23:03:16.286Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T23:03:16.286Z"}
+{"level":"info","message":"✨ Role-Based Settings & AI Copilot Studio active","timestamp":"2026-08-18T23:03:16.286Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T23:03:16.287Z"}
+{"level":"info","message":"Socket connected: IJfyKztyg_OQPhjUAAAB","timestamp":"2026-08-18T23:03:16.464Z"}
+{"level":"info","message":"Admin updated role of user local_746563682e72 to jr_manager","timestamp":"2026-08-18T23:03:33.284Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=local_746563682e72, role=jr_manager, required=admin","timestamp":"2026-08-18T23:03:33.291Z"}
+{"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-18T23:03:55.708Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-18T23:03:55.710Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T23:03:55.727Z"}
+{"level":"info","message":"🔑 API Key: rankly-secret-key","timestamp":"2026-08-18T23:03:55.727Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-18T23:03:55.727Z"}
+{"level":"info","message":"✨ Role-Based Settings & AI Copilot Studio active","timestamp":"2026-08-18T23:03:55.727Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-18T23:03:55.729Z"}
+{"level":"info","message":"Socket connected: GSRZIS_CmXHeoabkAAAB","timestamp":"2026-08-18T23:03:55.945Z"}
+{"level":"info","message":"Admin updated role of user local_746563682e72 to jr_manager","timestamp":"2026-08-18T23:04:06.507Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=local_746563682e72, role=jr_manager, required=admin","timestamp":"2026-08-18T23:04:06.515Z"}
+{"level":"info","message":"Client disconnected: GSRZIS_CmXHeoabkAAAB (transport close)","timestamp":"2026-08-18T23:04:34.249Z"}
+{"level":"info","message":"Socket connected: 2OXzLPUuVn9YizreAAAD","timestamp":"2026-08-18T23:04:34.628Z"}
+{"level":"info","message":"Socket connected: V5UQZbg_W6wH_qhGAAAF","timestamp":"2026-08-18T23:04:42.334Z"}
+{"level":"info","message":"Client disconnected: 2OXzLPUuVn9YizreAAAD (ping timeout)","timestamp":"2026-08-18T23:05:19.614Z"}
+{"level":"info","message":"Client disconnected: V5UQZbg_W6wH_qhGAAAF (transport close)","timestamp":"2026-08-18T23:05:57.518Z"}
+{"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-19T05:20:23.924Z"}
+{"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-19T05:20:23.933Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-19T05:20:23.954Z"}
+{"level":"info","message":"🔑 API Key: rankly-secret-key","timestamp":"2026-08-19T05:20:23.954Z"}
+{"level":"info","message":"🤖 Ollama endpoint: http://localhost:11434 (model: llama3.2:3b)","timestamp":"2026-08-19T05:20:23.954Z"}
+{"level":"info","message":"✨ Role-Based Settings & AI Copilot Studio active","timestamp":"2026-08-19T05:20:23.954Z"}
+{"level":"info","message":"Connected to SQLite database.","timestamp":"2026-08-19T05:20:23.955Z"}
+{"level":"info","message":"Socket connected: nMUvXz7osFvMktOYAAAB","timestamp":"2026-08-19T05:21:00.809Z"}
+{"level":"info","message":"Socket connected: jizaoIm483hfhMGaAAAD","timestamp":"2026-08-19T05:21:08.442Z"}
+{"level":"info","message":"Socket connected: ZqDrPMaT6VKTnTDmAAAF","timestamp":"2026-08-19T05:21:42.389Z"}
+{"level":"info","message":"Client disconnected: nMUvXz7osFvMktOYAAAB (ping timeout)","timestamp":"2026-08-19T05:22:10.819Z"}
+{"level":"info","message":"Socket connected: H1bY1I2vMnQp0VmKAAAH","timestamp":"2026-08-19T05:23:08.529Z"}
+{"level":"info","message":"Client disconnected: H1bY1I2vMnQp0VmKAAAH (transport close)","timestamp":"2026-08-19T05:23:27.455Z"}
+{"level":"info","message":"Socket connected: JRayqOoz00cWiTzsAAAJ","timestamp":"2026-08-19T05:23:27.654Z"}
+{"level":"info","message":"Client disconnected: JRayqOoz00cWiTzsAAAJ (transport close)","timestamp":"2026-08-19T05:23:29.672Z"}
+{"level":"info","message":"Socket connected: jOdjfYTeFyWRsxCXAAAL","timestamp":"2026-08-19T05:23:29.911Z"}
+{"level":"info","message":"Client disconnected: jizaoIm483hfhMGaAAAD (ping timeout)","timestamp":"2026-08-19T05:23:33.396Z"}
+{"level":"info","message":"Client disconnected: ZqDrPMaT6VKTnTDmAAAF (transport close)","timestamp":"2026-08-19T05:23:36.435Z"}
+{"level":"info","message":"Socket connected: FHAMv5jYytJkYBnzAAAN","timestamp":"2026-08-19T05:35:21.217Z"}
+{"level":"info","message":"Client disconnected: jOdjfYTeFyWRsxCXAAAL (ping timeout)","timestamp":"2026-08-19T05:35:55.122Z"}
+{"level":"info","message":"Socket connected: XdLkhba5hulZwD04AAAP","timestamp":"2026-08-19T05:37:19.210Z"}
+{"level":"info","message":"Client disconnected: XdLkhba5hulZwD04AAAP (transport close)","timestamp":"2026-08-19T05:37:28.876Z"}
+{"level":"info","message":"Client disconnected: FHAMv5jYytJkYBnzAAAN (transport close)","timestamp":"2026-08-19T05:37:30.294Z"}
+{"level":"info","message":"Socket connected: oBiD3it8ar-927_jAAAR","timestamp":"2026-08-19T05:37:31.111Z"}
+{"level":"info","message":"Socket connected: IVoeVIPnkqGraty7AAAT","timestamp":"2026-08-19T05:37:38.934Z"}
+{"level":"info","message":"Client disconnected: oBiD3it8ar-927_jAAAR (ping timeout)","timestamp":"2026-08-19T05:38:16.112Z"}
+{"level":"info","message":"Socket connected: BMR6mFM70iBDCMVmAAAV","timestamp":"2026-08-19T05:39:42.295Z"}
+{"level":"info","message":"Client disconnected: IVoeVIPnkqGraty7AAAT (ping timeout)","timestamp":"2026-08-19T05:40:03.969Z"}
+{"level":"info","message":"Client disconnected: BMR6mFM70iBDCMVmAAAV (transport close)","timestamp":"2026-08-19T05:41:54.561Z"}
+{"level":"info","message":"Socket connected: aB0p4l0AYBcg4nRyAAAX","timestamp":"2026-08-19T05:41:55.669Z"}
+{"level":"info","message":"Socket connected: 8MaCnIyGCIOtqV7jAAAZ","timestamp":"2026-08-19T05:42:11.757Z"}
+{"level":"info","message":"Client disconnected: 8MaCnIyGCIOtqV7jAAAZ (transport close)","timestamp":"2026-08-19T05:42:20.408Z"}
+{"level":"info","message":"Socket connected: EGc0BikhslYA9n0ZAAAb","timestamp":"2026-08-19T05:42:20.614Z"}
+{"level":"info","message":"Client disconnected: aB0p4l0AYBcg4nRyAAAX (ping timeout)","timestamp":"2026-08-19T05:42:40.678Z"}
+{"level":"info","message":"Client disconnected: EGc0BikhslYA9n0ZAAAb (transport close)","timestamp":"2026-08-19T05:44:57.555Z"}
+{"level":"info","message":"Socket connected: HcZaeiL44ZbYgi4UAAAd","timestamp":"2026-08-19T05:45:00.717Z"}
+{"level":"info","message":"Socket connected: RO0SYNRzPMTbIgxWAAAf","timestamp":"2026-08-19T05:57:31.792Z"}
+{"level":"info","message":"Socket connected: HwNHA1yZPPYLqCdeAAAh","timestamp":"2026-08-19T05:57:42.818Z"}
+{"level":"info","message":"Client disconnected: HcZaeiL44ZbYgi4UAAAd (ping timeout)","timestamp":"2026-08-19T05:58:16.004Z"}
+{"level":"info","message":"Client disconnected: RO0SYNRzPMTbIgxWAAAf (ping timeout)","timestamp":"2026-08-19T05:58:16.790Z"}
+{"level":"info","message":"Socket connected: utLlj5vknk8597LJAAAj","timestamp":"2026-08-19T06:45:36.432Z"}
+{"level":"info","message":"Client disconnected: HwNHA1yZPPYLqCdeAAAh (ping timeout)","timestamp":"2026-08-19T06:45:58.808Z"}
+{"level":"info","message":"Client disconnected: utLlj5vknk8597LJAAAj (ping timeout)","timestamp":"2026-08-19T06:52:11.585Z"}
+{"level":"info","message":"Socket connected: U892ygmSP3m-ZJDZAAAl","timestamp":"2026-08-19T06:53:01.620Z"}
+{"level":"info","message":"Client disconnected: U892ygmSP3m-ZJDZAAAl (transport close)","timestamp":"2026-08-19T07:25:24.436Z"}
+{"level":"info","message":"Socket connected: DeYlJU1vN29QfekxAAAn","timestamp":"2026-08-19T07:25:25.419Z"}
+{"level":"info","message":"Socket connected: w5_h4pMFeDa5HBykAAAp","timestamp":"2026-08-19T07:25:28.099Z"}
+{"level":"info","message":"Client disconnected: w5_h4pMFeDa5HBykAAAp (transport close)","timestamp":"2026-08-19T07:25:29.360Z"}
+{"level":"info","message":"Socket connected: KtDP55AspCVYfg0sAAAr","timestamp":"2026-08-19T07:25:36.496Z"}
+{"level":"info","message":"Client disconnected: KtDP55AspCVYfg0sAAAr (transport close)","timestamp":"2026-08-19T07:25:41.352Z"}
+{"level":"info","message":"Socket connected: h0kAl6-WHHdbILS2AAAt","timestamp":"2026-08-19T07:25:41.496Z"}
+{"level":"info","message":"Socket connected: 4cbOpHOUjxPEM1_CAAAv","timestamp":"2026-08-19T07:25:48.378Z"}
+{"level":"info","message":"Client disconnected: DeYlJU1vN29QfekxAAAn (ping timeout)","timestamp":"2026-08-19T07:26:10.423Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:26:13.034Z"}
+{"level":"info","message":"Client disconnected: h0kAl6-WHHdbILS2AAAt (ping timeout)","timestamp":"2026-08-19T07:26:26.501Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:01.189Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:01.551Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:01.909Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.101Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.274Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.464Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.640Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.816Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:02.986Z"}
+{"level":"warn","message":"Forbidden role access attempt: user=google_116682905356385489710, role=guest_pending, required=admin,hr","timestamp":"2026-08-19T07:27:03.322Z"}
+{"level":"info","message":"Client disconnected: 4cbOpHOUjxPEM1_CAAAv (transport close)","timestamp":"2026-08-19T07:41:52.350Z"}
+{"level":"info","message":"Socket connected: Owg4nO4wDlmOpifYAAAx","timestamp":"2026-08-19T07:42:07.930Z"}
+{"level":"info","message":"Client disconnected: Owg4nO4wDlmOpifYAAAx (transport close)","timestamp":"2026-08-19T07:42:28.696Z"}
+{"level":"info","message":"Socket connected: 1-fUAT06Io5--xaRAAAz","timestamp":"2026-08-19T07:42:33.925Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master Engine running at http://localhost:3000","timestamp":"2026-08-19T07:50:33.199Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T07:50:33.201Z"}
+{"level":"info","message":"✨ OCR Image Ingestion (Tesseract.js) + 72h Referral Engine Active","timestamp":"2026-08-19T07:50:33.201Z"}
+{"level":"info","message":"Connected to SQLite database (Dual-Portal Engine).","timestamp":"2026-08-19T07:50:33.202Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master Engine running at http://localhost:3000","timestamp":"2026-08-19T07:51:14.033Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T07:51:14.035Z"}
+{"level":"info","message":"✨ OCR Image Ingestion (Tesseract.js) + 72h Referral Engine Active","timestamp":"2026-08-19T07:51:14.035Z"}
+{"level":"info","message":"Connected to SQLite database (Dual-Portal Engine).","timestamp":"2026-08-19T07:51:14.037Z"}
+{"level":"warn","message":"Seed initialization note:","timestamp":"2026-08-19T07:51:14.047Z"}
+{"level":"info","message":"Resume screened for Elena Rostova (Score: 80%, Practice: true)","timestamp":"2026-08-19T07:51:42.474Z"}
+{"level":"info","message":"Admin usr_adm_1787125905468 generated referral code RNK-7564B3 for role hiring_manager (Valid 72h)","timestamp":"2026-08-19T07:51:45.481Z"}
+{"level":"info","message":"Resume screened for Dr. Sarah Connor (Score: 40%, Practice: false)","timestamp":"2026-08-19T07:51:47.679Z"}
+{"level":"info","message":"Hiring Manager (David Chen) forwarded candidate 2 to HR.","timestamp":"2026-08-19T07:51:47.685Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Platform running at http://localhost:3000","timestamp":"2026-08-19T07:53:31.547Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T07:53:31.550Z"}
+{"level":"info","message":"✨ Talent Pipeline Kanban + 8-Issue Platform Repair Active","timestamp":"2026-08-19T07:53:31.550Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Platform Engine).","timestamp":"2026-08-19T07:53:31.551Z"}
+{"level":"info","message":"Screened resume for Marcus Sterling (Score: 60%, Stage: ai_screened)","timestamp":"2026-08-19T07:53:54.246Z"}
+{"level":"info","message":"Candidate 3 transitioned to pipeline stage: hm_review (status: sent_to_hr)","timestamp":"2026-08-19T07:53:54.252Z"}
+{"level":"info","message":"Candidate 3 transitioned to pipeline stage: interview (status: screened)","timestamp":"2026-08-19T07:53:54.258Z"}
+{"level":"info","message":"Candidate 3 transitioned to pipeline stage: offered (status: shortlisted)","timestamp":"2026-08-19T07:53:54.263Z"}
+{"level":"info","message":"Candidate 3 transitioned to pipeline stage: rejected (status: rejected)","timestamp":"2026-08-19T07:53:54.269Z"}
+{"code":"SQLITE_ERROR","errno":1,"level":"error","message":"Invite error: SQLITE_ERROR: table invitations has no column named organizationId","stack":"Error: SQLITE_ERROR: table invitations has no column named organizationId","timestamp":"2026-08-19T07:53:54.273Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Platform running at http://localhost:3000","timestamp":"2026-08-19T07:54:06.940Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T07:54:06.943Z"}
+{"level":"info","message":"✨ Talent Pipeline Kanban + 8-Issue Platform Repair Active","timestamp":"2026-08-19T07:54:06.943Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Platform Engine).","timestamp":"2026-08-19T07:54:06.944Z"}
+{"level":"info","message":"Screened resume for Marcus Sterling (Score: 60%, Stage: ai_screened)","timestamp":"2026-08-19T07:54:23.652Z"}
+{"level":"info","message":"Candidate 4 transitioned to pipeline stage: hm_review (status: sent_to_hr)","timestamp":"2026-08-19T07:54:23.660Z"}
+{"level":"info","message":"Candidate 4 transitioned to pipeline stage: interview (status: screened)","timestamp":"2026-08-19T07:54:23.666Z"}
+{"level":"info","message":"Candidate 4 transitioned to pipeline stage: offered (status: shortlisted)","timestamp":"2026-08-19T07:54:23.671Z"}
+{"level":"info","message":"Candidate 4 transitioned to pipeline stage: rejected (status: rejected)","timestamp":"2026-08-19T07:54:23.677Z"}
+{"level":"info","message":"Team invitation created for colleague.1787126063678@rankly.ai as hr by Lead Executive Admin","timestamp":"2026-08-19T07:54:23.683Z"}
+{"level":"info","message":"Admin approved member: colleague.1787126063678@rankly.ai as hr","timestamp":"2026-08-19T07:54:23.692Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Platform running at http://localhost:3000","timestamp":"2026-08-19T08:00:26.429Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T08:00:26.431Z"}
+{"level":"info","message":"✨ Talent Pipeline Kanban + 8-Issue Platform Repair Active","timestamp":"2026-08-19T08:00:26.431Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Platform Engine).","timestamp":"2026-08-19T08:00:26.432Z"}
+{"level":"info","message":"Screened resume for Marcus Sterling (Score: 70%, Stage: ai_screened)","timestamp":"2026-08-19T08:03:35.158Z"}
+{"level":"info","message":"Candidate 5 transitioned to pipeline stage: hm_review (status: sent_to_hr)","timestamp":"2026-08-19T08:03:35.165Z"}
+{"level":"info","message":"Candidate 5 transitioned to pipeline stage: interview (status: screened)","timestamp":"2026-08-19T08:03:35.171Z"}
+{"level":"info","message":"Candidate 5 transitioned to pipeline stage: offered (status: shortlisted)","timestamp":"2026-08-19T08:03:35.177Z"}
+{"level":"info","message":"Candidate 5 transitioned to pipeline stage: rejected (status: rejected)","timestamp":"2026-08-19T08:03:35.182Z"}
+{"level":"info","message":"Team invitation created for colleague.1787126615183@rankly.ai as hr by Lead Executive Admin","timestamp":"2026-08-19T08:03:35.187Z"}
+{"level":"info","message":"Admin approved member: colleague.1787126615183@rankly.ai as hr","timestamp":"2026-08-19T08:03:35.196Z"}
+{"level":"info","message":"🚀 Rankly.ai Enterprise Platform running at http://localhost:3000","timestamp":"2026-08-19T08:11:49.654Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T08:11:49.656Z"}
+{"level":"info","message":"✨ Talent Pipeline Kanban + 8-Issue Platform Repair Active","timestamp":"2026-08-19T08:11:49.656Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Platform Engine).","timestamp":"2026-08-19T08:11:49.658Z"}
+{"level":"info","message":"Screened resume for Valerie Ross (Score: 60%, Stage: ai_screened)","timestamp":"2026-08-19T08:12:15.698Z"}
+{"level":"info","message":"Candidate 6 transitioned to pipeline stage: interview (status: screened)","timestamp":"2026-08-19T08:12:15.705Z"}
+{"level":"info","message":"Team invitation created for exec.1787127135707@rankly.ai as hr by Lead Executive Admin","timestamp":"2026-08-19T08:12:15.713Z"}
+{"level":"info","message":"Admin approved member: exec.1787127135707@rankly.ai as hr","timestamp":"2026-08-19T08:12:15.719Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T08:21:52.240Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T08:21:52.242Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T08:21:52.243Z"}
+{"level":"info","message":"Screened resume for Elena Rostova (Score: 80%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:22:55.676Z"}
+{"level":"info","message":"Screened resume for Elena Rostova (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:22:57.137Z"}
+{"level":"info","message":"Admin generated referral code RNK-B2C707 for role hiring_manager","timestamp":"2026-08-19T08:23:01.226Z"}
+{"level":"info","message":"Admin generated referral code RNK-D654A7 for role hiring_manager","timestamp":"2026-08-19T08:23:03.602Z"}
+{"level":"info","message":"Screened resume for Dr. Sarah Connor (Score: 30%, isNormalUserScan: 0)","timestamp":"2026-08-19T08:23:05.137Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 9 to HR","timestamp":"2026-08-19T08:23:05.144Z"}
+{"level":"info","message":"Screened resume for Dr. Sarah Connor (Score: 40%, isNormalUserScan: 0)","timestamp":"2026-08-19T08:23:06.506Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 10 to HR","timestamp":"2026-08-19T08:23:06.514Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:35:34.773Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 92%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:35:37.341Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 92%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:45:44.764Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:46:04.891Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 83%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:46:16.649Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T08:46:30.202Z"}
+{"level":"info","message":"Screened resume for Elena Rostova (Score: 80%, isNormalUserScan: 1)","timestamp":"2026-08-19T09:57:10.188Z"}
+{"level":"info","message":"Admin generated referral code RNK-DD5020 for role hiring_manager","timestamp":"2026-08-19T09:57:15.035Z"}
+{"level":"info","message":"Screened resume for Dr. Sarah Connor (Score: 20%, isNormalUserScan: 0)","timestamp":"2026-08-19T09:57:16.973Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 18 to HR","timestamp":"2026-08-19T09:57:17.000Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 87%, isNormalUserScan: 1)","timestamp":"2026-08-19T09:58:33.470Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T09:59:04.438Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 92%, isNormalUserScan: 1)","timestamp":"2026-08-19T09:59:30.287Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T09:59:54.741Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 83%, isNormalUserScan: 1)","timestamp":"2026-08-19T10:00:05.366Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isNormalUserScan: 1)","timestamp":"2026-08-19T10:00:17.944Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T10:04:15.508Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T10:04:15.512Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T10:04:15.515Z"}
+{"level":"info","message":"Admin generated referral code RNK-EBA9B2 for role hiring_manager","timestamp":"2026-08-19T10:04:38.271Z"}
+{"level":"info","message":"Screened resume for Jessica Day (Score: 80%, isNormalUserScan: 1)","timestamp":"2026-08-19T10:04:43.776Z"}
+{"level":"info","message":"Screened resume for Marcus Vance (Score: 80%, isNormalUserScan: 0)","timestamp":"2026-08-19T10:04:53.514Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 26 to HR","timestamp":"2026-08-19T10:04:53.579Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 92%, isNormalUserScan: 1)","timestamp":"2026-08-19T10:05:46.198Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 92%, isNormalUserScan: 1)","timestamp":"2026-08-19T10:06:12.091Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T10:20:59.811Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T10:20:59.826Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T10:20:59.835Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T10:21:09.381Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T10:21:09.388Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T10:21:09.396Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T10:22:31.904Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T10:22:31.908Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T10:22:31.913Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:22:52.435Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:23:54.037Z"}
+{"level":"info","message":"Admin generated referral code RNK-C8AC4E for role hiring_manager","timestamp":"2026-08-19T10:23:54.112Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:23:57.162Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 31 to HR","timestamp":"2026-08-19T10:23:57.190Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:25:11.675Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:29:55.386Z"}
+{"level":"info","message":"Admin generated referral code RNK-5318D5 for role hiring_manager","timestamp":"2026-08-19T10:29:55.449Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:29:58.476Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 34 to HR","timestamp":"2026-08-19T10:29:58.505Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:30:19.238Z"}
+{"level":"info","message":"Admin generated referral code RNK-E70647 for role hiring_manager","timestamp":"2026-08-19T10:30:19.296Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:30:22.579Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 36 to HR","timestamp":"2026-08-19T10:30:22.606Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:38:24.251Z"}
+{"level":"info","message":"Admin generated referral code RNK-4BCC05 for role hiring_manager","timestamp":"2026-08-19T10:38:24.310Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:38:27.556Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 38 to HR","timestamp":"2026-08-19T10:38:27.584Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:46:21.800Z"}
+{"level":"info","message":"Admin generated referral code RNK-098EBD for role hiring_manager","timestamp":"2026-08-19T10:46:21.869Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:46:25.085Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 40 to HR","timestamp":"2026-08-19T10:46:25.116Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:46:42.550Z"}
+{"level":"info","message":"Admin generated referral code RNK-504D2B for role hiring_manager","timestamp":"2026-08-19T10:46:42.618Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:46:45.670Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 42 to HR","timestamp":"2026-08-19T10:46:45.701Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:47:00.720Z"}
+{"level":"info","message":"Admin generated referral code RNK-DA6254 for role hiring_manager","timestamp":"2026-08-19T10:47:00.786Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T10:47:03.831Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 44 to HR","timestamp":"2026-08-19T10:47:03.863Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:49:11.534Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T10:51:07.031Z"}
+{"level":"info","message":"Admin generated referral code RNK-E663C9 for role hiring_manager","timestamp":"2026-08-19T11:00:46.150Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T20:36:01.873Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T20:36:01.887Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T20:36:01.891Z"}
+{"level":"info","message":"🚀 Rankly.ai Dual-Portal Master OS running at http://localhost:3000","timestamp":"2026-08-19T20:45:15.009Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T20:45:15.010Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T20:45:15.013Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T20:45:57.127Z"}
+{"level":"info","message":"Admin generated referral code RNK-87DA08 for role hiring_manager","timestamp":"2026-08-19T20:45:57.148Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T20:45:58.959Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 48 to HR","timestamp":"2026-08-19T20:45:58.966Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-19T21:14:52.713Z"}
+{"level":"info","message":"🚀 Rankly.ai running live on: http://rankly.ai (Port 3000)","timestamp":"2026-08-19T21:14:52.716Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T21:14:52.716Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-19T21:14:52.716Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T21:14:52.719Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-19T21:19:48.474Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-19T21:19:48.476Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-19T21:19:48.476Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T21:19:48.476Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-19T21:19:48.476Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-19T21:19:48.476Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T21:19:48.479Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-19T21:23:57.985Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-19T21:23:57.988Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-19T21:23:57.988Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T21:23:57.988Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-19T21:23:57.988Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-19T21:23:57.988Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T21:23:57.990Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T22:44:41.067Z"}
+{"level":"info","message":"Admin generated referral code RNK-CF9118 for role hiring_manager","timestamp":"2026-08-19T22:44:41.085Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T22:44:42.974Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 50 to HR","timestamp":"2026-08-19T22:44:42.982Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T22:48:18.177Z"}
+{"level":"info","message":"Admin generated referral code RNK-0FE745 for role hiring_manager","timestamp":"2026-08-19T22:48:18.193Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T22:48:20.176Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 52 to HR","timestamp":"2026-08-19T22:48:20.184Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-19T22:50:47.775Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-19T22:50:47.781Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-19T22:50:47.782Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T22:50:47.782Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-19T22:50:47.782Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-19T22:50:47.782Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T22:50:47.786Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-19T22:51:01.750Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-19T22:51:01.752Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-19T22:51:01.752Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-19T22:51:01.752Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-19T22:51:01.752Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-19T22:51:01.753Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-19T22:51:01.754Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T22:51:15.623Z"}
+{"level":"info","message":"Admin generated referral code RNK-31649F for role hiring_manager","timestamp":"2026-08-19T22:51:15.640Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T22:51:17.551Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 54 to HR","timestamp":"2026-08-19T22:51:17.559Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T22:52:00.759Z"}
+{"level":"info","message":"Admin generated referral code RNK-074799 for role hiring_manager","timestamp":"2026-08-19T22:52:00.777Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T22:52:02.762Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 56 to HR","timestamp":"2026-08-19T22:52:02.768Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T23:00:05.422Z"}
+{"level":"info","message":"Admin generated referral code RNK-8D0408 for role hiring_manager","timestamp":"2026-08-19T23:00:05.438Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T23:00:07.351Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 58 to HR","timestamp":"2026-08-19T23:00:07.362Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T23:09:48.718Z"}
+{"level":"info","message":"Admin generated referral code RNK-C45802 for role hiring_manager","timestamp":"2026-08-19T23:09:48.736Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T23:09:50.824Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 60 to HR","timestamp":"2026-08-19T23:09:50.837Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T23:10:22.457Z"}
+{"level":"info","message":"Admin generated referral code RNK-7C90A9 for role hiring_manager","timestamp":"2026-08-19T23:10:22.472Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T23:10:24.399Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 62 to HR","timestamp":"2026-08-19T23:10:24.406Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-19T23:11:50.093Z"}
+{"level":"info","message":"Admin generated referral code RNK-2563A4 for role hiring_manager","timestamp":"2026-08-19T23:11:50.109Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-19T23:11:52.102Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 64 to HR","timestamp":"2026-08-19T23:11:52.110Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T08:17:14.953Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T08:17:14.961Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T08:17:14.961Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T08:17:14.962Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T08:17:14.962Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T08:17:14.962Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T08:17:14.964Z"}
+{"level":"info","message":"Admin generated referral code RNK-64574C for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T08:17:32.637Z"}
+{"level":"info","message":"Admin generated referral code RNK-F828C9 for role hr (maxUses: 2, valid: 72h)","timestamp":"2026-08-20T08:17:32.663Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:18:07.809Z"}
+{"level":"info","message":"Admin generated referral code RNK-78EBC3 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:18:07.825Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:18:09.695Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 76 to HR","timestamp":"2026-08-20T08:18:09.704Z"}
+{"level":"info","message":"Admin generated referral code RNK-95DEDE for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T08:20:46.823Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:35:40.204Z"}
+{"level":"info","message":"Admin generated referral code RNK-6BC70C for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:35:40.219Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:35:42.226Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 78 to HR","timestamp":"2026-08-20T08:35:42.233Z"}
+{"level":"info","message":"Admin generated referral code RNK-1A2EBF for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T08:35:46.561Z"}
+{"level":"info","message":"Admin generated referral code RNK-A007A0 for role hr (maxUses: 2, valid: 72h)","timestamp":"2026-08-20T08:35:46.583Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:38:52.280Z"}
+{"level":"info","message":"Admin generated referral code RNK-7FDAC5 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:38:52.298Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:38:54.174Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 80 to HR","timestamp":"2026-08-20T08:38:54.181Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:44:27.946Z"}
+{"level":"info","message":"Admin generated referral code RNK-B99723 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:44:27.963Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:44:29.888Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 82 to HR","timestamp":"2026-08-20T08:44:29.895Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:48:07.802Z"}
+{"level":"info","message":"Admin generated referral code RNK-22008D for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:48:07.817Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:48:09.718Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 84 to HR","timestamp":"2026-08-20T08:48:09.724Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:54:22.484Z"}
+{"level":"info","message":"Admin generated referral code RNK-BE2353 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:54:22.501Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:54:24.428Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 86 to HR","timestamp":"2026-08-20T08:54:24.434Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T08:58:15.766Z"}
+{"level":"info","message":"Admin generated referral code RNK-5BFBB4 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T08:58:15.782Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T08:58:17.668Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 88 to HR","timestamp":"2026-08-20T08:58:17.674Z"}
+{"level":"info","message":"Admin generated referral code RNK-B9D992 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:01:29.659Z"}
+{"level":"info","message":"Admin generated referral code RNK-94D2AD for role hr (maxUses: 2, valid: 72h)","timestamp":"2026-08-20T18:01:29.685Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:02:03.218Z"}
+{"level":"info","message":"Admin generated referral code RNK-366BEA for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T18:02:03.231Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T18:02:05.074Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 90 to HR","timestamp":"2026-08-20T18:02:05.080Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:03:17.439Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:03:17.441Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:03:17.442Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:03:17.442Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:03:17.442Z"}
+{"level":"info","message":"ℹ️ Port 80 note: listen EADDRINUSE: address already in use 0.0.0.0:80 (Accessing via http://localhost:3000)","timestamp":"2026-08-20T18:03:17.443Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:03:17.445Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:03:47.097Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:03:47.099Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:03:47.099Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:03:47.099Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:03:47.099Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:03:47.099Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:03:47.101Z"}
+{"level":"info","message":"Admin generated referral code RNK-E1BCC2 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:03:54.164Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:04:27.240Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:04:27.242Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:04:27.242Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:04:27.243Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:04:27.243Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:04:27.243Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:04:27.245Z"}
+{"level":"info","message":"Admin generated referral code RNK-9B225C for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:04:32.276Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:04:38.474Z"}
+{"level":"info","message":"Admin generated referral code RNK-996D78 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:04:54.356Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:05:04.476Z"}
+{"level":"info","message":"Admin generated referral code RNK-6F83B8 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:24:30.037Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:24:36.103Z"}
+{"level":"info","message":"Admin generated referral code RNK-BB101E for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:24:38.141Z"}
+{"level":"info","message":"Admin generated referral code RNK-5C0404 for role hr (maxUses: 2, valid: 72h)","timestamp":"2026-08-20T18:24:38.160Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:24:46.205Z"}
+{"level":"info","message":"Admin generated referral code RNK-849292 for role hiring_manager (maxUses: 3, valid: 72h)","timestamp":"2026-08-20T18:24:46.218Z"}
+{"level":"info","message":"Screened resume for Alex Morgan (Enterprise Ingestion) (Score: 85%, isPractice: 0)","timestamp":"2026-08-20T18:24:48.090Z"}
+{"level":"info","message":"Hiring Manager forwarded candidate 95 to HR","timestamp":"2026-08-20T18:24:48.098Z"}
+{"level":"info","message":"Admin generated referral code RNK-F149D5 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:27:18.128Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:27:24.415Z"}
+{"level":"info","message":"Admin generated referral code RNK-D349DC for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:30:16.947Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:30:23.383Z"}
+{"level":"info","message":"Admin generated referral code RNK-04F918 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:34:03.080Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:34:10.989Z"}
+{"level":"info","message":"Admin generated referral code RNK-9E7549 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:37:26.059Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:37:33.811Z"}
+{"level":"info","message":"Admin generated referral code RNK-AE3CF4 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:38:36.969Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:38:44.925Z"}
+{"level":"info","message":"Admin generated referral code RNK-63E4C8 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:40:51.729Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:40:59.762Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:44:14.539Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:44:14.541Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:44:14.541Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:44:14.541Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:44:14.542Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:44:14.542Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:44:14.544Z"}
+{"level":"info","message":"Admin generated referral code RNK-C84B94 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:44:22.820Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:44:29.434Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:49:27.911Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:49:27.913Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:49:27.913Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:49:27.914Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:49:27.914Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:49:27.914Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:49:27.916Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:49:50.628Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:49:50.631Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:49:50.631Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:49:50.632Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:49:50.633Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:49:50.634Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:49:50.638Z"}
+{"level":"info","message":"Admin generated referral code RNK-12D337 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:49:55.257Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:50:02.028Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T18:52:32.074Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T18:52:32.078Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T18:52:32.078Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T18:52:32.078Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T18:52:32.078Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T18:52:32.079Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T18:52:32.080Z"}
+{"level":"info","message":"Admin generated referral code RNK-6DA567 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:52:40.261Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:52:46.787Z"}
+{"level":"info","message":"Admin generated referral code RNK-C513A9 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T18:55:49.488Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T18:55:55.892Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T19:00:58.496Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T19:00:58.498Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T19:00:58.498Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T19:00:58.498Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T19:00:58.498Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T19:00:58.499Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T19:00:58.500Z"}
+{"level":"info","message":"Admin generated referral code RNK-950071 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T19:01:09.984Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T19:01:18.312Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T19:05:10.241Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T19:05:10.247Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T19:05:10.247Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T19:05:10.248Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T19:05:10.248Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T19:05:10.248Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T19:05:10.251Z"}
+{"level":"info","message":"Admin generated referral code RNK-B6D731 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T19:06:30.705Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T19:06:39.174Z"}
+{"level":"info","message":"Screened resume for Mayur Jadhav (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T19:08:57.780Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T19:12:18.733Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T19:12:18.736Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T19:12:18.737Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T19:12:18.737Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T19:12:18.737Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T19:12:18.738Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T19:12:18.740Z"}
+{"level":"info","message":"Admin generated referral code RNK-949FE4 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T19:12:31.220Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T19:12:39.667Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-20T19:24:42.077Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-20T19:24:42.081Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-20T19:24:42.081Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-20T19:24:42.081Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-20T19:24:42.082Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-20T19:24:42.083Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-20T19:24:42.086Z"}
+{"level":"info","message":"Admin generated referral code RNK-9FF611 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-20T19:24:56.088Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-20T19:25:04.942Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T04:01:20.242Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T04:01:20.254Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T04:01:20.255Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T04:01:20.255Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T04:01:20.255Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T04:01:20.256Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T04:01:20.261Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T04:05:36.853Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T04:05:36.855Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T04:05:36.856Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T04:05:36.856Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T04:05:36.856Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T04:05:36.856Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T04:05:36.858Z"}
+{"level":"info","message":"Admin generated referral code RNK-00B3D5 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:11:57.894Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:12:05.063Z"}
+{"level":"info","message":"Admin generated referral code RNK-162C8E for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:22:29.784Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:22:38.801Z"}
+{"level":"info","message":"Admin generated referral code RNK-F73C95 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:27:26.357Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:27:32.593Z"}
+{"level":"info","message":"Admin generated referral code RNK-97456A for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:34:02.817Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:34:08.829Z"}
+{"level":"info","message":"Admin generated referral code RNK-35E2B0 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:43:23.030Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:43:29.058Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T04:48:05.770Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T04:48:05.773Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T04:48:05.773Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T04:48:05.773Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T04:48:05.773Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T04:48:05.773Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T04:48:05.774Z"}
+{"level":"info","message":"Admin generated referral code RNK-AB4800 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:48:21.751Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:48:27.761Z"}
+{"level":"info","message":"Admin generated referral code RNK-8933AF for role hr (maxUses: 3, valid: 72h)","timestamp":"2026-08-21T04:48:41.621Z"}
+{"__augmented":true,"code":"SQLITE_ERROR","errno":1,"level":"error","message":"Fetch referral members error: SQLITE_ERROR: no such column: createdAt","stack":"Error: SQLITE_ERROR: no such column: createdAt\n--> in Database#all('SELECT id, name, firstName, lastName, phone, workEmail, email, role, isAdmin, organizationId, referralCodeUsed, createdAt \\n' +\n  '       FROM users \\n' +\n  '       WHERE (organizationId = ? OR organizationId IS NULL) \\n' +\n  '         AND referralCodeUsed IS NOT NULL \\n' +\n  \"         AND referralCodeUsed != ''\\n\" +\n  '       ORDER BY createdAt DESC', [ 'org_rankly_hq' ], [Function (anonymous)])\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\server.js:89:6\n    at new Promise (<anonymous>)\n    at dbAll (C:\\Users\\mayur\\Downloads\\Rankly.ai\\server.js:88:39)\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\server.js:1300:27\n    at Layer.handle [as handle_request] (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\server.js:408:5\n    at Layer.handle [as handle_request] (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at authenticate (C:\\Users\\mayur\\Downloads\\Rankly.ai\\server.js:387:12)\n    at Layer.handle [as handle_request] (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\mayur\\Downloads\\Rankly.ai\\node_modules\\express\\lib\\router\\index.js:284:15","timestamp":"2026-08-21T04:48:41.632Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T04:49:39.693Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T04:49:39.695Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T04:49:39.696Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T04:49:39.696Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T04:49:39.696Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T04:49:39.696Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T04:49:39.697Z"}
+{"level":"info","message":"Admin generated referral code RNK-B8416E for role hr (maxUses: 3, valid: 72h)","timestamp":"2026-08-21T04:49:51.226Z"}
+{"level":"info","message":"Admin generated referral code RNK-F8FA3B for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T04:50:03.001Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T04:50:10.580Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T05:44:16.923Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T05:44:16.928Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T05:44:16.929Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T05:44:16.930Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T05:44:16.930Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T05:44:16.930Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T05:44:16.934Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T10:12:29.170Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T10:12:29.195Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T10:12:29.197Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T10:12:29.198Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T10:12:29.199Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T10:12:29.200Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T10:12:29.208Z"}
+{"level":"error","message":"Port 3000 is already in use. Retrying or awaiting process cleanup.","timestamp":"2026-08-21T10:13:14.959Z"}
+{"level":"info","message":"ℹ️ Port 80 note: listen EADDRINUSE: address already in use 0.0.0.0:80 (Accessing via http://localhost:3000)","timestamp":"2026-08-21T10:13:14.965Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T10:13:14.969Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T17:29:23.569Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T17:29:23.571Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T17:29:23.571Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T17:29:23.572Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T17:29:23.572Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T17:29:23.572Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T17:29:23.574Z"}
+{"level":"info","message":"Admin generated referral code RNK-05B8F9 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T17:32:40.567Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T17:32:46.801Z"}
+{"level":"info","message":"Admin generated referral code RNK-2CFF38 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T17:35:38.461Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T17:35:45.452Z"}
+{"level":"info","message":"Admin generated referral code RNK-F2EEE6 for role admin (maxUses: 1, valid: 72h)","timestamp":"2026-08-21T17:40:13.292Z"}
+{"level":"info","message":"Screened resume for Dev Candidate (Score: 85%, isPractice: 1)","timestamp":"2026-08-21T17:40:20.445Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T18:30:21.667Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T18:30:21.669Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T18:30:21.669Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T18:30:21.669Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T18:30:21.670Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T18:30:21.670Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T18:30:21.673Z"}
+{"level":"info","message":"[OTP Service] Generated 6-digit OTP for test@rankly.ai: 891224","timestamp":"2026-08-21T18:30:28.442Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T18:39:01.539Z"}
+{"level":"error","message":"Port 3000 is already in use. Retrying or awaiting process cleanup.","timestamp":"2026-08-21T18:39:01.539Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T18:39:01.541Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T18:39:01.541Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T18:39:01.541Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T18:39:01.541Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T18:39:01.542Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T18:39:01.544Z"}
+{"level":"info","message":"ℹ️ Port 80 note: listen EADDRINUSE: address already in use 0.0.0.0:80 (Accessing via http://localhost:3000)","timestamp":"2026-08-21T18:39:01.542Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T18:39:01.544Z"}
+{"level":"warn","message":"MongoDB offline (connect ECONNREFUSED 127.0.0.1:27017). Operating with SQLite & Local Memory Hybrid Mode.","timestamp":"2026-08-21T18:39:04.531Z"}
+{"level":"warn","message":"MongoDB offline (connect ECONNREFUSED 127.0.0.1:27017). Operating with SQLite & Local Memory Hybrid Mode.","timestamp":"2026-08-21T18:39:04.531Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T18:39:05.735Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 418528","timestamp":"2026-08-21T18:39:05.735Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:37:04.496Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:37:04.520Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:37:04.520Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:37:04.520Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:37:04.520Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:37:04.520Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:37:04.521Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:37:04.523Z"}
+{"level":"warn","message":"Migration check for users.createdAt: SQLITE_ERROR: Cannot add a column with non-constant default","timestamp":"2026-08-21T20:37:04.539Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:37:04.554Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:38:05.691Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:38:05.706Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:38:05.708Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:38:05.733Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T20:38:11.312Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 207146","timestamp":"2026-08-21T20:38:11.312Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:44:47.610Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:44:47.628Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:44:47.629Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:44:47.645Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T20:44:53.378Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 321128","timestamp":"2026-08-21T20:44:53.379Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:48:35.086Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:48:35.105Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:48:35.108Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:48:35.128Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T20:48:41.033Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 288458","timestamp":"2026-08-21T20:48:41.033Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:55:31.804Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:55:31.822Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:55:31.823Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:55:31.823Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:55:31.823Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:55:31.823Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:55:31.823Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:55:31.826Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:55:31.847Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T20:58:35.074Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T20:58:35.096Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T20:58:35.096Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T20:58:35.096Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T20:58:35.097Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T20:58:35.097Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T20:58:35.100Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T20:58:35.101Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T20:58:35.118Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T20:58:40.347Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 697161","timestamp":"2026-08-21T20:58:40.347Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T21:03:49.714Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T21:03:49.732Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T21:03:49.733Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T21:03:49.733Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T21:03:49.733Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T21:03:49.733Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T21:03:49.734Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T21:03:49.735Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T21:03:49.755Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T21:03:55.509Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 688162","timestamp":"2026-08-21T21:03:55.509Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T21:04:24.361Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T21:04:24.379Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T21:04:24.380Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T21:04:24.380Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T21:04:24.380Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T21:04:24.380Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T21:04:24.380Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T21:04:24.381Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T21:04:24.398Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T21:04:32.873Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 870964","timestamp":"2026-08-21T21:04:32.873Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T21:06:53.311Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 269996","timestamp":"2026-08-21T21:06:53.311Z"}
+{"level":"info","message":"No external MongoDB URI configured. Operating in SQLite Engine Mode.","timestamp":"2026-08-21T21:16:55.823Z"}
+{"level":"info","message":"✓ Google OAuth Strategy initialized successfully with callback: http://localhost:3000/auth/google/callback","timestamp":"2026-08-21T21:16:55.827Z"}
+{"level":"info","message":"✓ Facebook OAuth Strategy initialized successfully with callback: http://localhost:3000/auth/facebook/callback","timestamp":"2026-08-21T21:16:55.828Z"}
+{"level":"info","message":"\n======================================================","timestamp":"2026-08-21T21:16:55.842Z"}
+{"level":"info","message":"🚀 Rankly.ai Core Engine Active on Port 3000","timestamp":"2026-08-21T21:16:55.842Z"}
+{"level":"info","message":"👉 Direct Browser Access: http://rankly.ai (or http://localhost:3000)","timestamp":"2026-08-21T21:16:55.843Z"}
+{"level":"info","message":"🤖 Ollama Host: http://localhost:11434 (Model: llama3.2:3b)","timestamp":"2026-08-21T21:16:55.843Z"}
+{"level":"info","message":"======================================================\n","timestamp":"2026-08-21T21:16:55.843Z"}
+{"level":"info","message":"🌐 Standard HTTP Port 80 active -> Direct URL: http://rankly.ai","timestamp":"2026-08-21T21:16:55.843Z"}
+{"level":"info","message":"Connected to SQLite database (Rankly Dual-Portal Platform Engine).","timestamp":"2026-08-21T21:16:55.845Z"}
+{"level":"info","message":"✓ Database schema, column migrations, and seed data verified successfully.","timestamp":"2026-08-21T21:16:55.860Z"}
+{"level":"info","message":"[Email Dispatch Simulation] To: engineer@rankly.ai | Subject: Your Rankly.ai Verification Code","timestamp":"2026-08-21T21:17:06.058Z"}
+{"level":"info","message":"[OTP Service] Dispatched OTP for engineer@rankly.ai: 541255","timestamp":"2026-08-21T21:17:06.058Z"}
