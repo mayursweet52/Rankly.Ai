@@ -173,13 +173,17 @@ async function sendInvitationEmail(toEmail, organizationName, role, inviteUrl) {
     </div>
   `;
 
-  const transporter = getTransporter();
-  return await transporter.sendMail({
-    from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
-    to: cleanRecipient,
-    subject,
-    html
-  });
+  try {
+    return await transporter.sendMail({
+      from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
+      to: cleanRecipient,
+      subject,
+      html
+    });
+  } catch (err) {
+    console.error('Invite email error:', err.message);
+    return null;
+  }
 }
 
 /**
@@ -213,18 +217,22 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
     </div>
   `;
 
-  const transporter = getTransporter();
-  return await transporter.sendMail({
-    from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
-    to: cleanRecipient,
-    subject,
-    html
-  });
+  try {
+    return await transporter.sendMail({
+      from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
+      to: cleanRecipient,
+      subject,
+      html
+    });
+  } catch (err) {
+    console.error('Status notification email error:', err.message);
+    return null;
+  }
 }
 
 module.exports = {
-  sendOtpEmail,
-  sendOTPEmail: sendOtpEmail,
+  sendOTPEmail,
+  sendOtpEmail: sendOTPEmail,
   sendInvitationEmail,
   sendCandidateStatusNotification
 };
