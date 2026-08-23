@@ -228,6 +228,14 @@ app.get('/api/ai/status', async (req, res) => {
   });
 });
 
+// Simple keep-alive endpoint for cron-job
+app.get('/ping', (req, res) => {
+  res.send('ok');
+});
+app.get('/api/ping', (req, res) => {
+  res.send('ok');
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
