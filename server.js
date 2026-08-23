@@ -77,9 +77,17 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve Static Assets & Uploads
+// Serve Static Assets & Uploads with instant cache invalidation
 app.use('/uploads', express.static(uploadsDir));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 // General API Rate Limiting
 app.use('/api', apiLimiter);
