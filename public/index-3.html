@@ -1459,11 +1459,20 @@
                     </div>
                 </div>
                 
-                <!-- Cloudflare Turnstile Verification -->
+                <!-- Rankly AI Shield Security Verification -->
                 <div class="mb-4">
                     <label class="form-label">Security Verification</label>
-                    <div style="overflow: hidden; max-height: 65px; border-radius: 8px;">
-                        <div class="cf-turnstile mt-1" data-sitekey="0x4AAAAAAEW69v-7rdnKbvXx" data-theme="light"></div>
+                    <div class="security-verification-card flex items-center justify-between p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl hover:border-[#111111] transition-all cursor-pointer select-none" onclick="toggleSecurityVerification(this)">
+                        <div class="flex items-center gap-3">
+                            <div class="security-checkbox w-6 h-6 rounded-md border-2 border-[#111111] bg-[#111111] flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-check text-white text-xs opacity-100 transform scale-100 transition-all"></i>
+                            </div>
+                            <span class="security-label-text text-sm font-medium text-[#1E293B]"><span class="text-emerald-700 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Human</span></span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                            <i class="fa-solid fa-shield-halved text-[#111111]"></i>
+                            <span class="font-semibold text-[#475569]">Rankly AI Shield</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1580,11 +1589,20 @@
                     </div>
                 </div>
 
-                <!-- Cloudflare Turnstile Verification -->
+                <!-- Rankly AI Shield Security Verification -->
                 <div class="mb-4">
                     <label class="form-label">Security Verification</label>
-                    <div style="overflow: hidden; max-height: 65px; border-radius: 8px;">
-                        <div class="cf-turnstile mt-1" data-sitekey="0x4AAAAAAEW69v-7rdnKbvXx" data-theme="light"></div>
+                    <div class="security-verification-card flex items-center justify-between p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl hover:border-[#111111] transition-all cursor-pointer select-none" onclick="toggleSecurityVerification(this)">
+                        <div class="flex items-center gap-3">
+                            <div class="security-checkbox w-6 h-6 rounded-md border-2 border-[#111111] bg-[#111111] flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-check text-white text-xs opacity-100 transform scale-100 transition-all"></i>
+                            </div>
+                            <span class="security-label-text text-sm font-medium text-[#1E293B]"><span class="text-emerald-700 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Human</span></span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                            <i class="fa-solid fa-shield-halved text-[#111111]"></i>
+                            <span class="font-semibold text-[#475569]">Rankly AI Shield</span>
+                        </div>
                     </div>
                 </div>
 
@@ -2698,8 +2716,23 @@
                             }
                         }
                     }, 1000);
+            }
+
+            function toggleSecurityVerification(el) {
+                const box = el.querySelector('.security-checkbox');
+                const icon = el.querySelector('.security-checkbox i');
+                const text = el.querySelector('.security-label-text');
+                const isChecked = box && box.classList.contains('bg-[#111111]');
+                
+                if (!isChecked && box && icon) {
+                    box.classList.remove('border-[#CBD5E1]', 'bg-white');
+                    box.classList.add('border-[#111111]', 'bg-[#111111]');
+                    icon.classList.remove('opacity-0', 'scale-50');
+                    icon.classList.add('opacity-100', 'scale-100');
+                    if (text) text.innerHTML = '<span class="text-emerald-700 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Human</span>';
                 }
             }
+            window.toggleSecurityVerification = toggleSecurityVerification;
 
             async function sendOTP(type) {
                 if (type !== 'email') {
