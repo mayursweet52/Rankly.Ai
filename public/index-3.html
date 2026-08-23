@@ -1140,16 +1140,52 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════ */
-        /* EXECUTIVE RESEND-STYLE PITCH BLACK DARK THEME                   */
+        /* PIXEL-PERFECT RESEND-STYLE PITCH BLACK LOGIN THEME              */
         /* ═══════════════════════════════════════════════════════════════ */
-        body.dark-theme {
-            background: #000000 !important;
-            color: #EDEDED !important;
+        #loginPage {
+            background-color: #000000 !important;
+            background-image: 
+                radial-gradient(ellipse 70% 60% at 90% 20%, rgba(65, 65, 75, 0.42) 0%, rgba(20, 20, 24, 0.2) 45%, transparent 70%),
+                radial-gradient(ellipse 65% 55% at 5% 85%, rgba(55, 55, 65, 0.4) 0%, rgba(15, 15, 18, 0.2) 45%, transparent 70%),
+                linear-gradient(135deg, #000000 0%, #08080A 50%, #000000 100%) !important;
+            color: #FFFFFF !important;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 36px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        body.dark-theme #loginPage {
-            background: radial-gradient(circle at 85% 15%, rgba(50, 50, 60, 0.45) 0%, transparent 55%),
-                        radial-gradient(circle at 10% 85%, rgba(35, 35, 42, 0.4) 0%, transparent 50%),
-                        #000000 !important;
+
+        /* Monochromatic Grayscale Silk Draped Curved Accents (matches reference image) */
+        .resend-silk-wave-right {
+            position: absolute;
+            top: -10%;
+            right: -8%;
+            width: 55vw;
+            height: 90vh;
+            background: radial-gradient(circle at 60% 35%, rgba(180, 180, 190, 0.16) 0%, rgba(90, 90, 100, 0.08) 35%, rgba(20, 20, 24, 0) 70%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 1;
+            transform: rotate(-15deg);
+        }
+
+        .resend-silk-wave-left {
+            position: absolute;
+            bottom: -15%;
+            left: -10%;
+            width: 50vw;
+            height: 75vh;
+            background: radial-gradient(circle at 35% 65%, rgba(170, 170, 180, 0.14) 0%, rgba(80, 80, 90, 0.06) 40%, rgba(10, 10, 12, 0) 70%);
+            border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+            filter: blur(45px);
+            pointer-events: none;
+            z-index: 1;
+            transform: rotate(20deg);
         }
 
         /* 3D Movable Logo Tilt Container */
@@ -1161,167 +1197,114 @@
             cursor: pointer;
         }
         .rankly-3d-logo-glow {
-            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45)) drop-shadow(0 0 24px rgba(249, 115, 22, 0.25));
+            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5)) drop-shadow(0 0 24px rgba(249, 115, 22, 0.3));
             animation: logoAmbientGlow 4s ease-in-out infinite alternate;
         }
         @keyframes logoAmbientGlow {
-            0% { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 16px rgba(249, 115, 22, 0.2)); }
-            100% { filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.65)) drop-shadow(0 0 30px rgba(249, 115, 22, 0.4)); }
+            0% { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4)) drop-shadow(0 0 16px rgba(249, 115, 22, 0.2)); }
+            100% { filter: drop-shadow(0 0 18px rgba(168, 85, 247, 0.7)) drop-shadow(0 0 32px rgba(249, 115, 22, 0.45)); }
         }
 
-        /* Transparent Frameless Minimalist Login Card (Resend Style) */
-        body.dark-theme .login-card {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            backdrop-filter: none !important;
-            padding: 16px 0 !important;
-            max-width: 420px !important;
-        }
-        body.dark-theme .login-card h1 {
-            color: #FFFFFF !important;
-            font-weight: 800 !important;
-            letter-spacing: -0.02em !important;
-        }
-        body.dark-theme .login-tabs {
-            border-bottom: 1px solid #222226 !important;
-        }
-        body.dark-theme .login-tab {
-            color: #71717A !important;
-        }
-        body.dark-theme .login-tab.active {
-            color: #FFFFFF !important;
-            border-bottom-color: #FFFFFF !important;
-        }
-        body.dark-theme .login-tab:hover:not(.active) {
-            color: #A1A1AA !important;
+        /* Resend Frameless Minimalist Login Container */
+        .resend-login-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            text-align: center;
         }
 
-        /* Dark Translucent Input Box */
-        body.dark-theme .cohere-input-box {
-            background: #0E0E10 !important;
-            border: 1px solid #222226 !important;
-            border-radius: 12px !important;
+        .resend-oauth-btn {
+            background: #141416;
+            border: 1px solid #27272A;
+            border-radius: 12px;
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
         }
-        body.dark-theme .cohere-input-box:focus-within {
-            border-color: #52525B !important;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) !important;
+        .resend-oauth-btn:hover {
+            background: #1E1E22;
+            border-color: #3F3F46;
+            color: #FFFFFF;
         }
-        body.dark-theme .cohere-field:not(:last-child) {
-            border-bottom: 1px solid #1A1A1E !important;
-        }
-        body.dark-theme .cohere-field label {
-            color: #71717A !important;
-        }
-        body.dark-theme .cohere-field input {
-            color: #FFFFFF !important;
-        }
-        body.dark-theme .cohere-field input::placeholder {
-            color: #52525B !important;
-        }
-
-        /* Buttons in Dark Mode */
-        body.dark-theme .btn-cohere-submit {
-            background: #18181B !important;
-            border: 1px solid #27272A !important;
-            color: #FFFFFF !important;
-            border-radius: 10px !important;
-        }
-        body.dark-theme .btn-cohere-submit:hover {
-            background: #27272A !important;
-            border-color: #3F3F46 !important;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05) !important;
-        }
-        body.dark-theme .oauth-btn {
-            background: #0E0E10 !important;
-            border: 1px solid #222226 !important;
-            color: #D4D4D8 !important;
-            border-radius: 10px !important;
-        }
-        body.dark-theme .oauth-btn:hover {
-            background: #18181B !important;
-            border-color: #3F3F46 !important;
-            color: #FFFFFF !important;
-        }
-        body.dark-theme .oauth-btn i.fa-github {
-            color: #FFFFFF !important;
-        }
-        body.dark-theme #loginPage header button {
-            color: #E4E4E7 !important;
-            background: #121214 !important;
-            border-color: #27272A !important;
-        }
-        body.dark-theme #loginPage header span {
-            color: #FFFFFF !important;
+        .last-used-badge {
+            position: absolute;
+            top: -9px;
+            right: 10px;
+            background: #27272A;
+            border: 1px solid #3F3F46;
+            border-radius: 10px;
+            padding: 1px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #E4E4E7;
+            letter-spacing: 0.02em;
         }
 
-        /* Dim 3D pebbles in dark mode */
-        body.dark-theme .pebble-cluster-bottom-left,
-        body.dark-theme .pebble-floating-top-right,
-        body.dark-theme .pebble-floating-mid-right {
-            opacity: 0.12 !important;
-            filter: grayscale(1) contrast(1.4) !important;
+        .resend-input {
+            width: 100%;
+            background: #141416;
+            border: 1px solid #27272A;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .resend-input:focus {
+            border-color: #52525B;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+        .resend-input::placeholder {
+            color: #52525B;
         }
 
-        /* Dashboard Obsidian Dark Theme */
-        body.dark-theme .dash-layout {
-            background: #000000 !important;
+        .resend-submit-btn {
+            width: 100%;
+            background: #18181B;
+            border: 1px solid #27272A;
+            color: #D4D4D8;
+            border-radius: 12px;
+            padding: 13px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
         }
-        body.dark-theme .dash-sidebar {
-            background: #09090B !important;
-            border-right-color: #1A1A1E !important;
+        .resend-submit-btn:hover {
+            background: #27272A;
+            color: #FFFFFF;
+            border-color: #3F3F46;
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.04);
         }
-        body.dark-theme .dash-topbar {
-            background: #09090B !important;
-            border-bottom-color: #1A1A1E !important;
+
+        .resend-tab-pill {
+            background: transparent;
+            border: none;
+            color: #71717A;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        body.dark-theme .dash-main {
-            background: #000000 !important;
-        }
-        body.dark-theme .card,
-        body.dark-theme .stat-card {
-            background: #0D0D0E !important;
-            border-color: #1A1A1E !important;
-            color: #EDEDED !important;
-        }
-        body.dark-theme .card-title,
-        body.dark-theme .stat-value,
-        body.dark-theme #dashPageTitle,
-        body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4 {
-            color: #FFFFFF !important;
-        }
-        body.dark-theme .nav-item {
-            color: #71717A !important;
-        }
-        body.dark-theme .nav-item.active {
-            color: #FFFFFF !important;
-            background: #141416 !important;
-        }
-        body.dark-theme .upload-zone {
-            background: #0A0A0C !important;
-            border-color: #222226 !important;
-        }
-        body.dark-theme .upload-zone:hover {
-            border-color: #D95D39 !important;
-            background: #120F0E !important;
-        }
-        body.dark-theme .modal-box {
-            background: #0D0D0E !important;
-            border-color: #27272A !important;
-            color: #EDEDED !important;
-        }
-        body.dark-theme .form-input,
-        body.dark-theme select.form-input {
-            background: #141416 !important;
-            border-color: #27272A !important;
-            color: #FFFFFF !important;
-        }
-        body.dark-theme .security-verification-card {
-            background: #141416 !important;
-            border-color: #27272A !important;
-        }
-        body.dark-theme .security-label-text {
-            color: #E4E4E7 !important;
+        .resend-tab-pill.active {
+            background: #1E1E22;
+            color: #FFFFFF;
         }
     </style>
 </head>
@@ -1329,196 +1312,155 @@
     <div id="toast-container"></div>
 
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- LOGIN SCREEN (COHERE STYLE WITH 3D PEBBLES & CELLULAR MESH)        -->
+    <!-- LOGIN SCREEN (PIXEL-PERFECT RESEND PITCH BLACK DARK THEME)       -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <div id="loginPage" style="min-height:100vh; display:flex; flex-direction:column; justify-content:space-between; padding:24px 32px; position:relative; overflow:hidden;">
-        <!-- Top Navigation Header -->
+    <div id="loginPage" class="page active">
+        <!-- Monochromatic Grayscale Silk Draped Curved Mesh Background -->
+        <div class="resend-silk-wave-right"></div>
+        <div class="resend-silk-wave-left"></div>
+
+        <!-- Top Navigation Header with < Home Link -->
         <header class="w-full flex justify-between items-center z-10">
-            <div class="flex items-center gap-3 cursor-pointer select-none" id="loginLogoWrapper">
-                <!-- 3D Movable Logo for Rankly.ai -->
-                <div class="rankly-3d-logo-wrapper" id="rankly3dLogoHolder">
-                    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg rankly-3d-logo-glow flex-shrink-0">
+            <div>
+                <a href="javascript:void(0)" onclick="window.location.reload()" class="inline-flex items-center gap-1.5 text-xs text-[#888888] hover:text-[#FFFFFF] transition-colors font-medium">
+                    <i class="fas fa-chevron-left text-[9px]"></i> Home
+                </a>
+            </div>
+            <div></div>
+        </header>
+
+        <!-- Center Login Card (Pixel-Perfect Resend Structure) -->
+        <div class="w-full flex justify-center items-center my-auto z-10 py-6">
+            <div class="resend-login-container">
+                <!-- 3D Movable Rankly Emblem Logo with Mouse Tilt Physics -->
+                <div class="rankly-3d-logo-wrapper mb-3" id="loginCenter3dLogo">
+                    <svg width="44" height="44" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg rankly-3d-logo-glow">
                       <defs>
-                        <linearGradient id="r3d-base-h" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="r3d-base-login" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" stop-color="#282830"/>
                           <stop offset="50%" stop-color="#16161A"/>
                           <stop offset="100%" stop-color="#0A0A0D"/>
                         </linearGradient>
-                        <linearGradient id="r3d-rim-h" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="r3d-rim-login" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
                           <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.05"/>
                           <stop offset="100%" stop-color="#000000" stop-opacity="0.8"/>
                         </linearGradient>
-                        <linearGradient id="r3d-violet-h" x1="16" y1="12" x2="48" y2="38" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="r3d-violet-login" x1="16" y1="12" x2="48" y2="38" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" stop-color="#D8B4FE"/>
                           <stop offset="30%" stop-color="#A855F7"/>
                           <stop offset="100%" stop-color="#6B21A8"/>
                         </linearGradient>
-                        <linearGradient id="r3d-coral-h" x1="28" y1="32" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="r3d-coral-login" x1="28" y1="32" x2="48" y2="52" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" stop-color="#FDBA74"/>
                           <stop offset="40%" stop-color="#FB923C"/>
                           <stop offset="100%" stop-color="#EA580C"/>
                         </linearGradient>
-                        <linearGradient id="r3d-gem-h" x1="42" y1="10" x2="54" y2="22" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="r3d-gem-login" x1="42" y1="10" x2="54" y2="22" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" stop-color="#5EEAD4"/>
                           <stop offset="50%" stop-color="#14B8A6"/>
                           <stop offset="100%" stop-color="#0F766E"/>
                         </linearGradient>
                       </defs>
-                      <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base-h)" stroke="url(#r3d-rim-h)" stroke-width="1.5" />
+                      <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base-login)" stroke="url(#r3d-rim-login)" stroke-width="1.5" />
                       <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
-                      <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet-h)"/>
+                      <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet-login)"/>
                       <circle cx="32" cy="23.5" r="4" fill="#FFFFFF" opacity="0.95"/>
-                      <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral-h)"/>
-                      <circle cx="48" cy="14" r="5" fill="url(#r3d-gem-h)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                      <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral-login)"/>
+                      <circle cx="48" cy="14" r="5" fill="url(#r3d-gem-login)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
                     </svg>
                 </div>
-                <span class="font-extrabold text-xl tracking-tight text-[#111111]" id="brandTextTitle">Rankly<span class="text-[#D95D39]">.ai</span></span>
-            </div>
-            <div class="flex items-center gap-3">
-                <button type="button" onclick="toggleAppTheme()" class="theme-quick-btn flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5DF] text-[#111111] hover:border-[#111111] transition-all" id="loginThemeToggleBtn" title="Toggle Light / Dark Mode">
-                    <i class="fas fa-moon text-sm"></i> <span>Dark</span>
-                </button>
-                <button onclick="openModal('signupModal')" class="text-sm font-semibold text-[#111111] hover:text-[#444440] px-3.5 py-1.5 rounded-lg transition-all border border-transparent hover:border-[#E5E5DF]">Sign Up</button>
-            </div>
-        </header>
 
-        <!-- ─── 3D PEBBLES LAYER (COHERE ACCENTS) ─── -->
-        <!-- Bottom-Left Realistic 3D Cluster -->
-        <div class="pebble-cluster-bottom-left hidden md:block">
-            <div class="pebble-3d-grey"></div>
-            <div class="pebble-3d-coral"></div>
-            <div class="pebble-3d-iridescent"></div>
-            <div class="pebble-3d-sage"></div>
-        </div>
+                <!-- Resend Title & Subtitle -->
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-1.5">Log in to Rankly</h1>
+                <p class="text-xs md:text-sm text-[#888888] mb-6">
+                    Don't have an account? <button type="button" onclick="openModal('signupModal')" class="font-bold text-white hover:underline focus:outline-none">Sign up.</button>
+                </p>
 
-        <!-- Top-Right Floating Terracotta Prism -->
-        <div class="pebble-floating-top-right hidden md:block"></div>
-
-        <!-- Middle-Right Floating Sage Stone -->
-        <div class="pebble-floating-mid-right hidden md:block"></div>
-
-        <!-- Center Login Card -->
-        <div class="w-full flex justify-center items-center my-auto z-10">
-            <div class="login-card">
-                <div class="text-center mb-6">
-                    <div class="inline-block rankly-3d-logo-wrapper mb-3" id="loginCenter3dLogo">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg rankly-3d-logo-glow">
-                          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base-h)" stroke="url(#r3d-rim-h)" stroke-width="1.5" />
-                          <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet-h)"/>
-                          <circle cx="32" cy="23.5" r="4" fill="#FFFFFF" opacity="0.95"/>
-                          <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral-h)"/>
-                          <circle cx="48" cy="14" r="5" fill="url(#r3d-gem-h)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-                        </svg>
-                    </div>
-                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111]">Log in</h1>
+                <!-- Side-by-Side OAuth Buttons -->
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <button type="button" class="resend-oauth-btn relative" onclick="oauthLogin('Google')">
+                        <span class="last-used-badge">Last used</span>
+                        <i class="fa-brands fa-google text-sm"></i>
+                        <span>Log in with Google</span>
+                    </button>
+                    <button type="button" class="resend-oauth-btn" onclick="oauthLogin('Github')">
+                        <i class="fa-brands fa-github text-sm"></i>
+                        <span>Log in with GitHub</span>
+                    </button>
                 </div>
 
-                <!-- Tabs: Normal User vs Company / Employee -->
-                <div class="login-tabs">
-                    <button class="login-tab active" data-tab="normal">Normal User</button>
-                    <button class="login-tab" data-tab="company">Company / Employee</button>
+                <!-- or Divider -->
+                <div class="flex items-center my-5">
+                    <div class="flex-1 border-t border-[#222226]"></div>
+                    <span class="px-3 text-xs text-[#71717A] font-medium">or</span>
+                    <div class="flex-1 border-t border-[#222226]"></div>
                 </div>
 
-                <!-- Normal User Login -->
+                <!-- Role Selector (Normal User / Company) -->
+                <div class="flex items-center justify-center gap-1.5 mb-5 p-1 bg-[#121214] border border-[#222226] rounded-xl w-fit mx-auto">
+                    <button type="button" class="resend-tab-pill active" id="tabNormalBtn" onclick="switchLoginTabType('normal')">Normal User</button>
+                    <button type="button" class="resend-tab-pill" id="tabCompanyBtn" onclick="switchLoginTabType('company')">Company / Employee</button>
+                </div>
+
+                <!-- Normal User Form -->
                 <div class="tab-panel" id="normalLogin">
-                    <form id="normalLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>EMAIL</label>
-                                <input id="normalLoginIdentifier" placeholder="yourname@email.com" required type="text"/>
+                    <form id="normalLoginForm" class="text-left space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-[#A1A1AA] mb-1.5">Email</label>
+                            <input id="normalLoginIdentifier" type="text" placeholder="alan.turing@example.com" class="resend-input" required />
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label class="text-xs font-semibold text-[#A1A1AA]">Password</label>
+                                <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#71717A] hover:text-[#FFFFFF] transition-colors">Forgot?</button>
                             </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="normalLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('normalLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+                            <div class="relative">
+                                <input id="normalLoginPassword" type="password" placeholder="••••••••••••" class="resend-input pr-10" required />
+                                <button type="button" onclick="togglePassword('normalLoginPassword', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#71717A] hover:text-[#FFFFFF] focus:outline-none"><i class="fa-regular fa-eye text-xs"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Log in</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Log In -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
+                        <div class="pt-2">
+                            <button type="submit" class="resend-submit-btn">
+                                <span>Log In</span>
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Company / Employee Login -->
+                <!-- Company / Employee Form -->
                 <div class="tab-panel" id="companyLogin" style="display:none;">
-                    <form id="companyLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>WORK EMAIL</label>
-                                <input id="companyLoginEmail" placeholder="name@company.com" required type="email"/>
+                    <form id="companyLoginForm" class="text-left space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-[#A1A1AA] mb-1.5">Work Email</label>
+                            <input id="companyLoginEmail" type="email" placeholder="name@company.com" class="resend-input" required />
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label class="text-xs font-semibold text-[#A1A1AA]">Password</label>
+                                <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#71717A] hover:text-[#FFFFFF] transition-colors">Forgot?</button>
                             </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="companyLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('companyLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+                            <div class="relative">
+                                <input id="companyLoginPassword" type="password" placeholder="••••••••••••" class="resend-input pr-10" required />
+                                <button type="button" onclick="togglePassword('companyLoginPassword', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#71717A] hover:text-[#FFFFFF] focus:outline-none"><i class="fa-regular fa-eye text-xs"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
+                        <div class="pt-2">
+                            <button type="submit" class="resend-submit-btn">
                                 <span>Access Workspace</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Access Workspace -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Footer Terms & Links -->
-                <div class="text-center mt-6 pt-4 border-t border-[#EAEAE4]">
-                    <p class="text-xs text-[#777770] mb-2">
-                        By signing up, you agree to the <a href="#" class="underline hover:text-[#111111]">Terms of Use</a> and <a href="#" class="underline hover:text-[#111111]">Privacy Policy</a>.
-                    </p>
-                    <p class="text-sm text-[#444440]" id="loginFooterSignupContainer">
-                        New user? <button onclick="openModal('signupModal')" class="font-bold text-[#111111] hover:underline">Sign up</button>
-                    </p>
-                </div>
+                <!-- Footer Terms -->
+                <p class="text-[11px] text-[#71717A] mt-6">
+                    By signing in, you agree to our <a href="#" class="underline hover:text-white transition-colors">Terms</a> and <a href="#" class="underline hover:text-white transition-colors">Privacy Policy</a>.
+                </p>
             </div>
         </div>
 
-        <footer class="w-full text-center text-xs text-[#888880] z-10 py-2">
+        <footer class="w-full text-center text-xs text-[#55555A] z-10 py-2">
             © 2026 Rankly.ai Inc. Enterprise Recruitment Intelligence Platform.
         </footer>
     </div>
@@ -4685,6 +4627,25 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         w.style.transform = `perspective(800px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) scale3d(1.05, 1.05, 1.05)`;
                     });
                 });
+
+                window.switchLoginTabType = function(type) {
+                    const normalPanel = document.getElementById('normalLogin');
+                    const companyPanel = document.getElementById('companyLogin');
+                    const tabNormalBtn = document.getElementById('tabNormalBtn');
+                    const tabCompanyBtn = document.getElementById('tabCompanyBtn');
+
+                    if (type === 'company') {
+                        if (normalPanel) normalPanel.style.display = 'none';
+                        if (companyPanel) companyPanel.style.display = 'block';
+                        if (tabNormalBtn) tabNormalBtn.classList.remove('active');
+                        if (tabCompanyBtn) tabCompanyBtn.classList.add('active');
+                    } else {
+                        if (normalPanel) normalPanel.style.display = 'block';
+                        if (companyPanel) companyPanel.style.display = 'none';
+                        if (tabNormalBtn) tabNormalBtn.classList.add('active');
+                        if (tabCompanyBtn) tabCompanyBtn.classList.remove('active');
+                    }
+                };
 
                 window.connectLinkedIn = function() {
                     showToast('🔗 LinkedIn Profile: Account verified & connected!', 'success');
