@@ -72,7 +72,35 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
     html
   };
 
-  // Try Port 587 with STARTTLS first, then Port 465 SSL
+  // 1. Try Resend HTTPS REST API (Port 443 - Never blocked by Railway/Cloud firewalls)
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
+          to: [cleanRecipient],
+          subject: subject,
+          html: html
+        })
+      });
+      const resData = await res.json();
+      if (res.ok && resData.id) {
+        console.log('✅ Real OTP email delivered via Resend HTTPS API to:', cleanRecipient, 'ID:', resData.id);
+        return true;
+      } else {
+        console.warn('[Resend API Response]:', resData);
+      }
+    } catch (apiErr) {
+      console.warn('[Resend API Error]:', apiErr.message);
+    }
+  }
+
+  // 2. Try Port 587 with STARTTLS (Standard Cloud SMTP)
   try {
     const transporter587 = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -93,11 +121,12 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
       new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Port 587 timeout')), 4500))
     ]);
 
-    console.log('✅ Real OTP email delivered to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
+    console.log('✅ Real OTP email delivered via Port 587 to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
     return true;
   } catch (err587) {
     console.warn('[SMTP Port 587 Attempt Failed]:', err587.message, '- Trying Port 465...');
     
+    // 3. Try Port 465 SSL
     try {
       const transporter465 = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -121,7 +150,7 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
       console.log('✅ Real OTP email delivered via Port 465 to:', cleanRecipient, 'MessageId:', info465?.messageId || 'OK');
       return true;
     } catch (err465) {
-      console.warn(`[SMTP Warning] Network/Firewall blocked direct SMTP delivery (${err465.message}). OTP stored in database for ${cleanRecipient}: ${otpCode}`);
+      console.warn(`[SMTP Warning] Cloud network blocked direct SMTP delivery (${err465.message}). OTP stored in database for ${cleanRecipient}: ${otpCode}`);
       return false;
     }
   }

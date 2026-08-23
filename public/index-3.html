@@ -2716,8 +2716,13 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`📩 Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    if (data.previewOtp && otpInput) {
+                        otpInput.value = data.previewOtp;
+                        showToast(`📩 Verification code: ${data.previewOtp} (Auto-filled)`, 'success');
+                    } else {
+                        if (otpInput) otpInput.value = '';
+                        showToast(`📩 Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    }
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2814,8 +2819,13 @@
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`📩 Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
+                    if (data.previewOtp && otpInput) {
+                        otpInput.value = data.previewOtp;
+                        showToast(`📩 Verification code: ${data.previewOtp} (Auto-filled)`, 'success');
+                    } else {
+                        if (otpInput) otpInput.value = '';
+                        showToast(`📩 Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
+                    }
                     startOtpCountdown('empEmailOtpBtn', 'emp');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2978,9 +2988,13 @@
                     if (step2) step2.style.display = 'block';
 
                     const fpInput = document.getElementById('fpOtp');
-                    if (fpInput) fpInput.value = '';
-
-                    showToast(`📩 Password reset code sent to ${email}. Please check your inbox / spam folder.`, 'success');
+                    if (data.previewOtp && fpInput) {
+                        fpInput.value = data.previewOtp;
+                        showToast(`📩 Password reset code: ${data.previewOtp} (Auto-filled)`, 'success');
+                    } else {
+                        if (fpInput) fpInput.value = '';
+                        showToast(`📩 Password reset code sent to ${email}. Please check your inbox / spam folder.`, 'success');
+                    }
                     startFpCountdown();
                 } catch (err) {
                     showToast('Server connection error: ' + err.message, 'error');
