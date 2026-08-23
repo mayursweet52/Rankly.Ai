@@ -485,7 +485,9 @@ async function sendOtp(req, res) {
     });
 
     // Send real verification email directly to user's entered email address
-    await sendOtpEmail(recipientEmail, otpCode, type);
+    sendOtpEmail(recipientEmail, otpCode, type).catch(err => {
+      console.error('Background OTP email dispatch error:', err.message);
+    });
 
     return res.json({
       success: true,

@@ -83,20 +83,24 @@ async function sendOtpEmail(toEmail, otpCode, type = 'email_verification') {
   return true;
 }
 
+let cachedTransporter = null;
+
 function getTransporter() {
+  if (cachedTransporter) return cachedTransporter;
+
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '587', 10);
-  const user = (process.env.SMTP_USER || '').trim();
-  const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '').trim();
+  const port = parseInt(process.env.SMTP_PORT || '465', 10);
+  const user = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+  const pass = (process.env.SMTP_PASS || 'fhlowstsbxdhowsq').replace(/\s+/g, '').trim();
 
-  if (!user || !pass) {
-    throw new Error('SMTP credentials missing. Please configure SMTP_USER and SMTP_PASS in .env.');
-  }
-
-  return nodemailer.createTransport({
+  cachedTransporter = nodemailer.createTransport({
+    service: 'gmail',
     host,
-    port,
-    secure: port === 465,
+    port: 465,
+    secure: true,
+    pool: true,
+    maxConnections: 5,
+    maxMessages: 100,
     auth: {
       user,
       pass
@@ -105,6 +109,8 @@ function getTransporter() {
       rejectUnauthorized: false
     }
   });
+
+  return cachedTransporter;
 }
 
 /**
