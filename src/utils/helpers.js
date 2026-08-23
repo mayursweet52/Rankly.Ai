@@ -51,29 +51,66 @@ function extractCandidateInfoFromText(text = '', fallbackFilename = '') {
   let phone = '';
   let name = '';
 
-  // Email regex
+  // 1. Email regex
   const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   if (emailMatch) email = emailMatch[0].toLowerCase();
 
-  // Phone regex (International & Indian formats)
+  // 2. Phone regex (International & Indian formats)
   const phoneMatch = text.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\+?\d{10,13}/);
   if (phoneMatch) phone = phoneMatch[0].trim();
 
-  // Name extraction heuristic (First non-empty line or from filename)
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 2 && !l.includes('@') && !l.toLowerCase().includes('resume') && !l.toLowerCase().includes('curriculum'));
-  if (lines.length > 0) {
-    const firstLine = lines[0].replace(/[^a-zA-Z\s]/g, '').trim();
-    if (firstLine.split(/\s+/).length <= 4 && firstLine.length < 40) {
-      name = firstLine;
+  // 3. Clean Name extraction from Fallback Filename
+  let filenameCandidateName = '';
+  if (fallbackFilename) {
+    let clean = fallbackFilename
+      .replace(/\.[^/.]+$/, '') // remove extension
+      .replace(/^(CV|Resume|Curriculum_Vitae|Bio)[\s_-]*/i, '') // remove leading CV/Resume
+      .replace(/[\s_-]*(CV|Resume|Profile)[\s_-]*$/i, '') // remove trailing CV/Resume
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    clean = clean.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
+    if (clean.length >= 2 && !clean.toLowerCase().includes('document') && !clean.toLowerCase().includes('untitled')) {
+      filenameCandidateName = clean;
     }
   }
 
-  if (!name && fallbackFilename) {
-    name = fallbackFilename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').trim();
+  // 4. Name extraction from text lines (Skip URLs, phones, emails, headers, skills)
+  const blacklistWords = [
+    'http', 'https', 'www', '.com', '.io', '.org', '.net', '.in', '.dev', 'github', 'linkedin',
+    'mobile', 'phone', 'tel', 'email', 'contact', 'address', 'curriculum', 'resume', 'profile',
+    'developer', 'engineer', 'manager', 'lead', 'scientist', 'experience', 'skills', 'education',
+    'summary', 'objective', 'page', 'portfolio', 'projects', 'certifications', 'work'
+  ];
+
+  const lines = text.split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l => {
+      if (l.length < 3 || l.length > 40) return false;
+      const lower = l.toLowerCase();
+      if (blacklistWords.some(w => lower.includes(w))) return false;
+      if (/[0-9@:/\\_~#]/.test(l)) return false;
+      return /^[a-zA-Z\s.]+$/.test(l);
+    });
+
+  if (lines.length > 0) {
+    for (const candidateLine of lines.slice(0, 5)) {
+      const words = candidateLine.split(/\s+/).filter(Boolean);
+      if (words.length >= 2 && words.length <= 4) {
+        name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+        break;
+      }
+    }
+  }
+
+  if (!name && filenameCandidateName) {
+    name = filenameCandidateName;
   }
 
   return {
-    name: name || 'Candidate',
+    name: name || filenameCandidateName || 'Candidate',
     email: email || '',
     phone: phone || ''
   };

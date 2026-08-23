@@ -4091,118 +4091,186 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     resEl.innerHTML = evaluations.map((item, idx) => {
                         const score = Number(item.matchScore) || 0;
                         let pillClass = 'tag-pill-green';
-                        let badgeBg = '#ECFDF5';
-                        let badgeColor = '#059669';
+                        let badgeBg = '#F0FDF4';
+                        let badgeColor = '#16A34A';
+                        let badgeBorder = '#BBF7D0';
 
                         if (score < 65) {
                             pillClass = 'tag-pill-amber';
-                            badgeBg = '#FEF3C7';
+                            badgeBg = '#FFFBEB';
                             badgeColor = '#D97706';
+                            badgeBorder = '#FDE68A';
                         } else if (score < 80) {
                             pillClass = 'tag-pill-blue';
                             badgeBg = '#EFF6FF';
                             badgeColor = '#2563EB';
+                            badgeBorder = '#BFDBFE';
                         }
 
                         const matchedSkills = Array.isArray(item.matchedSkills) ? item.matchedSkills : (typeof item.matchedSkills === 'string' ? JSON.parse(item.matchedSkills || '[]') : []);
                         const missingSkills = Array.isArray(item.missingSkills) ? item.missingSkills : (typeof item.missingSkills === 'string' ? JSON.parse(item.missingSkills || '[]') : []);
                         const recommendations = Array.isArray(item.recommendations) ? item.recommendations : (typeof item.recommendations === 'string' ? JSON.parse(item.recommendations || '[]') : []);
 
-                        const candidateName = item.candidateName || item.resumeFileName || `Candidate #${idx + 1}`;
+                        // Thorough Candidate Name Normalization
+                        let rawName = item.candidateName || item.resumeFileName || `Candidate #${idx + 1}`;
+                        let cleanName = rawName
+                            .replace(/^https?:\/\/[^\s]+/gi, '')
+                            .replace(/\.[^/.]+$/, '')
+                            .replace(/^(CV|Resume|Curriculum_Vitae|Bio)[\s_-]*/i, '')
+                            .replace(/[\s_-]*(CV|Resume|Profile)[\s_-]*$/i, '')
+                            .replace(/[-_]/g, ' ')
+                            .replace(/Mobile/gi, '')
+                            .replace(/\s+/g, ' ')
+                            .trim();
+
+                        if (!cleanName || cleanName.length < 2) {
+                            cleanName = `Candidate #${idx + 1}`;
+                        } else {
+                            cleanName = cleanName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+                        }
+
                         const targetRole = item.targetRole || 'Software Engineer';
-                        const fitVerdict = item.fitVerdict || (score >= 80 ? 'Strong Match' : (score >= 65 ? 'Potential Match' : 'Moderate Match'));
+                        const fitVerdict = item.fitVerdict || (score >= 80 ? 'Strong Fit' : (score >= 65 ? 'Potential Fit' : 'Moderate Fit'));
                         const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Evaluated';
 
                         const rowId = `eval-detail-${item.id || idx}`;
+                        const photoUrl = item.photoUrl || item.avatarUrl || null;
+                        const initialChar = cleanName.charAt(0).toUpperCase();
+
+                        const avatarGradients = [
+                            'linear-gradient(135deg, #111111 0%, #333333 100%)',
+                            'linear-gradient(135deg, #D95D39 0%, #F59E0B 100%)',
+                            'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+                            'linear-gradient(135deg, #059669 0%, #10B981 100%)',
+                            'linear-gradient(135deg, #2563EB 0%, #38BDF8 100%)'
+                        ];
+                        const avatarGrad = avatarGradients[idx % avatarGradients.length];
 
                         return `
-                            <div class="border border-[#E2E8F0] rounded-xl p-4 mb-3 bg-white hover:border-[#CBD5E1] transition-all shadow-sm">
+                            <div class="border border-[#E5E5DF] rounded-2xl p-4 mb-3 bg-white hover:border-[#CBD5E1] transition-all shadow-sm">
                                 <div class="flex flex-wrap items-center justify-between gap-3 cursor-pointer" onclick="toggleEvalDetail('${rowId}')">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid currentColor;">
-                                            ${candidateName.charAt(0).toUpperCase()}
+                                    <div class="flex items-center gap-3.5">
+                                        <!-- Candidate Avatar / Passport Photo Support -->
+                                        <div class="relative w-11 h-11 flex-shrink-0" id="avatar-container-${item.id || idx}">
+                                            ${photoUrl ? `
+                                                <img src="${photoUrl}" alt="${cleanName}" class="w-11 h-11 rounded-full object-cover border border-[#E5E5DF] shadow-sm" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-sm" style="display:none; background: ${avatarGrad};">${initialChar}</div>
+                                            ` : `
+                                                <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-sm" style="background: ${avatarGrad};">${initialChar}</div>
+                                            `}
                                         </div>
+
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <p class="font-bold text-sm text-[#111111] mb-0">${candidateName}</p>
-                                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-600">${targetRole}</span>
+                                                <p class="font-bold text-sm text-[#111111] mb-0">${cleanName}</p>
+                                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#F4F4F0] text-[#555550] border border-[#E5E5DF] font-medium">${targetRole}</span>
                                             </div>
-                                            <p class="text-xs text-[#64748B] font-mono mt-0.5 mb-0">
-                                                <i class="fas fa-file-pdf mr-1 text-red-500"></i> ${item.resumeFileName || 'Resume Document'} • <span class="text-gray-400">${dateStr}</span>
+                                            <p class="text-xs text-[#666660] font-mono mt-0.5 mb-0">
+                                                <i class="fas fa-file-pdf mr-1 text-[#D95D39]"></i> ${item.resumeFileName || 'Resume Document'} • <span class="text-[#888880]">${dateStr}</span>
                                             </p>
                                         </div>
                                     </div>
+
                                     <div class="flex items-center gap-3">
                                         <div class="text-right">
-                                            <span class="tag-pill ${pillClass} font-bold text-xs">${score}% MATCH</span>
-                                            <p class="text-[10px] text-[#64748B] font-medium mt-0.5 mb-0">${fitVerdict}</p>
+                                            <span class="tag-pill ${pillClass} font-bold text-xs" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">${score}% MATCH</span>
+                                            <p class="text-[10px] text-[#666660] font-semibold mt-0.5 mb-0">${fitVerdict}</p>
                                         </div>
-                                        <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform" id="icon-${rowId}"></i>
+                                        <i class="fas fa-chevron-down text-xs text-[#888880] transition-transform" id="icon-${rowId}"></i>
                                     </div>
                                 </div>
 
                                 <!-- Collapsible Detailed AI Breakdown -->
                                 <div id="${rowId}" style="display: none;" class="mt-4 pt-4 border-t border-[#F1F5F9] text-xs">
                                     ${item.summary ? `
-                                        <div class="mb-3 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg">
-                                            <p class="font-bold text-[#1E293B] mb-1"><i class="fas fa-sparkles text-amber-500 mr-1"></i> Executive AI Summary</p>
-                                            <p class="text-[#475569] leading-relaxed mb-0">${item.summary}</p>
+                                        <div class="mb-3 p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl">
+                                            <p class="font-bold text-[#111111] mb-1 flex items-center gap-1.5"><i class="fas fa-sparkles text-[#D95D39]"></i> Executive AI Evaluation</p>
+                                            <p class="text-[#555550] leading-relaxed mb-0">${item.summary}</p>
                                         </div>
                                     ` : ''}
 
                                     <!-- Score Breakdown Grid -->
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                                        <div class="p-2 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                            <span class="text-[10px] text-gray-500 font-mono">SKILLS</span>
-                                            <p class="font-bold text-[#111111] mb-0 text-sm">${item.skillsScore || Math.min(100, Math.round(score * 1.05))}%</p>
+                                        <div class="p-2.5 bg-[#FAFAF8] rounded-xl text-center border border-[#E5E5DF]">
+                                            <span class="text-[10px] text-[#888880] font-mono uppercase font-bold">Skills Match</span>
+                                            <p class="font-bold text-[#111111] mb-0 text-sm mt-0.5">${item.skillsScore || Math.min(100, Math.round(score * 1.05))}%</p>
                                         </div>
-                                        <div class="p-2 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                            <span class="text-[10px] text-gray-500 font-mono">EXPERIENCE</span>
-                                            <p class="font-bold text-[#111111] mb-0 text-sm">${item.experienceScore || Math.min(100, Math.round(score * 0.95))}%</p>
+                                        <div class="p-2.5 bg-[#FAFAF8] rounded-xl text-center border border-[#E5E5DF]">
+                                            <span class="text-[10px] text-[#888880] font-mono uppercase font-bold">Experience</span>
+                                            <p class="font-bold text-[#111111] mb-0 text-sm mt-0.5">${item.experienceScore || Math.min(100, Math.round(score * 0.95))}%</p>
                                         </div>
-                                        <div class="p-2 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                            <span class="text-[10px] text-gray-500 font-mono">TOOLS</span>
-                                            <p class="font-bold text-[#111111] mb-0 text-sm">${item.toolsScore || Math.min(100, Math.round(score * 1.0))}%</p>
+                                        <div class="p-2.5 bg-[#FAFAF8] rounded-xl text-center border border-[#E5E5DF]">
+                                            <span class="text-[10px] text-[#888880] font-mono uppercase font-bold">Tools & Stack</span>
+                                            <p class="font-bold text-[#111111] mb-0 text-sm mt-0.5">${item.toolsScore || Math.min(100, Math.round(score * 1.0))}%</p>
                                         </div>
-                                        <div class="p-2 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                            <span class="text-[10px] text-gray-500 font-mono">EDUCATION</span>
-                                            <p class="font-bold text-[#111111] mb-0 text-sm">${item.educationScore || 90}%</p>
+                                        <div class="p-2.5 bg-[#FAFAF8] rounded-xl text-center border border-[#E5E5DF]">
+                                            <span class="text-[10px] text-[#888880] font-mono uppercase font-bold">Education</span>
+                                            <p class="font-bold text-[#111111] mb-0 text-sm mt-0.5">${item.educationScore || 90}%</p>
                                         </div>
                                     </div>
 
                                     <!-- Skills Tags -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                         ${matchedSkills.length ? `
                                             <div>
                                                 <p class="font-bold text-[#059669] mb-1.5 flex items-center gap-1"><i class="fas fa-check-circle"></i> Matched Competencies</p>
                                                 <div class="flex flex-wrap gap-1">
-                                                    ${matchedSkills.map(s => `<span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-[11px] font-medium">${s}</span>`).join('')}
+                                                    ${matchedSkills.map(s => `<span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[11px] font-medium">${s}</span>`).join('')}
                                                 </div>
                                             </div>
                                         ` : ''}
                                         ${missingSkills.length ? `
                                             <div>
-                                                <p class="font-bold text-[#DC2626] mb-1.5 flex items-center gap-1"><i class="fas fa-circle-exclamation"></i> Missing / Skill Gaps</p>
+                                                <p class="font-bold text-[#DC2626] mb-1.5 flex items-center gap-1"><i class="fas fa-circle-exclamation"></i> Skill Gaps</p>
                                                 <div class="flex flex-wrap gap-1">
-                                                    ${missingSkills.map(s => `<span class="px-2 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[11px] font-medium">${s}</span>`).join('')}
+                                                    ${missingSkills.map(s => `<span class="px-2 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-md text-[11px] font-medium">${s}</span>`).join('')}
                                                 </div>
                                             </div>
                                         ` : ''}
                                     </div>
 
                                     ${recommendations.length ? `
-                                        <div class="mt-3 pt-2 border-t border-gray-100">
-                                            <p class="font-bold text-gray-700 mb-1"><i class="fas fa-lightbulb text-amber-500 mr-1"></i> Recommendations</p>
-                                            <ul class="list-disc pl-4 space-y-0.5 text-gray-600 text-[11px]">
+                                        <div class="mt-3 pt-3 border-t border-[#E5E5DF]">
+                                            <p class="font-bold text-[#111111] mb-1"><i class="fas fa-lightbulb text-[#D95D39] mr-1"></i> Recommendations</p>
+                                            <ul class="list-disc pl-4 space-y-0.5 text-[#555550] text-[11px]">
                                                 ${recommendations.map(r => `<li>${r}</li>`).join('')}
                                             </ul>
                                         </div>
                                     ` : ''}
+
+                                    <!-- Company Feature: Passport Photo Upload / Verification -->
+                                    <div class="mt-3 pt-3 border-t border-[#E5E5DF] flex flex-wrap items-center justify-between gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="tag-pill tag-pill-coral text-[10px] font-mono"><i class="fas fa-building mr-1"></i> Company Feature</span>
+                                            <span class="text-xs text-[#666660]">Candidate ID & Passport Photo verification</span>
+                                        </div>
+                                        <label class="btn-secondary text-[11px] py-1 px-3 rounded-lg border border-[#E5E5DF] hover:bg-[#FAFAF8] cursor-pointer flex items-center gap-1.5 font-medium text-[#111111]">
+                                            <i class="fas fa-camera text-[#D95D39]"></i>
+                                            <span>Attach Photo</span>
+                                            <input type="file" accept="image/*" class="hidden" onchange="uploadCandidatePhoto(event, '${item.id || idx}')" style="display:none;" />
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         `;
                     }).join('');
                 }
+
+                window.uploadCandidatePhoto = function(e, id) {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64 = event.target.result;
+                        const container = document.getElementById('avatar-container-' + id);
+                        if (container) {
+                            container.innerHTML = `<img src="${base64}" alt="Passport Photo" class="w-11 h-11 rounded-full object-cover border-2 border-[#D95D39] shadow-md" />`;
+                        }
+                        showToast('Candidate passport photo attached successfully! 📷', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                };
 
                 window.toggleEvalDetail = function(id) {
                     const el = document.getElementById(id);
