@@ -1139,61 +1139,52 @@
             .login-card { padding: 32px 20px; }
         }
 
-        /* ─── LOGIN PAGE – THEME TOGGLE ─── */
+        /* ─── LOGIN PAGE (FULL SCREEN COHERE LAYOUT) ─── */
         #loginPage {
-            position: relative;
+            background-color: #FAFAF8 !important;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px) !important;
+            background-size: 24px 24px !important;
             min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            transition: background 0.3s, color 0.3s;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* Light Mode (Default) */
-        #loginPage.light-mode {
-            background: #f0f4f8;
-        }
-
-        #loginPage.light-mode .login-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
-        }
-
-        #loginPage.light-mode .login-heading {
-            font-size: 2.8rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-        }
-
-        /* Dark Mode */
+        /* ─── LOGIN PAGE – DARK MODE TOGGLE ─── */
         #loginPage.dark-mode {
-            background: radial-gradient(ellipse at 20% 50%, #1a1a3e, #0a0a12);
+            background-color: #0B0B10 !important;
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+                radial-gradient(ellipse at 85% 15%, rgba(99, 102, 241, 0.16), transparent 50%),
+                radial-gradient(ellipse at 15% 85%, rgba(168, 85, 247, 0.16), transparent 50%) !important;
+            background-size: 24px 24px, 100% 100%, 100% 100% !important;
+            color: #FFFFFF !important;
+        }
+
+        #loginPage.dark-mode header span {
+            color: #FFFFFF !important;
+        }
+        #loginPage.dark-mode header button:not(.theme-toggle-btn) {
+            color: #E2E8F0 !important;
         }
 
         #loginPage.dark-mode .login-card {
-            background: rgba(18, 18, 35, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            color: #e2e8f0;
+            background: rgba(18, 18, 28, 0.96) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7) !important;
         }
 
         #loginPage.dark-mode .login-heading {
             display: inline-flex;
             gap: 0.05em;
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: #e2e8f0;
+            color: #E2E8F0 !important;
             perspective: 600px;
             cursor: default;
-            background: none !important;
-            -webkit-text-fill-color: #e2e8f0 !important;
+            justify-content: center;
         }
 
         #loginPage.dark-mode .login-heading .char {
@@ -1205,53 +1196,98 @@
         }
 
         #loginPage.dark-mode .login-heading:hover .char {
-            color: #818cf8;
-            text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+            color: #818CF8;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.35);
         }
 
         #loginPage.dark-mode .login-heading .char:hover {
             transform: translateZ(30px) rotateX(10deg) rotateY(10deg) scale(1.2);
-            color: #a78bfa;
-            text-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
+            color: #A78BFA;
+            text-shadow: 0 0 50px rgba(167, 139, 250, 0.6);
         }
 
-        #loginPage.dark-mode .form-input {
-            background: #1e1e38;
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #ffffff;
+        #loginPage.dark-mode .login-tabs {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        #loginPage.dark-mode .login-tab {
+            color: #888890 !important;
+        }
+        #loginPage.dark-mode .login-tab.active {
+            color: #FFFFFF !important;
+            border-bottom-color: #818CF8 !important;
+        }
+
+        #loginPage.dark-mode .cohere-input-box {
+            background: #141420 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        #loginPage.dark-mode .cohere-field {
+            border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        #loginPage.dark-mode .cohere-field label {
+            color: #818CF8 !important;
+        }
+        #loginPage.dark-mode .cohere-field input {
+            color: #FFFFFF !important;
+            background: transparent !important;
+        }
+        #loginPage.dark-mode .cohere-field input::placeholder {
+            color: #64748B !important;
+        }
+        #loginPage.dark-mode .toggle-eye {
+            color: #888890 !important;
         }
 
         #loginPage.dark-mode .oauth-btn {
-            background: #1e1e38;
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #e2e8f0;
+            background: #141420 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #FFFFFF !important;
         }
         #loginPage.dark-mode .oauth-btn:hover {
-            background: #28284c;
-            border-color: #818cf8;
+            border-color: #818CF8 !important;
+            background: #1E1E30 !important;
+        }
+        #loginPage.dark-mode .oauth-btn i.fa-github {
+            color: #FFFFFF !important;
+        }
+
+        #loginPage.dark-mode .border-t {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        #loginPage.dark-mode #loginFooterSignupContainer {
+            color: #94A3B8 !important;
+        }
+        #loginPage.dark-mode #loginFooterSignupContainer button {
+            color: #818CF8 !important;
         }
 
         /* ─── THEME TOGGLE BUTTON STYLE ─── */
         .theme-toggle-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid #E5E5DF;
             border-radius: 50px;
-            padding: 0.3rem 0.8rem;
+            padding: 5px 14px;
             cursor: pointer;
-            transition: all 0.3s;
-            color: #4b5563;
-            font-size: 0.85rem;
-            display: flex;
+            transition: all 0.2s ease;
+            color: #111111;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-        }
-        #loginPage.dark-mode .theme-toggle-btn {
-            color: #e2e8f0;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            gap: 6px;
         }
         .theme-toggle-btn:hover {
-            border-color: #818cf8;
+            border-color: #111111;
+            background: rgba(0, 0, 0, 0.08);
+        }
+        #loginPage.dark-mode .theme-toggle-btn {
+            color: #E2E8F0;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+        #loginPage.dark-mode .theme-toggle-btn:hover {
+            border-color: #818CF8;
+            background: rgba(255, 255, 255, 0.14);
         }
     </style>
 </head>
@@ -1289,7 +1325,11 @@
                 </svg>
                 <span class="font-extrabold text-xl tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span></span>
             </div>
-            <div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="toggleLoginTheme()" class="theme-toggle-btn">
+                    <i class="fas fa-moon" id="loginThemeIcon"></i>
+                    <span id="loginThemeLabel">Dark</span>
+                </button>
                 <button onclick="openModal('signupModal')" class="text-sm font-semibold text-[#111111] hover:text-[#444440] px-3.5 py-1.5 rounded-lg transition-all">Sign Up</button>
             </div>
         </header>
@@ -1313,7 +1353,7 @@
         <div class="w-full flex justify-center items-center my-auto z-10">
             <div class="login-card">
                 <div class="text-center mb-6">
-                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111]">Log in</h1>
+                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111] login-heading" id="loginHeading">Log in</h1>
                 </div>
 
                 <!-- Tabs: Normal User vs Company / Employee -->
