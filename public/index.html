@@ -2398,11 +2398,7 @@
             let otpVerified = { email: false, phone: false };
             let empOtpStore = { email: null, phone: null };
             let empOtpVerified = { email: false, phone: false };
-            let pipeline = getStoredData('rankly_pipeline', [
-                { id: '1', name: 'Sophia Miller', role: 'Full Stack Dev', score: 94, stage: 'screening' },
-                { id: '2', name: 'Liam Davies', role: 'AI Researcher', score: 91, stage: 'interview' },
-                { id: '3', name: 'Emma Watson', role: 'Product Lead', score: 88, stage: 'offer' }
-            ]);
+            let pipeline = getStoredData('rankly_pipeline', []);
             let allResumes = getStoredData('rankly_allResumes', []);
 
             window.togglePassword = function(inputId, btn) {
@@ -2720,10 +2716,8 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput && data.previewOtp) {
-                        otpInput.value = data.previewOtp;
-                    }
-                    showToast(`🔐 Verification code sent to ${value} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
+                    if (otpInput) otpInput.value = '';
+                    showToast(`📩 Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2820,10 +2814,8 @@
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
-                    if (otpInput && data.previewOtp) {
-                        otpInput.value = data.previewOtp;
-                    }
-                    showToast(`🔐 Verification code sent to ${value} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
+                    if (otpInput) otpInput.value = '';
+                    showToast(`📩 Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
                     startOtpCountdown('empEmailOtpBtn', 'emp');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -2986,11 +2978,9 @@
                     if (step2) step2.style.display = 'block';
 
                     const fpInput = document.getElementById('fpOtp');
-                    if (fpInput && data.previewOtp) {
-                        fpInput.value = data.previewOtp;
-                    }
+                    if (fpInput) fpInput.value = '';
 
-                    showToast(`🔐 Reset code sent to ${email} (OTP: ${data.previewOtp || 'Dispatched'})`, 'success');
+                    showToast(`📩 Password reset code sent to ${email}. Please check your inbox / spam folder.`, 'success');
                     startFpCountdown();
                 } catch (err) {
                     showToast('Server connection error: ' + err.message, 'error');
@@ -3218,9 +3208,9 @@
                 const resCount = document.getElementById('resumeCount');
                 if (resCount) resCount.textContent = (currentUser.resumes ? currentUser.resumes.length : 0);
                 const matCount = document.getElementById('matchCount');
-                if (matCount) matCount.textContent = currentUser.matches || 12;
+                if (matCount) matCount.textContent = currentUser.matches || 0;
                 const profStrength = document.getElementById('profileStrength');
-                if (profStrength) profStrength.textContent = `${Math.min(95, 45 + (currentUser.resumes ? currentUser.resumes.length * 15 : 20))}%`;
+                if (profStrength) profStrength.textContent = currentUser.resumes && currentUser.resumes.length ? `${Math.min(100, 50 + currentUser.resumes.length * 15)}%` : '0%';
 
                 const chatSidebarRole = document.getElementById('chatSidebarRoleText');
                 if (chatSidebarRole) {
@@ -3236,6 +3226,10 @@
                     const el = document.getElementById(`stage-${stage}`);
                     if (!el) return;
                     const items = pipeline.filter(c => c.stage === stage);
+                    if (items.length === 0) {
+                        el.innerHTML = `<div class="p-3 text-center text-xs text-[#888880] font-mono border border-dashed border-[#E5E5DF] rounded-lg">No candidates in ${stage}</div>`;
+                        return;
+                    }
                     el.innerHTML = items.map(c => `
                         <div class="pipeline-card">
                             <div>
@@ -3284,14 +3278,14 @@
                     id: Date.now().toString(),
                     name,
                     role: 'Candidate',
-                    score: Math.floor(Math.random() * 25) + 75,
+                    score: 85,
                     stage: 'screening'
                 });
                 setStoredData('rankly_pipeline', pipeline);
                 input.value = '';
                 renderPipeline();
                 renderAnalytics();
-                showToast(`Added ${name} to Screening Matrix`, 'success');
+                showToast(`Added ${name} to Pipeline`, 'success');
             };
 
             function renderAnalytics() {
@@ -3300,16 +3294,16 @@
                 const interEl = document.getElementById('analyticsInterview');
                 const avgEl = document.getElementById('avgMatchScore');
 
-                const totalVal = pipeline.length || 3;
-                const screenVal = pipeline.filter(c => c.stage === 'screening').length || 1;
-                const interVal = pipeline.filter(c => c.stage === 'interview').length || 1;
+                const totalVal = pipeline.length;
+                const screenVal = pipeline.filter(c => c.stage === 'screening').length;
+                const interVal = pipeline.filter(c => c.stage === 'interview').length;
 
                 if (totalEl) totalEl.textContent = totalVal;
                 if (screenEl) screenEl.textContent = screenVal;
                 if (interEl) interEl.textContent = interVal;
 
                 if (avgEl) {
-                    const avg = pipeline.length ? Math.round(pipeline.reduce((acc, c) => acc + (c.score || 91), 0) / pipeline.length) : 91;
+                    const avg = pipeline.length ? Math.round(pipeline.reduce((acc, c) => acc + (c.score || 0), 0) / pipeline.length) : 0;
                     avgEl.textContent = `${avg}%`;
                 }
             }
