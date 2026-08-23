@@ -24,7 +24,7 @@ const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || 'GOCSPX-9prR8Vazk
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = process.env.BASE_URL || process.env.APP_URL || (isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000');
 
-const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/google/callback';
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || `${baseUrl}/auth/google/callback`;
 
 if (googleClientId && googleClientSecret) {
   passport.use(
