@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npx prisma generate",
+    "build": "node -e \"process.env.DATABASE_URL=process.env.DATABASE_URL||'file:./rankly.db'; require('child_process').execSync('npx prisma generate', {stdio:'inherit', env:process.env})\"",
     "dev": "nodemon server.js",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev --name init",
