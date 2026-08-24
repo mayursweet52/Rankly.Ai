@@ -1554,161 +1554,168 @@
             box-shadow: 0 0 12px rgba(239, 68, 68, 0.3) !important;
         }
 
-        /* ─── ACETERNITY GOOEY INPUT STYLES (PIXEL-PERFECT) ─── */
-        .gooey-search-container {
+        /* ─── ACETERNITY GOOEY INPUT COMPONENT (ISOLATED & PIXEL PERFECT) ─── */
+        .gooey-input-demo-wrapper {
+            position: relative;
             width: 100%;
+            max-width: 440px;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            padding: 12px 0 20px 0;
-            position: relative;
         }
 
-        .gooey-search-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 540px;
+        .gooey-morph-layer {
+            position: absolute;
+            inset: -6px;
+            filter: url('#aceternity-gooey');
+            pointer-events: none;
+            z-index: 1;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
         }
 
-        .gooey-blobs-layer {
-            position: absolute;
-            inset: -4px;
-            pointer-events: none;
-            filter: url('#aceternity-gooey');
-            z-index: 1;
-        }
-
-        .gooey-blob {
-            position: absolute;
+        .gooey-fluid-blob {
+            display: inline-block;
             border-radius: 50%;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0.65;
         }
 
-        .gooey-blob-left {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #818cf8, #a855f7);
-            left: 4px;
-            top: 50%;
-            transform: translateY(-50%) scale(0.85);
-            opacity: 0.7;
+        .gooey-fluid-blob.blob-1 {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
         }
 
-        .gooey-blob-right {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #f43f5e, #fb923c);
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%) scale(0.75);
-            opacity: 0.6;
+        .gooey-fluid-blob.blob-2 {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ec4899, #f97316);
         }
 
-        .gooey-search-wrapper:hover .gooey-blob-left {
-            transform: translateY(-50%) scale(1.15) translateX(-4px);
-            opacity: 0.85;
+        .gooey-input-demo-wrapper:hover .gooey-fluid-blob.blob-1,
+        .gooey-input-demo-wrapper:focus-within .gooey-fluid-blob.blob-1 {
+            transform: scale(1.25) translateX(-8px);
+            opacity: 0.9;
         }
 
-        .gooey-search-wrapper:hover .gooey-blob-right {
-            transform: translateY(-50%) scale(1.1) translateX(4px);
-            opacity: 0.8;
+        .gooey-input-demo-wrapper:hover .gooey-fluid-blob.blob-2,
+        .gooey-input-demo-wrapper:focus-within .gooey-fluid-blob.blob-2 {
+            transform: scale(1.2) translateX(8px);
+            opacity: 0.9;
         }
 
-        .gooey-input-box {
+        .gooey-pill-box {
             position: relative;
             width: 100%;
-            height: 50px;
+            height: 52px;
             background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 9999px;
-            padding: 0 46px 0 54px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #111111;
-            outline: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 9999px !important;
+            display: flex !important;
+            align-items: center !important;
+            padding: 0 16px 0 18px !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             z-index: 2;
+            overflow: hidden;
+            box-sizing: border-box !important;
         }
 
-        .gooey-input-box:focus {
-            border-color: #818cf8;
-            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2), 0 8px 30px rgba(99, 102, 241, 0.25);
+        .gooey-input-demo-wrapper:focus-within .gooey-pill-box {
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2), 0 12px 36px rgba(99, 102, 241, 0.25) !important;
             transform: translateY(-1px);
         }
 
-        .gooey-search-icon-badge {
-            position: absolute;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(129, 140, 248, 0.12);
+        .gooey-magnifier-icon {
+            width: 20px;
+            height: 20px;
             color: #818cf8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            pointer-events: none;
+            flex-shrink: 0;
+            margin-right: 12px;
             transition: all 0.3s ease;
-            z-index: 3;
         }
 
-        .gooey-input-box:focus ~ .gooey-search-icon-badge {
-            background: #818cf8;
-            color: #ffffff;
-            transform: translateY(-50%) scale(1.08) rotate(-8deg);
-            box-shadow: 0 0 12px rgba(129, 140, 248, 0.5);
+        .gooey-input-demo-wrapper:focus-within .gooey-magnifier-icon {
+            color: #6366f1;
+            transform: scale(1.15) rotate(-10deg);
         }
 
-        .gooey-clear-btn {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.06);
-            border: none;
-            color: #64748b;
-            font-size: 12px;
+        .gooey-search-field {
+            width: 100% !important;
+            height: 100% !important;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-family: inherit !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            color: #0f172a !important;
+            box-sizing: border-box !important;
+        }
+
+        .gooey-search-field::placeholder {
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+        }
+
+        .gooey-search-field:focus {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .gooey-search-clear-btn {
             display: none;
             align-items: center;
             justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.06);
+            border: none !important;
+            outline: none !important;
+            color: #64748b;
+            font-size: 11px;
             cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 8px;
             transition: all 0.2s ease;
-            z-index: 3;
         }
 
-        .gooey-clear-btn:hover {
+        .gooey-search-clear-btn:hover {
             background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
         }
 
-        /* Dark Mode High-Tech Aceternity Theme */
-        body.dark-theme .gooey-input-box {
+        /* ─── DARK THEME GOOEY PILL ─── */
+        body.dark-theme .gooey-pill-box {
             background: rgba(20, 24, 40, 0.95) !important;
             border: 1.5px solid rgba(129, 140, 248, 0.35) !important;
-            color: #f1f5f9 !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(16px) !important;
         }
 
-        body.dark-theme .gooey-input-box::placeholder {
-            color: #94a3b8 !important;
-        }
-
-        body.dark-theme .gooey-input-box:focus {
+        body.dark-theme .gooey-input-demo-wrapper:focus-within .gooey-pill-box {
             border-color: #818cf8 !important;
-            box-shadow: 0 0 25px rgba(129, 140, 248, 0.4), inset 0 0 15px rgba(129, 140, 248, 0.15) !important;
+            box-shadow: 0 0 28px rgba(129, 140, 248, 0.45), inset 0 0 12px rgba(129, 140, 248, 0.15) !important;
         }
 
-        body.dark-theme .gooey-clear-btn {
+        body.dark-theme .gooey-search-field {
+            color: #f8fafc !important;
+        }
+
+        body.dark-theme .gooey-search-field::placeholder {
+            color: #64748b !important;
+        }
+
+        body.dark-theme .gooey-search-clear-btn {
             background: rgba(255, 255, 255, 0.1);
             color: #94a3b8;
         }
@@ -2597,20 +2604,40 @@
                                 <span class="tag-pill tag-pill-coral font-mono text-[10px]">Real-time ATS</span>
                             </div>
 
-                            <!-- ─── ACETERNITY GOOEY INPUT (CANDIDATE SEARCH) ─── -->
-                            <div class="gooey-search-container">
-                                <div class="gooey-search-wrapper">
-                                    <div class="gooey-blobs-layer">
-                                        <div class="gooey-blob gooey-blob-left"></div>
-                                        <div class="gooey-blob gooey-blob-right"></div>
+                            <!-- ─── ACETERNITY GOOEY INPUT (DEMO STRUCTURE) ─── -->
+                            <div class="flex h-40 w-full items-center justify-center">
+                                <div class="gooey-input-demo-wrapper">
+                                    <!-- Morphing Blobs Layer -->
+                                    <div class="gooey-morph-layer">
+                                        <span class="gooey-fluid-blob blob-1"></span>
+                                        <span class="gooey-fluid-blob blob-2"></span>
                                     </div>
-                                    <input type="text" id="candidateSearchInput" oninput="handleCandidateSearchInput(this)" class="gooey-input-box" placeholder="Search candidates by name, role, or skills..." autocomplete="off" />
-                                    <div class="gooey-search-icon-badge">
-                                        <i class="fas fa-search"></i>
+                                    
+                                    <!-- Search Input Pill Box -->
+                                    <div class="gooey-pill-box">
+                                        <svg class="gooey-magnifier-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                        <input 
+                                            type="text" 
+                                            id="candidateSearchInput" 
+                                            oninput="handleCandidateSearchInput(this)" 
+                                            placeholder="Search..." 
+                                            class="gooey-search-field"
+                                            autocomplete="off"
+                                            spellcheck="false"
+                                        />
+                                        <button 
+                                            type="button" 
+                                            id="candidateSearchClearBtn" 
+                                            onclick="clearCandidateSearch()" 
+                                            class="gooey-search-clear-btn" 
+                                            title="Clear"
+                                        >
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" id="candidateSearchClearBtn" class="gooey-clear-btn" onclick="clearCandidateSearch()" title="Clear search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
                                 </div>
                             </div>
 
