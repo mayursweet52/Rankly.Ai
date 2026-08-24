@@ -305,13 +305,20 @@ async function sendHealthAlert(issues, healActions = []) {
     lastEmailAlertTime = now;
 
     try {
+        const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
+        const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: smtpPort,
+            secure: isSecure,
             auth: {
                 user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
-                pass: (process.env.SMTP_PASS || '').replace(/\s+/g, '').trim()
+                pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
             },
-            connectionTimeout: 5000,
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000,
             tls: { rejectUnauthorized: false }
         });
 
