@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
-        pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+        pass: (process.env.SMTP_PASS || '').replace(/\s+/g, '').trim()
     },
     connectionTimeout: 5000,
     greetingTimeout: 5000,
@@ -109,7 +109,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     }
 
     // 2. Try Resend HTTPS REST API (Port 443)
-    const resendApiKey = (process.env.RESEND_API_KEY || 're_drUT68w4_FG6j2TXTaq3qT61MuHBdniXW').trim();
+    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
     if (resendApiKey) {
         try {
             const res = await fetch('https://api.resend.com/emails', {

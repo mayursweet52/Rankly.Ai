@@ -10,7 +10,7 @@ async function isAuthenticated(req, res, next) {
     if (!userId) {
       // Check API Key fallback for internal tooling / CLI if provided
       const apiKey = req.headers['x-api-key'] || req.query.apiKey;
-      if (apiKey && apiKey === (process.env.API_KEY || 'rankly-secret-key')) {
+      if (apiKey && process.env.API_KEY && apiKey === process.env.API_KEY.trim()) {
         // Find or create default admin for API key usage
         let adminUser = await prisma.user.findFirst({ where: { role: 'admin' } });
         if (!adminUser) {

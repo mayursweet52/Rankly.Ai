@@ -602,7 +602,8 @@ async function resetPassword(req, res) {
         email: normalizedEmail,
         otp: otp.trim(),
         type: 'password_reset',
-        createdAt: { gte: new Date(Date.now() - 15 * 60 * 1000) }
+        isUsed: false,
+        expiresAt: { gt: new Date() }
       },
       orderBy: { createdAt: 'desc' }
     });

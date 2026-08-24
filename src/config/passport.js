@@ -19,8 +19,8 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // -----------------------------------------------------------------------------
-const googleClientId = process.env.GOOGLE_CLIENT_ID || '297396891792-cia4kjguid6dpbe4vmmpmt16nomh50uh.apps.googleusercontent.com';
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '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';
+const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = process.env.BASE_URL || process.env.APP_URL || (isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000');
 
@@ -40,38 +40,27 @@ if (googleClientId && googleClientSecret) {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const email = profile.emails && profile.emails[0] ? profile.emails[0].value.toLowerCase().trim() : null;
-          if (!email) {
-            return done(new Error('No email found in Google account profile.'), null);
-          }
-
-          const firstName = profile.name ? profile.name.givenName || 'Google' : profile.displayName || 'Google';
+          const firstName = profile.name ? profile.name.givenName || 'Google' : 'Google';
           const lastName = profile.name ? profile.name.familyName || 'User' : 'User';
 
-          // Check if user already exists
+          if (!email) {
+            return done(new Error('Google account has no verified email associated.'), null);
+          }
+
           let user = await prisma.user.findUnique({
             where: { email }
           });
 
           if (!user) {
-            // Create user account
-            const baseUsername = email.split('@')[0] || `user_${Date.now()}`;
-            let uniqueUsername = baseUsername;
-            const existingUsername = await prisma.user.findUnique({ where: { username: uniqueUsername } });
-            if (existingUsername) {
-              uniqueUsername = `${baseUsername}_${Math.floor(1000 + Math.random() * 9000)}`;
-            }
-
-            const dummyPassword = await bcrypt.hash(`OAuth_${profile.id}_${Date.now()}`, 10);
-
             user = await prisma.user.create({
               data: {
                 email,
                 firstName,
                 lastName,
-                username: uniqueUsername,
-                password: dummyPassword,
-                accountType: 'normal_user',
+                username: `google_${profile.id.slice(0, 8)}`,
+                accountType: 'jobseeker',
                 role: 'normal_user',
+                status: 'active',
                 isEmailVerified: true
               }
             });
@@ -79,7 +68,6 @@ if (googleClientId && googleClientSecret) {
 
           return done(null, user);
         } catch (err) {
-          console.error('Google OAuth Strategy Error:', err);
           return done(err, null);
         }
       }
@@ -90,8 +78,8 @@ if (googleClientId && googleClientSecret) {
 // -----------------------------------------------------------------------------
 // Facebook OAuth Strategy
 // -----------------------------------------------------------------------------
-const fbAppId = process.env.FACEBOOK_APP_ID || '2621377384978326';
-const fbAppSecret = process.env.FACEBOOK_APP_SECRET || 'cc113a43994046b98f300330204e9104';
+const fbAppId = process.env.FACEBOOK_APP_ID || '';
+const fbAppSecret = process.env.FACEBOOK_APP_SECRET || '';
 const fbCallbackUrl = process.env.FACEBOOK_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/facebook/callback';
 
 if (fbAppId && fbAppSecret) {

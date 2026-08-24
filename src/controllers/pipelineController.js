@@ -32,6 +32,7 @@ async function getCandidates(req, res) {
 
     const candidates = await prisma.candidate.findMany({
       where,
+      take: 100,
       orderBy: [{ score: 'desc' }, { createdAt: 'desc' }]
     });
 
