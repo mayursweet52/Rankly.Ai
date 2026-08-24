@@ -182,9 +182,7 @@ async function register(req, res) {
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) calculatedAge--;
         
         if (calculatedAge < minRequiredAge) {
-          const errText = isEmp
-            ? '❌ You must be at least 18 years old to register as a company employee.'
-            : '❌ You must be at least 15 years old to register.';
+          const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
           return res.status(400).json({
             success: false,
             error: errText,
@@ -198,9 +196,7 @@ async function register(req, res) {
       const a = parseInt(age, 10);
       if (!isNaN(a)) {
         if (a < minRequiredAge) {
-          const errText = isEmp
-            ? '❌ You must be at least 18 years old to register as a company employee.'
-            : '❌ You must be at least 15 years old to register.';
+          const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
           return res.status(400).json({
             success: false,
             error: errText,

@@ -51,13 +51,8 @@ async function getOverview(req, res) {
     });
 
     const candidateCount = candidates.length || totalEvaluations || 1;
-    const averageScore = candidateCount > 0 && candidates.length > 0
-      ? Math.round(totalScore / candidates.length)
-      : (totalEvaluations > 0 ? 78 : 0);
-
-    const strongFitPercentage = candidates.length > 0
-      ? Math.round(((fitCounts['Strong Fit'] + fitCounts['Moderate Fit']) / candidates.length) * 100)
-      : 0;
+    const averageScore = (candidateCount > 0 && candidates.length > 0) ? Math.round(totalScore / candidates.length) : (totalEvaluations > 0 ? 78 : 0);
+    const strongFitPercentage = candidates.length > 0 ? Math.round(((fitCounts['Strong Fit'] + fitCounts['Moderate Fit']) / candidates.length) * 100) : 0;
 
     return res.json({
       success: true,
@@ -128,15 +123,8 @@ async function getScoreDistribution(req, res) {
       } catch (e) {}
     });
 
-    const topSkills = Object.entries(skillFrequencies)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 8)
-      .map(([name, count]) => ({ name, count }));
-
-    const topMissingSkills = Object.entries(missingSkillFrequencies)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 8)
-      .map(([name, count]) => ({ name, count }));
+    const topSkills = Object.entries(skillFrequencies).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([name, count]) => ({ name, count }));
+    const topMissingSkills = Object.entries(missingSkillFrequencies).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([name, count]) => ({ name, count }));
 
     return res.json({
       success: true,
