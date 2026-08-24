@@ -296,15 +296,86 @@ app.get('/api/ping', (req, res) => {
   res.send('ok');
 });
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// ─── n8n-BASED SELF-HEALING SYSTEM ENDPOINTS ───
+// 1. Health Check
+app.get(['/api/health', '/api/health/status'], (req, res) => {
   res.json({
-    status: 'online',
+    status: 'ok',
     system: 'Rankly.ai Executive OS',
     database: 'Prisma SQLite',
-    auth: 'Session-Based',
     timestamp: new Date().toISOString()
   });
+});
+
+// 2. Backup Code
+app.post(['/api/backup', '/api/health/backup'], async (req, res) => {
+  try {
+    const timestamp = Date.now();
+    const backupDir = path.join(process.cwd(), 'backups', `src_${timestamp}`);
+    if (!fs.existsSync(path.dirname(backupDir))) {
+      fs.mkdirSync(path.dirname(backupDir), { recursive: true });
+    }
+    await fs.promises.cp(path.join(process.cwd(), 'src'), backupDir, { recursive: true });
+    res.json({ success: true, backupDir: `./backups/src_${timestamp}` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 3. Apply Fix
+app.post(['/api/apply-fix', '/api/health/apply-fix'], async (req, res) => {
+  try {
+    const { fixInstruction, code, file } = req.body || {};
+    if (fixInstruction) {
+      fs.writeFileSync(path.join(process.cwd(), 'fix_instruction.md'), String(fixInstruction));
+    }
+    if (file && typeof code === 'string') {
+      const targetPath = path.isAbsolute(file) ? file : path.join(process.cwd(), file);
+      fs.writeFileSync(targetPath, code);
+    }
+    res.json({ success: true, message: 'Fix applied.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 4. Rollback
+app.post(['/api/rollback', '/api/health/rollback-src'], async (req, res) => {
+  try {
+    const { backupDir } = req.body || {};
+    if (!backupDir) {
+      return res.status(400).json({ success: false, message: 'backupDir is required' });
+    }
+    const resolvedBackup = path.isAbsolute(backupDir) ? backupDir : path.join(process.cwd(), backupDir);
+    const srcPath = path.join(process.cwd(), 'src');
+    if (!fs.existsSync(resolvedBackup)) {
+      return res.status(404).json({ success: false, message: 'Backup directory not found: ' + backupDir });
+    }
+    await fs.promises.rm(srcPath, { recursive: true, force: true });
+    await fs.promises.cp(resolvedBackup, srcPath, { recursive: true });
+    res.json({ success: true, message: 'Rollback complete.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 5. Trigger n8n Workflow
+app.post(['/api/trigger-self-heal', '/api/health/trigger-n8n'], async (req, res) => {
+  try {
+    const { issues } = req.body || {};
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/self-heal';
+    
+    // Trigger n8n webhook
+    fetch(n8nWebhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ issues: issues || [], timestamp: new Date().toISOString() })
+    }).catch(err => console.warn('[n8n Webhook Notice]:', err.message));
+
+    res.json({ success: true, message: 'n8n triggered', webhookUrl: n8nWebhookUrl });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // Explicit Web Page Routes
