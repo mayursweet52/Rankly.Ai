@@ -83,11 +83,11 @@ const checks = {
         const heapTotalMB = Math.round(mem.heapTotal / 1024 / 1024);
         const rssMB = Math.round(mem.rss / 1024 / 1024);
 
-        if (rssMB > 1200) {
-            return { error: true, message: `Critical Memory Alert: RSS is ${rssMB}MB (Threshold: 1200MB)` };
+        if (rssMB > 950) {
+            return { error: true, message: `Critical Memory Alert: RSS is ${rssMB}MB (Threshold: 950MB)` };
         }
-        if (heapTotalMB > 0 && (mem.heapUsed / mem.heapTotal) > 0.92) {
-            return { error: true, message: `High Heap Usage: ${heapUsedMB}MB / ${heapTotalMB}MB (>92%)` };
+        if (heapUsedMB > 450 && heapTotalMB > 0 && (mem.heapUsed / mem.heapTotal) > 0.90) {
+            return { error: true, message: `High Heap Exhaustion: ${heapUsedMB}MB / ${heapTotalMB}MB (>90%)` };
         }
         return { error: false, message: null, heapUsedMB, rssMB };
     },
