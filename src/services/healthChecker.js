@@ -31,7 +31,7 @@ function recordSecurityThreat(threat) {
         ...threat
     };
     securityThreats.unshift(entry);
-    if (securityThreats.length > 200) securityThreats.pop();
+    if (securityThreats.length > 30) securityThreats.pop();
 
     try {
         let existing = [];
@@ -39,7 +39,7 @@ function recordSecurityThreat(threat) {
             existing = JSON.parse(fs.readFileSync(THREAT_LOG_FILE, 'utf-8'));
         }
         existing.unshift(entry);
-        if (existing.length > 500) existing = existing.slice(0, 500);
+        if (existing.length > 50) existing = existing.slice(0, 50);
         fs.writeFileSync(THREAT_LOG_FILE, JSON.stringify(existing, null, 2));
     } catch (e) {}
 }
@@ -510,7 +510,7 @@ async function runHealthCheck(options = {}) {
     };
 
     recentLogs.unshift(logEntry);
-    if (recentLogs.length > 100) recentLogs.pop();
+    if (recentLogs.length > 30) recentLogs.pop();
 
     try {
         let fileLogs = [];
@@ -518,7 +518,7 @@ async function runHealthCheck(options = {}) {
             fileLogs = JSON.parse(fs.readFileSync(LOG_FILE, 'utf-8'));
         }
         fileLogs.unshift(logEntry);
-        if (fileLogs.length > 200) fileLogs = fileLogs.slice(0, 200);
+        if (fileLogs.length > 50) fileLogs = fileLogs.slice(0, 50);
         fs.writeFileSync(LOG_FILE, JSON.stringify(fileLogs, null, 2));
     } catch (e) {}
 

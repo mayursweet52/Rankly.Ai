@@ -25,8 +25,9 @@ async function screenResumeHandler(req, res) {
     if (file) {
       resumeFileName = file.originalname;
       resumeFilePath = file.path;
-      const fileBuffer = fs.readFileSync(file.path);
+      let fileBuffer = fs.readFileSync(file.path);
       resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
+      fileBuffer = null; // Explicitly release binary buffer for immediate GC
     }
 
     if (!resumeText || resumeText.trim().length < 20) {
@@ -144,8 +145,9 @@ async function detectRoleHandler(req, res) {
     let resumeText = req.body.resumeText || '';
 
     if (file) {
-      const fileBuffer = fs.readFileSync(file.path);
+      let fileBuffer = fs.readFileSync(file.path);
       resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
+      fileBuffer = null;
     }
 
     if (!resumeText || resumeText.trim().length < 20) {
@@ -182,8 +184,9 @@ async function batchUploadHandler(req, res) {
 
     for (const file of files) {
       try {
-        const fileBuffer = fs.readFileSync(file.path);
+        let fileBuffer = fs.readFileSync(file.path);
         const resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
+        fileBuffer = null;
         const extracted = extractCandidateInfoFromText(resumeText, file.originalname);
 
         const evaluation = await screenResume(resumeText, targetRole, '', file.originalname);
