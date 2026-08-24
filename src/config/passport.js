@@ -52,13 +52,15 @@ if (googleClientId && googleClientSecret) {
           });
 
           if (!user) {
+            const dummyPassword = await bcrypt.hash(`OAuth_Google_${profile.id}_${Date.now()}`, 10);
             user = await prisma.user.create({
               data: {
                 email,
                 firstName,
                 lastName,
                 username: `google_${profile.id.slice(0, 8)}`,
-                accountType: 'jobseeker',
+                password: dummyPassword,
+                accountType: 'normal_user',
                 role: 'normal_user',
                 status: 'active',
                 isEmailVerified: true
@@ -68,6 +70,7 @@ if (googleClientId && googleClientSecret) {
 
           return done(null, user);
         } catch (err) {
+          console.error('Google OAuth Strategy Error:', err);
           return done(err, null);
         }
       }
