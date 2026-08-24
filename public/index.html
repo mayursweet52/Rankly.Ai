@@ -1553,10 +1553,132 @@
             transform: scale(1.1) !important;
             box-shadow: 0 0 12px rgba(239, 68, 68, 0.3) !important;
         }
+
+        /* ─── ACETERNITY GOOEY INPUT STYLES ─── */
+        .gooey-search-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .gooey-filter-layer {
+            filter: url('#aceternity-gooey');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+
+        .gooey-input-box {
+            position: relative;
+            width: 100%;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 9999px;
+            padding: 14px 22px 14px 48px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111111;
+            outline: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .gooey-input-box:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15), 0 8px 25px rgba(99, 102, 241, 0.2);
+            transform: scale(1.02);
+        }
+
+        .gooey-blob-1, .gooey-blob-2 {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: -1;
+        }
+
+        .gooey-blob-1 {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.8);
+            opacity: 0.75;
+        }
+
+        .gooey-blob-2 {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, #f43f5e, #fb923c);
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.6);
+            opacity: 0.65;
+        }
+
+        .gooey-input-box:focus ~ .gooey-blob-1 {
+            transform: translateY(-50%) scale(1.3) translateX(-10px);
+            opacity: 0.9;
+        }
+
+        .gooey-input-box:focus ~ .gooey-blob-2 {
+            transform: translateY(-50%) scale(1.25) translateX(10px);
+            opacity: 0.9;
+        }
+
+        .gooey-search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #818cf8;
+            font-size: 15px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .gooey-input-box:focus ~ .gooey-search-icon {
+            transform: translateY(-50%) scale(1.15) rotate(-10deg);
+            color: #6366f1;
+        }
+
+        body.dark-theme .gooey-input-box {
+            background: #14141f !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-theme .gooey-input-box::placeholder {
+            color: #64748b !important;
+        }
+
+        body.dark-theme .gooey-input-box:focus {
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 25px rgba(129, 140, 248, 0.35), inset 0 0 10px rgba(129, 140, 248, 0.15) !important;
+        }
     </style>
 </head>
 <body class="rankly-bg">
     <div id="toast-container"></div>
+    
+    <!-- ─── ACETERNITY GOOEY SVG FILTER DEFINITION ─── -->
+    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="aceternity-gooey">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="gooey" />
+          <feComposite in="SourceGraphic" in2="gooey" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
 
     <!-- ═══════════════════════════════════════════════════════════════ -->
     <!-- LOGIN SCREEN (COHERE STYLE WITH 3D PEBBLES & CELLULAR MESH)        -->
@@ -2426,6 +2548,19 @@
                                 </h3>
                                 <span class="tag-pill tag-pill-coral font-mono text-[10px]">Real-time ATS</span>
                             </div>
+
+                            <!-- ─── ACETERNITY GOOEY INPUT (CANDIDATE SEARCH) ─── -->
+                            <div class="flex h-40 w-full items-center justify-center">
+                                <div class="gooey-search-wrapper">
+                                    <div class="gooey-filter-layer">
+                                        <input type="text" id="candidateSearchInput" oninput="filterEvaluatedCandidates(this.value)" class="gooey-input-box" placeholder="Search candidates, skills, roles..." />
+                                        <i class="fas fa-search gooey-search-icon"></i>
+                                        <div class="gooey-blob-1"></div>
+                                        <div class="gooey-blob-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="screeningResults">
                                 <div class="p-8 text-center bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl my-4">
                                     <div class="w-12 h-12 rounded-2xl bg-[#F4F4F0] text-[#111111] flex items-center justify-center mx-auto mb-3 border border-[#E5E5DF]">
@@ -4752,6 +4887,25 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 }
                 window.loadEvaluationsHistory = loadEvaluationsHistory;
+
+                window.filterEvaluatedCandidates = function(query) {
+                    if (!evaluatedCandidatesList) return;
+                    const q = (query || '').toLowerCase().trim();
+                    if (!q) {
+                        renderEvaluatedCandidates(evaluatedCandidatesList);
+                        return;
+                    }
+
+                    const filtered = evaluatedCandidatesList.filter(item => {
+                        const name = (item.candidateName || item.resumeFileName || '').toLowerCase();
+                        const role = (item.targetRole || '').toLowerCase();
+                        const summary = (item.summary || '').toLowerCase();
+                        const skills = Array.isArray(item.matchedSkills) ? item.matchedSkills.join(' ').toLowerCase() : String(item.matchedSkills || '').toLowerCase();
+                        return name.includes(q) || role.includes(q) || summary.includes(q) || skills.includes(q);
+                    });
+
+                    renderEvaluatedCandidates(filtered);
+                };
 
                 function renderEvaluatedCandidates(evaluations) {
                     const resEl = document.getElementById('screeningResults');
