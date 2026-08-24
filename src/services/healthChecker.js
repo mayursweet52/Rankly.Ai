@@ -305,23 +305,7 @@ async function sendHealthAlert(issues, healActions = []) {
     lastEmailAlertTime = now;
 
     try {
-        const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
-        const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
-
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || 'smtp.gmail.com',
-            port: smtpPort,
-            secure: isSecure,
-            auth: {
-                user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
-                pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
-            },
-            connectionTimeout: 10000,
-            greetingTimeout: 10000,
-            socketTimeout: 10000,
-            tls: { rejectUnauthorized: false }
-        });
-
+        const { sendSystemEmail } = require('./emailService');
         const issuesHtml = issues.map(i => `
             <li style="margin-bottom: 8px; font-family: monospace; font-size: 13px;">
                 <strong style="color: #e11d48;">[${i.check.toUpperCase()}]</strong> 
@@ -339,9 +323,9 @@ async function sendHealthAlert(issues, healActions = []) {
             </div>
         ` : '';
 
-        await transporter.sendMail({
-            from: `"Rankly.ai Self-Healing Engine" <${process.env.SMTP_USER || 'rankly.ai.com@gmail.com'}>`,
-            to: 'mayursweet52@gmail.com',
+        const targetEmail = process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+        const res = await sendSystemEmail({
+            to: targetEmail,
             subject: `⚠️ [Rankly.ai Health Alert] ${issues.length} System Issue(s) Detected & Managed`,
             html: `
                 <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
@@ -373,7 +357,12 @@ async function sendHealthAlert(issues, healActions = []) {
                 </div>
             `
         });
-        console.log('📧 Health alert email dispatched to mayursweet52@gmail.com');
+
+        if (res.success) {
+            console.log(`📧 Health alert email dispatched to ${targetEmail} via ${res.method}`);
+        } else {
+            console.warn(`⚠️ Health alert email delivery warning: ${res.message}`);
+        }
     } catch (err) {
         console.error('⚠️ Could not send health email alert:', err.message);
     }

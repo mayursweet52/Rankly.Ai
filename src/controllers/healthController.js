@@ -153,27 +153,10 @@ async function getSecurityThreats(req, res) {
  */
 async function sendTestEmail(req, res) {
     try {
-        const nodemailer = require('nodemailer');
-        const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
-        const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+        const { sendSystemEmail } = require('../services/emailService');
         const targetEmail = req.body?.email || process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || 'smtp.gmail.com',
-            port: smtpPort,
-            secure: isSecure,
-            auth: {
-                user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
-                pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
-            },
-            connectionTimeout: 10000,
-            greetingTimeout: 10000,
-            socketTimeout: 10000,
-            tls: { rejectUnauthorized: false }
-        });
-
-        const info = await transporter.sendMail({
-            from: `"Rankly.ai System Health" <${process.env.SMTP_USER || 'rankly.ai.com@gmail.com'}>`,
+        const result = await sendSystemEmail({
             to: targetEmail,
             subject: '🔔 Rankly.ai – Live Test Email Verification',
             html: `
@@ -187,7 +170,7 @@ async function sendTestEmail(req, res) {
                     </p>
                     <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin: 16px 0; font-size: 13px; font-family: monospace; color: #1e293b;">
                         <div>🟢 <strong>System Status:</strong> 100% HEALTHY (0 Errors)</div>
-                        <div>🔒 <strong>Protocol:</strong> SMTP Port 465 (Direct SSL)</div>
+                        <div>🔒 <strong>Protocol:</strong> Multi-Tier Resilient HTTPS & SSL</div>
                         <div>⏱️ <strong>Timestamp:</strong> ${new Date().toLocaleString()}</div>
                         <div>🎯 <strong>Recipient:</strong> ${targetEmail}</div>
                     </div>
@@ -198,12 +181,15 @@ async function sendTestEmail(req, res) {
             `
         });
 
-        return res.json({
-            success: true,
-            message: `Test email successfully sent to ${targetEmail}`,
-            messageId: info.messageId,
-            response: info.response
-        });
+        if (result.success) {
+            return res.json({
+                success: true,
+                message: `Test email successfully sent to ${targetEmail} via ${result.method || 'HTTPS'}`,
+                method: result.method
+            });
+        } else {
+            return res.status(500).json({ success: false, message: `Failed to send test email: ${result.message}` });
+        }
     } catch (err) {
         console.error('Test email error:', err);
         return res.status(500).json({ success: false, message: `Failed to send test email: ${err.message}` });

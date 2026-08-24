@@ -11,11 +11,94 @@ const transporter = nodemailer.createTransport({
         user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
         pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 8000,
     tls: { rejectUnauthorized: false }
 });
+
+/**
+ * Universal Multi-Tier System Email Sender (Resilient to cloud SMTP timeouts)
+ */
+async function sendSystemEmail({ to, subject, html, text }) {
+    if (!to) return { success: false, message: 'Recipient is required' };
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+    const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
+
+    // 1. Tier 1: Official Google Webhook (Port 443 HTTPS REST - 100% immune to SMTP port blocks on Railway!)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
+    if (googleWebhookUrl) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
+            const res = await fetch(googleWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                signal: controller.signal,
+                body: JSON.stringify({
+                    to: cleanRecipient,
+                    subject: subject,
+                    html: html
+                })
+            });
+            clearTimeout(timeoutId);
+            const resData = await res.json();
+            if (resData && resData.success) {
+                console.log('✅ Email delivered via Google Webhook (HTTPS 443) to:', cleanRecipient);
+                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
+            }
+        } catch (gErr) {
+            console.warn('[Google Webhook Warning]:', gErr.message);
+        }
+    }
+
+    // 2. Tier 2: Resend REST API (Port 443 HTTPS)
+    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
+    if (resendApiKey) {
+        try {
+            const res = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${resendApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
+                    to: [cleanRecipient],
+                    subject: subject,
+                    html: html
+                })
+            });
+            const resData = await res.json();
+            if (res.ok && resData.id) {
+                console.log('✅ Email delivered via Resend API (HTTPS 443) to:', cleanRecipient, 'ID:', resData.id);
+                return { success: true, method: 'resend', messageId: resData.id };
+            }
+        } catch (apiErr) {
+            console.warn('[Resend API Error]:', apiErr.message);
+        }
+    }
+
+    // 3. Tier 3: Nodemailer SMTP (Port 465 SSL Direct)
+    try {
+        const info = await Promise.race([
+            transporter.sendMail({
+                from: fromAddress,
+                to: cleanRecipient,
+                subject: subject,
+                text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
+                html: html
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout on cloud host')), 6000))
+        ]);
+        console.log('✅ Email delivered via Direct SMTP to:', cleanRecipient);
+        return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
+    } catch (smtpErr) {
+        console.error('❌ All email delivery tiers failed:', smtpErr.message);
+        return { success: false, message: smtpErr.message };
+    }
+}
 
 /**
  * Send OTP Verification Email with Professional HTML Template
@@ -24,8 +107,6 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-    const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
     const subject = isReset ? '🔐 Your Rankly.ai Password Reset Code' : '🔐 Your Rankly.ai OTP Code';
 
     const html = `
@@ -43,11 +124,11 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
             .greeting { color: #1e293b; font-size: 16px; margin: 20px 0 10px; }
             .otp-box { background: #f0f4ff; padding: 16px; text-align: center; font-size: 36px; font-weight: 700; letter-spacing: 8px; border-radius: 12px; margin: 20px 0; color: #1e293b; border: 1px dashed #c7d2fe; font-family: monospace; }
             .validity { text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 24px; }
-            .footer { text-align: center; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 24px; }
-            .footer a { color: #4f46e5; text-decoration: none; }
-            .brand-box { background: #f8fafc; border-radius: 12px; padding: 16px; margin-top: 20px; border: 1px solid #e2e8f0; text-align: center; }
-            .brand-box h4 { margin: 0; color: #0f172a; font-size: 16px; }
+            .brand-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 24px; }
+            .brand-box h4 { margin: 0; color: #4f46e5; font-size: 14px; }
             .brand-box p { margin: 6px 0 0; color: #475569; font-size: 14px; }
+            .footer { margin-top: 24px; text-align: center; font-size: 12px; color: #9ca3af; }
+            .footer a { color: #4f46e5; text-decoration: none; }
         </style>
     </head>
     <body>
@@ -76,118 +157,24 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     </html>
     `;
 
-    const mailOptions = {
-        from: fromAddress,
+    const res = await sendSystemEmail({
         to: cleanRecipient,
-        subject: subject,
-        text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otp}\n\nThis OTP is valid for 5 minutes.\n\nBest regards,\nRankly.ai Security`,
-        html: html,
-        headers: {
-            'X-Priority': '1',
-            'X-MSMail-Priority': 'High',
-            'Importance': 'high'
-        }
-    };
+        subject,
+        html,
+        text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otp}\n\nThis OTP is valid for 5 minutes.\n\nBest regards,\nRankly.ai Security`
+    });
 
-    // 1. Try Official Google Apps Script Webhook (Port 443 - 100% Free, sends from rankly.ai.com@gmail.com to ANY recipient!)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
-    if (googleWebhookUrl) {
-        try {
-            const res = await fetch(googleWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    to: cleanRecipient,
-                    subject: subject,
-                    html: html,
-                    otp: otp
-                })
-            });
-            const resData = await res.json();
-            if (resData && resData.success) {
-                console.log('✅ Real OTP email delivered via Official Google Webhook to:', cleanRecipient);
-                return true;
-            }
-        } catch (gErr) {
-            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
-        }
-    }
-
-    // 2. Try Resend HTTPS REST API (Port 443)
-    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
-    if (resendApiKey) {
-        try {
-            const res = await fetch('https://api.resend.com/emails', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${resendApiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
-                    to: [cleanRecipient],
-                    subject: subject,
-                    html: html
-                })
-            });
-            const resData = await res.json();
-            if (res.ok && resData.id) {
-                console.log('✅ Real OTP email delivered via Resend API to:', cleanRecipient, 'ID:', resData.id);
-                return true;
-            }
-        } catch (apiErr) {
-            console.warn('[Resend API Error]:', apiErr.message);
-        }
-    }
-
-    // 3. Try Brevo HTTPS REST API (Port 443)
-    if (process.env.BREVO_API_KEY) {
-        try {
-            const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-                method: 'POST',
-                headers: {
-                    'api-key': process.env.BREVO_API_KEY.trim(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    sender: { name: 'Rankly.ai', email: senderUser },
-                    to: [{ email: cleanRecipient }],
-                    subject: subject,
-                    htmlContent: html
-                })
-            });
-            const resData = await res.json();
-            if (res.ok && (resData.messageId || resData.id)) {
-                console.log('✅ Real OTP email delivered via Brevo API to:', cleanRecipient, 'ID:', resData.messageId || resData.id);
-                return true;
-            }
-        } catch (brevoErr) {
-            console.warn('[Brevo API Error]:', brevoErr.message);
-        }
-    }
-
-    // 3. Try Gmail Transporter
-    try {
-        const info = await Promise.race([
-            transporter.sendMail(mailOptions),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Gmail SMTP timeout')), 4000))
-        ]);
-        console.log('✅ OTP sent to:', cleanRecipient, 'MessageId:', info?.messageId || 'OK');
-        return true;
-    } catch (error) {
-        console.error('❌ Email send failed:', error.message);
-        return false;
-    }
+    return res.success;
 }
 
 /**
  * Send Team Invitation Email
  */
 async function sendInvitationEmail(toEmail, organizationName, role, inviteUrl) {
-  const cleanRecipient = (toEmail || '').toString().toLowerCase().trim();
-  const subject = `🚀 You're invited to join ${organizationName} on Rankly.ai`;
+    const cleanRecipient = (toEmail || '').toString().toLowerCase().trim();
+    const subject = `🚀 You're invited to join ${organizationName} on Rankly.ai`;
 
-  const html = `
+    const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
       <h2 style="color: #4f46e5; margin: 0 0 16px 0;">Rankly.ai Team Invitation</h2>
       <p style="color: #334155; font-size: 15px;">
@@ -200,38 +187,29 @@ async function sendInvitationEmail(toEmail, organizationName, role, inviteUrl) {
       </div>
       <p style="color: #64748b; font-size: 13px;">Or copy and paste this link in your browser: <br/><a href="${inviteUrl}" style="color: #4f46e5;">${inviteUrl}</a></p>
     </div>
-  `;
+    `;
 
-  try {
-    return await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
-      to: cleanRecipient,
-      subject,
-      html
-    });
-  } catch (err) {
-    console.error('Invite email error:', err.message);
-    return null;
-  }
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html });
+    return res.success;
 }
 
 /**
  * Send Candidate Status Update Notification
  */
 async function sendCandidateStatusNotification(toEmail, candidateName, targetRole, stage, customMessage = '') {
-  const cleanRecipient = (toEmail || '').toString().toLowerCase().trim();
-  const stageLabels = {
-    applied: 'Application Received',
-    ai_screened: 'AI Screening Completed',
-    hm_review: 'Hiring Manager Review',
-    interview: 'Interview Scheduled',
-    offered: 'Job Offer Extended',
-    rejected: 'Application Status Update'
-  };
+    const cleanRecipient = (toEmail || '').toString().toLowerCase().trim();
+    const stageLabels = {
+        applied: 'Application Received',
+        ai_screened: 'AI Screening Completed',
+        hm_review: 'Hiring Manager Review',
+        interview: 'Interview Scheduled',
+        offered: 'Job Offer Extended',
+        rejected: 'Application Status Update'
+    };
 
-  const subject = `Update regarding your application for ${targetRole} at Rankly.ai`;
+    const subject = `Update regarding your application for ${targetRole} at Rankly.ai`;
 
-  const html = `
+    const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
       <h2 style="color: #4f46e5; margin: 0 0 16px 0;">Application Update</h2>
       <p style="color: #334155; font-size: 15px;">Hello ${candidateName},</p>
@@ -244,24 +222,15 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
       ${customMessage ? `<div style="background-color: #f8fafc; border-left: 4px solid #4f46e5; padding: 12px; margin: 20px 0; color: #475569;">${customMessage}</div>` : ''}
       <p style="color: #64748b; font-size: 13px; margin-top: 24px;">Thank you for your interest in joining our team!</p>
     </div>
-  `;
+    `;
 
-  try {
-    return await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `Rankly.ai <${process.env.SMTP_USER}>`,
-      to: cleanRecipient,
-      subject,
-      html
-    });
-  } catch (err) {
-    console.error('Status notification email error:', err.message);
-    return null;
-  }
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html });
+    return res.success;
 }
 
 module.exports = {
-  sendOTPEmail,
-  sendOtpEmail: sendOTPEmail,
-  sendInvitationEmail,
-  sendCandidateStatusNotification
+    sendSystemEmail,
+    sendOTPEmail,
+    sendInvitationEmail,
+    sendCandidateStatusNotification
 };
