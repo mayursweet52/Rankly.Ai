@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const prisma = require('./database');
 
 // Serialize & Deserialize User for Session Persistence
@@ -52,7 +53,8 @@ if (googleClientId && googleClientSecret) {
           });
 
           if (!user) {
-            const dummyPassword = await bcrypt.hash(`OAuth_Google_${profile.id}_${Date.now()}`, 10);
+            const highEntropySecret = crypto.randomBytes(32).toString('hex');
+            const dummyPassword = await bcrypt.hash(highEntropySecret, 10);
             user = await prisma.user.create({
               data: {
                 email,
@@ -106,7 +108,8 @@ if (fbAppId && fbAppSecret) {
 
           if (!user) {
             const baseUsername = `fb_${profile.id}`;
-            const dummyPassword = await bcrypt.hash(`OAuth_FB_${profile.id}_${Date.now()}`, 10);
+            const highEntropySecret = crypto.randomBytes(32).toString('hex');
+            const dummyPassword = await bcrypt.hash(highEntropySecret, 10);
 
             user = await prisma.user.create({
               data: {
