@@ -1719,6 +1719,185 @@
             background: rgba(255, 255, 255, 0.1);
             color: #94a3b8;
         }
+
+        /* ─── ACETERNITY PLACEHOLDERS AND VANISH INPUT (CHATBOT) ─── */
+        .vanish-input-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vanish-upload-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #FAFAF8;
+            border: 1.5px solid #E5E5DF;
+            color: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .vanish-upload-btn:hover {
+            background: #F4F4F0;
+            color: #D95D39;
+            border-color: #D95D39;
+            transform: scale(1.06);
+            box-shadow: 0 4px 14px rgba(217, 93, 57, 0.2);
+        }
+
+        .vanish-form {
+            position: relative;
+            width: 100%;
+            flex: 1;
+        }
+
+        .vanish-input-pill {
+            position: relative;
+            width: 100%;
+            height: 52px;
+            background: #FAFAF8;
+            border: 1.5px solid #E5E5DF !important;
+            border-radius: 9999px !important;
+            display: flex !important;
+            align-items: center !important;
+            padding: 0 8px 0 22px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            box-sizing: border-box !important;
+            overflow: hidden;
+        }
+
+        .vanish-form:focus-within .vanish-input-pill {
+            background: #ffffff !important;
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.18), 0 8px 25px rgba(99, 102, 241, 0.15) !important;
+            transform: translateY(-1px);
+        }
+
+        .vanish-placeholder-container {
+            position: absolute;
+            left: 22px;
+            right: 56px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            overflow: hidden;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .vanish-placeholder-text {
+            font-size: 14px;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            display: block;
+            font-weight: 400;
+        }
+
+        .vanish-input-field {
+            position: relative;
+            width: 100% !important;
+            height: 100% !important;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            padding: 0 48px 0 0 !important;
+            margin: 0 !important;
+            font-family: inherit !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            color: #111111 !important;
+            z-index: 3;
+            box-sizing: border-box !important;
+        }
+
+        .vanish-submit-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #111111;
+            border: none !important;
+            outline: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 4;
+            color: #ffffff;
+        }
+
+        .vanish-submit-btn:hover {
+            background: #6366f1;
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 0 14px rgba(99, 102, 241, 0.45);
+        }
+
+        .vanish-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Dark Theme Vanish Input */
+        body.dark-theme .vanish-upload-btn {
+            background: #1e1e2d;
+            border-color: #2a2a3e;
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .vanish-upload-btn:hover {
+            background: rgba(129, 140, 248, 0.15);
+            border-color: #818cf8;
+            color: #818cf8;
+            box-shadow: 0 0 14px rgba(129, 140, 248, 0.3);
+        }
+
+        body.dark-theme .vanish-input-pill {
+            background: #14141f !important;
+            border-color: #2a2a3e !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-theme .vanish-form:focus-within .vanish-input-pill {
+            background: #1a1a2e !important;
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 25px rgba(129, 140, 248, 0.35) !important;
+        }
+
+        body.dark-theme .vanish-input-field {
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-theme .vanish-submit-btn {
+            background: #818cf8;
+        }
+
+        body.dark-theme .vanish-submit-btn:hover {
+            background: #a855f7;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+        }
     </style>
 </head>
 <body class="rankly-bg">
@@ -2513,20 +2692,40 @@
                                 </button>
                             </div>
 
-                            <!-- Input Row with Cloud Upload Button -->
-                            <div class="flex gap-2 items-center">
+                            <!-- ─── ACETERNITY PLACEHOLDERS AND VANISH INPUT (CHATBOT) ─── -->
+                            <div class="vanish-input-wrapper">
                                 <input type="file" id="chatFileInput" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" style="display:none" onchange="handleChatFileSelected(this)" />
                                 
-                                <button type="button" class="btn-secondary px-3.5 py-2.5 flex-shrink-0 cursor-pointer text-[#111111] hover:text-[#D95D39] border border-[#E5E5DF] rounded-xl" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
-                                    <i class="fas fa-cloud-arrow-up text-base"></i>
+                                <button type="button" class="vanish-upload-btn" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
+                                    <i class="fas fa-cloud-arrow-up"></i>
                                 </button>
 
-                                <input class="form-input flex-1 py-2.5 px-4 text-sm border border-[#E5E5DF] rounded-xl text-[#111111] bg-[#FAFAF8]" id="chatInput" onkeydown="if(event.key==='Enter') sendChat()" placeholder="Ask Rankly AI anything or attach a resume to screen..." type="text"/>
-                                
-                                <button class="btn-primary px-5 py-2.5 flex-shrink-0 cursor-pointer rounded-xl bg-[#111111] hover:bg-[#2A2A2A] text-white font-medium flex items-center gap-2" onclick="sendChat()" title="Send Message">
-                                    <span>Send</span>
-                                    <i class="fas fa-arrow-up text-xs"></i>
-                                </button>
+                                <form id="vanishInputForm" onsubmit="handleVanishSubmit(event)" class="vanish-form">
+                                    <canvas id="vanishCanvas" class="vanish-canvas"></canvas>
+                                    <div class="vanish-input-pill">
+                                        <!-- Animated Sliding Placeholders -->
+                                        <div id="vanishPlaceholderContainer" class="vanish-placeholder-container">
+                                            <span id="vanishPlaceholderText" class="vanish-placeholder-text">Ask Rankly AI anything or attach a resume to screen...</span>
+                                        </div>
+                                        
+                                        <input 
+                                            type="text" 
+                                            id="chatInput" 
+                                            oninput="handleVanishInputChange(this)" 
+                                            onfocus="handleVanishFocus(true)" 
+                                            onblur="handleVanishFocus(false)" 
+                                            class="vanish-input-field" 
+                                            autocomplete="off" 
+                                            spellcheck="false" 
+                                        />
+
+                                        <button type="submit" id="vanishSubmitBtn" class="vanish-submit-btn" title="Send message">
+                                            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="flex gap-2 mt-4 pt-3 border-t border-[#E5E5DF] overflow-x-auto pb-1">
@@ -4364,11 +4563,11 @@
             }
             window.formatMarkdownChat = formatMarkdownChat;
 
-            window.sendChat = async function() {
+            window.sendChat = async function(overrideMsg) {
                 const input = document.getElementById('chatInput');
                 const container = document.getElementById('chatContainer');
-                if (!input || !container) return;
-                const msg = input.value.trim();
+                if (!container) return;
+                const msg = (typeof overrideMsg === 'string' ? overrideMsg : (input ? input.value : '')).trim();
                 if (!msg && !chatSelectedFile) return;
 
                 // Render User Message
@@ -4380,7 +4579,9 @@
                     userDiv.textContent = msg;
                 }
                 container.appendChild(userDiv);
-                input.value = '';
+                if (input) input.value = '';
+                const placeholderText = document.getElementById('vanishPlaceholderText');
+                if (placeholderText) placeholderText.style.opacity = '1';
                 container.scrollTop = container.scrollHeight;
 
                 const botDiv = document.createElement('div');
@@ -4429,45 +4630,37 @@
                                     </div>
                                     ${matchedSkills.length ? `
                                         <div>
-                                            <span class="text-[11px] font-mono uppercase font-bold text-emerald-700 block mb-1">Matched Skills:</span>
-                                            <div class="flex flex-wrap gap-1.5">
-                                                ${matchedSkills.slice(0, 8).map(s => `<span class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
+                                            <span class="text-xs font-bold text-emerald-700 block mb-1">✓ Matched Competencies:</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                ${matchedSkills.map(s => `<span class="bg-emerald-100/70 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
                                             </div>
-                                        </div>
-                                    ` : ''}
+                                        </div>` : ''}
                                     ${missingSkills.length ? `
                                         <div>
-                                            <span class="text-[11px] font-mono uppercase font-bold text-rose-700 block mb-1">Missing / Improvement Areas:</span>
-                                            <div class="flex flex-wrap gap-1.5">
-                                                ${missingSkills.slice(0, 6).map(s => `<span class="bg-rose-50 border border-rose-200 text-rose-800 text-xs px-2 py-0.5 rounded-full">${s}</span>`).join('')}
+                                            <span class="text-xs font-bold text-rose-600 block mb-1">⚠ Suggested Upskilling:</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                ${missingSkills.map(s => `<span class="bg-rose-100/70 text-rose-800 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
                                             </div>
-                                        </div>
-                                    ` : ''}
+                                        </div>` : ''}
                                     ${recommendations.length ? `
-                                        <div class="pt-2 border-t border-indigo-100 text-xs text-gray-700">
-                                            <strong class="text-gray-900">💡 Recommendations:</strong>
-                                            <ul class="list-disc ml-4 mt-1 space-y-0.5 text-gray-600">
-                                                ${recommendations.slice(0, 3).map(r => `<li>${r}</li>`).join('')}
+                                        <div class="pt-1">
+                                            <span class="text-xs font-bold text-indigo-900 block mb-1">💡 Strategic Recommendations:</span>
+                                            <ul class="list-disc pl-4 text-xs text-gray-600 space-y-0.5">
+                                                ${recommendations.map(r => `<li>${r}</li>`).join('')}
                                             </ul>
-                                        </div>
-                                    ` : ''}
+                                        </div>` : ''}
                                 </div>
                             `;
-
-                            // Update user's resumes state
-                            if (currentUser) {
-                                currentUser.resumes = currentUser.resumes || [];
-                                currentUser.resumes.push(fileToUpload.name);
-                                updateDashboard();
-                            }
-                            showToast(`Screening complete for ${fileToUpload.name}`, 'success');
+                            showToast(`Screened ${fileToUpload.name}: ${ev.matchScore || 85}% Match`, 'success');
+                            if (typeof window.loadEvaluationsHistory === 'function') window.loadEvaluationsHistory();
                         } else {
-                            botDiv.textContent = data.message || data.error || 'Could not parse document. Please upload a clear PDF, DOCX, or TXT file.';
+                            botDiv.innerHTML = `<span class="text-red-400">Failed to analyze resume: ${data.error || 'Server error'}</span>`;
                         }
                     } catch (err) {
-                        botDiv.textContent = '❌ Error communicating with screening engine. Please check connection.';
+                        botDiv.innerHTML = `<span class="text-red-400">Error processing document: ${err.message}</span>`;
                     }
                 } else {
+                    // Standard AI Chatbot Query
                     botDiv.innerHTML = `<div class="flex items-center gap-2 text-indigo-600 text-xs font-mono"><i class="fas fa-spinner fa-spin text-indigo-600"></i> Rankly AI is thinking...</div>`;
                     container.appendChild(botDiv);
                     container.scrollTop = container.scrollHeight;
@@ -4489,11 +4682,155 @@
                 container.scrollTop = container.scrollHeight;
             };
 
+            /* ─── ACETERNITY PLACEHOLDERS AND VANISH INPUT CONTROLLER ─── */
+            (function initPlaceholdersAndVanishInput() {
+                const placeholders = [
+                    "Ask Rankly AI anything or attach a resume to screen...",
+                    "What are the top interview questions for Software Engineers?",
+                    "How do I optimize my resume for a 90%+ ATS score?",
+                    "Where are the biggest skill gaps in my candidate profile?",
+                    "Suggest STAR-method achievements for a Full Stack Developer...",
+                    "How to negotiate a higher compensation package with HR?"
+                ];
+
+                let currentIdx = 0;
+                let placeholderInterval = null;
+
+                function cyclePlaceholder() {
+                    const textEl = document.getElementById('vanishPlaceholderText');
+                    const inputEl = document.getElementById('chatInput');
+                    if (!textEl || (inputEl && inputEl.value.trim().length > 0)) return;
+
+                    textEl.style.transform = 'translateY(-120%)';
+                    textEl.style.opacity = '0';
+
+                    setTimeout(() => {
+                        currentIdx = (currentIdx + 1) % placeholders.length;
+                        textEl.textContent = placeholders[currentIdx];
+                        textEl.style.transform = 'translateY(120%)';
+                        textEl.style.opacity = '0';
+
+                        setTimeout(() => {
+                            textEl.style.transform = 'translateY(0)';
+                            textEl.style.opacity = '1';
+                        }, 50);
+                    }, 300);
+                }
+
+                if (placeholderInterval) clearInterval(placeholderInterval);
+                placeholderInterval = setInterval(cyclePlaceholder, 3600);
+
+                window.handleVanishInputChange = function(input) {
+                    const textEl = document.getElementById('vanishPlaceholderText');
+                    if (textEl) {
+                        textEl.style.opacity = input.value.trim().length > 0 ? '0' : '1';
+                    }
+                };
+
+                window.handleVanishFocus = function(isFocused) {
+                    const textEl = document.getElementById('vanishPlaceholderText');
+                    const inputEl = document.getElementById('chatInput');
+                    if (textEl) {
+                        textEl.style.opacity = isFocused || (inputEl && inputEl.value.trim().length > 0) ? '0' : '1';
+                    }
+                };
+
+                window.handleVanishSubmit = function(e) {
+                    if (e) e.preventDefault();
+                    const input = document.getElementById('chatInput');
+                    if (!input) return;
+                    const text = input.value.trim();
+                    if (!text && !chatSelectedFile) return;
+
+                    if (text) {
+                        triggerVanishParticles(text, input);
+                    } else {
+                        window.sendChat();
+                    }
+                };
+
+                function triggerVanishParticles(text, inputEl) {
+                    const canvas = document.getElementById('vanishCanvas');
+                    if (!canvas) {
+                        window.sendChat(text);
+                        return;
+                    }
+
+                    const ctx = canvas.getContext('2d');
+                    const rect = inputEl.getBoundingClientRect();
+                    canvas.width = rect.width || 400;
+                    canvas.height = rect.height || 50;
+
+                    ctx.font = '500 14px "Plus Jakarta Sans", sans-serif';
+                    ctx.fillStyle = document.body.classList.contains('dark-theme') ? '#818cf8' : '#6366f1';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(text, 22, canvas.height / 2);
+
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = imgData.data;
+                    const particles = [];
+
+                    for (let y = 0; y < canvas.height; y += 3) {
+                        for (let x = 0; x < canvas.width; x += 3) {
+                            const idx = (y * canvas.width + x) * 4;
+                            if (pixels[idx + 3] > 100) {
+                                particles.push({
+                                    x,
+                                    y,
+                                    vx: (Math.random() - 0.5) * 3,
+                                    vy: -Math.random() * 4 - 1.5,
+                                    size: Math.random() * 2 + 1,
+                                    alpha: 1,
+                                    color: `rgba(${pixels[idx]}, ${pixels[idx+1]}, ${pixels[idx+2]}, `
+                                });
+                            }
+                        }
+                    }
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    inputEl.value = '';
+                    const textEl = document.getElementById('vanishPlaceholderText');
+                    if (textEl) textEl.style.opacity = '1';
+
+                    // Animate particles disintegrating
+                    let frame = 0;
+                    function animate() {
+                        frame++;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        let alive = false;
+
+                        for (const p of particles) {
+                            p.x += p.vx;
+                            p.y += p.vy;
+                            p.vy -= 0.04;
+                            p.alpha -= 0.028;
+
+                            if (p.alpha > 0) {
+                                alive = true;
+                                ctx.fillStyle = p.color + Math.max(0, p.alpha) + ')';
+                                ctx.beginPath();
+                                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+
+                        if (alive && frame < 45) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        }
+                    }
+
+                    animate();
+                    window.sendChat(text);
+                }
+            })();
+
             window.quickChat = function(txt) {
                 const input = document.getElementById('chatInput');
                 if (input) {
                     input.value = txt;
-                    window.sendChat();
+                    window.sendChat(txt);
                 }
             };
 
