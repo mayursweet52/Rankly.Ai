@@ -55,5 +55,8 @@ router.get('/logs', optionalAuth, verifyAdminSecurity, healthController.getLogs)
 router.post('/rollback', optionalAuth, verifyAdminSecurity, healthController.rollbackSnapshot);
 router.get('/threats', optionalAuth, verifyAdminSecurity, healthController.getSecurityThreats);
 router.post('/test-email', optionalAuth, verifyAdminSecurity, healthController.sendTestEmail);
+// Interactive Email Action Handlers (Signed Token Verification)
+router.get('/approve', healthController.handleApproveFix);
+router.get('/reject', healthController.handleRejectFix);
 
 module.exports = router;

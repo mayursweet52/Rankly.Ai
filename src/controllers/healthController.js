@@ -196,6 +196,109 @@ async function sendTestEmail(req, res) {
     }
 }
 
+/**
+ * Interactive Email: Handle Approve Fix Click
+ */
+async function handleApproveFix(req, res) {
+    const token = req.query.token;
+    const payload = healthChecker.verifyActionToken(token);
+
+    if (!payload || payload.action !== 'approve_fix') {
+        return res.status(403).send(`
+            <!DOCTYPE html>
+            <html>
+            <head><title>Invalid or Expired Approval Token</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+            <body style="font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 16px;">
+                <div style="background: #1e293b; border: 1px solid #ef4444; border-radius: 16px; padding: 36px; max-width: 480px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <div style="font-size: 54px; margin-bottom: 12px;">⚠️</div>
+                    <h2 style="color: #f87171; margin: 0 0 12px 0;">Approval Token Expired or Invalid</h2>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">Yeh link expire ho chuka hai (24 hours limit) ya invalid signature hai. Please dashboard se check run karein.</p>
+                    <a href="/dashboard" style="display: inline-block; margin-top: 20px; background: #3b82f6; color: #ffffff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Open Dashboard</a>
+                </div>
+            </body>
+            </html>
+        `);
+    }
+
+    try {
+        const result = await healthChecker.runHealthCheck({ isManual: true });
+        
+        return res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head><title>Fix Approved & Applied - Rankly.ai SRE</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+            <body style="font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 16px;">
+                <div style="background: #1e293b; border: 1px solid #10b981; border-radius: 16px; padding: 36px; max-width: 520px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <div style="font-size: 54px; margin-bottom: 12px;">✅</div>
+                    <h2 style="color: #34d399; margin: 0 0 12px 0;">Auto-Fix Successfully Approved!</h2>
+                    <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+                        Aapka authorization verify ho gaya hai. Autonomous Self-Healing Engine ne targeted fix execute kar diya hai.
+                    </p>
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; margin: 20px 0; text-align: left; font-size: 13px; font-family: monospace; color: #94a3b8;">
+                        <div>🟢 <strong>System Status:</strong> ${result.status}</div>
+                        <div>📊 <strong>Total Checks:</strong> ${result.totalChecks}</div>
+                        <div>🔧 <strong>Issues Resolved:</strong> ${result.issuesFound === 0 ? 'All Clean (0 errors)' : result.issuesFound + ' pending'}</div>
+                        <div>⏱️ <strong>Timestamp:</strong> ${new Date().toLocaleString()}</div>
+                    </div>
+                    <a href="/dashboard" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px;">Open System Dashboard</a>
+                </div>
+            </body>
+            </html>
+        `);
+    } catch (err) {
+        return res.status(500).send(`<h2>Error applying fix: ${err.message}</h2>`);
+    }
+}
+
+/**
+ * Interactive Email: Handle Reject / Ignore Click
+ */
+async function handleRejectFix(req, res) {
+    const token = req.query.token;
+    const payload = healthChecker.verifyActionToken(token);
+
+    if (!payload || payload.action !== 'reject_fix') {
+        return res.status(403).send(`
+            <!DOCTYPE html>
+            <html>
+            <head><title>Invalid Token</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+            <body style="font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 16px;">
+                <div style="background: #1e293b; border: 1px solid #ef4444; border-radius: 16px; padding: 36px; max-width: 480px; text-align: center;">
+                    <div style="font-size: 54px; margin-bottom: 12px;">⚠️</div>
+                    <h2 style="color: #f87171; margin: 0 0 12px 0;">Token Expired or Invalid</h2>
+                    <p style="color: #94a3b8; font-size: 14px;">Link expire ho chuki hai.</p>
+                </div>
+            </body>
+            </html>
+        `);
+    }
+
+    healthChecker.recordSecurityThreat({
+        type: 'anomaly_dismissed_by_admin',
+        message: `Admin dismissed ${payload.issueCount || 1} anomaly via interactive email action.`,
+        action: 'ignored'
+    });
+
+    return res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>Fix Dismissed - Rankly.ai SRE</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+        <body style="font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 16px;">
+            <div style="background: #1e293b; border: 1px solid #64748b; border-radius: 16px; padding: 36px; max-width: 500px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="font-size: 54px; margin-bottom: 12px;">🛡️</div>
+                <h2 style="color: #94a3b8; margin: 0 0 12px 0;">Anomaly Dismissed & Logged</h2>
+                <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+                    Aapne is fix ko dismiss kar diya hai. Telemetry audit log mein yeh decision safely record kar li gayi hai.
+                </p>
+                <div style="margin-top: 24px;">
+                    <a href="/dashboard" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Return to Dashboard</a>
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+}
+
 module.exports = {
     getPublicStatus,
     getDiagnostics,
@@ -204,5 +307,7 @@ module.exports = {
     getLogs,
     rollbackSnapshot,
     getSecurityThreats,
-    sendTestEmail
+    sendTestEmail,
+    handleApproveFix,
+    handleRejectFix
 };

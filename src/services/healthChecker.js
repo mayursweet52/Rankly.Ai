@@ -295,8 +295,40 @@ async function autoFixIssue(issue) {
     }
 }
 
-// ─── SEND HEALTH ALERT EMAIL ───
-async function sendHealthAlert(issues, healActions = []) {
+// ─── INTERACTIVE EMAIL ACTION TOKENS (24H EXPIRY) ───
+const crypto = require('crypto');
+const ACTION_SECRET = process.env.SESSION_SECRET || 'rankly_health_secret_2026_super_secure';
+
+function generateActionToken(action, extraData = {}) {
+    const payload = {
+        action,
+        exp: Date.now() + (24 * 60 * 60 * 1000), // 24 Hours
+        createdAt: Date.now(),
+        ...extraData
+    };
+    const dataStr = Buffer.from(JSON.stringify(payload)).toString('base64url');
+    const signature = crypto.createHmac('sha256', ACTION_SECRET).update(dataStr).digest('base64url');
+    return `${dataStr}.${signature}`;
+}
+
+function verifyActionToken(token) {
+    try {
+        if (!token || !token.includes('.')) return null;
+        const [dataStr, signature] = token.split('.');
+        const expectedSig = crypto.createHmac('sha256', ACTION_SECRET).update(dataStr).digest('base64url');
+        if (signature !== expectedSig) return null;
+        const payload = JSON.parse(Buffer.from(dataStr, 'base64url').toString('utf-8'));
+        if (payload.exp && Date.now() > payload.exp) return null;
+        return payload;
+    } catch (e) {
+        return null;
+    }
+}
+
+// ─── HEALTH EMAIL NOTIFICATION DISPATCHER ───
+async function sendHealthAlert(issues = [], healActions = []) {
+    if (!issues.length) return;
+
     const now = Date.now();
     if (now - lastEmailAlertTime < EMAIL_ALERT_COOLDOWN) {
         console.log('⏳ Health email alert throttled to avoid inbox spam.');
@@ -306,6 +338,13 @@ async function sendHealthAlert(issues, healActions = []) {
 
     try {
         const { sendSystemEmail } = require('./emailService');
+        const baseUrl = (process.env.APP_URL || process.env.BASE_URL || 'https://rankly-ai-production.up.railway.app').replace(/\/+$/, '');
+        const approveToken = generateActionToken('approve_fix', { issueCount: issues.length });
+        const rejectToken = generateActionToken('reject_fix', { issueCount: issues.length });
+
+        const approveUrl = `${baseUrl}/api/health/approve?token=${approveToken}`;
+        const rejectUrl = `${baseUrl}/api/health/reject?token=${rejectToken}`;
+
         const issuesHtml = issues.map(i => `
             <li style="margin-bottom: 8px; font-family: monospace; font-size: 13px;">
                 <strong style="color: #e11d48;">[${i.check.toUpperCase()}]</strong> 
@@ -346,6 +385,31 @@ async function sendHealthAlert(issues, healActions = []) {
                         </div>
 
                         ${healHtml}
+
+                        <!-- Interactive Action Approval Card -->
+                        <div style="margin: 24px 0; padding: 20px; background: #f8fafc; border-radius: 10px; border: 1px solid #cbd5e1; text-align: center;">
+                            <h3 style="margin: 0 0 8px 0; color: #0f172a; font-size: 16px;">⚡ Interactive SRE Action Required:</h3>
+                            <p style="margin: 0 0 16px 0; color: #475569; font-size: 13px;">Click below to approve automatic remediation or reject/dismiss this anomaly.</p>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                <tr>
+                                    <td align="center" style="padding: 6px;">
+                                        <a href="${approveUrl}" style="background-color: #10b981; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">
+                                            ✅ Approve Fix
+                                        </a>
+                                    </td>
+                                    <td align="center" style="padding: 6px;">
+                                        <a href="${rejectUrl}" style="background-color: #ef4444; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">
+                                            ❌ Reject Fix
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="margin-top: 14px; font-size: 11px; color: #94a3b8;">
+                                ⏳ Secure Token valid for 24 Hours • Click directly from your mobile/desktop email app
+                            </div>
+                        </div>
 
                         <p style="font-size: 12px; color: #64748b; margin-bottom: 0;">
                             Auto-Fix Engine: <strong>${isAutoFixEnabled ? 'ENABLED' : 'DISABLED'}</strong> | Check Interval: <strong>2 Minutes</strong>
@@ -585,6 +649,8 @@ module.exports = {
     rollbackCode,
     listSnapshots,
     toggleAutoFix,
+    generateActionToken,
+    verifyActionToken,
     getAutoFixStatus: () => isAutoFixEnabled,
     getRecentLogs: () => recentLogs,
     getSecurityThreats: () => securityThreats
