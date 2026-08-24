@@ -18,7 +18,11 @@ async function getOverview(req, res) {
     const [totalEvaluations, totalCandidates, candidates, evaluations] = await Promise.all([
       prisma.evaluation.count({ where }),
       prisma.candidate.count({ where }),
-      prisma.candidate.findMany({ where }),
+      prisma.candidate.findMany({
+        where,
+        select: { score: true, stage: true, fitVerdict: true },
+        take: 1000
+      }),
       prisma.evaluation.findMany({ where, take: 10, orderBy: { createdAt: 'desc' } })
     ]);
 

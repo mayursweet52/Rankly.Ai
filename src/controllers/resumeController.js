@@ -293,6 +293,7 @@ async function getEvaluations(req, res) {
 
     const evaluations = await prisma.evaluation.findMany({
       where,
+      take: 100,
       orderBy: { createdAt: 'desc' }
     });
 
