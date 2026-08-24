@@ -137,6 +137,18 @@ async function rollbackSnapshot(req, res) {
 }
 
 /**
+ * Get Security Threats Telemetry
+ */
+async function getSecurityThreats(req, res) {
+    try {
+        const threats = healthChecker.getSecurityThreats();
+        return res.json({ success: true, threats });
+    } catch (err) {
+        return res.status(500).json({ success: false, message: err.message });
+    }
+}
+
+/**
  * Trigger Test Email Notification to Developer
  */
 async function sendTestEmail(req, res) {
