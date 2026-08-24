@@ -51,12 +51,15 @@ function extractCandidateInfoFromText(text = '', fallbackFilename = '') {
   let phone = '';
   let name = '';
 
-  // 1. Email Extraction
-  const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+  // Limit header sample to first 5000 chars for instant, ReDoS-safe contact extraction
+  const headerSample = (text || '').slice(0, 5000);
+
+  // 1. Email Extraction (Bounded sample)
+  const emailMatch = headerSample.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   if (emailMatch) email = emailMatch[0].toLowerCase();
 
-  // 2. Phone Extraction
-  const phoneMatch = text.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\+?\d{10,13}/);
+  // 2. Phone Extraction (Bounded sample)
+  const phoneMatch = headerSample.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\+?\d{10,13}/);
   if (phoneMatch) phone = phoneMatch[0].trim();
 
   // 3. Extract Name from Email Prefix if available (e.g. rohit.sharma88@gmail.com -> Rohit Sharma)
@@ -69,13 +72,13 @@ function extractCandidateInfoFromText(text = '', fallbackFilename = '') {
     }
   }
 
-  // 4. Clean Name from Filename
+  // 4. Clean Name from Filename (Bounded slice)
   let filenameCandidateName = '';
   if (fallbackFilename) {
-    let clean = fallbackFilename
+    let clean = (fallbackFilename || '').slice(0, 200)
       .replace(/\.[^/.]+$/, '') // remove extension (.pdf, .docx)
       .replace(/^(CV|Resume|Curriculum_Vitae|Bio|Profile)[\s_.-]*/i, '')
-      .replace(/[\s_.-]*(CV|Resume|Profile|Doc|Document|File|Final|Updated|Latest|202[4-9]|20[0-2][0-9])[\s_.-]*/gi, '')
+      .replace(/[\s_.-]*(?:CV|Resume|Profile|Doc|Document|File|Final|Updated|Latest|202[4-9]|20[0-2][0-9])[\s_.-]*/gi, '')
       .replace(/[-_.]+/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -250,7 +253,7 @@ function evaluateResumeRuleBased(resumeText = '', targetRole = '', filename = ''
 
   // 2. Experience & Tenure Match (Weight: 25%)
   let expYears = 0;
-  const expMatch = textLower.match(/(\d+)\+?\s*(?:years?|yrs?)\s*(?:of\s*)?(?:experience|exp)?/i);
+  const expMatch = textLower.match(/\b(\d{1,2})\+?\s*(?:years?|yrs?)(?:\s*(?:of\s*)?(?:experience|exp))?/i);
   if (expMatch) {
     expYears = parseInt(expMatch[1]);
   } else {
