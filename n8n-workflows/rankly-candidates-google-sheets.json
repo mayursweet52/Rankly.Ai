@@ -1,0 +1,101 @@
+{
+  "name": "Rankly.ai - Candidate Screening to Google Sheets Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rankly-candidates",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Rankly Webhook Receiver",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "id": "e3a89045-8742-4f12-8924-d92e106a77d1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Select Your Google Sheet"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Candidates",
+          "mode": "list",
+          "cachedResultName": "Candidates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.candidateName || $json.candidateName || 'Anonymous' }}",
+            "Role": "={{ $json.body.targetRole || $json.targetRole || 'General' }}",
+            "Match Score": "={{ $json.body.matchScore || $json.matchScore || 0 }}%",
+            "Verdict": "={{ $json.body.fitVerdict || $json.fitVerdict || 'Screened' }}",
+            "Date": "={{ $json.body.createdAt || $json.createdAt || $now.format('YYYY-MM-DD HH:mm:ss') }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Append Row to Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [500, 300],
+      "id": "fa293c12-32a1-4099-b31a-637dc4f598b2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"message\": \"Candidate successfully synced to Google Sheet\",\n  \"candidateName\": \"{{ $json.body.candidateName || $json.candidateName }}\",\n  \"role\": \"{{ $json.body.targetRole || $json.targetRole }}\",\n  \"syncedAt\": \"{{ $now.toISO() }}\"\n}",
+        "options": {}
+      },
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [760, 300],
+      "id": "cd5718a0-2f9b-4391-bb21-08149ef7c4c3"
+    }
+  ],
+  "connections": {
+    "Rankly Webhook Receiver": {
+      "main": [
+        [
+          {
+            "node": "Append Row to Google Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Row to Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1.0.0",
+  "id": "rankly-candidates-gsheets-sync"
+}

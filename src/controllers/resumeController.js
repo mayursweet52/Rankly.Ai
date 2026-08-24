@@ -105,6 +105,22 @@ async function screenResumeHandler(req, res) {
       });
     }
 
+    // Optional async trigger for n8n Candidates Google Sheet Webhook
+    const n8nCandidateWebhook = process.env.N8N_CANDIDATE_WEBHOOK_URL;
+    if (n8nCandidateWebhook) {
+      fetch(n8nCandidateWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          candidateName,
+          targetRole,
+          matchScore: evaluation.matchScore || 0,
+          fitVerdict: evaluation.fitVerdict || 'Screened',
+          createdAt: new Date().toISOString()
+        })
+      }).catch(e => console.warn('[n8n Candidate Sync Notice]:', e.message));
+    }
+
     return res.status(201).json({
       success: true,
       message: 'Resume screening completed successfully.',
