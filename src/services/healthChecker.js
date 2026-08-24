@@ -164,6 +164,33 @@ const checks = {
             return { error: true, message: `Security Alert: ${recentThreatCount} suspicious requests detected in last 10 minutes!` };
         }
         return { error: false, message: null, recentThreatCount };
+    },
+
+    // 7. Duplicate Code Detection
+    duplicateCode: async (filePath) => {
+        if (!fs.existsSync(filePath)) return { error: false, message: null };
+        try {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            const lines = content.split('\n');
+            const seen = new Map();
+            const duplicates = [];
+            lines.forEach((line, index) => {
+                const trimmed = line.trim();
+                if (trimmed && trimmed.length > 30 && !trimmed.startsWith('//') && !trimmed.startsWith('*') && !trimmed.startsWith('return res.')) {
+                    if (seen.has(trimmed)) {
+                        duplicates.push(`Line ${index + 1} duplicates line ${seen.get(trimmed)}`);
+                    } else {
+                        seen.set(trimmed, index + 1);
+                    }
+                }
+            });
+            if (duplicates.length > 25) {
+                return { error: true, message: `High duplication: ${duplicates.length} repetitive lines` };
+            }
+            return { error: false, message: null };
+        } catch (e) {
+            return { error: false, message: null };
+        }
     }
 };
 
