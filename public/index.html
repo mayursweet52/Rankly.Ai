@@ -3486,10 +3486,14 @@
                                     </div>
                                     <p class="text-xs text-[#666660] font-mono mt-1">Continuous 2-minute automated mistake detection, pre-tested healing & zero-downtime rollback</p>
                                 </div>
-                                <div class="flex items-center gap-3">
+                                <div class="flex flex-wrap items-center gap-3">
                                     <button type="button" class="btn-primary flex items-center gap-2 text-xs py-2.5 px-4 font-bold" onclick="triggerHealthAuditUI()" id="healthAuditBtn">
                                         <i class="fas fa-arrows-rotate" id="healthAuditIcon"></i>
                                         <span>Run Diagnostics & Heal Now</span>
+                                    </button>
+                                    <button type="button" class="btn-secondary flex items-center gap-2 text-xs py-2.5 px-4 font-bold" onclick="sendTestAlertEmailUI()" id="testEmailBtn" style="background:#FAFAF8; border: 1px solid #E5E5DF; border-radius: 10px; color: #111111;">
+                                        <i class="fas fa-envelope-circle-check text-indigo-500" id="testEmailIcon"></i>
+                                        <span>Send Test Alert Email</span>
                                     </button>
                                 </div>
                             </div>
@@ -6347,6 +6351,33 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                     } catch (e) {
                         showToast('Rollback error: ' + e.message, 'error');
+                    }
+                };
+
+                window.sendTestAlertEmailUI = async function() {
+                    const btn = document.getElementById('testEmailBtn');
+                    const icon = document.getElementById('testEmailIcon');
+                    if (btn) btn.disabled = true;
+                    if (icon) icon.className = 'fas fa-spinner fa-spin text-indigo-500';
+                    showToast('📧 Sending test health alert email to mayursweet52@gmail.com...', 'info');
+
+                    try {
+                        const res = await fetch('/api/health/test-email', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include'
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast('✅ ' + data.message, 'success');
+                        } else {
+                            showToast('❌ Email failed: ' + (data.message || 'Error'), 'error');
+                        }
+                    } catch (e) {
+                        showToast('❌ Email network error: ' + e.message, 'error');
+                    } finally {
+                        if (btn) btn.disabled = false;
+                        if (icon) icon.className = 'fas fa-envelope-circle-check text-indigo-500';
                     }
                 };
 

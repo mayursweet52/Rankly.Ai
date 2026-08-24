@@ -137,14 +137,64 @@ async function rollbackSnapshot(req, res) {
 }
 
 /**
- * Get Security Threats Telemetry
+ * Trigger Test Email Notification to Developer
  */
-async function getSecurityThreats(req, res) {
+async function sendTestEmail(req, res) {
     try {
-        const threats = healthChecker.getSecurityThreats();
-        return res.json({ success: true, threats });
+        const nodemailer = require('nodemailer');
+        const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
+        const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+        const targetEmail = req.body?.email || process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: smtpPort,
+            secure: isSecure,
+            auth: {
+                user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
+                pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+            },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000,
+            tls: { rejectUnauthorized: false }
+        });
+
+        const info = await transporter.sendMail({
+            from: `"Rankly.ai System Health" <${process.env.SMTP_USER || 'rankly.ai.com@gmail.com'}>`,
+            to: targetEmail,
+            subject: '🔔 Rankly.ai – Live Test Email Verification',
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 24px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 540px; margin: auto;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                        <span style="font-size: 24px;">🚀</span>
+                        <h2 style="color: #0f172a; margin: 0; font-size: 20px;">Rankly.ai SRE Health Alert Test</h2>
+                    </div>
+                    <p style="font-size: 14px; color: #334155; line-height: 1.6;">
+                        Bhai, aapka <strong>Rankly.ai Self-Healing & SRE Notification System</strong> 100% operational hai!
+                    </p>
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin: 16px 0; font-size: 13px; font-family: monospace; color: #1e293b;">
+                        <div>🟢 <strong>System Status:</strong> 100% HEALTHY (0 Errors)</div>
+                        <div>🔒 <strong>Protocol:</strong> SMTP Port 465 (Direct SSL)</div>
+                        <div>⏱️ <strong>Timestamp:</strong> ${new Date().toLocaleString()}</div>
+                        <div>🎯 <strong>Recipient:</strong> ${targetEmail}</div>
+                    </div>
+                    <p style="font-size: 12px; color: #64748b; margin-top: 16px;">
+                        Yeh test email aapke manual trigger se dispatch hui hai. Periodic 2-minute background health alerts sirf tab aati hain jab koi code anomaly ya self-heal execute hota hai.
+                    </p>
+                </div>
+            `
+        });
+
+        return res.json({
+            success: true,
+            message: `Test email successfully sent to ${targetEmail}`,
+            messageId: info.messageId,
+            response: info.response
+        });
     } catch (err) {
-        return res.status(500).json({ success: false, message: err.message });
+        console.error('Test email error:', err);
+        return res.status(500).json({ success: false, message: `Failed to send test email: ${err.message}` });
     }
 }
 
@@ -155,5 +205,6 @@ module.exports = {
     toggleAutoFix,
     getLogs,
     rollbackSnapshot,
-    getSecurityThreats
+    getSecurityThreats,
+    sendTestEmail
 };

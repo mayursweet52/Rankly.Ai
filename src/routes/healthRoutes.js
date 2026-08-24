@@ -54,5 +54,6 @@ router.post('/toggle-autofix', optionalAuth, verifyAdminSecurity, healthControll
 router.get('/logs', optionalAuth, verifyAdminSecurity, healthController.getLogs);
 router.post('/rollback', optionalAuth, verifyAdminSecurity, healthController.rollbackSnapshot);
 router.get('/threats', optionalAuth, verifyAdminSecurity, healthController.getSecurityThreats);
+router.post('/test-email', optionalAuth, verifyAdminSecurity, healthController.sendTestEmail);
 
 module.exports = router;
