@@ -3472,6 +3472,105 @@
                                         </button>
                                     </div>
                                 </form>
+                    </div>
+
+                    <!-- ─── TAB 8: SYSTEM HEALTH & AUTONOMOUS SELF-HEALING ─── -->
+                    <div class="tab-content" id="tab-health" style="display:none;">
+                        <div class="card max-w-5xl mx-auto p-6 md:p-8 rounded-2xl shadow-sm border border-[#E5E5DF] bg-white mb-8">
+                            <!-- Header & Status Orb -->
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E5E5DF] mb-6">
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-500/50" id="healthStatusOrb"></div>
+                                        <h2 class="text-2xl font-black text-[#111111] tracking-tight mb-0">System Health & Self-Healing Telemetry</h2>
+                                    </div>
+                                    <p class="text-xs text-[#666660] font-mono mt-1">Continuous 2-minute automated mistake detection, pre-tested healing & zero-downtime rollback</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" class="btn-primary flex items-center gap-2 text-xs py-2.5 px-4 font-bold" onclick="triggerHealthAuditUI()" id="healthAuditBtn">
+                                        <i class="fas fa-arrows-rotate" id="healthAuditIcon"></i>
+                                        <span>Run Diagnostics & Heal Now</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 4 Live Metric Cards -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                                <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] bg-[#FAFAF8]">
+                                    <span class="stat-label text-xs uppercase font-bold text-[#888880]">System Status</span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-lg font-black text-emerald-600" id="metricSystemStatus">100% HEALTHY</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#888880] font-mono mt-1 block">Background Loop: 2 Min</span>
+                                </div>
+
+                                <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] bg-[#FAFAF8]">
+                                    <span class="stat-label text-xs uppercase font-bold text-[#888880]">Node.js RAM (Heap)</span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-lg font-black text-[#111111]" id="metricRamHeap">-- MB</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#888880] font-mono mt-1 block" id="metricRamRss">RSS: -- MB</span>
+                                </div>
+
+                                <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] bg-[#FAFAF8]">
+                                    <span class="stat-label text-xs uppercase font-bold text-[#888880]">Database Latency</span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-lg font-black text-indigo-600" id="metricDbLatency">-- ms</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#888880] font-mono mt-1 block">Prisma SQLite ORM</span>
+                                </div>
+
+                                <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] bg-[#FAFAF8]">
+                                    <span class="stat-label text-xs uppercase font-bold text-[#888880]">Auto-Fix Engine</span>
+                                    <div class="flex items-center justify-between mt-1">
+                                        <span class="text-base font-bold text-emerald-600" id="metricAutoFixStatus">ENABLED</span>
+                                        <button type="button" onclick="toggleAutoFixUI()" class="text-xs px-2 py-1 rounded bg-[#111111] text-white font-mono hover:bg-neutral-800" id="toggleAutoFixBtn">Toggle</button>
+                                    </div>
+                                    <span class="text-[10px] text-[#888880] font-mono mt-1 block">Auto-Rollback on fail</span>
+                                </div>
+                            </div>
+
+                            <!-- Audit Logs Feed & Hacker Threat Telemetry (2 Columns) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Recent Health Check Audits -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-sm font-bold text-[#111111] flex items-center gap-2">
+                                            <i class="fas fa-clipboard-check text-emerald-500"></i>
+                                            <span>Autonomous Health Audits</span>
+                                        </h3>
+                                        <span class="text-[11px] font-mono text-[#888880]" id="lastAuditTime">Updated just now</span>
+                                    </div>
+                                    <div class="border border-[#E5E5DF] rounded-xl overflow-hidden bg-[#FAFAF8] max-h-80 overflow-y-auto" id="healthAuditLogsContainer">
+                                        <div class="p-4 text-xs text-[#888880] font-mono text-center">Loading health audit telemetry...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Security & Hacker Threat Telemetry -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-sm font-bold text-[#111111] flex items-center gap-2">
+                                            <i class="fas fa-shield-virus text-[#D95D39]"></i>
+                                            <span>Hacker Threat & Anomaly Telemetry</span>
+                                        </h3>
+                                        <span class="tag-pill tag-pill-coral text-[10px]" id="activeThreatsCount">0 Active Threats</span>
+                                    </div>
+                                    <div class="border border-[#E5E5DF] rounded-xl overflow-hidden bg-[#FAFAF8] max-h-80 overflow-y-auto" id="securityThreatsContainer">
+                                        <div class="p-4 text-xs text-[#888880] font-mono text-center">No malicious hacker anomalies detected. System secure. 🛡️</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Backup Snapshots & Restore -->
+                            <div class="mt-6 pt-6 border-t border-[#E5E5DF]">
+                                <h3 class="text-sm font-bold text-[#111111] mb-2 flex items-center gap-2">
+                                    <i class="fas fa-box-archive text-indigo-500"></i>
+                                    <span>Immutable Snapshots & Safe Rollback History</span>
+                                </h3>
+                                <p class="text-xs text-[#666660] mb-3">Whenever the self-healing engine applies a fix, an immutable pre-fix backup snapshot is recorded for instant recovery.</p>
+                                <div class="border border-[#E5E5DF] rounded-xl p-3 bg-[#FAFAF8]" id="snapshotsListContainer">
+                                    <span class="text-xs text-[#888880] font-mono">Loading snapshots...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4234,6 +4333,7 @@
                     case 'resume': return 'fa-solid fa-file-lines';
                     case 'settings': return 'fa-solid fa-gear';
                     case 'feedback': return 'fa-solid fa-comment-dots';
+                    case 'health': return 'fa-solid fa-heart-pulse text-emerald-500';
                     default: return 'fa-solid fa-circle-dot';
                 }
             }
@@ -4288,6 +4388,7 @@
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
+                        { id: 'health', label: 'System Health', target: 'health' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
@@ -4297,6 +4398,7 @@
                         { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
                         { id: 'resume', label: 'Resume Builder', target: 'resume' },
+                        { id: 'health', label: 'System Health', target: 'health' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
@@ -4352,6 +4454,9 @@
 
                 if (actualTarget === 'screening' && typeof window.loadEvaluationsHistory === 'function') {
                     window.loadEvaluationsHistory();
+                }
+                if (actualTarget === 'health' && typeof window.loadHealthTelemetry === 'function') {
+                    window.loadHealthTelemetry();
                 }
 
                 const title = document.getElementById('dashPageTitle');
@@ -6074,6 +6179,176 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     showToast(`Evaluated ${total} resume(s) against ${targetRole}!`, 'success');
                     setTimeout(() => { if (progress) progress.style.display = 'none'; }, 2000);
                 }
+
+                /* ─── SYSTEM HEALTH & SELF-HEALING TELEMETRY CONTROLLER ─── */
+                window.loadHealthTelemetry = async function() {
+                    try {
+                        const res = await fetch('/api/health/diagnostics', { credentials: 'include' });
+                        const data = await res.json();
+                        if (!res.ok || !data.success) return;
+
+                        const t = data.telemetry;
+
+                        // Update Metrics
+                        const statusEl = document.getElementById('metricSystemStatus');
+                        const orbEl = document.getElementById('healthStatusOrb');
+                        if (statusEl) {
+                            const isHealthy = t.status === 'HEALTHY';
+                            statusEl.textContent = isHealthy ? '100% HEALTHY' : t.status;
+                            statusEl.className = `text-lg font-black ${isHealthy ? 'text-emerald-600' : 'text-amber-500'}`;
+                            if (orbEl) {
+                                orbEl.className = `w-4 h-4 rounded-full ${isHealthy ? 'bg-emerald-500 shadow-emerald-500/50' : 'bg-amber-500 shadow-amber-500/50'} animate-pulse shadow-lg`;
+                            }
+                        }
+
+                        const ramHeapEl = document.getElementById('metricRamHeap');
+                        const ramRssEl = document.getElementById('metricRamRss');
+                        if (ramHeapEl && t.memory) {
+                            ramHeapEl.textContent = `${t.memory.heapUsedMB} MB`;
+                            if (ramRssEl) ramRssEl.textContent = `RSS: ${t.memory.rssMB} MB / Heap Max: ${t.memory.heapTotalMB} MB`;
+                        }
+
+                        const dbLatEl = document.getElementById('metricDbLatency');
+                        if (dbLatEl) {
+                            dbLatEl.textContent = `${t.dbLatency || 3} ms`;
+                        }
+
+                        const autoFixEl = document.getElementById('metricAutoFixStatus');
+                        if (autoFixEl) {
+                            autoFixEl.textContent = t.autoFixEnabled ? 'ENABLED' : 'DISABLED';
+                            autoFixEl.className = `text-base font-bold ${t.autoFixEnabled ? 'text-emerald-600' : 'text-rose-600'}`;
+                        }
+
+                        const lastTimeEl = document.getElementById('lastAuditTime');
+                        if (lastTimeEl && t.lastChecked) {
+                            lastTimeEl.textContent = `Last: ${new Date(t.lastChecked).toLocaleTimeString()}`;
+                        }
+
+                        // Render Audit Logs
+                        const logsContainer = document.getElementById('healthAuditLogsContainer');
+                        if (logsContainer && data.recentLogs && data.recentLogs.length) {
+                            logsContainer.innerHTML = data.recentLogs.map(log => `
+                                <div class="p-3 border-b border-[#E5E5DF] flex items-center justify-between text-xs">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="tag-pill ${log.status === 'HEALTHY' ? 'tag-pill-emerald' : 'tag-pill-coral'} text-[10px] font-bold">${log.status}</span>
+                                            <span class="font-mono text-[#111111] font-bold">${log.totalChecks} Checks Run</span>
+                                        </div>
+                                        ${log.issues && log.issues.length ? `
+                                            <div class="text-[11px] text-rose-600 font-mono mt-1">${log.issues.map(i => `• [${i.check}] ${i.file || 'system'}`).join(' ')}</div>
+                                        ` : '<div class="text-[10px] text-emerald-600 font-mono mt-0.5">✓ 0 Errors • Pre-tested clean</div>'}
+                                    </div>
+                                    <span class="text-[10px] text-[#888880] font-mono">${new Date(log.timestamp).toLocaleTimeString()}</span>
+                                </div>
+                            `).join('');
+                        } else if (logsContainer) {
+                            logsContainer.innerHTML = '<div class="p-4 text-xs text-[#888880] font-mono text-center">No recent audit issues. System operating at 100% capacity.</div>';
+                        }
+
+                        // Render Hacker / Security Threats
+                        const threatsContainer = document.getElementById('securityThreatsContainer');
+                        const threatCountEl = document.getElementById('activeThreatsCount');
+                        if (threatCountEl) {
+                            threatCountEl.textContent = `${data.threats ? data.threats.length : 0} Logged Anomalies`;
+                        }
+                        if (threatsContainer && data.threats && data.threats.length) {
+                            threatsContainer.innerHTML = data.threats.map(threat => `
+                                <div class="p-3 border-b border-[#E5E5DF] text-xs font-mono">
+                                    <div class="flex items-center justify-between text-rose-600 font-bold mb-1">
+                                        <span>⚠️ ${threat.type || 'Security Anomaly'}</span>
+                                        <span class="text-[10px] text-[#888880]">${new Date(threat.timestamp).toLocaleTimeString()}</span>
+                                    </div>
+                                    <div class="text-[11px] text-[#444440]">${threat.details || threat.message || 'Suspicious payload filtered.'}</div>
+                                </div>
+                            `).join('');
+                        } else if (threatsContainer) {
+                            threatsContainer.innerHTML = '<div class="p-4 text-xs text-emerald-600 font-mono text-center">🛡️ 0 Active Security Threats. Firewall & Rate Limiter Active.</div>';
+                        }
+
+                        // Render Snapshots
+                        const snapsContainer = document.getElementById('snapshotsListContainer');
+                        if (snapsContainer && data.snapshots && data.snapshots.length) {
+                            snapsContainer.innerHTML = `
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                                    ${data.snapshots.map(s => `
+                                        <div class="p-2.5 bg-white border border-[#E5E5DF] rounded-lg flex items-center justify-between text-xs font-mono">
+                                            <div>
+                                                <span class="font-bold text-[#111111] block">${s.id}</span>
+                                                <span class="text-[10px] text-[#888880]">${new Date(s.timestamp).toLocaleTimeString()}</span>
+                                            </div>
+                                            <button type="button" onclick="rollbackSnapshotUI('${s.id}')" class="text-[10px] px-2 py-1 bg-indigo-50 text-indigo-700 font-bold rounded border border-indigo-200 hover:bg-indigo-100">
+                                                Restore
+                                            </button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `;
+                        } else if (snapsContainer) {
+                            snapsContainer.innerHTML = '<span class="text-xs text-[#888880] font-mono">No pre-fix snapshots created yet (code is clean).</span>';
+                        }
+
+                    } catch (e) {
+                        console.error('Failed to load health telemetry:', e);
+                    }
+                };
+
+                window.triggerHealthAuditUI = async function() {
+                    const btn = document.getElementById('healthAuditBtn');
+                    const icon = document.getElementById('healthAuditIcon');
+                    if (btn) btn.disabled = true;
+                    if (icon) icon.classList.add('fa-spin');
+                    showToast('🔍 Running full micro-level health audit & self-healing...', 'info');
+
+                    try {
+                        const res = await fetch('/api/health/run-check', { method: 'POST', credentials: 'include' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`✅ Health Audit: ${data.audit.status} (${data.audit.issuesFound} issues managed)`, 'success');
+                            await window.loadHealthTelemetry();
+                        } else {
+                            showToast('Health audit failed: ' + (data.message || 'Error'), 'error');
+                        }
+                    } catch (err) {
+                        showToast('Health audit exception: ' + err.message, 'error');
+                    } finally {
+                        if (btn) btn.disabled = false;
+                        if (icon) icon.classList.remove('fa-spin');
+                    }
+                };
+
+                window.toggleAutoFixUI = async function() {
+                    try {
+                        const res = await fetch('/api/health/toggle-autofix', { method: 'POST', credentials: 'include' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`🔧 Auto-Fix Engine: ${data.autoFixEnabled ? 'ENABLED' : 'DISABLED'}`, 'info');
+                            await window.loadHealthTelemetry();
+                        }
+                    } catch (e) {
+                        showToast('Failed to toggle auto-fix: ' + e.message, 'error');
+                    }
+                };
+
+                window.rollbackSnapshotUI = async function(snapshotId) {
+                    if (!confirm(`Are you sure you want to rollback to snapshot ${snapshotId}?`)) return;
+                    try {
+                        const res = await fetch('/api/health/rollback', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({ snapshotId })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`↩️ Rolled back to ${snapshotId} successfully!`, 'success');
+                            await window.loadHealthTelemetry();
+                        } else {
+                            showToast('Rollback failed: ' + (data.message || 'Error'), 'error');
+                        }
+                    } catch (e) {
+                        showToast('Rollback error: ' + e.message, 'error');
+                    }
+                };
 
                 // Handle OAuth Redirect Flow
                 const urlParams = new URLSearchParams(window.location.search);

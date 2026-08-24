@@ -26,6 +26,8 @@ const resumeRoutes = require('./src/routes/resumeRoutes');
 const pipelineRoutes = require('./src/routes/pipelineRoutes');
 const analyticsRoutes = require('./src/routes/analyticsRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
+const healthRoutes = require('./src/routes/healthRoutes');
+const { startHealthChecker } = require('./src/services/healthChecker');
 
 const app = express();
 const server = http.createServer(app);
@@ -101,6 +103,8 @@ app.use('/api/resumes', resumeRoutes);
 app.use('/api/pipeline', pipelineRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/health', healthRoutes);
+app.use('/health', healthRoutes);
 
 // -----------------------------------------------------------------------------
 // Backward-Compatibility Aliases (Ensures all UI frontend calls seamlessly work)
@@ -358,7 +362,11 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 Rankly.ai Backend Server is live on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
   console.log(`🔒 Session Authentication: Active (SQLite Store)`);
   console.log(`💾 Database: SQLite (Prisma ORM)`);
-  console.log(`🤖 AI Engine: Groq / Gemini / OpenRouter / Ollama / Heuristic Tiered Fallback\n`);
+  console.log(`🤖 AI Engine: Groq / Gemini / OpenRouter / Ollama / Heuristic Tiered Fallback`);
+  console.log(`⚡ Self-Healing System: Background 2-minute Health Checker Active\n`);
+  
+  // Launch autonomous 2-minute background health checker
+  startHealthChecker();
 });
 
 const gracefulShutdown = async () => {

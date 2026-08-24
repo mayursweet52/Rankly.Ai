@@ -7,3 +7,7 @@ error-log.txt
 scratch/
 .ai-code-tracker.json
 uploads/
+backups/
+health_logs.json
+security_threats.json
+

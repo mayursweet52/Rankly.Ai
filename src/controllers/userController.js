@@ -245,7 +245,7 @@ async function inviteTeamMember(req, res) {
 
     const normalizedEmail = email.toLowerCase().trim();
     const token = crypto.randomBytes(24).toString('hex');
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days;
 
     const invitation = await prisma.teamInvitation.create({
       data: {
@@ -318,7 +318,7 @@ async function getTeamMembers(req, res) {
  */
 async function updateMemberStatus(req, res) {
   try {
-    const { userId, status } = req.body; // status: 'active' | 'suspended' | 'rejected'
+    const { userId, status } = req.body; // status: 'active' | 'suspended' | 'rejected';
 
     if (!userId || !status) {
       return res.status(400).json({ success: false, message: 'User ID and status are required.' });
