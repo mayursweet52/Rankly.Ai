@@ -29,6 +29,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
+    <!-- 🌟 Ultra-Modern Physics & 3D Interactive Engines (Dark Mode Enhanced) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         /* ─── RANKLY.AI MODERN PRECISION STYLING ─── */
         * {
@@ -1922,6 +1928,130 @@
             color: #c7d2fe !important;
             transform: translateY(-1px) scale(1.04) !important;
             box-shadow: 0 4px 14px rgba(129, 140, 248, 0.25) !important;
+        }
+
+        /* ─── EXCLUSIVE DARK MODE ADVANCED UI & ACETERNITY ENGINES ─── */
+        body.dark-theme .card,
+        body.dark-theme .spotlight-card {
+            position: relative;
+            background: #14141f !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 1.25rem !important;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            overflow: hidden;
+        }
+
+        body.dark-theme .card::before,
+        body.dark-theme .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            background: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(129, 140, 248, 0.12), transparent 40%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        body.dark-theme .card:hover::before,
+        body.dark-theme .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        body.dark-theme .card:hover,
+        body.dark-theme .spotlight-card:hover {
+            border-color: rgba(129, 140, 248, 0.4) !important;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(129, 140, 248, 0.15) !important;
+        }
+
+        /* Dark Mode 3D Tilt Glare Overlay */
+        body.dark-theme .js-tilt-glare {
+            border-radius: 1.25rem !important;
+        }
+
+        /* ─── DARK MODE RESUME RADAR LASER SCANNER ─── */
+        body.dark-theme .upload-zone {
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.4) 0%, #0d0d16 100%) !important;
+            border: 2px dashed rgba(129, 140, 248, 0.35) !important;
+            overflow: hidden;
+        }
+
+        body.dark-theme .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #818cf8 20%, #38bdf8 50%, #818cf8 80%, transparent 100%);
+            box-shadow: 0 0 18px 4px rgba(56, 189, 248, 0.6), 0 0 30px 8px rgba(129, 140, 248, 0.4);
+            opacity: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        body.dark-theme .upload-zone:hover::before,
+        body.dark-theme .upload-zone.dragover::before {
+            opacity: 1;
+            animation: radarLaserScan 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        body.dark-theme .upload-zone:hover,
+        body.dark-theme .upload-zone.dragover {
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 35px rgba(129, 140, 248, 0.25) inset, 0 8px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        @keyframes radarLaserScan {
+            0% { top: 0%; opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* ─── DARK MODE SHIMMERING NEON STATUS BADGES ─── */
+        body.dark-theme .tag-pill-coral,
+        body.dark-theme .tag-pill-emerald,
+        body.dark-theme .tag-pill-indigo {
+            position: relative;
+            overflow: hidden;
+            border-width: 1px !important;
+        }
+
+        body.dark-theme .tag-pill-emerald {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.35) !important;
+            color: #34d399 !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+        }
+
+        body.dark-theme .tag-pill-coral {
+            background: rgba(217, 93, 57, 0.15) !important;
+            border-color: rgba(217, 93, 57, 0.4) !important;
+            color: #fb923c !important;
+            box-shadow: 0 0 12px rgba(217, 93, 57, 0.2);
+        }
+
+        body.dark-theme .tag-pill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            animation: badgeShimmer 4s infinite;
+        }
+
+        @keyframes badgeShimmer {
+            0% { left: -150%; }
+            30% { left: 150%; }
+            100% { left: 150%; }
         }
     </style>
 </head>
@@ -5588,6 +5718,62 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
+                /* ─── EXCLUSIVE DARK MODE ADVANCED ENGINES (SPOTLIGHT & 3D TILT) ─── */
+                function initDarkModeEngines() {
+                    const isDark = document.body.classList.contains('dark-theme');
+
+                    // 1. Mouse Spotlight tracking on cards (Strictly in Dark Mode)
+                    document.querySelectorAll('.card, .stat-card, .spotlight-card').forEach(card => {
+                        if (!card._spotlightAttached) {
+                            card._spotlightAttached = true;
+                            card.addEventListener('mousemove', (e) => {
+                                if (!document.body.classList.contains('dark-theme')) return;
+                                const rect = card.getBoundingClientRect();
+                                const x = e.clientX - rect.left;
+                                const y = e.clientY - rect.top;
+                                card.style.setProperty('--mouse-x', `${x}px`);
+                                card.style.setProperty('--mouse-y', `${y}px`);
+                            });
+                        }
+                    });
+
+                    // 2. VanillaTilt 3D Holographic Tilt (Only in Dark Mode)
+                    if (typeof VanillaTilt !== 'undefined') {
+                        const tiltElements = document.querySelectorAll('.card:not(.no-tilt), .stat-card, [data-tilt]');
+                        if (isDark) {
+                            VanillaTilt.init(tiltElements, {
+                                max: 5,
+                                speed: 400,
+                                glare: true,
+                                'max-glare': 0.08,
+                                scale: 1.01,
+                                perspective: 1000
+                            });
+                        } else {
+                            tiltElements.forEach(el => {
+                                if (el.vanillaTilt) el.vanillaTilt.destroy();
+                            });
+                        }
+                    }
+
+                    // 3. Lucide Icons
+                    if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                        lucide.createIcons();
+                    }
+                }
+                window.initDarkModeEngines = initDarkModeEngines;
+
+                window.triggerCelebrationConfetti = function() {
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 80,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#818cf8', '#38bdf8', '#34d399', '#c084fc', '#f59e0b']
+                        });
+                    }
+                };
+
                 window.toggleAppTheme = function(theme) {
                     if (!theme) {
                         theme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
@@ -5608,6 +5794,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (typeof window.updateSidebarMode === 'function') {
                         window.updateSidebarMode();
                     }
+                    initDarkModeEngines();
                 };
 
                 // Initialize saved theme on load
@@ -5620,6 +5807,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 if (typeof window.updateSidebarMode === 'function') {
                     window.updateSidebarMode();
                 }
+                setTimeout(initDarkModeEngines, 200);
 
                 window.switchLoginTabType = function(type) {
                     const normalPanel = document.getElementById('normalLogin');
