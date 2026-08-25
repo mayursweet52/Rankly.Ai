@@ -534,6 +534,14 @@ app.get('/dashboard', (req, res) => {
   return res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get(['/privacy', '/privacy-policy'], (req, res) => {
+  const privacyPath = path.join(__dirname, 'public', 'privacy.html');
+  if (fs.existsSync(privacyPath)) {
+    return res.sendFile(privacyPath);
+  }
+  return res.redirect('/');
+});
+
 app.get('/login', (req, res) => {
   const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
   if (fs.existsSync(cleanIndexPath)) {

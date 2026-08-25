@@ -150,7 +150,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
 
             <div class="footer">
                 <p>© 2026 Rankly.ai — All rights reserved.</p>
-                <p><a href="https://rankly-ai-production.up.railway.app">rankly-ai-production.up.railway.app</a> &bull; <a href="#">Privacy Policy</a></p>
+                <p><a href="https://rankly-ai-production.up.railway.app">rankly-ai-production.up.railway.app</a> &bull; <a href="https://rankly-ai-production.up.railway.app/privacy">Privacy Policy</a></p>
             </div>
         </div>
     </body>
