@@ -2159,6 +2159,229 @@
             box-shadow: 0 4px 14px rgba(129, 140, 248, 0.25) !important;
         }
 
+        /* ─── SMART @MENTION POPUP & INTERACTIVE INTEGRATION CARDS ─── */
+        .mention-popup {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 0;
+            width: 100%;
+            max-width: 440px;
+            background: #FFFFFF;
+            border: 1.5px solid #E5E5DF;
+            border-radius: 16px;
+            box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+            padding: 10px;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            animation: mentionPopupIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: bottom left;
+        }
+
+        @keyframes mentionPopupIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .mention-popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px 8px 10px;
+            border-bottom: 1px solid #EAEAE4;
+            margin-bottom: 6px;
+        }
+
+        .mention-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .mention-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            border: 1px solid transparent;
+        }
+
+        .mention-item:hover,
+        .mention-item.active {
+            background: #F4F4F0;
+            border-color: #E2E2DC;
+            transform: translateX(2px);
+        }
+
+        .mention-icon-box {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .mention-item:hover .mention-icon-box,
+        .mention-item.active .mention-icon-box {
+            transform: scale(1.1);
+        }
+
+        /* Mention Chips in User/Bot message */
+        .mention-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            vertical-align: middle;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .mention-chip:hover {
+            transform: scale(1.05);
+        }
+        .mention-chip-yt {
+            background: #FEE2E2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+        }
+        .mention-chip-google {
+            background: #EFF6FF;
+            color: #2563EB;
+            border: 1px solid #DBEAFE;
+        }
+        .mention-chip-notion {
+            background: #F3E8FF;
+            color: #7E22CE;
+            border: 1px solid #E9D5FF;
+        }
+        .mention-chip-ats {
+            background: #FEF3C7;
+            color: #D97706;
+            border: 1px solid #FDE68A;
+        }
+
+        /* Interactive Mention Card in Bot Response */
+        .mention-interactive-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E5DF;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: mentionCardSlide 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes mentionCardSlide {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sound Control Button */
+        .chat-sound-btn {
+            background: transparent;
+            border: 1px solid #E5E5DF;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666660;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chat-sound-btn:hover {
+            border-color: #111111;
+            color: #111111;
+            background: #FAFAF8;
+        }
+        .chat-sound-btn.active {
+            background: #EEF2FF;
+            border-color: #818CF8;
+            color: #4F46E5;
+        }
+
+        /* ─── DARK THEME MENTION OVERRIDES ─── */
+        body.dark-theme .mention-popup {
+            background: rgba(20, 23, 33, 0.95);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(99, 102, 241, 0.15);
+        }
+
+        body.dark-theme .mention-popup-header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-theme .mention-item:hover,
+        body.dark-theme .mention-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(129, 140, 248, 0.35);
+        }
+
+        body.dark-theme .mention-chip-yt {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        body.dark-theme .mention-chip-google {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        body.dark-theme .mention-chip-notion {
+            background: rgba(168, 85, 247, 0.2);
+            color: #C084FC;
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+        body.dark-theme .mention-chip-ats {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FBBF24;
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+
+        body.dark-theme .mention-interactive-card {
+            background: #181B26;
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        body.dark-theme .chat-sound-btn {
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #94A3B8;
+        }
+        body.dark-theme .chat-sound-btn:hover {
+            border-color: #818CF8;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.06);
+        }
+        body.dark-theme .chat-sound-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #818CF8;
+            color: #C7D2FE;
+        }
+
         /* ─── EXCLUSIVE DARK MODE ADVANCED UI & ACETERNITY ENGINES ─── */
         body.dark-theme .card,
         body.dark-theme .spotlight-card {
@@ -3055,9 +3278,18 @@
                                         <i class="fas fa-sparkles text-[#D95D39]"></i>
                                         <span>Rankly AI Career & Screening Assistant</span>
                                     </h3>
-                                    <p class="text-xs text-[#666660] font-mono mt-0.5">Real-time candidate evaluation, resume screening & career advisory</p>
+                                    <p class="text-xs text-[#666660] font-mono mt-0.5">Real-time candidate evaluation, resume screening & smart @mentions</p>
                                 </div>
-                                <span class="tag-pill tag-pill-coral font-mono text-xs">🤖 AI Assistant</span>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="chat-sound-btn active" title="Toggle Message Chime Sound Effect">
+                                        <i class="fas fa-volume-high" id="chatSoundIcon"></i>
+                                        <span id="chatSoundLabel">Sound ON</span>
+                                    </button>
+                                    <button type="button" onclick="clearChatMessages()" class="chat-sound-btn" title="Reset Chat Canvas">
+                                        <i class="fas fa-rotate-left"></i> Clear
+                                    </button>
+                                    <span class="tag-pill tag-pill-coral font-mono text-xs hidden sm:inline-flex">🤖 AI Assistant</span>
+                                </div>
                             </div>
                             
                             <div class="chat-container flex-1 mb-4" id="chatContainer" style="min-height:380px; max-height:480px;">
@@ -3067,7 +3299,16 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                                         </svg>
                                     </div>
-                                    <div class="chat-msg bot">👋 <strong>Welcome to Rankly AI Career & Screening Assistant.</strong><br/><br/>You can ask strategic career questions, technical interview prep, or click the <i class="fas fa-cloud-arrow-up text-[#D95D39]"></i> button below to attach a resume for instant ATS match scoring!</div>
+                                    <div class="chat-msg bot">
+                                        👋 <strong>Welcome to Rankly AI Career & Screening Assistant.</strong><br/><br/>
+                                        Try smart integrations by typing:
+                                        <div class="mt-2.5 flex flex-wrap gap-1.5 font-mono text-xs">
+                                            <span class="mention-chip mention-chip-yt" onclick="insertMention('@yt ')"><i class="fa-brands fa-youtube mr-1"></i>@yt</span>
+                                            <span class="mention-chip mention-chip-google" onclick="insertMention('@google ')"><i class="fa-brands fa-google mr-1"></i>@google</span>
+                                            <span class="mention-chip mention-chip-notion" onclick="insertMention('@notion ')"><i class="fa-solid fa-cube mr-1"></i>@notion</span>
+                                            <span class="mention-chip mention-chip-ats" onclick="insertMention('@ats ')"><i class="fas fa-bolt mr-1"></i>@ats</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -3084,7 +3325,75 @@
                             </div>
 
                             <!-- ─── ACETERNITY PLACEHOLDERS AND VANISH INPUT (CHATBOT) ─── -->
-                            <div class="vanish-input-wrapper">
+                            <div class="vanish-input-wrapper" style="position:relative;">
+                                
+                                <!-- 🌟 Smart @Mention Floating Popup Menu -->
+                                <div id="mentionPopup" class="mention-popup" style="display:none;">
+                                    <div class="mention-popup-header">
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono flex items-center gap-1.5">
+                                            <i class="fas fa-at text-indigo-500"></i> Smart Integrations
+                                        </span>
+                                        <span class="text-[10px] text-slate-400 font-mono">↑↓ Navigate &bull; ↵ Select</span>
+                                    </div>
+                                    <div class="mention-items-list" id="mentionItemsList">
+                                        <!-- Mention Option: @yt -->
+                                        <div class="mention-item active" data-tag="@yt" onclick="insertMention('@yt ')">
+                                            <div class="mention-icon-box bg-red-500/10 text-red-500 border border-red-500/20">
+                                                <i class="fa-brands fa-youtube text-sm"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-xs">@yt</span>
+                                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 font-mono">YouTube</span>
+                                                </div>
+                                                <p class="text-[11px] text-slate-500 truncate">Search technical lectures & mock interviews</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mention Option: @google -->
+                                        <div class="mention-item" data-tag="@google" onclick="insertMention('@google ')">
+                                            <div class="mention-icon-box bg-blue-500/10 text-blue-500 border border-blue-500/20">
+                                                <i class="fa-brands fa-google text-sm"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-xs">@google</span>
+                                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 font-mono">Google Web</span>
+                                                </div>
+                                                <p class="text-[11px] text-slate-500 truncate">Live web queries, salary data & hiring benchmarks</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mention Option: @notion -->
+                                        <div class="mention-item" data-tag="@notion" onclick="insertMention('@notion ')">
+                                            <div class="mention-icon-box bg-purple-500/10 text-purple-500 border border-purple-500/20">
+                                                <i class="fa-solid fa-cube text-sm"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-xs">@notion</span>
+                                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400 font-mono">Notion</span>
+                                                </div>
+                                                <p class="text-[11px] text-slate-500 truncate">Sync interview scorecard & candidate rubrics</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mention Option: @ats -->
+                                        <div class="mention-item" data-tag="@ats" onclick="insertMention('@ats ')">
+                                            <div class="mention-icon-box bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                                                <i class="fas fa-bolt text-sm"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-xs">@ats</span>
+                                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 font-mono">Vector ATS</span>
+                                                </div>
+                                                <p class="text-[11px] text-slate-500 truncate">Instant AI match score against role criteria</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <input type="file" id="chatFileInput" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" style="display:none" onchange="handleChatFileSelected(this)" />
                                 
                                 <button type="button" class="vanish-upload-btn" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
@@ -3096,15 +3405,16 @@
                                     <div class="vanish-input-pill">
                                         <!-- Animated Sliding Placeholders -->
                                         <div id="vanishPlaceholderContainer" class="vanish-placeholder-container">
-                                            <span id="vanishPlaceholderText" class="vanish-placeholder-text">Ask Rankly AI anything or attach a resume to screen...</span>
+                                            <span id="vanishPlaceholderText" class="vanish-placeholder-text">Type @yt, @google, @notion, or ask Rankly AI...</span>
                                         </div>
                                         
                                         <input 
                                             type="text" 
                                             id="chatInput" 
-                                            oninput="handleVanishInputChange(this)" 
+                                            oninput="handleChatInputMention(this); handleVanishInputChange(this);" 
+                                            onkeydown="handleChatMentionKeydown(event)"
                                             onfocus="handleVanishFocus(true)" 
-                                            onblur="handleVanishFocus(false)" 
+                                            onblur="setTimeout(() => { closeMentionPopup(); handleVanishFocus(false); }, 200)" 
                                             class="vanish-input-field" 
                                             autocomplete="off" 
                                             spellcheck="false" 
@@ -3120,10 +3430,11 @@
                             </div>
 
                             <div class="chatbot-suggestions-row flex gap-2 mt-4 pt-3 border-t border-[#E5E5DF] overflow-x-auto pb-1">
+                                <button type="button" class="tag-suggestion" onclick="insertMention('@yt React System Design Mock Interview')"><i class="fa-brands fa-youtube text-red-500 mr-1"></i>@yt System Design</button>
+                                <button type="button" class="tag-suggestion" onclick="insertMention('@google Senior AI Engineer Salary Benchmarks 2026')"><i class="fa-brands fa-google text-blue-500 mr-1"></i>@google Salary Data</button>
+                                <button type="button" class="tag-suggestion" onclick="insertMention('@notion Export Candidate Evaluation Rubric')"><i class="fa-solid fa-cube text-purple-500 mr-1"></i>@notion Rubric</button>
                                 <button type="button" class="tag-suggestion" onclick="quickChat('Summarize key technical skills for a Senior Full Stack engineer')">💡 Key skills</button>
                                 <button type="button" class="tag-suggestion" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">📊 ATS score tips</button>
-                                <button type="button" class="tag-suggestion" onclick="quickChat('Top behavioral and system design interview questions')">🎯 Interview questions</button>
-                                <button type="button" class="tag-suggestion" onclick="quickChat('How to negotiate a higher compensation package?')">💼 Salary strategy</button>
                             </div>
 
                             <!-- Aceternity UI Real Time Messaging Footer -->
@@ -5009,6 +5320,214 @@
                 showToast(`Authenticated via ${provider}`, 'success');
             };
 
+            // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
+            let chatSoundEnabled = localStorage.getItem('rankly_chat_sound') !== 'false';
+
+            function getAudioContext() {
+                try {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioCtx) return null;
+                    if (!window._ranklyAudioCtx) {
+                        window._ranklyAudioCtx = new AudioCtx();
+                    }
+                    if (window._ranklyAudioCtx.state === 'suspended') {
+                        window._ranklyAudioCtx.resume();
+                    }
+                    return window._ranklyAudioCtx;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            window.playChatSendSound = function() {
+                if (!chatSoundEnabled) return;
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                const now = ctx.currentTime;
+                // Dual-tone high-tech pop chime
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                // Frequency glide (620Hz -> 1080Hz for futuristic pop chime)
+                osc.frequency.setValueAtTime(620, now);
+                osc.frequency.exponentialRampToValueAtTime(1080, now + 0.08);
+
+                // Smooth attack and release envelope
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.15);
+            };
+
+            window.playChatReceiveSound = function() {
+                if (!chatSoundEnabled) return;
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                const now = ctx.currentTime;
+                // Harmonic 2-tone pleasant arrival ding
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+
+                osc1.frequency.setValueAtTime(587.33, now); // D5
+                osc2.frequency.setValueAtTime(880, now + 0.04); // A5
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.exponentialRampToValueAtTime(0.18, now + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc1.start(now);
+                osc2.start(now + 0.04);
+                osc1.stop(now + 0.23);
+                osc2.stop(now + 0.23);
+            };
+
+            window.toggleChatSound = function() {
+                chatSoundEnabled = !chatSoundEnabled;
+                localStorage.setItem('rankly_chat_sound', chatSoundEnabled ? 'true' : 'false');
+                const btn = document.getElementById('chatSoundToggleBtn');
+                const icon = document.getElementById('chatSoundIcon');
+                const label = document.getElementById('chatSoundLabel');
+                if (chatSoundEnabled) {
+                    if (btn) btn.classList.add('active');
+                    if (icon) icon.className = 'fas fa-volume-high';
+                    if (label) label.textContent = 'Sound ON';
+                    playChatSendSound();
+                    showToast('🔊 Chat Audio Chimes Enabled', 'info');
+                } else {
+                    if (btn) btn.classList.remove('active');
+                    if (icon) icon.className = 'fas fa-volume-xmark';
+                    if (label) label.textContent = 'Mute';
+                    showToast('🔇 Chat Audio Muted', 'info');
+                }
+            };
+
+            // ─── SMART @MENTION POPUP & AUTOCOMPLETE ENGINE ───
+            let selectedMentionIndex = 0;
+
+            window.handleChatInputMention = function(input) {
+                if (!input) return;
+                const val = input.value;
+                const cursorPos = input.selectionStart || val.length;
+                const textBeforeCursor = val.substring(0, cursorPos);
+                
+                // Find last @ token
+                const lastAtIdx = textBeforeCursor.lastIndexOf('@');
+                if (lastAtIdx === -1) {
+                    closeMentionPopup();
+                    return;
+                }
+
+                const query = textBeforeCursor.substring(lastAtIdx).toLowerCase();
+                // If there's a space after @query, close popup
+                if (query.includes(' ') && query.length > 1) {
+                    closeMentionPopup();
+                    return;
+                }
+
+                openMentionPopup(query);
+            };
+
+            window.openMentionPopup = function(query = '@') {
+                const popup = document.getElementById('mentionPopup');
+                if (!popup) return;
+                popup.style.display = 'block';
+
+                const items = popup.querySelectorAll('.mention-item');
+                let visibleCount = 0;
+                items.forEach((item, idx) => {
+                    const tag = item.getAttribute('data-tag').toLowerCase();
+                    if (!query || query === '@' || tag.includes(query) || item.innerText.toLowerCase().includes(query.replace('@', ''))) {
+                        item.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                selectedMentionIndex = 0;
+                highlightActiveMention();
+            };
+
+            window.closeMentionPopup = function() {
+                const popup = document.getElementById('mentionPopup');
+                if (popup) popup.style.display = 'none';
+            };
+
+            function highlightActiveMention() {
+                const popup = document.getElementById('mentionPopup');
+                if (!popup) return;
+                const visibleItems = Array.from(popup.querySelectorAll('.mention-item')).filter(el => el.style.display !== 'none');
+                visibleItems.forEach((item, idx) => {
+                    if (idx === selectedMentionIndex) {
+                        item.classList.add('active');
+                        item.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            window.handleChatMentionKeydown = function(e) {
+                const popup = document.getElementById('mentionPopup');
+                if (!popup || popup.style.display === 'none') return;
+
+                const visibleItems = Array.from(popup.querySelectorAll('.mention-item')).filter(el => el.style.display !== 'none');
+                if (visibleItems.length === 0) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    selectedMentionIndex = (selectedMentionIndex + 1) % visibleItems.length;
+                    highlightActiveMention();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    selectedMentionIndex = (selectedMentionIndex - 1 + visibleItems.length) % visibleItems.length;
+                    highlightActiveMention();
+                } else if (e.key === 'Enter' || e.key === 'Tab') {
+                    e.preventDefault();
+                    if (visibleItems[selectedMentionIndex]) {
+                        const tag = visibleItems[selectedMentionIndex].getAttribute('data-tag');
+                        insertMention(tag + ' ');
+                    }
+                } else if (e.key === 'Escape') {
+                    closeMentionPopup();
+                }
+            };
+
+            window.insertMention = function(tagWithSpace) {
+                const input = document.getElementById('chatInput');
+                if (!input) return;
+                const tag = tagWithSpace.trim();
+                const val = input.value;
+                const lastAtIdx = val.lastIndexOf('@');
+
+                if (lastAtIdx !== -1) {
+                    input.value = val.substring(0, lastAtIdx) + tag + ' ' + val.substring(input.selectionStart);
+                } else {
+                    input.value = (val ? val + ' ' : '') + tag + ' ';
+                }
+
+                closeMentionPopup();
+                input.focus();
+                const placeholderText = document.getElementById('vanishPlaceholderText');
+                if (placeholderText) placeholderText.style.opacity = '0';
+            };
+
             let chatSelectedFile = null;
 
             window.handleChatFileSelected = function(input) {
@@ -5061,6 +5580,12 @@
                 // Numbered lists (1. 2.)
                 formatted = formatted.replace(/^\s*(\d+)\.\s+(.*)$/gim, '<li class="ml-4 list-decimal text-purple-100 my-1 leading-relaxed">$1</li>');
 
+                // Smart @Mention Chips format
+                formatted = formatted.replace(/@yt\b|@youtube\b/gi, '<span class="mention-chip mention-chip-yt"><i class="fa-brands fa-youtube mr-1"></i>@yt</span>');
+                formatted = formatted.replace(/@google\b/gi, '<span class="mention-chip mention-chip-google"><i class="fa-brands fa-google mr-1"></i>@google</span>');
+                formatted = formatted.replace(/@notion\b/gi, '<span class="mention-chip mention-chip-notion"><i class="fa-solid fa-cube mr-1"></i>@notion</span>');
+                formatted = formatted.replace(/@ats\b/gi, '<span class="mention-chip mention-chip-ats"><i class="fas fa-bolt mr-1"></i>@ats</span>');
+
                 // Convert linebreaks to spacing
                 formatted = formatted.replace(/\n\n/g, '<div class="h-2"></div>');
                 formatted = formatted.replace(/\n/g, '<br/>');
@@ -5069,12 +5594,105 @@
             }
             window.formatMarkdownChat = formatMarkdownChat;
 
+            function generateMentionInteractiveCards(msg) {
+                if (!msg) return '';
+                let cardsHtml = '';
+                const lower = msg.toLowerCase();
+                const cleanQuery = msg.replace(/@(yt|youtube|google|notion|ats)/gi, '').trim() || 'Software Engineering Interview';
+
+                if (lower.includes('@yt') || lower.includes('@youtube')) {
+                    cardsHtml += `
+                        <div class="mention-interactive-card">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center text-xs font-bold border border-red-500/20"><i class="fa-brands fa-youtube"></i></span>
+                                    <strong class="text-xs font-bold" style="color:var(--text-main);">YouTube Video & Lecture Hub</strong>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-300 font-mono font-bold">Integration Active</span>
+                            </div>
+                            <p class="text-xs" style="color:var(--text-muted);">Curated mock interviews, system design lectures & coding tutorials for "${cleanQuery}".</p>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cleanQuery + ' interview preparation')}" target="_blank" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                                </a>
+                                <button type="button" onclick="quickChat('Summarize key tips and breakdown for: ${cleanQuery}')" class="px-3 py-1.5 rounded-lg border text-xs font-semibold transition" style="border-color:var(--border-color); background:var(--bg-color); color:var(--text-main);">
+                                    <i class="fas fa-sparkles text-indigo-500 mr-1"></i> AI Video Breakdown
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (lower.includes('@google')) {
+                    cardsHtml += `
+                        <div class="mention-interactive-card">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center text-xs font-bold border border-blue-500/20"><i class="fa-brands fa-google"></i></span>
+                                    <strong class="text-xs font-bold" style="color:var(--text-main);">Google Web & Market Intelligence</strong>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-mono font-bold">Live Data</span>
+                            </div>
+                            <p class="text-xs" style="color:var(--text-muted);">Live market salary benchmarks, Glassdoor insights, and industry recruitment trends.</p>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <a href="https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' salary benchmarks requirements')}" target="_blank" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-brands fa-google"></i> Search on Google
+                                </a>
+                                <button type="button" onclick="quickChat('Provide executive salary and skills benchmarking report for ${cleanQuery}')" class="px-3 py-1.5 rounded-lg border text-xs font-semibold transition" style="border-color:var(--border-color); background:var(--bg-color); color:var(--text-main);">
+                                    <i class="fas fa-chart-line text-emerald-500 mr-1"></i> AI Market Report
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (lower.includes('@notion')) {
+                    cardsHtml += `
+                        <div class="mention-interactive-card">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center text-xs font-bold border border-purple-500/20"><i class="fa-solid fa-cube"></i></span>
+                                    <strong class="text-xs font-bold" style="color:var(--text-main);">Notion Workspace Synchronization</strong>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 font-mono font-bold">ATS Ready</span>
+                            </div>
+                            <p class="text-xs" style="color:var(--text-muted);">Candidate scorecard, interview rubric & notes prepared for your Notion hiring board.</p>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <button type="button" onclick="navigator.clipboard?.writeText('${cleanQuery}'); showToast('Scorecard copied for Notion! 📋', 'success');" class="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-cube"></i> Copy Notion Markdown
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (lower.includes('@ats')) {
+                    cardsHtml += `
+                        <div class="mention-interactive-card">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center text-xs font-bold border border-amber-500/20"><i class="fas fa-bolt"></i></span>
+                                    <strong class="text-xs font-bold" style="color:var(--text-main);">Rankly Vector ATS Benchmark</strong>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300 font-mono font-bold">Vector Engine</span>
+                            </div>
+                            <p class="text-xs" style="color:var(--text-muted);">Benchmarking skills and experience keywords against target role requirements.</p>
+                        </div>
+                    `;
+                }
+
+                return cardsHtml;
+            }
+
             window.sendChat = async function(overrideMsg) {
                 const input = document.getElementById('chatInput');
                 const container = document.getElementById('chatContainer');
                 if (!container) return;
                 const msg = (typeof overrideMsg === 'string' ? overrideMsg : (input ? input.value : '')).trim();
                 if (!msg && !chatSelectedFile) return;
+
+                // 🔊 Play Sound Effect on Message Sent
+                playChatSendSound();
 
                 // Render User Message with Avatar
                 const userRow = document.createElement('div');
@@ -5083,9 +5701,9 @@
                 
                 let userContentHtml = '';
                 if (chatSelectedFile) {
-                    userContentHtml = `<div><i class="fas fa-file-lines mr-1.5"></i><strong>${chatSelectedFile.name}</strong></div>${msg ? `<div class="mt-1">${msg}</div>` : ''}`;
+                    userContentHtml = `<div><i class="fas fa-file-lines mr-1.5"></i><strong>${chatSelectedFile.name}</strong></div>${msg ? `<div class="mt-1">${formatMarkdownChat(msg)}</div>` : ''}`;
                 } else {
-                    userContentHtml = msg;
+                    userContentHtml = formatMarkdownChat(msg);
                 }
 
                 userRow.innerHTML = `
@@ -5104,7 +5722,7 @@
                 botRow.innerHTML = `
                     <div class="chat-avatar bot">
                         <svg class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                         </svg>
                     </div>
                     <div class="chat-msg bot"></div>
@@ -5141,41 +5759,42 @@
                             const recommendations = Array.isArray(ev.recommendations) ? ev.recommendations : (typeof ev.recommendations === 'string' ? JSON.parse(ev.recommendations || '[]') : []);
 
                             botDiv.innerHTML = `
-                                <div class="space-y-3 text-gray-800">
-                                    <div class="flex items-center justify-between pb-2 border-b border-indigo-100">
+                                <div class="space-y-3 text-gray-800 dark:text-gray-200">
+                                    <div class="flex items-center justify-between pb-2 border-b border-indigo-100 dark:border-slate-700">
                                         <div>
-                                            <strong class="text-gray-900 text-sm font-bold">🎯 Screening Report: ${data.candidateName || fileToUpload.name}</strong>
-                                            <p class="text-xs text-gray-500">Target Role: ${data.targetRole || 'Software Engineer'}</p>
+                                            <strong class="text-gray-900 dark:text-white text-sm font-bold">🎯 Screening Report: ${data.candidateName || fileToUpload.name}</strong>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Target Role: ${data.targetRole || 'Software Engineer'}</p>
                                         </div>
-                                        <span class="bg-emerald-50 border border-emerald-300 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-mono font-bold">${ev.matchScore || 85}% Match</span>
+                                        <span class="bg-emerald-50 border border-emerald-300 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 text-xs px-2.5 py-1 rounded-full font-mono font-bold">${ev.matchScore || 85}% Match</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-bold text-gray-900 mb-1">Fit Verdict: <span class="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] px-2 py-0.5 rounded font-mono">${ev.fitVerdict || 'Potential Fit'}</span></p>
-                                        <p class="text-xs text-gray-700 leading-relaxed">${ev.summary || 'Candidate demonstrates solid foundational capabilities with strong domain competencies.'}</p>
+                                        <p class="text-xs font-bold mb-1">Fit Verdict: <span class="bg-indigo-50 border border-indigo-200 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 text-[11px] px-2 py-0.5 rounded font-mono">${ev.fitVerdict || 'Potential Fit'}</span></p>
+                                        <p class="text-xs leading-relaxed" style="color:var(--text-muted);">${ev.summary || 'Candidate demonstrates solid foundational capabilities with strong domain competencies.'}</p>
                                     </div>
                                     ${matchedSkills.length ? `
                                         <div>
-                                            <span class="text-xs font-bold text-emerald-700 block mb-1">✓ Matched Competencies:</span>
+                                            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 block mb-1">✓ Matched Competencies:</span>
                                             <div class="flex flex-wrap gap-1">
-                                                ${matchedSkills.map(s => `<span class="bg-emerald-100/70 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
+                                                ${matchedSkills.map(s => `<span class="bg-emerald-100/70 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
                                             </div>
                                         </div>` : ''}
                                     ${missingSkills.length ? `
                                         <div>
-                                            <span class="text-xs font-bold text-rose-600 block mb-1">⚠ Suggested Upskilling:</span>
+                                            <span class="text-xs font-bold text-rose-600 dark:text-rose-400 block mb-1">⚠ Suggested Upskilling:</span>
                                             <div class="flex flex-wrap gap-1">
-                                                ${missingSkills.map(s => `<span class="bg-rose-100/70 text-rose-800 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
+                                                ${missingSkills.map(s => `<span class="bg-rose-100/70 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-[10px] px-2 py-0.5 rounded font-mono">${s}</span>`).join('')}
                                             </div>
                                         </div>` : ''}
                                     ${recommendations.length ? `
                                         <div class="pt-1">
-                                            <span class="text-xs font-bold text-indigo-900 block mb-1">💡 Strategic Recommendations:</span>
-                                            <ul class="list-disc pl-4 text-xs text-gray-600 space-y-0.5">
+                                            <span class="text-xs font-bold text-indigo-900 dark:text-indigo-300 block mb-1">💡 Strategic Recommendations:</span>
+                                            <ul class="list-disc pl-4 text-xs space-y-0.5" style="color:var(--text-muted);">
                                                 ${recommendations.map(r => `<li>${r}</li>`).join('')}
                                             </ul>
                                         </div>` : ''}
                                 </div>
                             `;
+                            playChatReceiveSound();
                             showToast(`Screened ${fileToUpload.name}: ${ev.matchScore || 85}% Match`, 'success');
                             if (typeof window.loadEvaluationsHistory === 'function') window.loadEvaluationsHistory();
                         } else {
@@ -5186,7 +5805,7 @@
                     }
                 } else {
                     // Standard AI Chatbot Query
-                    botDiv.innerHTML = `<div class="flex items-center gap-2 text-indigo-600 text-xs font-mono"><i class="fas fa-spinner fa-spin text-indigo-600"></i> Rankly AI is thinking...</div>`;
+                    botDiv.innerHTML = `<div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-mono"><i class="fas fa-spinner fa-spin text-indigo-600 dark:text-indigo-400"></i> Rankly AI is thinking...</div>`;
                     container.appendChild(botDiv);
                     container.scrollTop = container.scrollHeight;
 
@@ -5199,9 +5818,13 @@
                         });
                         const data = await res.json();
                         const rawReply = data.reply || data.message || data.response || 'Rankly AI recommends aligning technical skill descriptions directly with ATS scoring benchmarks.';
-                        botDiv.innerHTML = formatMarkdownChat(rawReply);
+                        const cardsHtml = generateMentionInteractiveCards(msg);
+                        botDiv.innerHTML = formatMarkdownChat(rawReply) + cardsHtml;
+                        playChatReceiveSound();
                     } catch (e) {
-                        botDiv.innerHTML = formatMarkdownChat(`### 🎯 Strategic Guidance from Rankly AI\n\n- **Quantify Impact**: Highlight metrics and business outcomes directly.\n- **Keywords**: Embed core tools and frameworks matching job requirements.\n- **Architecture**: Emphasize system design and end-to-end project ownership.`);
+                        const cardsHtml = generateMentionInteractiveCards(msg);
+                        botDiv.innerHTML = formatMarkdownChat(`### 🎯 Strategic Guidance from Rankly AI\n\n- **Quantify Impact**: Highlight metrics and business outcomes directly.\n- **Keywords**: Embed core tools and frameworks matching job requirements.\n- **Architecture**: Emphasize system design and end-to-end project ownership.`) + cardsHtml;
+                        playChatReceiveSound();
                     }
                 }
                 container.scrollTop = container.scrollHeight;
