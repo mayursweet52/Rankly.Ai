@@ -2380,14 +2380,15 @@
             color: #C7D2FE;
         }
 
-        /* ─── EXCLUSIVE DARK MODE ADVANCED UI & ACETERNITY ENGINES ─── */
+        /* ─── EXCLUSIVE DARK MODE ADVANCED UI (SOLID & ROCK STABLE) ─── */
         body.dark-theme .card,
         body.dark-theme .spotlight-card {
             position: relative;
             background: #14141f !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 1.25rem !important;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+            transform: none !important;
             overflow: hidden;
         }
 
@@ -2416,11 +2417,7 @@
         body.dark-theme .spotlight-card:hover {
             border-color: rgba(129, 140, 248, 0.4) !important;
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(129, 140, 248, 0.15) !important;
-        }
-
-        /* Dark Mode 3D Tilt Glare Overlay */
-        body.dark-theme .js-tilt-glare {
-            border-radius: 1.25rem !important;
+            transform: none !important;
         }
 
         /* ─── DARK MODE RESUME RADAR LASER SCANNER ─── */
@@ -6712,23 +6709,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                     });
 
-                    // 2. VanillaTilt 3D Holographic Tilt (Only in Dark Mode)
+                    // 2. Disable 3D Tilt completely to keep cards rock-solid and stable
                     if (typeof VanillaTilt !== 'undefined') {
-                        const tiltElements = document.querySelectorAll('.card:not(.no-tilt), .stat-card, [data-tilt]');
-                        if (isDark) {
-                            VanillaTilt.init(tiltElements, {
-                                max: 5,
-                                speed: 400,
-                                glare: true,
-                                'max-glare': 0.08,
-                                scale: 1.01,
-                                perspective: 1000
-                            });
-                        } else {
-                            tiltElements.forEach(el => {
-                                if (el.vanillaTilt) el.vanillaTilt.destroy();
-                            });
-                        }
+                        const tiltElements = document.querySelectorAll('.card, .stat-card, [data-tilt]');
+                        tiltElements.forEach(el => {
+                            if (el.vanillaTilt) el.vanillaTilt.destroy();
+                            el.style.transform = 'none';
+                        });
                     }
 
                     // 3. Lucide Icons
