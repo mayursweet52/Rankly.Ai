@@ -156,6 +156,48 @@ app.post(['/api/feedback', '/api/user/feedback'], async (req, res) => {
       }
     });
 
+    // ─── NOTIFICATION (Developer Email & n8n Webhook) ───
+    try {
+      const { sendSystemEmail } = require('./src/services/emailService');
+      const devEmail = process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+      sendSystemEmail({
+        to: devEmail,
+        subject: `💬 [Rankly.ai Feedback] New ${category.toUpperCase()} Rating (${rating}⭐) from ${name || 'User'}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 24px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; max-width: 540px; margin: auto;">
+            <h3 style="color: #4f46e5; margin: 0 0 12px 0;">New User Feedback Received</h3>
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin: 12px 0; font-size: 13px;">
+              <div>👤 <strong>From:</strong> ${name || 'Anonymous'} (${email || 'No email provided'})</div>
+              <div>⭐ <strong>Rating:</strong> ${rating} / 5 Stars</div>
+              <div>🏷️ <strong>Category:</strong> ${category}</div>
+              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; color: #1e293b;">
+                <strong>Message:</strong><br/>"${message.trim()}"
+              </div>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8;">Rankly.ai Automated User Feedback Telemetry</p>
+          </div>
+        `
+      }).catch(e => console.warn('[Feedback Email Warning]:', e.message));
+
+      // Trigger n8n feedback webhook if configured
+      const n8nFeedbackWebhook = process.env.N8N_FEEDBACK_WEBHOOK_URL;
+      if (n8nFeedbackWebhook) {
+        fetch(n8nFeedbackWebhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            feedbackId: feedback.id,
+            name: name || sessionName || 'Anonymous',
+            email: email || sessionEmail,
+            rating,
+            category,
+            message: message.trim(),
+            createdAt: new Date().toISOString()
+          })
+        }).catch(e => console.warn('[n8n Feedback Sync Notice]:', e.message));
+      }
+    } catch (e) {}
+
     return res.json({
       success: true,
       message: 'Thank you for your feedback! It helps us make Rankly.ai better.',
@@ -375,6 +417,107 @@ app.post(['/api/trigger-self-heal', '/api/health/trigger-n8n'], async (req, res)
     res.json({ success: true, message: 'n8n triggered', webhookUrl: n8nWebhookUrl });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 6. Candidate Status Tracking (applied -> screened -> interview -> offer -> hired -> rejected)
+app.post(['/api/pipeline/update', '/api/candidates/update-stage'], async (req, res) => {
+  try {
+    const { id, candidateId, candidateName, email, stage, status, notes } = req.body || {};
+    const targetStage = (stage || status || '').toLowerCase().trim();
+
+    const stageMap = {
+      'applied': 'applied',
+      'screened': 'ai_screened',
+      'ai_screened': 'ai_screened',
+      'interview': 'interview',
+      'offer': 'offered',
+      'offered': 'offered',
+      'hired': 'offered',
+      'rejected': 'rejected'
+    };
+
+    const finalStage = stageMap[targetStage] || targetStage;
+    if (!finalStage) {
+      return res.status(400).json({ success: false, message: 'Valid stage/status is required (applied, screened, interview, offer, hired, rejected)' });
+    }
+
+    const where = {};
+    if (id || candidateId) {
+      where.id = id || candidateId;
+    } else if (email) {
+      where.email = email.trim().toLowerCase();
+    } else if (candidateName) {
+      where.name = candidateName.trim();
+    } else {
+      return res.status(400).json({ success: false, message: 'Please provide candidate id, email, or candidateName' });
+    }
+
+    const candidate = await prisma.candidate.findFirst({ where });
+    if (!candidate) {
+      return res.status(404).json({ success: false, message: 'Candidate not found in pipeline' });
+    }
+
+    const updated = await prisma.candidate.update({
+      where: { id: candidate.id },
+      data: {
+        stage: finalStage,
+        notes: notes !== undefined ? notes : candidate.notes
+      }
+    });
+
+    if (candidate.evaluationId) {
+      await prisma.evaluation.update({
+        where: { id: candidate.evaluationId },
+        data: { pipelineStage: finalStage }
+      }).catch(() => {});
+    }
+
+    return res.json({
+      success: true,
+      message: `Candidate ${candidate.name} status updated to "${finalStage}".`,
+      candidate: updated
+    });
+  } catch (err) {
+    console.error('Candidate Status Update Error:', err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 7. Daily Analytics Report Data (For n8n cron scheduled report)
+app.get(['/api/analytics/summary', '/api/analytics/daily-summary'], async (req, res) => {
+  try {
+    const [totalUsers, totalCandidates, totalEvaluations, totalFeedbacks, recentCandidates] = await Promise.all([
+      prisma.user.count(),
+      prisma.candidate.count(),
+      prisma.evaluation.count(),
+      prisma.feedback.count(),
+      prisma.candidate.findMany({
+        take: 10,
+        orderBy: { createdAt: 'desc' },
+        select: { name: true, targetRole: true, score: true, stage: true, createdAt: true }
+      })
+    ]);
+
+    const avgScoreResult = await prisma.evaluation.aggregate({
+      _avg: { matchScore: true }
+    });
+
+    return res.json({
+      success: true,
+      date: new Date().toISOString().split('T')[0],
+      timestamp: new Date().toISOString(),
+      summary: {
+        totalUsers,
+        totalCandidates,
+        totalEvaluations,
+        totalFeedbacks,
+        averageMatchScore: Math.round(avgScoreResult._avg.matchScore || 0)
+      },
+      recentCandidates
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 

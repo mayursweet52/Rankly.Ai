@@ -1,0 +1,528 @@
+{
+  "name": "Rankly.ai - Complete Master Automation System (All 11 Automations)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "candidate-screened",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "1. Webhook: Candidate Screened",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 200],
+      "id": "node-webhook-candidate"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Select Your Google Sheet"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Candidates",
+          "mode": "list",
+          "cachedResultName": "Candidates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.candidateName || $json.candidateName || 'Anonymous' }}",
+            "Role": "={{ $json.body.targetRole || $json.targetRole || 'Software Engineer' }}",
+            "Match Score": "={{ $json.body.matchScore || $json.matchScore || 0 }}%",
+            "Verdict": "={{ $json.body.fitVerdict || $json.fitVerdict || 'Screened' }}",
+            "Date": "={{ $json.body.createdAt || $json.createdAt || $now.format('YYYY-MM-DD HH:mm:ss') }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "2. Google Sheets: Append Candidate",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [360, 200],
+      "id": "node-gsheets-append",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-score-check",
+              "leftValue": "={{ Number($json.body.matchScore || $json.matchScore || 0) }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "3. Filter: Match Score > 70?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [620, 200],
+      "id": "node-if-score"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $env.HR_EMAIL || 'hr@company.com' }}",
+        "subject": "🌟 [Shortlisted] Candidate {{ $json.body.candidateName || $json.candidateName }} for {{ $json.body.targetRole || $json.targetRole }} (Score: {{ $json.body.matchScore || $json.matchScore }}%)",
+        "message": "=Hi HR Team,\n\nA top candidate has achieved a high ATS match score (>70%) on Rankly.ai:\n\n👤 Name: {{ $json.body.candidateName || $json.candidateName }}\n🎯 Role: {{ $json.body.targetRole || $json.targetRole }}\n📊 Score: {{ $json.body.matchScore || $json.matchScore }}%\n🏆 Verdict: {{ $json.body.fitVerdict || $json.fitVerdict }}\n\nView candidate in ATS Dashboard: https://rankly-ai-production.up.railway.app/dashboard\n\nBest regards,\nRankly.ai Hiring Automation",
+        "options": {}
+      },
+      "name": "4. Email: Send Shortlist to HR",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [880, 100],
+      "id": "node-email-shortlist",
+      "credentials": {
+        "smtp": {
+          "id": "rankly-smtp",
+          "name": "Rankly Gmail SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.candidateEmail || $json.candidateEmail || 'candidate@example.com' }}",
+        "subject": "Update on your application for {{ $json.body.targetRole || $json.targetRole }} at Rankly.ai",
+        "message": "=Dear {{ $json.body.candidateName || $json.candidateName }},\n\nThank you for your interest in the {{ $json.body.targetRole || $json.targetRole }} role.\n\nAfter AI resume screening, we found that your current profile has a {{ $json.body.matchScore || $json.matchScore }}% match with our current requirements. While we won't be advancing your profile for this specific position at this time, we have kept your resume in our talent pool for future openings that match your skills.\n\nWe encourage you to practice and re-evaluate anytime on Rankly.ai!\n\nBest regards,\nRankly.ai Talent Team",
+        "options": {}
+      },
+      "name": "5. Email: Send Feedback to Candidate",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [880, 300],
+      "id": "node-email-reject",
+      "credentials": {
+        "smtp": {
+          "id": "rankly-smtp",
+          "name": "Rankly Gmail SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "otherOptions": {},
+        "text": "=🚀 *New Candidate Screened on Rankly.ai*\n*Name:* {{ $json.body.candidateName || $json.candidateName }}\n*Role:* {{ $json.body.targetRole || $json.targetRole }}\n*Score:* {{ $json.body.matchScore || $json.matchScore }}% ({{ $json.body.fitVerdict || $json.fitVerdict }})\n*Channel:* #hiring"
+      },
+      "name": "6. Slack: Post to #hiring",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [1140, 200],
+      "id": "node-slack-hiring"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rankly-ai-production.up.railway.app/api/pipeline/update",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "candidateName",
+              "value": "={{ $json.body.candidateName || $json.candidateName }}"
+            },
+            {
+              "name": "stage",
+              "value": "={{ Number($json.body.matchScore || $json.matchScore || 0) > 70 ? 'interview' : 'rejected' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "7. HTTP: Update Pipeline Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1360, 200],
+      "id": "node-http-pipeline-update"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "self-heal",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "8. Webhook: Health Checker Auto-Fix",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 560],
+      "id": "node-webhook-self-heal"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rankly-ai-production.up.railway.app/api/backup",
+        "options": {}
+      },
+      "name": "9. HTTP: Create Code Backup",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [360, 560],
+      "id": "node-http-backup"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rankly-ai-production.up.railway.app/api/apply-fix",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "fixInstruction",
+              "value": "={{ JSON.stringify($json.body.issues || $json.issues || []) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "10. HTTP: Apply Automated Fix",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [620, 560],
+      "id": "node-http-apply-fix"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://rankly-ai-production.up.railway.app/api/health",
+        "options": {}
+      },
+      "name": "11. HTTP: Test Post-Fix Health",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [880, 560],
+      "id": "node-http-test-health"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-health-ok",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ok",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "12. If: Fix Succeeded?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1140, 560],
+      "id": "node-if-fix-success"
+    },
+    {
+      "parameters": {
+        "sendTo": "mayursweet52@gmail.com",
+        "subject": "✅ [Rankly.ai] Automated Self-Healing Fix Verified",
+        "message": "=System Self-Healing executed and verified 100% HEALTHY.\n\nTimestamp: {{ $now.toISO() }}",
+        "options": {}
+      },
+      "name": "13. Email: Fix Success Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1400, 480],
+      "id": "node-email-heal-success"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rankly-ai-production.up.railway.app/api/rollback",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "backupDir",
+              "value": "={{ $('9. HTTP: Create Code Backup').first().json.backupDir }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "14. HTTP: Rollback Code on Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1400, 660],
+      "id": "node-http-rollback"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 * * *"
+            }
+          ]
+        }
+      },
+      "name": "15. Schedule: Daily Midnight Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [100, 880],
+      "id": "node-schedule-daily"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://rankly-ai-production.up.railway.app/api/analytics/summary",
+        "options": {}
+      },
+      "name": "16. HTTP: Fetch Daily Analytics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [360, 880],
+      "id": "node-http-daily-analytics"
+    },
+    {
+      "parameters": {
+        "sendTo": "mayursweet52@gmail.com",
+        "subject": "📊 Rankly.ai Daily Executive Analytics Report - {{ $json.date }}",
+        "message": "=Rankly.ai Daily Performance & Recruitment Summary:\n\n👥 Total Users: {{ $json.summary.totalUsers }}\n📋 Total Candidates Screened: {{ $json.summary.totalCandidates }}\n📈 Total Evaluations: {{ $json.summary.totalEvaluations }}\n💬 Total User Feedback: {{ $json.summary.totalFeedbacks }}\n🎯 Average Match Score: {{ $json.summary.averageMatchScore }}%\n\nGenerated automatically by Rankly.ai n8n Automation Engine.",
+        "options": {}
+      },
+      "name": "17. Email: Send Daily Analytics Digest",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [620, 880],
+      "id": "node-email-daily-report"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "feedback-received",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "18. Webhook: User Feedback Submitted",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 1120],
+      "id": "node-webhook-feedback"
+    },
+    {
+      "parameters": {
+        "sendTo": "mayursweet52@gmail.com",
+        "subject": "💬 [User Feedback] {{ $json.body.rating }} Stars from {{ $json.body.name }}",
+        "message": "=New User Feedback:\n\nName: {{ $json.body.name }}\nEmail: {{ $json.body.email }}\nRating: {{ $json.body.rating }} / 5\nCategory: {{ $json.body.category }}\nMessage: {{ $json.body.message }}",
+        "options": {}
+      },
+      "name": "19. Email: Forward Feedback to Dev",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [360, 1120],
+      "id": "node-email-feedback"
+    }
+  ],
+  "connections": {
+    "1. Webhook: Candidate Screened": {
+      "main": [
+        [
+          {
+            "node": "2. Google Sheets: Append Candidate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Google Sheets: Append Candidate": {
+      "main": [
+        [
+          {
+            "node": "3. Filter: Match Score > 70?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Filter: Match Score > 70?": {
+      "main": [
+        [
+          {
+            "node": "4. Email: Send Shortlist to HR",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "5. Email: Send Feedback to Candidate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Email: Send Shortlist to HR": {
+      "main": [
+        [
+          {
+            "node": "6. Slack: Post to #hiring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5. Email: Send Feedback to Candidate": {
+      "main": [
+        [
+          {
+            "node": "6. Slack: Post to #hiring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Slack: Post to #hiring": {
+      "main": [
+        [
+          {
+            "node": "7. HTTP: Update Pipeline Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. Webhook: Health Checker Auto-Fix": {
+      "main": [
+        [
+          {
+            "node": "9. HTTP: Create Code Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "9. HTTP: Create Code Backup": {
+      "main": [
+        [
+          {
+            "node": "10. HTTP: Apply Automated Fix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10. HTTP: Apply Automated Fix": {
+      "main": [
+        [
+          {
+            "node": "11. HTTP: Test Post-Fix Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. HTTP: Test Post-Fix Health": {
+      "main": [
+        [
+          {
+            "node": "12. If: Fix Succeeded?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "12. If: Fix Succeeded?": {
+      "main": [
+        [
+          {
+            "node": "13. Email: Fix Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "14. HTTP: Rollback Code on Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "15. Schedule: Daily Midnight Trigger": {
+      "main": [
+        [
+          {
+            "node": "16. HTTP: Fetch Daily Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "16. HTTP: Fetch Daily Analytics": {
+      "main": [
+        [
+          {
+            "node": "17. Email: Send Daily Analytics Digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "18. Webhook: User Feedback Submitted": {
+      "main": [
+        [
+          {
+            "node": "19. Email: Forward Feedback to Dev",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1.0.0",
+  "id": "rankly-master-automation-workflow"
+}
