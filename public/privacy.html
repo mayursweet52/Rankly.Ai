@@ -1,211 +1,339 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Privacy Policy — Rankly.ai</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
+        :root {
+            --bg-color: #F3F3ED;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E2DC;
+            --text-main: #111111;
+            --text-muted: #666660;
+            --text-sub: #888880;
+            --brand-green: #243E36;
+            --brand-dot: #D95D39;
+            --brand-pill: #395BDE;
+            --badge-bg: #EAEAE4;
+        }
+
+        body.dark-theme {
+            --bg-color: #121316;
+            --card-bg: #1A1B1E;
+            --border-color: #2C2E33;
+            --text-main: #F8F9FA;
+            --text-muted: #A6A7AB;
+            --text-sub: #6C7079;
+            --brand-green: #2B4C42;
+            --brand-dot: #E06D4B;
+            --brand-pill: #4C6EF5;
+            --badge-bg: #25262B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0B0F19;
-            color: #E2E8F0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            min-height: 100vh;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
-        .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+
+        body.dark-theme {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 50%, #F472B6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .rankly-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+            border-radius: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-cohere-primary {
+            background: var(--brand-green);
+            color: #FFFFFF;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .btn-cohere-primary:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:hover {
+            border-color: #BBBBB5;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .section-badge {
+            background: var(--badge-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: #999;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="flex flex-col justify-between">
 
-    <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- Top Navigation Header -->
+    <header class="w-full border-b sticky top-0 z-50 backdrop-blur-md" style="background: rgba(var(--bg-color), 0.85); border-color: var(--border-color);">
+        <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Rankly Brand Logo -->
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition duration-300">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <span class="text-2xl font-extrabold tracking-tight text-white font-sans">
-                    Rankly<span class="text-indigo-400">.ai</span>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <defs>
+                        <linearGradient id="rankly-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#B588F7"/>
+                            <stop offset="100%" stop-color="#8E65DF"/>
+                        </linearGradient>
+                        <linearGradient id="rankly-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#FFA14A"/>
+                            <stop offset="100%" stop-color="#F06A4A"/>
+                        </linearGradient>
+                        <linearGradient id="rankly-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#81E4DA"/>
+                            <stop offset="100%" stop-color="#45A89E"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="32" height="32" rx="8" fill="#111111" />
+                    <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-g1)"/>
+                    <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
+                    <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-g2)"/>
+                    <circle cx="24" cy="8" r="3" fill="url(#rankly-g3)" />
+                </svg>
+                <span class="font-extrabold text-xl tracking-tight text-[#111111] dark:text-white" style="color: var(--text-main);">
+                    Rankly<span class="text-[#D95D39]">.ai</span>
                 </span>
             </a>
 
-            <div class="flex items-center gap-4">
-                <a href="/" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-2">
-                    <i class="fas fa-arrow-left text-xs"></i> Back to Home
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="toggleTheme()" class="theme-toggle-btn">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeLabel">Dark</span>
+                </button>
+                <a href="/" class="btn-secondary hidden sm:inline-flex text-xs">
+                    <i class="fas fa-arrow-left"></i> Home
                 </a>
-                <a href="/login" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/30 transition duration-200">
-                    Open App
+                <a href="/login" class="btn-cohere-primary text-xs">
+                    Access Workspace <i class="fas fa-arrow-right text-xs"></i>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-6 py-16 flex-grow">
-        <!-- Header Section -->
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
-                <i class="fas fa-shield-halved"></i> Trust & Transparency
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-grow w-full">
+        
+        <!-- Hero Header -->
+        <div class="mb-10 text-center sm:text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3" style="background: var(--badge-bg); color: var(--brand-dot); border: 1px solid var(--border-color);">
+                <span class="w-2 h-2 rounded-full bg-[#D95D39]"></span> Trust & Data Governance
             </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-                Privacy Policy for <span class="gradient-text">Rankly.ai</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style="color: var(--text-main);">
+                Privacy Policy
             </h1>
-            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">
-                Last updated: <span class="text-slate-200 font-semibold">August 25, 2026</span> &bull; Effective Date: <span class="text-slate-200 font-semibold">Immediate</span>
+            <p class="text-sm sm:text-base leading-relaxed" style="color: var(--text-muted);">
+                Last updated: <span class="font-semibold" style="color: var(--text-main);">August 25, 2026</span> &bull; Effective Date: <span class="font-semibold" style="color: var(--text-main);">Immediate</span>
             </p>
         </div>
 
-        <!-- Privacy Policy Card Content -->
-        <div class="glass-card rounded-3xl p-8 md:p-12 space-y-10 text-slate-300 text-sm md:text-base leading-relaxed">
+        <!-- Privacy Content Card -->
+        <div class="rankly-card p-6 sm:p-10 space-y-10">
             
+            <!-- Quick Summary Callout -->
+            <div class="p-5 rounded-xl border flex flex-col sm:flex-row gap-4 items-start" style="background: rgba(36, 62, 54, 0.05); border-color: rgba(36, 62, 54, 0.15);">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: var(--brand-green); color: #FFF;">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="font-bold text-base" style="color: var(--text-main);">Our Core Privacy Promise</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-muted);">
+                        Rankly.ai <strong>never sells your resume data or contact details</strong> to third parties. Uploaded documents are processed with zero-retention foundation APIs and are never used to train public AI models.
+                    </p>
+                </div>
+            </div>
+
             <!-- Section 1 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center text-sm">1</span>
-                    Introduction & Overview
-                </h2>
-                <p>
-                    Welcome to <strong>Rankly.ai</strong> ("we", "our", or "us"). We are committed to safeguarding your privacy and protecting the confidentiality of your personal, employment, and recruitment data. Rankly.ai is an intelligent applicant tracking and AI resume screening platform designed to assist job seekers and talent acquisition teams with merit-based candidate evaluation.
-                </p>
-                <p>
-                    This Privacy Policy outlines the types of information we collect, how we process and store resume documents, our use of generative AI models, and your legal rights regarding your data under applicable data privacy regulations (including GDPR, CCPA, and India's Digital Personal Data Protection Act, 2023).
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">01</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">Introduction & Scope</h2>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+                    Rankly.ai ("we", "our", or "us") operates an enterprise-grade AI Applicant Tracking System (ATS) and resume screening intelligence platform. This Privacy Policy details the policies and practices regarding the collection, use, processing, and protection of personal data when you interact with our platform, website, and automated evaluation services.
                 </p>
             </section>
 
-            <hr class="border-slate-800">
+            <hr style="border-color: var(--border-color);">
 
             <!-- Section 2 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm">2</span>
-                    Information We Collect
-                </h2>
-                <p>When you use Rankly.ai, we may collect the following categories of information:</p>
-                <ul class="list-disc pl-6 space-y-2 text-slate-300">
-                    <li><strong class="text-white">Account Information:</strong> Name, email address, phone number, encrypted passwords, profession, and OAuth credentials (Google/LinkedIn login).</li>
-                    <li><strong class="text-white">Resume & Professional Documents:</strong> Text, work history, skill sets, educational qualifications, projects, certifications, and files uploaded in PDF, DOCX, or TXT format.</li>
-                    <li><strong class="text-white">Evaluation & Screening Records:</strong> AI Match Scores, skill gap analytics, fit verdicts, hiring manager feedback notes, and pipeline status.</li>
-                    <li><strong class="text-white">Feedback & Communications:</strong> Messages, ratings, and inquiries submitted through our feedback widget or support channels.</li>
-                    <li><strong class="text-white">Technical Telemetry:</strong> Anonymized IP addresses, browser types, session IDs, and error telemetry logs used strictly for security monitoring and system health diagnostics.</li>
-                </ul>
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">02</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">Information We Collect</h2>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: var(--text-muted);">We collect information to provide intelligent resume screening and hiring pipeline management:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <div class="p-4 rounded-xl border" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <div class="font-bold text-sm mb-1" style="color: var(--text-main);"><i class="fas fa-user-circle text-indigo-500 mr-1.5"></i> Account Credentials</div>
+                        <p class="text-xs" style="color: var(--text-muted);">Name, email, phone number, encrypted password hash, and OAuth authentication tokens.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <div class="font-bold text-sm mb-1" style="color: var(--text-main);"><i class="fas fa-file-pdf text-[#D95D39] mr-1.5"></i> Resume & Portfolio Files</div>
+                        <p class="text-xs" style="color: var(--text-muted);">Uploaded PDF, DOCX, and TXT documents, skills, work history, and educational qualifications.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <div class="font-bold text-sm mb-1" style="color: var(--text-main);"><i class="fas fa-chart-simple text-emerald-500 mr-1.5"></i> Screening & Match Scores</div>
+                        <p class="text-xs" style="color: var(--text-muted);">AI match percentages, skill breakdown matrices, interview notes, and pipeline stages.</p>
+                    </div>
+                    <div class="p-4 rounded-xl border" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <div class="font-bold text-sm mb-1" style="color: var(--text-main);"><i class="fas fa-server text-blue-500 mr-1.5"></i> Technical Diagnostics</div>
+                        <p class="text-xs" style="color: var(--text-muted);">Anonymized IP addresses, browser agents, and self-healing telemetry logs for platform stability.</p>
+                    </div>
+                </div>
             </section>
 
-            <hr class="border-slate-800">
+            <hr style="border-color: var(--border-color);">
 
             <!-- Section 3 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-400 flex items-center justify-center text-sm">3</span>
-                    How We Use AI & Process Resume Data
-                </h2>
-                <p>Rankly.ai utilizes enterprise AI inference engines (such as Google Gemini, Groq, OpenRouter, and DeepSeek) to analyze candidate profiles against job descriptions.</p>
-                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl space-y-2 text-sm">
-                    <div class="flex items-center gap-2 text-emerald-400 font-semibold">
-                        <i class="fas fa-check-circle"></i> Zero Public Model Training
-                    </div>
-                    <p class="text-slate-400">
-                        Your resume documents and candidate details are processed via encrypted API calls with zero-retention policies. Your private resume data is <strong>never used to train public foundation models</strong>.
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">03</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">AI Processing & Model Training Standards</h2>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+                    Rankly.ai integrates enterprise inference providers (including Google Gemini, Groq, OpenRouter, and DeepSeek) to match candidates against job descriptions.
+                </p>
+                <div class="p-4 rounded-xl border border-dashed text-xs space-y-1.5" style="border-color: #B588F7; background: rgba(181, 136, 247, 0.05); color: var(--text-muted);">
+                    <div class="font-bold text-sm" style="color: var(--text-main);">🔒 Enterprise Zero-Retention LLM Processing</div>
+                    <p>
+                        All AI screening requests are transmitted via encrypted API channels under zero-data-retention agreements. Your resumes are <strong>never used to train, fine-tune, or improve public foundational AI models</strong>.
                     </p>
                 </div>
-                <ul class="list-disc pl-6 space-y-2 text-slate-300">
-                    <li>Evaluating skills alignment against target job requirements.</li>
-                    <li>Extracting structured profile summaries and missing skill recommendations.</li>
-                    <li>Generating personalized interview questions and career counseling guidance.</li>
-                    <li>Providing ATS pipeline management for authorized employers and recruiters.</li>
-                </ul>
             </section>
 
-            <hr class="border-slate-800">
+            <hr style="border-color: var(--border-color);">
 
             <!-- Section 4 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center text-sm">4</span>
-                    Data Sharing & Third Parties
-                </h2>
-                <p>
-                    <strong class="text-emerald-400">We do NOT sell, rent, or monetize your personal data or resume files to data brokers or third-party advertisers.</strong>
-                </p>
-                <p>Information is shared only under strict operational conditions:</p>
-                <ul class="list-disc pl-6 space-y-2 text-slate-300">
-                    <li><strong class="text-white">With Your Consent:</strong> When a candidate applies to an employer or enterprise organization using Rankly.ai.</li>
-                    <li><strong class="text-white">Essential Service Providers:</strong> Secure cloud hosting (Railway), transactional email gateways (Google Mail / Resend), and database infrastructure (Prisma SQLite).</li>
-                    <li><strong class="text-white">Legal Obligations:</strong> If required by law, subpoena, or government authority to comply with applicable regulations.</li>
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">04</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">How We Protect & Secure Your Data</h2>
+                </div>
+                <ul class="list-disc pl-5 space-y-2 text-sm leading-relaxed" style="color: var(--text-muted);">
+                    <li><strong style="color: var(--text-main);">In-Transit Encryption:</strong> Enforced HTTPS/TLS 1.3 protocol across all API endpoints and web views.</li>
+                    <li><strong style="color: var(--text-main);">Cryptographic Password Security:</strong> Standard Bcrypt hashing with 10-salt rounds before database storage.</li>
+                    <li><strong style="color: var(--text-main);">Session Isolation:</strong> Secure SQLite session stores with HttpOnly, SameSite cookie flags and cloud proxy defense.</li>
+                    <li><strong style="color: var(--text-main);">Self-Healing Anomaly Monitoring:</strong> Background 2-minute health checker protecting against memory leaks and unauthorized intrusion attempts.</li>
                 </ul>
             </section>
 
-            <hr class="border-slate-800">
+            <hr style="border-color: var(--border-color);">
 
             <!-- Section 5 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm">5</span>
-                    Data Security & Retention
-                </h2>
-                <p>We deploy robust enterprise security safeguards to protect your personal information:</p>
-                <ul class="list-disc pl-6 space-y-2 text-slate-300">
-                    <li><strong class="text-white">Encryption:</strong> All web traffic is encrypted in transit via TLS 1.3 / HTTPS (SSL) on Port 443.</li>
-                    <li><strong class="text-white">Password Hashing:</strong> Passwords are cryptographically hashed using standard Bcrypt before storage.</li>
-                    <li><strong class="text-white">Autonomous Telemetry & Threat Defense:</strong> Background health monitoring, rate-limiting, and anomaly detection safeguard against unauthorized access.</li>
-                    <li><strong class="text-white">Retention Period:</strong> Resumes and account data are retained for as long as your account remains active or until you request permanent deletion.</li>
-                </ul>
-            </section>
-
-            <hr class="border-slate-800">
-
-            <!-- Section 6 -->
-            <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm">6</span>
-                    Your Legal Rights (GDPR / DPDP Act)
-                </h2>
-                <p>Depending on your jurisdiction, you are entitled to the following rights:</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                        <div class="font-semibold text-white mb-1"><i class="fas fa-eye text-indigo-400 mr-2"></i> Right to Access</div>
-                        <p class="text-xs text-slate-400">Request a copy of all personal data and evaluations associated with your account.</p>
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">05</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">Your Data Rights (GDPR & DPDP Act 2023)</h2>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+                    Under GDPR, CCPA, and India's Digital Personal Data Protection Act 2023, you have full control over your data:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <div class="p-3.5 rounded-xl border text-xs" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <strong style="color: var(--text-main);">Right to Access & Portability:</strong> Request full export of your evaluations and profile data in JSON format.
                     </div>
-                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                        <div class="font-semibold text-white mb-1"><i class="fas fa-trash-can text-red-400 mr-2"></i> Right to Erasure</div>
-                        <p class="text-xs text-slate-400">Permanently delete your account, uploaded resumes, and scoring history at any time.</p>
+                    <div class="p-3.5 rounded-xl border text-xs" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <strong style="color: var(--text-main);">Right to Erasure (Deletion):</strong> Request permanent purging of your account and uploaded resumes at any time.
                     </div>
-                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                        <div class="font-semibold text-white mb-1"><i class="fas fa-pen-to-square text-amber-400 mr-2"></i> Right to Rectification</div>
-                        <p class="text-xs text-slate-400">Update or correct inaccurate profile details, contact information, or preferences.</p>
+                    <div class="p-3.5 rounded-xl border text-xs" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <strong style="color: var(--text-main);">Right to Rectification:</strong> Update or rectify outdated skills, contact details, or experience history.
                     </div>
-                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                        <div class="font-semibold text-white mb-1"><i class="fas fa-file-export text-emerald-400 mr-2"></i> Data Portability</div>
-                        <p class="text-xs text-slate-400">Export your evaluation scores and resume data in structured JSON/CSV format.</p>
+                    <div class="p-3.5 rounded-xl border text-xs" style="border-color: var(--border-color); background: var(--bg-color);">
+                        <strong style="color: var(--text-main);">Right to Withdraw Consent:</strong> Opt-out of candidate matching notifications and automated emails.
                     </div>
                 </div>
             </section>
 
-            <hr class="border-slate-800">
+            <hr style="border-color: var(--border-color);">
 
-            <!-- Section 7 -->
+            <!-- Section 6 -->
             <section class="space-y-3">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm">7</span>
-                    Contact & Grievance Officer
-                </h2>
-                <p>
-                    If you have questions, concerns, or requests regarding this Privacy Policy or your personal data, please contact our Data Protection Team:
+                <div class="flex items-center gap-2">
+                    <span class="section-badge font-mono">06</span>
+                    <h2 class="text-xl font-bold" style="color: var(--text-main);">Contact & Data Protection Officer</h2>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+                    For privacy inquiries, data deletion requests, or grievance redressal, please reach out to our engineering and security team:
                 </p>
-                <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-2 text-sm font-mono">
-                    <div>🏢 <strong>Organization:</strong> Rankly.ai Platform</div>
-                    <div>📧 <strong>Official Email:</strong> <a href="mailto:rankly.ai.com@gmail.com" class="text-indigo-400 underline">rankly.ai.com@gmail.com</a></div>
-                    <div>👨‍💻 <strong>Developer & Grievance Contact:</strong> <a href="mailto:mayursweet52@gmail.com" class="text-indigo-400 underline">mayursweet52@gmail.com</a></div>
-                    <div>🌐 <strong>Live Domain:</strong> <a href="https://rankly-ai-production.up.railway.app" class="text-indigo-400 underline">rankly-ai-production.up.railway.app</a></div>
+                <div class="p-4 rounded-xl border font-mono text-xs space-y-1.5" style="border-color: var(--border-color); background: var(--bg-color); color: var(--text-muted);">
+                    <div>🏢 <strong>Entity:</strong> Rankly.ai Platform</div>
+                    <div>📧 <strong>Official Support:</strong> <a href="mailto:rankly.ai.com@gmail.com" class="underline font-bold" style="color: var(--text-main);">rankly.ai.com@gmail.com</a></div>
+                    <div>👨‍💻 <strong>Data Grievance Lead:</strong> <a href="mailto:mayursweet52@gmail.com" class="underline font-bold" style="color: var(--text-main);">mayursweet52@gmail.com</a></div>
+                    <div>🌐 <strong>Live URL:</strong> <a href="https://rankly-ai-production.up.railway.app" class="underline font-bold" style="color: var(--text-main);">rankly-ai-production.up.railway.app</a></div>
                 </div>
             </section>
 
@@ -213,18 +341,51 @@
     </main>
 
     <!-- Footer -->
-    <footer class="glass-card border-t border-slate-800/80 py-8 text-center text-slate-400 text-xs md:text-sm">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer class="w-full border-t py-8 mt-12 text-center text-xs" style="background: var(--card-bg); border-color: var(--border-color); color: var(--text-sub);">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-                &copy; 2026 <strong>Rankly.ai</strong> — All rights reserved. Built for ethical & merit-based recruitment.
+                &copy; 2026 <strong>Rankly.ai Inc.</strong> &bull; Enterprise AI Recruitment Intelligence Platform.
             </div>
-            <div class="flex items-center gap-6">
-                <a href="/privacy" class="text-slate-300 hover:text-white font-medium">Privacy Policy</a>
-                <a href="/" class="text-slate-300 hover:text-white font-medium">Home</a>
-                <a href="/api/health" class="text-slate-300 hover:text-white font-medium">System Health</a>
+            <div class="flex items-center gap-5">
+                <a href="/terms" class="hover:underline font-semibold" style="color: var(--text-main);">Terms of Service</a>
+                <a href="/privacy" class="hover:underline font-semibold" style="color: var(--text-main);">Privacy Policy</a>
+                <a href="/login" class="hover:underline font-semibold" style="color: var(--text-main);">Login</a>
             </div>
         </div>
     </footer>
 
+    <!-- Theme Switcher Script -->
+    <script>
+        function applyTheme(isDark) {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            const label = document.getElementById('themeLabel');
+            if (isDark) {
+                body.classList.add('dark-theme');
+                if (icon) icon.className = 'fas fa-sun';
+                if (label) label.textContent = 'Light';
+            } else {
+                body.classList.remove('dark-theme');
+                if (icon) icon.className = 'fas fa-moon';
+                if (label) label.textContent = 'Dark';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-theme');
+            localStorage.setItem('rankly_theme', isDark ? 'dark' : 'light');
+            applyTheme(isDark);
+        }
+
+        // Initialize Theme from localStorage or OS Preference
+        (function() {
+            const saved = localStorage.getItem('rankly_theme');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                applyTheme(true);
+            } else {
+                applyTheme(false);
+            }
+        })();
+    </script>
 </body>
 </html>
