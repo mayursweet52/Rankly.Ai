@@ -542,6 +542,14 @@ app.get(['/privacy', '/privacy-policy'], (req, res) => {
   return res.redirect('/');
 });
 
+app.get(['/terms', '/terms-of-service', '/terms-of-use'], (req, res) => {
+  const termsPath = path.join(__dirname, 'public', 'terms.html');
+  if (fs.existsSync(termsPath)) {
+    return res.sendFile(termsPath);
+  }
+  return res.redirect('/');
+});
+
 app.get('/login', (req, res) => {
   const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
   if (fs.existsSync(cleanIndexPath)) {
