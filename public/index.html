@@ -1617,18 +1617,65 @@
         body.dark-theme #tab-settings .p-3.bg-\[\#FAFAF8\] .btn-secondary {
             background: rgba(255, 255, 255, 0.06) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            color: #E2E8F0 !important;
-        }
-        body.dark-theme #tab-settings .p-3.bg-\[\#FAFAF8\] .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12) !important;
-            color: #FFFFFF !important;
+        /* ─── INTERACTIVE SEGMENTED THEME SWITCH ─── */
+        .theme-segmented-switch {
+            background: #EAEAE4;
+            border: 1px solid #DCDCD5;
+            border-radius: 12px;
+            padding: 3px;
+            display: inline-flex;
+            gap: 4px;
         }
 
-        body.dark-theme #tab-settings .p-3.bg-\[\#FAFAF8\] .btn-primary {
+        .theme-segmented-btn {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666660;
+            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .theme-segmented-btn:hover {
+            color: #111111;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .theme-segmented-btn.active.light-active {
+            background: #FFFFFF !important;
+            color: #111111 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+            font-weight: 700 !important;
+            transform: scale(1.02);
+        }
+
+        .theme-segmented-btn.active.dark-active {
             background: #6366F1 !important;
             color: #FFFFFF !important;
-            border: 1px solid #818CF8 !important;
-            box-shadow: 0 0 14px rgba(99, 102, 241, 0.4) !important;
+            box-shadow: 0 0 14px rgba(99, 102, 241, 0.45) !important;
+            font-weight: 700 !important;
+            transform: scale(1.02);
+        }
+
+        body.dark-theme .theme-segmented-switch {
+            background: #11131B !important;
+            border-color: rgba(255, 255, 255, 0.09) !important;
+        }
+
+        body.dark-theme .theme-segmented-btn {
+            color: #94A3B8;
+        }
+
+        body.dark-theme .theme-segmented-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* Dark Mode Tag Pills */
@@ -3773,9 +3820,17 @@
                                             <p class="text-xs text-[#666660] mb-0">Choose between Clean Light and Executive Dark</p>
                                         </div>
                                     </div>
-                                    <div class="flex gap-2">
-                                        <button class="btn-secondary text-xs py-1.5 px-3 rounded-lg" onclick="toggleAppTheme('light')">☀️ Light</button>
-                                        <button class="btn-primary text-xs py-1.5 px-3 rounded-lg" onclick="toggleAppTheme('dark')" style="background:#111111; color:#fff;">🌙 Dark</button>
+                                    <div class="theme-segmented-switch flex items-center p-1 bg-[#EAEAE4] dark:bg-[#11131B] border border-[#DCDCD5] dark:border-white/10 rounded-xl gap-1 shadow-inner">
+                                        <button type="button" id="themeBtnLight" class="theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('light')">
+                                            <i class="fas fa-sun text-amber-500"></i>
+                                            <span>Light</span>
+                                            <i class="fas fa-check text-[10px] ml-1 theme-check-icon"></i>
+                                        </button>
+                                        <button type="button" id="themeBtnDark" class="theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('dark')">
+                                            <i class="fas fa-moon text-indigo-400"></i>
+                                            <span>Dark</span>
+                                            <i class="fas fa-check text-[10px] ml-1 theme-check-icon" style="display:none;"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -6780,23 +6835,53 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (!theme) {
                         theme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
                     }
+                    const btnLight = document.getElementById('themeBtnLight');
+                    const btnDark = document.getElementById('themeBtnDark');
+                    const themeLabel = document.getElementById('currentThemeLabel');
+
                     if (theme === 'dark') {
                         document.body.classList.add('dark-theme');
                         localStorage.setItem('rankly_theme', 'dark');
-                        const themeLabel = document.getElementById('currentThemeLabel');
                         if (themeLabel) themeLabel.textContent = 'DARK MODE';
-                        showToast('🌙 Dark Mode Enabled', 'info');
+
+                        if (btnDark) {
+                            btnDark.className = 'theme-segmented-btn active dark-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
+                            const check = btnDark.querySelector('.theme-check-icon');
+                            if (check) check.style.display = 'inline-block';
+                        }
+                        if (btnLight) {
+                            btnLight.className = 'theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all';
+                            const check = btnLight.querySelector('.theme-check-icon');
+                            if (check) check.style.display = 'none';
+                        }
+
+                        if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
+                        showToast('🌙 Executive Dark Mode Enabled', 'info');
                     } else {
                         document.body.classList.remove('dark-theme');
                         localStorage.setItem('rankly_theme', 'light');
-                        const themeLabel = document.getElementById('currentThemeLabel');
                         if (themeLabel) themeLabel.textContent = 'LIGHT MODE';
-                        showToast('☀️ Light Mode Enabled', 'info');
+
+                        if (btnLight) {
+                            btnLight.className = 'theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
+                            const check = btnLight.querySelector('.theme-check-icon');
+                            if (check) check.style.display = 'inline-block';
+                        }
+                        if (btnDark) {
+                            btnDark.className = 'theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all';
+                            const check = btnDark.querySelector('.theme-check-icon');
+                            if (check) check.style.display = 'none';
+                        }
+
+                        if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
+                        showToast('☀️ Clean Light Mode Enabled', 'info');
                     }
                     if (typeof window.updateSidebarMode === 'function') {
                         window.updateSidebarMode();
                     }
-                    initDarkModeEngines();
+                    if (typeof initDarkModeEngines === 'function') {
+                        initDarkModeEngines();
+                    }
                 };
 
                 // Initialize saved theme on load
@@ -6805,6 +6890,31 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     document.body.classList.add('dark-theme');
                     const themeLabel = document.getElementById('currentThemeLabel');
                     if (themeLabel) themeLabel.textContent = 'DARK MODE';
+                    const btnDark = document.getElementById('themeBtnDark');
+                    const btnLight = document.getElementById('themeBtnLight');
+                    if (btnDark) {
+                        btnDark.className = 'theme-segmented-btn active dark-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
+                        const check = btnDark.querySelector('.theme-check-icon');
+                        if (check) check.style.display = 'inline-block';
+                    }
+                    if (btnLight) {
+                        btnLight.className = 'theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all';
+                        const check = btnLight.querySelector('.theme-check-icon');
+                        if (check) check.style.display = 'none';
+                    }
+                } else {
+                    const btnDark = document.getElementById('themeBtnDark');
+                    const btnLight = document.getElementById('themeBtnLight');
+                    if (btnLight) {
+                        btnLight.className = 'theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
+                        const check = btnLight.querySelector('.theme-check-icon');
+                        if (check) check.style.display = 'inline-block';
+                    }
+                    if (btnDark) {
+                        btnDark.className = 'theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all';
+                        const check = btnDark.querySelector('.theme-check-icon');
+                        if (check) check.style.display = 'none';
+                    }
                 }
                 if (typeof window.updateSidebarMode === 'function') {
                     window.updateSidebarMode();
