@@ -3217,63 +3217,37 @@
 
                     <!-- ─── TAB 2: PLAYGROUND (Chatbot) ─── -->
                     <div class="tab-content" id="tab-chatbot" style="display:none;">
-                        <div class="card p-0 overflow-hidden border border-[#E5E5DF] dark:border-white/10 rounded-2xl bg-white dark:bg-[#141724] shadow-sm max-w-4xl mx-auto flex flex-col">
+                        <div class="card p-8 border border-[#E5E5DF] dark:border-white/10 rounded-2xl bg-white dark:bg-[#141724] shadow-sm max-w-4xl mx-auto flex flex-col">
                             
-                            <!-- Chat Card Header -->
-                            <div class="flex justify-between items-center px-6 py-4 border-b border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-[#11131E]">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-[#FEF3C7] dark:bg-indigo-950/40 text-[#D95D39] dark:text-[#818CF8] flex items-center justify-center border border-[#FDE68A] dark:border-indigo-500/30 shadow-sm">
-                                        <i class="fas fa-sparkles text-base"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="card-title text-[#111111] dark:text-white mb-0 text-base font-bold">Rankly AI Career & Screening Assistant</h3>
-                                        <p class="text-xs text-[#666660] dark:text-[#94A3B8] font-mono mt-0.5 mb-0">Real-time candidate evaluation, resume screening & smart @mentions</p>
-                                    </div>
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-start mb-4 pb-4 border-b border-[#E5E5DF] dark:border-white/10">
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-extrabold text-[#111111] dark:text-white tracking-tight mb-1">Command A Playground</h2>
+                                    <p class="text-xs text-[#888880] dark:text-[#94A3B8] font-mono mb-0">Real-time candidate evaluation &amp; career intelligence</p>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="chat-sound-btn active" title="Toggle Message Chime Sound Effect">
-                                        <i class="fas fa-volume-high" id="chatSoundIcon"></i>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[11px] font-mono font-bold tracking-wider px-2.5 py-1 rounded bg-[#E0E7FF] text-[#4F46E5] dark:bg-indigo-950/60 dark:text-indigo-300">111B PARAMETERS</span>
+                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="hidden md:inline-flex px-2.5 py-1 rounded-md border border-[#E5E5DF] dark:border-white/10 bg-white dark:bg-[#181B28] text-[11px] font-mono font-semibold text-[#666660] dark:text-[#94A3B8] hover:text-[#111111] dark:hover:text-white transition-all items-center gap-1.5" title="Toggle Sound">
+                                        <i class="fas fa-volume-high text-[10px]" id="chatSoundIcon"></i>
                                         <span id="chatSoundLabel">Sound ON</span>
                                     </button>
-                                    <button type="button" onclick="clearChatMessages()" class="chat-sound-btn" title="Reset Chat Canvas">
-                                        <i class="fas fa-rotate-left"></i> Clear
+                                    <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex px-2.5 py-1 rounded-md border border-[#E5E5DF] dark:border-white/10 bg-white dark:bg-[#181B28] text-[11px] font-mono font-semibold text-[#666660] dark:text-[#94A3B8] hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat">
+                                        <i class="fas fa-rotate-left text-[10px]"></i>
                                     </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Chat Messages Container -->
-                            <div class="chat-container flex-1 p-6 space-y-4 overflow-y-auto" id="chatContainer" style="min-height:360px; max-height:460px;">
-                                <div class="chat-msg-row bot">
-                                    <div class="chat-avatar bot">
-                                        <svg class="w-4 h-4 text-[#D95D39] dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
-                                        </svg>
-                                    </div>
-                                    <div class="chat-msg bot">
-                                        👋 <strong>Welcome to Rankly AI Career & Screening Assistant.</strong><br/><br/>
-                                        Try smart integrations by typing:
-                                        <div class="mt-2.5 flex flex-wrap gap-1.5 font-mono text-xs">
-                                            <span class="mention-chip mention-chip-yt" onclick="insertMention('@yt ')"><i class="fa-brands fa-youtube mr-1"></i>@yt</span>
-                                            <span class="mention-chip mention-chip-google" onclick="insertMention('@google ')"><i class="fa-brands fa-google mr-1"></i>@google</span>
-                                            <span class="mention-chip mention-chip-notion" onclick="insertMention('@notion ')"><i class="fa-solid fa-cube mr-1"></i>@notion</span>
-                                            <span class="mention-chip mention-chip-ats" onclick="insertMention('@ats ')"><i class="fas fa-bolt mr-1"></i>@ats</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Quick Suggestion Prompts Bar -->
-                            <div class="px-6 py-2.5 bg-[#FAFAF8] dark:bg-[#11131E] border-t border-[#E5E5DF] dark:border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar">
-                                <span class="text-[11px] font-bold text-[#888880] dark:text-[#64748B] uppercase tracking-wider font-mono flex-shrink-0">Quick:</span>
-                                <button type="button" class="tag-suggestion" onclick="insertMention('@yt React System Design Mock Interview')"><i class="fa-brands fa-youtube text-red-500 mr-1"></i>@yt System Design</button>
-                                <button type="button" class="tag-suggestion" onclick="insertMention('@google Senior AI Engineer Salary Benchmarks 2026')"><i class="fa-brands fa-google text-blue-500 mr-1"></i>@google Salary Data</button>
-                                <button type="button" class="tag-suggestion" onclick="insertMention('@notion Export Candidate Evaluation Rubric')"><i class="fa-solid fa-cube text-purple-500 mr-1"></i>@notion Rubric</button>
-                                <button type="button" class="tag-suggestion" onclick="quickChat('Summarize key technical skills for a Senior Full Stack engineer')">💡 Key skills</button>
-                                <button type="button" class="tag-suggestion" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">📊 ATS score tips</button>
+                            <!-- Chat Messages Inner Box -->
+                            <div class="border border-[#E5E5DF] dark:border-white/10 rounded-2xl p-5 mb-4 bg-white dark:bg-[#0E1018] flex-1 overflow-y-auto space-y-4" id="chatContainer" style="min-height:360px; max-height:460px;">
+                                <div class="chat-msg-row bot">
+                                    <div class="p-4 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-xl max-w-2xl text-xs md:text-sm text-[#111111] dark:text-white leading-relaxed shadow-2xs">
+                                        👋 Welcome to Command A Playground. How can I assist with your candidate screening or resume optimization today?
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Attached File Preview Badge -->
-                            <div id="chatFilePreview" style="display:none;" class="mx-6 my-2 p-2.5 bg-[#F4F4F0] dark:bg-[#1A1D2C] border border-[#E5E5DF] dark:border-white/10 rounded-xl flex items-center justify-between text-xs font-mono text-[#111111] dark:text-white">
+                            <div id="chatFilePreview" style="display:none;" class="mb-3 p-2.5 bg-[#F4F4F0] dark:bg-[#1A1D2C] border border-[#E5E5DF] dark:border-white/10 rounded-xl flex items-center justify-between text-xs font-mono text-[#111111] dark:text-white">
                                 <div class="flex items-center gap-2 truncate">
                                     <i class="fas fa-file-lines text-[#D95D39] text-base"></i>
                                     <span id="chatFileName" class="truncate font-bold">resume.pdf</span>
@@ -3284,9 +3258,8 @@
                                 </button>
                             </div>
 
-                            <!-- Chat Input Composer Section -->
-                            <div class="p-4 bg-white dark:bg-[#141724] border-t border-[#E5E5DF] dark:border-white/10 relative">
-                                
+                            <!-- Input Form Area -->
+                            <div class="relative">
                                 <!-- 🌟 Smart @Mention Floating Popup Menu -->
                                 <div id="mentionPopup" class="mention-popup" style="display:none;">
                                     <div class="mention-popup-header">
@@ -3296,7 +3269,6 @@
                                         <span class="text-[10px] text-slate-400 font-mono">↑↓ Navigate &bull; ↵ Select</span>
                                     </div>
                                     <div class="mention-items-list" id="mentionItemsList">
-                                        <!-- Mention Option: @yt -->
                                         <div class="mention-item active" data-tag="@yt" onclick="insertMention('@yt ')">
                                             <div class="mention-icon-box bg-red-500/10 text-red-500 border border-red-500/20">
                                                 <i class="fa-brands fa-youtube text-sm"></i>
@@ -3306,11 +3278,9 @@
                                                     <span class="font-bold text-xs">@yt</span>
                                                     <span class="text-[10px] px-1.5 py-0.2 rounded bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 font-mono">YouTube</span>
                                                 </div>
-                                                <p class="text-[11px] text-slate-500 truncate">Search technical lectures & mock interviews</p>
+                                                <p class="text-[11px] text-slate-500 truncate">Search technical lectures &amp; mock interviews</p>
                                             </div>
                                         </div>
-
-                                        <!-- Mention Option: @google -->
                                         <div class="mention-item" data-tag="@google" onclick="insertMention('@google ')">
                                             <div class="mention-icon-box bg-blue-500/10 text-blue-500 border border-blue-500/20">
                                                 <i class="fa-brands fa-google text-sm"></i>
@@ -3320,11 +3290,9 @@
                                                     <span class="font-bold text-xs">@google</span>
                                                     <span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 font-mono">Google Web</span>
                                                 </div>
-                                                <p class="text-[11px] text-slate-500 truncate">Live web queries, salary data & hiring benchmarks</p>
+                                                <p class="text-[11px] text-slate-500 truncate">Live web queries, salary data &amp; hiring benchmarks</p>
                                             </div>
                                         </div>
-
-                                        <!-- Mention Option: @notion -->
                                         <div class="mention-item" data-tag="@notion" onclick="insertMention('@notion ')">
                                             <div class="mention-icon-box bg-purple-500/10 text-purple-500 border border-purple-500/20">
                                                 <i class="fa-solid fa-cube text-sm"></i>
@@ -3334,11 +3302,9 @@
                                                     <span class="font-bold text-xs">@notion</span>
                                                     <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400 font-mono">Notion</span>
                                                 </div>
-                                                <p class="text-[11px] text-slate-500 truncate">Sync interview scorecard & candidate rubrics</p>
+                                                <p class="text-[11px] text-slate-500 truncate">Sync interview scorecard &amp; candidate rubrics</p>
                                             </div>
                                         </div>
-
-                                        <!-- Mention Option: @ats -->
                                         <div class="mention-item" data-tag="@ats" onclick="insertMention('@ats ')">
                                             <div class="mention-icon-box bg-amber-500/10 text-amber-500 border border-amber-500/20">
                                                 <i class="fas fa-bolt text-sm"></i>
@@ -3356,27 +3322,36 @@
 
                                 <input type="file" id="chatFileInput" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" style="display:none" onchange="handleChatFileSelected(this)" />
                                 
-                                <form id="chatInputForm" onsubmit="handleChatFormSubmit(event)" class="flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#0E1018] border border-[#E5E5DF] dark:border-white/10 rounded-2xl p-1.5 focus-within:border-[#D95D39] dark:focus-within:border-[#818CF8] focus-within:ring-2 focus-within:ring-[#D95D39]/10 dark:focus-within:ring-[#818CF8]/20 transition-all shadow-inner">
-                                    <button type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-[#888880] hover:text-[#111111] dark:text-[#64748B] dark:hover:text-white hover:bg-[#EAEAE4] dark:hover:bg-white/5 transition-all flex-shrink-0" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document (PDF, DOCX, TXT)">
-                                        <i class="fas fa-paperclip text-sm"></i>
-                                    </button>
+                                <form id="chatInputForm" onsubmit="handleChatFormSubmit(event)" class="flex items-center gap-3">
+                                    <div class="relative flex-1">
+                                        <input 
+                                            type="text" 
+                                            id="chatInput" 
+                                            oninput="handleChatInputMention(this)" 
+                                            onkeydown="handleChatMentionKeydown(event)"
+                                            placeholder="Ask Command A anything..." 
+                                            class="w-full bg-white dark:bg-[#0E1018] border border-[#E5E5DF] dark:border-white/10 rounded-xl px-4 py-3 text-sm text-[#111111] dark:text-white placeholder-[#888880] dark:placeholder-[#64748B] focus:outline-none focus:border-[#183B33] dark:focus:border-[#818CF8] focus:ring-1 focus:ring-[#183B33]/20 dark:focus:ring-[#818CF8]/20 transition-all shadow-2xs font-sans" 
+                                            autocomplete="off" 
+                                            spellcheck="false" 
+                                        />
+                                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#888880] hover:text-[#111111] dark:text-[#64748B] dark:hover:text-white transition-all text-xs" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
+                                    </div>
 
-                                    <input 
-                                        type="text" 
-                                        id="chatInput" 
-                                        oninput="handleChatInputMention(this)" 
-                                        onkeydown="handleChatMentionKeydown(event)"
-                                        placeholder="Ask Rankly AI or type @yt, @google, @notion, @ats..." 
-                                        class="flex-1 bg-transparent border-none outline-none text-sm font-medium text-[#111111] dark:text-white placeholder-[#888880] dark:placeholder-[#64748B] px-2 py-1.5" 
-                                        autocomplete="off" 
-                                        spellcheck="false" 
-                                    />
-
-                                    <button type="submit" id="chatSendBtn" class="w-9 h-9 rounded-xl bg-[#111111] dark:bg-[#818CF8] text-white flex items-center justify-center hover:bg-[#D95D39] dark:hover:bg-[#6366F1] transition-all shadow-sm flex-shrink-0" title="Send message">
-                                        <i class="fas fa-arrow-up text-xs"></i>
+                                    <button type="submit" id="chatSendBtn" class="w-12 h-11 bg-[#183B33] hover:bg-[#122D27] dark:bg-[#1E4D40] dark:hover:bg-[#2A6655] text-white rounded-xl flex items-center justify-center transition-all shadow-sm flex-shrink-0 cursor-pointer" title="Send message">
+                                        <i class="fas fa-arrow-up text-sm"></i>
                                     </button>
                                 </form>
                             </div>
+
+                            <!-- Suggestion Pills Bar -->
+                            <div class="flex items-center gap-2 mt-4 overflow-x-auto">
+                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('Summarize key technical skills for a Senior candidate')">Key skills</button>
+                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">ATS score tips</button>
+                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('What are the top technical interview questions?')">Interview questions</button>
+                            </div>
+
                         </div>
                     </div>
 
