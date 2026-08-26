@@ -2033,62 +2033,166 @@
             color: #94A3B8;
         }
 
-        /* ─── CHATBOT INPUT COMPOSER (SIGNATURE WEBSITE THEME) ─── */
-        #chatInputForm {
-            position: relative;
-            width: 100%;
+        /* ─── COMMAND A PLAYGROUND (LIGHT THEME) ─── */
+        .command-a-card {
+            background: #FFFFFF !important;
+            border-color: #E5E5DF !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+            transition: all 0.3s ease !important;
         }
 
-        #chatInput {
-            font-family: inherit;
+        .command-a-title {
+            color: #111111 !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.02em !important;
         }
 
-        #chatInput::placeholder {
-            color: #888880;
-            font-weight: 400;
+        .command-a-subtitle {
+            color: #888880 !important;
+            font-family: 'JetBrains Mono', monospace !important;
         }
 
-        body.dark-theme #chatInput::placeholder {
-            color: #64748B;
+        .command-a-badge {
+            background: #EEF2FF !important;
+            color: #4F46E5 !important;
+            border: 1px solid #C7D2FE !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-weight: 700 !important;
         }
 
-        /* ─── CHATBOT SUGGESTION CHIPS ─── */
-        .tag-suggestion {
-            background: #FFFFFF;
-            border: 1px solid #E5E5DF;
-            color: #555550;
-            border-radius: 9999px;
-            padding: 4px 11px;
-            font-size: 11.5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            flex-shrink: 0;
+        .command-a-container {
+            background: #FAFAF8 !important;
+            border-color: #E5E5DF !important;
         }
 
-        .tag-suggestion:hover {
-            background: #F4F4F0;
-            border-color: #D95D39;
-            color: #D95D39;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(217, 93, 57, 0.12);
+        .command-a-bubble {
+            background: #FFFFFF !important;
+            border-color: #E5E5DF !important;
+            color: #111111 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
         }
 
-        body.dark-theme .tag-suggestion {
-            background: #181B28 !important;
-            border-color: rgba(255, 255, 255, 0.08) !important;
+        .command-a-input {
+            background: #FFFFFF !important;
+            border-color: #E5E5DF !important;
+            color: #111111 !important;
+        }
+
+        .command-a-input::placeholder {
+            color: #888880 !important;
+            font-weight: 400 !important;
+        }
+
+        .command-a-input:focus {
+            border-color: #183B33 !important;
+            box-shadow: 0 0 0 2px rgba(24, 59, 51, 0.15) !important;
+            outline: none !important;
+        }
+
+        .command-a-send-btn {
+            background: #183B33 !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
+        .command-a-send-btn:hover {
+            background: #112B25 !important;
+            transform: scale(1.04) !important;
+            box-shadow: 0 4px 12px rgba(24, 59, 51, 0.3) !important;
+        }
+
+        .command-a-pill {
+            background: #FFFFFF !important;
+            border-color: #E5E5DF !important;
+            color: #111111 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .command-a-pill:hover {
+            background: #F4F4F0 !important;
+            border-color: #D95D39 !important;
+            color: #D95D39 !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 2px 8px rgba(217, 93, 57, 0.12) !important;
+        }
+
+        /* ─── COMMAND A PLAYGROUND (🌙 DARK / NIGHT THEME) ─── */
+        body.dark-theme .command-a-card {
+            background: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        body.dark-theme .command-a-title {
+            color: #F8FAFC !important;
+            text-shadow: 0 0 16px rgba(255, 255, 255, 0.15) !important;
+        }
+
+        body.dark-theme .command-a-subtitle {
             color: #94A3B8 !important;
         }
 
-        body.dark-theme .tag-suggestion:hover {
-            background: rgba(129, 140, 248, 0.15) !important;
+        body.dark-theme .command-a-badge {
+            background: rgba(99, 102, 241, 0.22) !important;
+            color: #A5B4FC !important;
+            border-color: rgba(129, 140, 248, 0.45) !important;
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.35) !important;
+        }
+
+        body.dark-theme .command-a-container {
+            background: #090B10 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.7) !important;
+        }
+
+        body.dark-theme .command-a-bubble {
+            background: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #F1F5F9 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
+        }
+
+        body.dark-theme .command-a-input {
+            background: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.14) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .command-a-input::placeholder {
+            color: #64748B !important;
+        }
+
+        body.dark-theme .command-a-input:focus {
             border-color: #818CF8 !important;
-            color: #C7D2FE !important;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 10px rgba(129, 140, 248, 0.2) !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3) !important;
+        }
+
+        body.dark-theme .command-a-send-btn {
+            background: linear-gradient(135deg, #10B981, #059669) !important;
+            box-shadow: 0 0 18px rgba(16, 185, 129, 0.45) !important;
+        }
+
+        body.dark-theme .command-a-send-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857) !important;
+            transform: scale(1.04) !important;
+            box-shadow: 0 0 24px rgba(16, 185, 129, 0.65) !important;
+        }
+
+        body.dark-theme .command-a-pill {
+            background: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #CBD5E1 !important;
+        }
+
+        body.dark-theme .command-a-pill:hover {
+            background: rgba(129, 140, 248, 0.18) !important;
+            border-color: #818CF8 !important;
+            color: #E0E7FF !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 14px rgba(129, 140, 248, 0.25) !important;
         }
 
         /* ─── SMART @MENTION POPUP & INTERACTIVE INTEGRATION CARDS ─── */
@@ -3217,41 +3321,41 @@
 
                     <!-- ─── TAB 2: PLAYGROUND (Chatbot) ─── -->
                     <div class="tab-content" id="tab-chatbot" style="display:none;">
-                        <div class="card p-8 border border-[#E5E5DF] dark:border-white/10 rounded-2xl bg-white dark:bg-[#141724] shadow-sm max-w-4xl mx-auto flex flex-col">
+                        <div class="card command-a-card p-8 border rounded-2xl max-w-4xl mx-auto flex flex-col">
                             
                             <!-- Card Header -->
                             <div class="flex justify-between items-start mb-4 pb-4 border-b border-[#E5E5DF] dark:border-white/10">
                                 <div>
-                                    <h2 class="text-xl md:text-2xl font-extrabold text-[#111111] dark:text-white tracking-tight mb-1">Command A Playground</h2>
-                                    <p class="text-xs text-[#888880] dark:text-[#94A3B8] font-mono mb-0">Real-time candidate evaluation &amp; career intelligence</p>
+                                    <h2 class="command-a-title text-xl md:text-2xl tracking-tight mb-1">Command A Playground</h2>
+                                    <p class="command-a-subtitle text-xs mb-0">Real-time candidate evaluation &amp; career intelligence</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="text-[11px] font-mono font-bold tracking-wider px-2.5 py-1 rounded bg-[#E0E7FF] text-[#4F46E5] dark:bg-indigo-950/60 dark:text-indigo-300">111B PARAMETERS</span>
-                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="hidden md:inline-flex px-2.5 py-1 rounded-md border border-[#E5E5DF] dark:border-white/10 bg-white dark:bg-[#181B28] text-[11px] font-mono font-semibold text-[#666660] dark:text-[#94A3B8] hover:text-[#111111] dark:hover:text-white transition-all items-center gap-1.5" title="Toggle Sound">
+                                    <span class="command-a-badge text-[11px] tracking-wider px-2.5 py-1 rounded">111B PARAMETERS</span>
+                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all items-center gap-1.5" title="Toggle Sound">
                                         <i class="fas fa-volume-high text-[10px]" id="chatSoundIcon"></i>
                                         <span id="chatSoundLabel">Sound ON</span>
                                     </button>
-                                    <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex px-2.5 py-1 rounded-md border border-[#E5E5DF] dark:border-white/10 bg-white dark:bg-[#181B28] text-[11px] font-mono font-semibold text-[#666660] dark:text-[#94A3B8] hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat">
+                                    <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat">
                                         <i class="fas fa-rotate-left text-[10px]"></i>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Chat Messages Inner Box -->
-                            <div class="border border-[#E5E5DF] dark:border-white/10 rounded-2xl p-5 mb-4 bg-white dark:bg-[#0E1018] flex-1 overflow-y-auto space-y-4" id="chatContainer" style="min-height:360px; max-height:460px;">
+                            <div class="command-a-container border rounded-2xl p-5 mb-4 flex-1 overflow-y-auto space-y-4" id="chatContainer" style="min-height:360px; max-height:460px;">
                                 <div class="chat-msg-row bot">
-                                    <div class="p-4 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-xl max-w-2xl text-xs md:text-sm text-[#111111] dark:text-white leading-relaxed shadow-2xs">
+                                    <div class="command-a-bubble p-4 border rounded-xl max-w-2xl text-xs md:text-sm leading-relaxed shadow-2xs">
                                         👋 Welcome to Command A Playground. How can I assist with your candidate screening or resume optimization today?
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Attached File Preview Badge -->
-                            <div id="chatFilePreview" style="display:none;" class="mb-3 p-2.5 bg-[#F4F4F0] dark:bg-[#1A1D2C] border border-[#E5E5DF] dark:border-white/10 rounded-xl flex items-center justify-between text-xs font-mono text-[#111111] dark:text-white">
+                            <div id="chatFilePreview" style="display:none;" class="mb-3 p-2.5 command-a-bubble border rounded-xl flex items-center justify-between text-xs font-mono">
                                 <div class="flex items-center gap-2 truncate">
                                     <i class="fas fa-file-lines text-[#D95D39] text-base"></i>
                                     <span id="chatFileName" class="truncate font-bold">resume.pdf</span>
-                                    <span class="text-[10px] text-[#888880]" id="chatFileSize"></span>
+                                    <span class="text-[10px] opacity-70" id="chatFileSize"></span>
                                 </div>
                                 <button type="button" onclick="clearChatFile()" class="text-red-500 hover:text-red-700 ml-2 p-1 font-bold" title="Remove attachment">
                                     <i class="fas fa-times"></i>
@@ -3330,16 +3434,16 @@
                                             oninput="handleChatInputMention(this)" 
                                             onkeydown="handleChatMentionKeydown(event)"
                                             placeholder="Ask Command A anything..." 
-                                            class="w-full bg-white dark:bg-[#0E1018] border border-[#E5E5DF] dark:border-white/10 rounded-xl px-4 py-3 text-sm text-[#111111] dark:text-white placeholder-[#888880] dark:placeholder-[#64748B] focus:outline-none focus:border-[#183B33] dark:focus:border-[#818CF8] focus:ring-1 focus:ring-[#183B33]/20 dark:focus:ring-[#818CF8]/20 transition-all shadow-2xs font-sans" 
+                                            class="command-a-input w-full border rounded-xl px-4 py-3 text-sm transition-all shadow-2xs font-sans" 
                                             autocomplete="off" 
                                             spellcheck="false" 
                                         />
-                                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#888880] hover:text-[#111111] dark:text-[#64748B] dark:hover:text-white transition-all text-xs" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document">
+                                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#888880] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white transition-all text-xs" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document">
                                             <i class="fas fa-paperclip"></i>
                                         </button>
                                     </div>
 
-                                    <button type="submit" id="chatSendBtn" class="w-12 h-11 bg-[#183B33] hover:bg-[#122D27] dark:bg-[#1E4D40] dark:hover:bg-[#2A6655] text-white rounded-xl flex items-center justify-center transition-all shadow-sm flex-shrink-0 cursor-pointer" title="Send message">
+                                    <button type="submit" id="chatSendBtn" class="command-a-send-btn w-12 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm flex-shrink-0 cursor-pointer" title="Send message">
                                         <i class="fas fa-arrow-up text-sm"></i>
                                     </button>
                                 </form>
@@ -3347,9 +3451,9 @@
 
                             <!-- Suggestion Pills Bar -->
                             <div class="flex items-center gap-2 mt-4 overflow-x-auto">
-                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('Summarize key technical skills for a Senior candidate')">Key skills</button>
-                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">ATS score tips</button>
-                                <button type="button" class="px-3.5 py-1.5 bg-white dark:bg-[#181B28] border border-[#E5E5DF] dark:border-white/10 rounded-lg text-xs font-mono font-medium text-[#111111] dark:text-white hover:bg-[#FAFAF8] dark:hover:bg-white/5 transition-all shadow-2xs cursor-pointer" onclick="quickChat('What are the top technical interview questions?')">Interview questions</button>
+                                <button type="button" class="command-a-pill px-3.5 py-1.5 border rounded-lg text-xs font-medium transition-all shadow-2xs cursor-pointer" onclick="quickChat('Summarize key technical skills for a Senior candidate')">Key skills</button>
+                                <button type="button" class="command-a-pill px-3.5 py-1.5 border rounded-lg text-xs font-medium transition-all shadow-2xs cursor-pointer" onclick="quickChat('How to optimize my resume for a 90%+ ATS score?')">ATS score tips</button>
+                                <button type="button" class="command-a-pill px-3.5 py-1.5 border rounded-lg text-xs font-medium transition-all shadow-2xs cursor-pointer" onclick="quickChat('What are the top technical interview questions?')">Interview questions</button>
                             </div>
 
                         </div>
@@ -6538,14 +6642,15 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 window.toggleAppTheme = function(theme) {
                     if (!theme) {
-                        theme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+                        theme = document.body.classList.contains('dark-theme') || document.documentElement.classList.contains('dark') ? 'light' : 'dark';
                     }
                     const btnLight = document.getElementById('themeBtnLight');
                     const btnDark = document.getElementById('themeBtnDark');
                     const themeLabel = document.getElementById('currentThemeLabel');
 
                     if (theme === 'dark') {
-                        document.body.classList.add('dark-theme');
+                        document.body.classList.add('dark-theme', 'dark');
+                        document.documentElement.classList.add('dark', 'dark-theme');
                         localStorage.setItem('rankly_theme', 'dark');
                         if (themeLabel) themeLabel.textContent = 'DARK MODE';
 
@@ -6563,7 +6668,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
                         showToast('🌙 Executive Dark Mode Enabled', 'info');
                     } else {
-                        document.body.classList.remove('dark-theme');
+                        document.body.classList.remove('dark-theme', 'dark');
+                        document.documentElement.classList.remove('dark', 'dark-theme');
                         localStorage.setItem('rankly_theme', 'light');
                         if (themeLabel) themeLabel.textContent = 'LIGHT MODE';
 
@@ -6592,7 +6698,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 // Initialize saved theme on load
                 const initialSavedTheme = localStorage.getItem('rankly_theme');
                 if (initialSavedTheme === 'dark') {
-                    document.body.classList.add('dark-theme');
+                    document.body.classList.add('dark-theme', 'dark');
+                    document.documentElement.classList.add('dark', 'dark-theme');
                     const themeLabel = document.getElementById('currentThemeLabel');
                     if (themeLabel) themeLabel.textContent = 'DARK MODE';
                     const btnDark = document.getElementById('themeBtnDark');
@@ -6608,6 +6715,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         if (check) check.style.display = 'none';
                     }
                 } else {
+                    document.body.classList.remove('dark-theme', 'dark');
+                    document.documentElement.classList.remove('dark', 'dark-theme');
                     const btnDark = document.getElementById('themeBtnDark');
                     const btnLight = document.getElementById('themeBtnLight');
                     if (btnLight) {
