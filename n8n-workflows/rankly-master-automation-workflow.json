@@ -19,9 +19,9 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "",
+          "value": "Candidates",
           "mode": "list",
-          "cachedResultName": "Select Your Google Sheet"
+          "cachedResultName": "Candidates"
         },
         "sheetName": {
           "__rl": true,
@@ -32,11 +32,14 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Name": "={{ $json.body.candidateName || $json.candidateName || 'Anonymous' }}",
-            "Role": "={{ $json.body.targetRole || $json.targetRole || 'Software Engineer' }}",
-            "Match Score": "={{ $json.body.matchScore || $json.matchScore || 0 }}%",
-            "Verdict": "={{ $json.body.fitVerdict || $json.fitVerdict || 'Screened' }}",
-            "Date": "={{ $json.body.createdAt || $json.createdAt || $now.format('YYYY-MM-DD HH:mm:ss') }}"
+            "Name": "={{ $json.candidateName || $json.body?.candidateName }}",
+            "Role": "={{ $json.targetRole || $json.body?.targetRole }}",
+            "Match Score": "={{ $json.matchScore || $json.body?.matchScore }}",
+            "Verdict": "={{ $json.fitVerdict || $json.body?.fitVerdict }}",
+            "Date": "={{ new Date().toISOString().slice(0,10) }}",
+            "Summary": "={{ $json.summary || $json.body?.summary }}",
+            "Matched Skills": "={{ Array.isArray($json.matchedSkills) ? $json.matchedSkills.join(', ') : ($json.matchedSkills || (Array.isArray($json.body?.matchedSkills) ? $json.body.matchedSkills.join(', ') : '')) }}",
+            "Missing Skills": "={{ Array.isArray($json.missingSkills) ? $json.missingSkills.join(', ') : ($json.missingSkills || (Array.isArray($json.body?.missingSkills) ? $json.body.missingSkills.join(', ') : '')) }}"
           },
           "matchingColumns": [],
           "schema": []
