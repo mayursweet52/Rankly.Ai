@@ -17,7 +17,7 @@ const http = require('http');
 const prisma = require('./src/config/database');
 
 // Rate Limiters
-const { apiLimiter } = require('./src/middleware/rateLimit');
+const { apiLimiter, publicLimiter, authenticatedLimiter } = require('./src/middleware/rateLimit');
 
 // Modular Route Handlers
 const authRoutes = require('./src/routes/authRoutes');
@@ -134,7 +134,7 @@ app.delete('/api/candidates/:id', async (req, res) => {
 // -----------------------------------------------------------------------------
 // Feedback API (Collect user thoughts, bug reports, feature requests)
 // -----------------------------------------------------------------------------
-app.post(['/api/feedback', '/api/user/feedback'], async (req, res) => {
+app.post(['/api/feedback', '/api/user/feedback'], publicLimiter, async (req, res) => {
   try {
     const { message, category = 'general', rating = 5, email, name } = req.body;
     if (!message || !message.trim()) {

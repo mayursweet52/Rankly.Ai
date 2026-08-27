@@ -3,22 +3,22 @@ const router = express.Router();
 const passport = require('../config/passport');
 const authController = require('../controllers/authController');
 const { isAuthenticated } = require('../middleware/auth');
-const { authLimiter } = require('../middleware/rateLimit');
+const { authLimiter, authBackoffLimiter } = require('../middleware/rateLimit');
 
 // -----------------------------------------------------------------------------
-// Public Local Auth Endpoints
+// Public Local Auth Endpoints (Protected by IP + Account Exponential Backoff)
 // -----------------------------------------------------------------------------
-router.post('/register', authLimiter, authController.register);
-router.post('/candidate/register', authLimiter, authController.register);
-router.post('/login', authLimiter, authController.login);
-router.post('/candidate/login', authLimiter, authController.login);
-router.post('/enterprise/login', authLimiter, authController.login);
+router.post('/register', authLimiter, authBackoffLimiter, authController.register);
+router.post('/candidate/register', authLimiter, authBackoffLimiter, authController.register);
+router.post('/login', authLimiter, authBackoffLimiter, authController.login);
+router.post('/candidate/login', authLimiter, authBackoffLimiter, authController.login);
+router.post('/enterprise/login', authLimiter, authBackoffLimiter, authController.login);
 
 // OTP Verification & Password Recovery
-router.post('/send-otp', authLimiter, authController.sendOtp);
-router.post('/forgot-password', authLimiter, authController.forgotPassword);
-router.post('/verify-otp', authLimiter, authController.verifyOtp);
-router.post('/reset-password', authLimiter, authController.resetPassword);
+router.post('/send-otp', authLimiter, authBackoffLimiter, authController.sendOtp);
+router.post('/forgot-password', authLimiter, authBackoffLimiter, authController.forgotPassword);
+router.post('/verify-otp', authLimiter, authBackoffLimiter, authController.verifyOtp);
+router.post('/reset-password', authLimiter, authBackoffLimiter, authController.resetPassword);
 
 // Session State
 router.get('/me', authController.getMe);

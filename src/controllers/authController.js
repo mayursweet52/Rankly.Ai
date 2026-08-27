@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const prisma = require('../config/database');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
 const { sendOTPEmail, sendOtpEmail } = require('../services/emailService');
+const { recordAuthFailure, resetAuthFailure } = require('../middleware/authRateLimit');
 
 /**
  * Validate Email Format, Domain Structure, and Gmail Requirement
@@ -80,6 +81,7 @@ async function register(req, res) {
     // Strict Email Validation
     const emailValidation = validateEmailAddress(normalizedEmail, isEmp);
     if (!emailValidation.valid) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({
         success: false,
         error: emailValidation.message,
@@ -88,6 +90,7 @@ async function register(req, res) {
     }
 
     if (!effectiveFirstName) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({
         success: false,
         error: 'First name is required.',
@@ -96,6 +99,7 @@ async function register(req, res) {
     }
 
     if (!effectivePassword) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({
         success: false,
         error: 'Password is required.',
@@ -104,6 +108,7 @@ async function register(req, res) {
     }
 
     if (effectivePassword.length < 6) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({
         success: false,
         error: 'Password must be at least 6 characters long.',
@@ -117,6 +122,7 @@ async function register(req, res) {
     });
 
     if (existingUser) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({
         success: false,
         error: 'An account with this email already exists. Please log in.',
@@ -148,6 +154,7 @@ async function register(req, res) {
       });
 
       if (!codeRecord || codeRecord.isUsed || codeRecord.expiresAt < new Date()) {
+        recordAuthFailure(req, normalizedEmail);
         return res.status(400).json({
           success: false,
           error: 'Invalid or expired organization referral code.',
@@ -182,6 +189,7 @@ async function register(req, res) {
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) calculatedAge--;
         
         if (calculatedAge < minRequiredAge) {
+          recordAuthFailure(req, normalizedEmail);
           const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
           return res.status(400).json({
             success: false,
@@ -196,6 +204,7 @@ async function register(req, res) {
       const a = parseInt(age, 10);
       if (!isNaN(a)) {
         if (a < minRequiredAge) {
+          recordAuthFailure(req, normalizedEmail);
           const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
           return res.status(400).json({
             success: false,
@@ -252,6 +261,9 @@ async function register(req, res) {
       });
     }
 
+    // Reset any auth failure backoff upon successful registration
+    resetAuthFailure(req, normalizedEmail);
+
     // Establish Express Session
     req.session.userId = newUser.id;
 
@@ -285,6 +297,7 @@ async function register(req, res) {
       });
     });
   } catch (error) {
+    recordAuthFailure(req);
     console.error('Registration Error:', error);
     return res.status(500).json({
       success: false,
@@ -304,6 +317,7 @@ async function login(req, res) {
     const cleanPassword = (password || '').trim();
 
     if (!searchId || !cleanPassword) {
+      recordAuthFailure(req, searchId);
       return res.status(400).json({
         success: false,
         error: 'Please enter your email/username and password.',
@@ -324,6 +338,7 @@ async function login(req, res) {
     });
 
     if (!user) {
+      recordAuthFailure(req, searchId);
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials. User not found.',
@@ -332,6 +347,7 @@ async function login(req, res) {
     }
 
     if (user.status === 'suspended') {
+      recordAuthFailure(req, searchId);
       return res.status(403).json({
         success: false,
         error: 'Your account has been suspended. Please contact support.',
@@ -342,12 +358,17 @@ async function login(req, res) {
     // Verify Password
     const isPasswordValid = await bcrypt.compare(cleanPassword, user.password);
     if (!isPasswordValid) {
+      recordAuthFailure(req, searchId);
       return res.status(401).json({
         success: false,
         error: 'Invalid email or password.',
         message: 'Invalid email or password.'
       });
     }
+
+    // Reset failure backoff upon successful credentials check
+    resetAuthFailure(req, searchId);
+    if (user.email) resetAuthFailure(req, user.email);
 
     // Establish Express Session
     req.session.userId = user.id;
@@ -377,6 +398,7 @@ async function login(req, res) {
       });
     });
   } catch (error) {
+    recordAuthFailure(req);
     console.error('Login Error:', error);
     return res.status(500).json({
       success: false,
@@ -516,6 +538,7 @@ async function verifyOtp(req, res) {
     const recipientEmail = (email || identifier || to || '').toLowerCase().trim();
 
     if (!recipientEmail || !otp) {
+      recordAuthFailure(req, recipientEmail);
       return res.status(400).json({ success: false, error: 'Email and OTP code are required.', message: 'Email and OTP code are required.' });
     }
 
@@ -530,6 +553,7 @@ async function verifyOtp(req, res) {
     });
 
     if (!otpRecord) {
+      recordAuthFailure(req, recipientEmail);
       return res.status(400).json({
         success: false,
         error: 'Invalid or expired OTP code.',
@@ -549,12 +573,16 @@ async function verifyOtp(req, res) {
       });
     }
 
+    // Reset backoff counter on successful OTP verification
+    resetAuthFailure(req, recipientEmail);
+
     return res.json({
       success: true,
       verified: true,
       message: 'OTP verified successfully.'
     });
   } catch (error) {
+    recordAuthFailure(req);
     console.error('Verify OTP Error:', error);
     return res.status(500).json({ success: false, error: 'Failed to verify OTP.', message: 'Failed to verify OTP.' });
   }
@@ -574,22 +602,24 @@ async function forgotPassword(req, res) {
 async function resetPassword(req, res) {
   try {
     const { email, otp, newPassword } = req.body;
+    const normalizedEmail = (email || '').toLowerCase().trim();
 
-    if (!email || !otp || !newPassword) {
+    if (!normalizedEmail || !otp || !newPassword) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({ success: false, error: 'Email, OTP, and new password are required.', message: 'Email, OTP, and new password are required.' });
     }
 
     if (newPassword.length < 6) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long.', message: 'Password must be at least 6 characters long.' });
     }
-
-    const normalizedEmail = email.toLowerCase().trim();
 
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail }
     });
 
     if (!user) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(404).json({ success: false, error: 'No account registered with this email address.', message: 'No account registered with this email address.' });
     }
 
@@ -605,6 +635,7 @@ async function resetPassword(req, res) {
     });
 
     if (!otpRecord) {
+      recordAuthFailure(req, normalizedEmail);
       return res.status(400).json({ success: false, error: 'Invalid or expired OTP session. Please request a new code.', message: 'Invalid or expired OTP session.' });
     }
 
@@ -621,11 +652,15 @@ async function resetPassword(req, res) {
       data: { isUsed: true }
     });
 
+    // Reset backoff counter on successful password reset
+    resetAuthFailure(req, normalizedEmail);
+
     return res.json({
       success: true,
       message: '🎉 Password reset successfully. You can now log in.'
     });
   } catch (error) {
+    recordAuthFailure(req);
     console.error('Reset Password Error:', error);
     return res.status(500).json({ success: false, error: 'Failed to reset password: ' + (error.message || 'Server error'), message: 'Failed to reset password.' });
   }
