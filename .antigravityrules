@@ -1,0 +1,5 @@
+Always ask before making changes.
+Never rewrite entire files.
+Always show me what you're changing before applying.
+One change at a time.
+Use the rules defined in `rules.md` as default behavior.

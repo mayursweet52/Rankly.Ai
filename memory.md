@@ -1,34 +1,30 @@
-# 🧠 Project Decisions & Memory Log – Rankly.ai
+# Rankly.ai — Project Memory
 
-This log records major technical decisions, architectural pivots, bug fixes, and milestones established throughout the development of Rankly.ai.
+## Project Overview
+- **Name:** Rankly.ai
+- **Type:** AI-Powered Recruitment Platform
+- **Stack:** Node.js + Express + SQLite + Prisma + Ollama (Local AI)
+- **Frontend:** HTML + Tailwind CSS + Vanilla JS
+- **Backend:** Node.js + Express + SQLite
+- **Database:** SQLite (Prisma ORM)
+- **AI:** Ollama (Local) — Llama 3.2 3B
+- **Deployment:** Local Network (Company HR/HM use karein)
 
----
+## Recent Decisions
+1. Pure local mode: Koi cloud nahi, koi API key nahi.
+2. Cohere-style dark theme: Glassmorphism, indigo-purple gradient.
+3. Multi-user system: Admin, HR, Hiring Manager, Employee.
+4. "Send to HR" feature: HM se HR ko candidate forward.
 
-## 📌 Architectural Decisions & Solutions Log
+## Known Issues
+- OTP email nahi bhejna (local mode mein console log).
+- SSL certificate self-signed hai (local network ke liye).
+- Mobile responsive thoda improve karna hai.
 
-### 1. Multi-Metric ATS Scoring Engine (vs Single Generic Percentage)
-* **Decision:** Replaced arbitrary flat match percentages with an objective 4-component weighted formula (40% skills, 25% experience tenure, 20% tools/frameworks, 15% education).
-* **Rationale:** Ensures realistic, reliable candidate screening evaluations that differentiate junior vs senior talent.
-
-### 2. Candidate Name Normalization Parser
-* **Decision:** Engineered intelligent regular expression sanitization in `src/utils/helpers.js` and `renderEvaluatedCandidates()`.
-* **Fix:** Prevents section headers (e.g., "EXPERIENCE", "SKILLS", "SUMMARY") or file extensions from showing up as the candidate's name.
-
-### 3. Google OAuth & Railway Callback Resolution
-* **Decision:** Configured Passport Google Strategy with dynamic callback detection supporting both local development and live Railway production environment (`https://rankly-ai-production.up.railway.app/api/auth/google/callback`).
-* **Fix:** Solved redirect URI mismatch issues and preserved session cookies across domains.
-
-### 4. Nodemailer Password Reset OTP
-* **Decision:** Replaced third-party SMS dependencies with a 6-digit numeric OTP email dispatcher using Gmail App Passwords and SQLite timestamp expiration.
-* **Fix:** Implemented a clean 3-step modal flow (Email -> OTP Verify -> New Password Update) with instant feedback.
-
-### 5. Pure Matte Black Theme & Border Elimination
-* **Decision:** Eliminated aggressive blue gradients in Dark Mode in favor of pure matte black (`#0a0a0f` / `#14141f`).
-* **Fix:** Removed the harsh vertical sidebar border line in Dark Mode, aligning the navigation into a sleek Mac/iOS unified island floating dock container.
-
-### 6. Aceternity UI Gooey Input Search Integration
-* **Decision:** Implemented pure Vanilla SVG Gooey Filter (`feGaussianBlur` + `feColorMatrix`) with liquid morphing blobs for real-time candidate search in the Screening Matrix.
-* **Fix:** Fixed icon text overlap by adding dedicated circular icon badges, proper padding, and high-contrast dark glassmorphic styling.
-
-### 7. Railway Free-Tier Keep-Alive
-* **Decision:** Created lightweight `/ping` and `/api/health` endpoints for integration with external cron services (e.g. `cron-job.org`) to prevent cold boot latency.
+## File Structure
+- `index-3.html`: Main UI (login + dashboard)
+- `server.js`: Backend entry point
+- `hybridAiService.js`: Local AI (Ollama)
+- `src/controllers/`: All API controllers
+- `src/routes/`: API routes
+- `prisma/schema.prisma`: Database schema
