@@ -75,29 +75,13 @@
         #loginPage .login-card {
             background: #FFFFFF !important;
             border: 1px solid #E2E2DC !important;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04) !important;
-            border-radius: 20px !important;
-            max-width: 480px !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03) !important;
+            border-radius: 16px !important;
+            max-width: 440px !important;
             width: 100% !important;
-            max-height: 86vh !important;
-            overflow-y: auto !important;
-            padding: 36px 40px !important;
+            padding: 38px 42px !important;
             position: relative;
             z-index: 10;
-        }
-
-        #loginPage .login-card::-webkit-scrollbar {
-            width: 5px;
-        }
-        #loginPage .login-card::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #loginPage .login-card::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 4px;
-        }
-        #loginPage.dark-mode .login-card::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2) !important;
         }
 
         #loginPage .login-card h1 {
@@ -898,12 +882,27 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 28px 32px;
+            padding: 24px 30px;
             background: #FFFFFF;
+            overflow-y: auto;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
             transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease, visibility 0.65s;
+        }
+        .sliding-auth-card .form-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sliding-auth-card .form-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sliding-auth-card .form-panel::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+        }
+        body.dark-theme .sliding-auth-card .form-panel::-webkit-scrollbar-thumb,
+        #loginPage.dark-mode .sliding-auth-card .form-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18);
         }
 
         .sliding-auth-card .form-panel.form-login {
@@ -3230,155 +3229,34 @@
         <!-- Middle-Right Floating Sage Stone -->
         <div class="pebble-floating-mid-right hidden md:block"></div>
 
-        <!-- Center Cohere-Style Auth Card (Rankly.ai Branded) -->
+        <!-- Center Animated Sliding Auth Card (Rankly.ai Branded) -->
         <div class="w-full flex justify-center items-center my-auto z-10 py-6 px-3">
-            <div class="login-card" id="mainLoginCard">
-                <div class="text-center mb-6">
-                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111] dark:text-white login-heading" id="loginHeading">Log in</h1>
-                </div>
+            <div class="sliding-auth-card view-login" id="slidingAuthCard">
+                <!-- Sliding Background Hero Overlay -->
+                <div class="card-bg" id="cardBg"></div>
 
-                <!-- Tabs: Normal User vs Company / Employee -->
-                <div class="login-tabs">
-                    <button class="login-tab active" data-tab="normal" id="tabNormalBtn">Normal User</button>
-                    <button class="login-tab" data-tab="company" id="tabCompanyBtn">Company / Employee</button>
-                </div>
-
-                <!-- ─── TAB 1: NORMAL USER (Candidate) ─── -->
-                <div class="tab-panel" id="normalLogin">
-                    <!-- Normal User Login View -->
-                    <div id="normalLoginView">
-                        <form id="normalLoginForm">
-                            <div class="cohere-input-box">
-                                <div class="cohere-field">
-                                    <label>EMAIL / USERNAME</label>
-                                    <input id="normalLoginIdentifier" placeholder="yourname@email.com" required type="text"/>
-                                </div>
-                                <div class="cohere-field">
-                                    <label>PASSWORD</label>
-                                    <div class="password-toggle">
-                                        <input id="normalLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                        <button class="toggle-eye" onclick="togglePassword('normalLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="text-right mb-4">
-                                <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] dark:text-gray-400 hover:text-[#111111] dark:hover:text-white">Forgot Password?</button>
-                            </div>
-
-                            <div class="flex justify-center">
-                                <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                    <span>Log in</span>
-                                    <div class="btn-arrow-divider">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div class="auth-divider-line"><span>OR</span></div>
-
-                            <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
-                                <svg width="18" height="18" viewBox="0 0 24 24">
-                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                                </svg>
-                                <span>Continue with Google</span>
-                            </button>
-
-                            <div class="text-center mt-4 pt-3 border-t border-[#EAEAE4] dark:border-gray-800">
-                                <p class="text-sm text-[#444440] dark:text-gray-300">
-                                    New candidate? <button type="button" onclick="setNormalAuthMode('signup')" class="font-bold text-[#111111] dark:text-white hover:underline">Sign up</button>
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Normal User Sign Up View (Direct In-Card with Scroll) -->
-                    <div id="normalSignupView" style="display:none;">
-                        <form id="normalInCardSignupForm">
-                            <div class="cohere-input-box">
-                                <div class="cohere-field">
-                                    <label>FULL NAME</label>
-                                    <input id="inCardRegName" placeholder="e.g. Alex Johnson" required type="text"/>
-                                </div>
-                                <div class="cohere-field">
-                                    <label>EMAIL ADDRESS</label>
-                                    <input id="inCardRegEmail" placeholder="yourname@gmail.com" required type="email"/>
-                                </div>
-                                <div class="cohere-field">
-                                    <label>PASSWORD (MIN 6 CHARS)</label>
-                                    <div class="password-toggle">
-                                        <input id="inCardRegPassword" placeholder="••••••••••••" required type="password"/>
-                                        <button class="toggle-eye" onclick="togglePassword('inCardRegPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                    </div>
-                                </div>
-                                <div class="cohere-field">
-                                    <label>PHONE NUMBER (OPTIONAL)</label>
-                                    <input id="inCardRegPhone" placeholder="9876543210" type="tel"/>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-center mt-4">
-                                <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                    <span>Create Candidate Account</span>
-                                    <div class="btn-arrow-divider">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div class="auth-divider-line"><span>OR</span></div>
-
-                            <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
-                                <svg width="18" height="18" viewBox="0 0 24 24">
-                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                                </svg>
-                                <span>Sign up with Google</span>
-                            </button>
-
-                            <div class="text-center mt-4 pt-3 border-t border-[#EAEAE4] dark:border-gray-800">
-                                <p class="text-sm text-[#444440] dark:text-gray-300">
-                                    Already have an account? <button type="button" onclick="setNormalAuthMode('login')" class="font-bold text-[#111111] dark:text-white hover:underline">Log in</button>
-                                </p>
-                            </div>
-                        </form>
+                <!-- Hero Panel 1: Welcome Back (Takes user to Login) -->
+                <div class="hero hero-register" id="heroRegister">
+                    <div class="flex flex-col items-center justify-center">
+                        <h2 class="hero-title">Welcome back</h2>
+                        <p class="hero-subtitle">Login to review candidates, manage pipelines and access AI screening analytics.</p>
+                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('login')">LOGIN</button>
                     </div>
                 </div>
 
-                <!-- ─── TAB 2: COMPANY / EMPLOYEE (Admin, HR, Hiring Manager, Recruiter) ─── -->
-                <div class="tab-panel" id="companyLogin" style="display:none;">
-                    <form id="companyLoginForm">
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>WORK / CORPORATE EMAIL</label>
-                                <input id="companyLoginEmail" placeholder="name@company.com" required type="email"/>
-                            </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="companyLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('companyLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+                <!-- Form Panel 1: Registration Form -->
+                <div class="form-panel form-register" id="formRegister">
+                    <h2 class="auth-form-title">Create Account</h2>
+                    <form id="slidingRegisterForm" class="w-full">
+                        <div class="auth-input-stack">
+                            <input type="text" id="slideRegName" placeholder="Full name" required />
+                            <input type="email" id="slideRegEmail" placeholder="Email address (@gmail.com)" required />
+                            <div class="password-toggle w-full">
+                                <input type="password" id="slideRegPassword" placeholder="Password (min 6 chars)" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] dark:text-gray-400 hover:text-[#111111] dark:hover:text-white">Forgot Password?</button>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Access Enterprise Workspace</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
+                        <button type="submit" class="auth-btn-main">SIGN UP</button>
 
                         <div class="auth-divider-line"><span>OR</span></div>
 
@@ -3389,13 +3267,55 @@
                                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                             </svg>
-                            <span>Continue with Google Workspace</span>
+                            <span>Sign up with Google</span>
                         </button>
 
-                        <div class="text-center mt-4 pt-3 border-t border-[#EAEAE4] dark:border-gray-800">
-                            <p class="text-sm text-[#444440] dark:text-gray-300">
-                                New enterprise? <button type="button" onclick="openModal('employeeSignupModal')" class="font-bold text-[#111111] dark:text-white hover:underline">Register Organization (HR / Hiring Manager / Admin)</button>
-                            </p>
+                        <div class="mt-2 text-center">
+                            <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Already have account? <strong>Log in</strong></button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Hero Panel 2: Hello There (Takes user to Sign Up) -->
+                <div class="hero hero-login active" id="heroLogin">
+                    <div class="flex flex-col items-center justify-center">
+                        <h2 class="hero-title">Hello there</h2>
+                        <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment & Candidate Evaluation platform.</p>
+                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('register')">SIGN UP</button>
+                    </div>
+                </div>
+
+                <!-- Form Panel 2: Login Form -->
+                <div class="form-panel form-login active" id="formLogin">
+                    <h2 class="auth-form-title">Sign In</h2>
+                    <form id="slidingLoginForm" class="w-full">
+                        <div class="auth-input-stack">
+                            <input type="text" id="slideLoginEmail" placeholder="Email or Username" required />
+                            <div class="password-toggle w-full">
+                                <input type="password" id="slideLoginPassword" placeholder="Password" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('slideLoginPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center w-full my-1">
+                            <button type="button" onclick="openModal('forgotPasswordModal')" class="forgot-link">Forgot password?</button>
+                            <button type="button" onclick="openModal('employeeSignupModal')" class="forgot-link">Company Login</button>
+                        </div>
+                        <button type="submit" class="auth-btn-main">LOGIN</button>
+
+                        <div class="auth-divider-line"><span>OR</span></div>
+
+                        <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
+                            <svg width="18" height="18" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                            </svg>
+                            <span>Continue with Google</span>
+                        </button>
+
+                        <div class="mt-2 text-center">
+                            <button type="button" onclick="toggleAuthSlide('register')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">New user? <strong>Sign up</strong></button>
                         </div>
                     </form>
                 </div>
@@ -6798,50 +6718,25 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 });
 
-                // In-Card View Toggle: Login vs Sign Up for Normal Candidate
-                window.setNormalAuthMode = function(mode) {
-                    const loginView = document.getElementById('normalLoginView');
-                    const signupView = document.getElementById('normalSignupView');
-                    const heading = document.getElementById('loginHeading');
-                    if (mode === 'signup') {
-                        if (loginView) loginView.style.display = 'none';
-                        if (signupView) signupView.style.display = 'block';
-                        if (heading) heading.textContent = 'Sign Up';
+                // Sliding Hero Auth Card Controller (Rankly.ai Theme)
+                window.toggleAuthSlide = function(view) {
+                    const card = document.getElementById('slidingAuthCard');
+                    if (!card) return;
+                    if (view === 'register') {
+                        card.classList.remove('view-login');
+                        card.classList.add('view-register');
                     } else {
-                        if (loginView) loginView.style.display = 'block';
-                        if (signupView) signupView.style.display = 'none';
-                        if (heading) heading.textContent = 'Log in';
+                        card.classList.remove('view-register');
+                        card.classList.add('view-login');
                     }
                 };
 
-                // Tab Switcher: Normal User vs Company / Employee
-                document.querySelectorAll('.login-tab').forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-                        const target = this.dataset.tab;
-                        const normal = document.getElementById('normalLogin');
-                        const company = document.getElementById('companyLogin');
-                        const heading = document.getElementById('loginHeading');
-                        if (target === 'normal') {
-                            if (normal) normal.style.display = 'block';
-                            if (company) company.style.display = 'none';
-                            setNormalAuthMode('login');
-                        } else {
-                            if (normal) normal.style.display = 'none';
-                            if (company) company.style.display = 'block';
-                            if (heading) heading.textContent = 'Company Workspace';
-                        }
-                    });
-                });
-
-                // Normal Candidate Login Handler
-                const normalLoginForm = document.getElementById('normalLoginForm');
-                if (normalLoginForm) {
-                    normalLoginForm.addEventListener('submit', async function(e) {
+                const slidingLoginForm = document.getElementById('slidingLoginForm');
+                if (slidingLoginForm) {
+                    slidingLoginForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
-                        const identifier = document.getElementById('normalLoginIdentifier')?.value.trim();
-                        const password = document.getElementById('normalLoginPassword')?.value.trim();
+                        const identifier = document.getElementById('slideLoginEmail')?.value.trim();
+                        const password = document.getElementById('slideLoginPassword')?.value.trim();
                         if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
 
                         try {
@@ -6867,18 +6762,16 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     });
                 }
 
-                // In-Card Candidate Sign Up Handler
-                const normalInCardSignupForm = document.getElementById('normalInCardSignupForm');
-                if (normalInCardSignupForm) {
-                    normalInCardSignupForm.addEventListener('submit', async function(e) {
+                const slidingRegisterForm = document.getElementById('slidingRegisterForm');
+                if (slidingRegisterForm) {
+                    slidingRegisterForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
-                        const fullName = document.getElementById('inCardRegName')?.value.trim();
-                        const email = document.getElementById('inCardRegEmail')?.value.trim();
-                        const password = document.getElementById('inCardRegPassword')?.value.trim();
-                        const phone = document.getElementById('inCardRegPhone')?.value.trim();
+                        const fullName = document.getElementById('slideRegName')?.value.trim();
+                        const email = document.getElementById('slideRegEmail')?.value.trim();
+                        const password = document.getElementById('slideRegPassword')?.value.trim();
 
                         if (!fullName || !email || !password) {
-                            showToast('Please fill all required fields', 'error');
+                            showToast('Please fill all fields', 'error');
                             return;
                         }
 
@@ -6898,7 +6791,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                     lastName,
                                     username: email.split('@')[0],
                                     email,
-                                    phone,
                                     password,
                                     role: 'normal_user',
                                     accountType: 'normal_user',
@@ -6913,7 +6805,62 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            showToast('Candidate account created successfully 🎉', 'success');
+                            showToast('Account created successfully 🎉', 'success');
+                            loginUser();
+                        } catch (err) {
+                            showToast('Server connection error', 'error');
+                        }
+                    });
+                }
+
+                document.querySelectorAll('.login-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        const target = this.dataset.tab;
+                        const normal = document.getElementById('normalLogin');
+                        const company = document.getElementById('companyLogin');
+                        const footerContainer = document.getElementById('loginFooterSignupContainer');
+                        if (target === 'normal') {
+                            if (normal) normal.style.display = 'block';
+                            if (company) company.style.display = 'none';
+                            if (footerContainer) {
+                                footerContainer.innerHTML = 'New user? <button onclick="openModal(\'signupModal\')" class="font-bold text-[#111111] hover:underline">Sign up</button>';
+                            }
+                        } else {
+                            if (normal) normal.style.display = 'none';
+                            if (company) company.style.display = 'block';
+                            if (footerContainer) {
+                                footerContainer.innerHTML = 'New company? <button onclick="openModal(\'employeeSignupModal\')" class="font-bold text-[#111111] hover:underline">Sign up</button>';
+                            }
+                        }
+                    });
+                });
+
+                const normalLoginForm = document.getElementById('normalLoginForm');
+                if (normalLoginForm) {
+                    normalLoginForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const identifier = document.getElementById('normalLoginIdentifier')?.value.trim();
+                        const password = document.getElementById('normalLoginPassword')?.value.trim();
+                        if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
+
+                        try {
+                            const res = await fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({ identifier, email: identifier, password })
+                            });
+                            const data = await res.json();
+                            if (!res.ok || !data.success) {
+                                showToast(data.message || data.error || 'Invalid credentials', 'error');
+                                return;
+                            }
+                            currentUser = data.user;
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            showToast('Authentication successful', 'success');
                             loginUser();
                         } catch (err) {
                             showToast('Server connection error', 'error');
