@@ -765,6 +765,354 @@
             background: #FAFAFA;
         }
 
+        /* ─── RANKLY.AI BRANDED SLIDING HERO AUTH CARD ─── */
+        .sliding-auth-card {
+            position: relative;
+            overflow: hidden;
+            width: 780px;
+            max-width: 100%;
+            min-height: 520px;
+            height: 520px;
+            border-radius: 24px;
+            background: #FFFFFF;
+            border: 1px solid #E5E5DF;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            display: flex;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sliding-auth-card .card-bg {
+            position: absolute;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 50%;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%), radial-gradient(circle at 80% 20%, rgba(217, 93, 57, 0.4), transparent 50%);
+            box-shadow: 0 10px 30px rgba(24, 59, 51, 0.35);
+            transform: translateX(100%);
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sliding-auth-card.view-register .card-bg {
+            transform: translateX(0);
+        }
+
+        .sliding-auth-card .hero {
+            position: absolute;
+            z-index: 10;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 0 32px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease, visibility 0.65s;
+        }
+
+        .sliding-auth-card .hero.hero-login {
+            left: 50%;
+            transform: translateX(100%);
+        }
+        .sliding-auth-card.view-login .hero.hero-login {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .sliding-auth-card .hero.hero-register {
+            left: 0;
+            transform: translateX(-100%);
+        }
+        .sliding-auth-card.view-register .hero.hero-register {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .sliding-auth-card .hero-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+            margin-bottom: 2px;
+        }
+        .sliding-auth-card .hero-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.88);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .sliding-auth-card .hero-btn {
+            padding: 11px 36px;
+            border-radius: 32px;
+            letter-spacing: 1.2px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFFFFF;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            background: transparent;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .sliding-auth-card .hero-btn:hover {
+            background: #FFFFFF;
+            color: #183B33;
+            transform: scale(1.04);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .sliding-auth-card .form-panel {
+            position: absolute;
+            z-index: 2;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 28px 32px;
+            background: #FFFFFF;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease, visibility 0.65s;
+        }
+
+        .sliding-auth-card .form-panel.form-login {
+            left: 0;
+            transform: translateX(-100%);
+        }
+        .sliding-auth-card.view-login .form-panel.form-login {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .sliding-auth-card .form-panel.form-register {
+            left: 50%;
+            transform: translateX(100%);
+        }
+        .sliding-auth-card.view-register .form-panel.form-register {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .sliding-auth-card .auth-form-title {
+            font-size: 23px;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .sliding-auth-card .sso-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .sliding-auth-card .sso-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #E5E5DF;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #444440;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .sliding-auth-card .sso-btn:hover {
+            border-color: #111111;
+            color: #111111;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .sliding-auth-card .sso-btn.google:hover { color: #EA4335; border-color: #EA4335; }
+        .sliding-auth-card .sso-btn.github:hover { color: #111111; border-color: #111111; }
+        .sliding-auth-card .sso-btn.linkedin:hover { color: #0A66C2; border-color: #0A66C2; }
+
+        .sliding-auth-card .auth-divider {
+            font-size: 11px;
+            color: #888880;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sliding-auth-card .auth-input-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .sliding-auth-card .auth-input-stack input {
+            width: 100%;
+            padding: 9px 13px;
+            border-radius: 10px;
+            border: 1px solid #E5E5DF;
+            background: #FAFAF8;
+            font-size: 12.5px;
+            color: #111111;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .sliding-auth-card .auth-input-stack input:focus {
+            border-color: #183B33;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.08);
+        }
+
+        .sliding-auth-card .auth-btn-main {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #183B33;
+            color: #FFFFFF;
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+        }
+        .sliding-auth-card .auth-btn-main:hover {
+            background: #112822;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(24, 59, 51, 0.25);
+        }
+
+        .sliding-auth-card .forgot-link {
+            font-size: 11.5px;
+            color: #666660;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.15s ease;
+            text-decoration: underline;
+        }
+        .sliding-auth-card .forgot-link:hover {
+            color: #111111;
+        }
+
+        /* Dark Theme Overrides for Sliding Auth Card */
+        body.dark-theme .sliding-auth-card,
+        #loginPage.dark-mode .sliding-auth-card {
+            background: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+        }
+        body.dark-theme .sliding-auth-card .card-bg,
+        #loginPage.dark-mode .sliding-auth-card .card-bg {
+            background: linear-gradient(135deg, #090B10 0%, #1E1B4B 50%, #312E81 100%), radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.3), transparent 50%) !important;
+            box-shadow: 0 10px 35px rgba(49, 46, 129, 0.5) !important;
+        }
+        body.dark-theme .sliding-auth-card .form-panel,
+        #loginPage.dark-mode .sliding-auth-card .form-panel {
+            background: #12141F !important;
+        }
+        body.dark-theme .sliding-auth-card .auth-form-title,
+        #loginPage.dark-mode .sliding-auth-card .auth-form-title {
+            color: #F8FAFC !important;
+        }
+        body.dark-theme .sliding-auth-card .sso-btn,
+        #loginPage.dark-mode .sliding-auth-card .sso-btn {
+            background: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .sliding-auth-card .sso-btn:hover,
+        #loginPage.dark-mode .sliding-auth-card .sso-btn:hover {
+            border-color: #818CF8 !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .sliding-auth-card .auth-divider,
+        #loginPage.dark-mode .sliding-auth-card .auth-divider {
+            color: #64748B !important;
+        }
+        body.dark-theme .sliding-auth-card .auth-input-stack input,
+        #loginPage.dark-mode .sliding-auth-card .auth-input-stack input {
+            background: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #F8FAFC !important;
+        }
+        body.dark-theme .sliding-auth-card .auth-input-stack input:focus,
+        #loginPage.dark-mode .sliding-auth-card .auth-input-stack input:focus {
+            border-color: #818CF8 !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
+        }
+        body.dark-theme .sliding-auth-card .auth-btn-main,
+        #loginPage.dark-mode .sliding-auth-card .auth-btn-main {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+        }
+        body.dark-theme .sliding-auth-card .hero-btn:hover,
+        #loginPage.dark-mode .sliding-auth-card .hero-btn:hover {
+            background: linear-gradient(135deg, #10B981, #059669) !important;
+            color: #FFFFFF !important;
+            border-color: transparent !important;
+        }
+        body.dark-theme .sliding-auth-card .forgot-link,
+        #loginPage.dark-mode .sliding-auth-card .forgot-link {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .sliding-auth-card .forgot-link:hover,
+        #loginPage.dark-mode .sliding-auth-card .forgot-link:hover {
+            color: #FFFFFF !important;
+        }
+
+        /* Mobile viewport responsiveness for sliding auth card */
+        @media screen and (max-width: 679px) {
+            .sliding-auth-card {
+                width: 100% !important;
+                height: auto !important;
+                min-height: unset !important;
+                flex-direction: column !important;
+                padding: 0 !important;
+            }
+            .sliding-auth-card .card-bg,
+            .sliding-auth-card .hero {
+                display: none !important;
+            }
+            .sliding-auth-card .form-panel {
+                position: relative !important;
+                width: 100% !important;
+                left: 0 !important;
+                transform: none !important;
+                padding: 28px 20px !important;
+                display: none !important;
+            }
+            .sliding-auth-card.view-login .form-panel.form-login {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+            .sliding-auth-card.view-register .form-panel.form-register {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+        }
+
         /* ─── SIDEBAR & TOPBAR ─── */
         .dash-layout {
             display: flex;
@@ -2849,111 +3197,81 @@
 
         <!-- Center Login Card -->
         <div class="w-full flex justify-center items-center my-auto z-10">
-            <div class="login-card">
-                <div class="text-center mb-6">
-                    <h1 class="text-3xl font-extrabold tracking-tight mb-1 text-[#111111] login-heading" id="loginHeading">Log in</h1>
+        <!-- Center Animated Sliding Auth Card (Rankly.ai Branded) -->
+        <div class="w-full flex justify-center items-center my-auto z-10 py-6 px-3">
+            <div class="sliding-auth-card view-login" id="slidingAuthCard">
+                <!-- Sliding Background Hero Overlay -->
+                <div class="card-bg" id="cardBg"></div>
+
+                <!-- Hero Panel 1: Welcome Back (Takes user to Login) -->
+                <div class="hero hero-register" id="heroRegister">
+                    <div class="flex flex-col items-center justify-center">
+                        <h2 class="hero-title">Welcome back</h2>
+                        <p class="hero-subtitle">Login to review candidates, manage pipelines and access AI screening analytics.</p>
+                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('login')">LOGIN</button>
+                    </div>
                 </div>
 
-                <!-- Tabs: Normal User vs Company / Employee -->
-                <div class="login-tabs">
-                    <button class="login-tab active" data-tab="normal">Normal User</button>
-                    <button class="login-tab" data-tab="company">Company / Employee</button>
-                </div>
-
-                <!-- Normal User Login -->
-                <div class="tab-panel" id="normalLogin">
-                    <form id="normalLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>EMAIL</label>
-                                <input id="normalLoginIdentifier" placeholder="yourname@email.com" required type="text"/>
-                            </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="normalLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('normalLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
+                <!-- Form Panel 1: Registration Form -->
+                <div class="form-panel form-register" id="formRegister">
+                    <h2 class="auth-form-title">Create Account</h2>
+                    <div class="sso-row">
+                        <button type="button" class="sso-btn google" onclick="oauthLogin('Google')" title="Continue with Google"><i class="fa-brands fa-google"></i></button>
+                        <button type="button" class="sso-btn github" onclick="oauthLogin('Github')" title="Continue with Github"><i class="fa-brands fa-github"></i></button>
+                        <button type="button" class="sso-btn linkedin" onclick="oauthLogin('Linkedin')" title="Continue with LinkedIn"><i class="fa-brands fa-linkedin"></i></button>
+                    </div>
+                    <p class="auth-divider">Or use your email address</p>
+                    <form id="slidingRegisterForm" class="w-full">
+                        <div class="auth-input-stack">
+                            <input type="text" id="slideRegName" placeholder="Full name" required />
+                            <input type="email" id="slideRegEmail" placeholder="Email address (@gmail.com)" required />
+                            <div class="password-toggle w-full">
+                                <input type="password" id="slideRegPassword" placeholder="Password (min 6 chars)" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
                             </div>
                         </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Log in</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Log In -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
-                            </button>
+                        <button type="submit" class="auth-btn-main">SIGN UP</button>
+                        <div class="mt-2 text-center">
+                            <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Already have account? <strong>Log in</strong></button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Company / Employee Login -->
-                <div class="tab-panel" id="companyLogin" style="display:none;">
-                    <form id="companyLoginForm">
-                        <!-- Grouped Cohere-Style Input Box -->
-                        <div class="cohere-input-box">
-                            <div class="cohere-field">
-                                <label>WORK EMAIL</label>
-                                <input id="companyLoginEmail" placeholder="name@company.com" required type="email"/>
-                            </div>
-                            <div class="cohere-field">
-                                <label>PASSWORD</label>
-                                <div class="password-toggle">
-                                    <input id="companyLoginPassword" placeholder="••••••••••••" required type="password"/>
-                                    <button class="toggle-eye" onclick="togglePassword('companyLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-right mb-4">
-                            <button type="button" onclick="openModal('forgotPasswordModal')" class="text-xs text-[#666660] hover:text-[#111111]">Forgot Password</button>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button class="btn-cohere-submit w-full justify-center" type="submit">
-                                <span>Access Workspace</span>
-                                <div class="btn-arrow-divider">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Google & GitHub OAuth Buttons below Access Workspace -->
-                        <div class="mt-4 flex gap-3">
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Google')">
-                                <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                            </button>
-                            <button type="button" class="oauth-btn" onclick="oauthLogin('Github')">
-                                <i class="fa-brands fa-github text-[#111111]"></i> Continue with Github
-                            </button>
-                        </div>
-                    </form>
+                <!-- Hero Panel 2: Hello There (Takes user to Sign Up) -->
+                <div class="hero hero-login active" id="heroLogin">
+                    <div class="flex flex-col items-center justify-center">
+                        <h2 class="hero-title">Hello there</h2>
+                        <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment & Candidate Evaluation platform.</p>
+                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('register')">SIGN UP</button>
+                    </div>
                 </div>
 
-                <!-- Footer Terms & Links -->
-                <div class="text-center mt-6 pt-4 border-t border-[#EAEAE4]">
-                    <p class="text-xs text-[#777770] mb-2">
-                        By signing up, you agree to the <a href="/terms" class="underline hover:text-[#111111]">Terms of Use</a> and <a href="/privacy" class="underline hover:text-[#111111]">Privacy Policy</a>.
-                    </p>
-                    <p class="text-sm text-[#444440]" id="loginFooterSignupContainer">
-                        New user? <button onclick="openModal('signupModal')" class="font-bold text-[#111111] hover:underline">Sign up</button>
-                    </p>
+                <!-- Form Panel 2: Login Form -->
+                <div class="form-panel form-login active" id="formLogin">
+                    <h2 class="auth-form-title">Sign In</h2>
+                    <div class="sso-row">
+                        <button type="button" class="sso-btn google" onclick="oauthLogin('Google')" title="Continue with Google"><i class="fa-brands fa-google"></i></button>
+                        <button type="button" class="sso-btn github" onclick="oauthLogin('Github')" title="Continue with Github"><i class="fa-brands fa-github"></i></button>
+                        <button type="button" class="sso-btn linkedin" onclick="oauthLogin('Linkedin')" title="Continue with LinkedIn"><i class="fa-brands fa-linkedin"></i></button>
+                    </div>
+                    <p class="auth-divider">Or use your email / account credentials</p>
+                    <form id="slidingLoginForm" class="w-full">
+                        <div class="auth-input-stack">
+                            <input type="text" id="slideLoginEmail" placeholder="Email or Username" required />
+                            <div class="password-toggle w-full">
+                                <input type="password" id="slideLoginPassword" placeholder="Password" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('slideLoginPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center w-full my-1">
+                            <button type="button" onclick="openModal('forgotPasswordModal')" class="forgot-link">Forgot password?</button>
+                            <button type="button" onclick="openModal('employeeSignupModal')" class="forgot-link">Company Login</button>
+                        </div>
+                        <button type="submit" class="auth-btn-main">LOGIN</button>
+                        <div class="mt-2 text-center">
+                            <button type="button" onclick="toggleAuthSlide('register')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">New user? <strong>Sign up</strong></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -6374,6 +6692,96 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                     }
                 });
+
+                // Sliding Hero Auth Card Controller (Rankly.ai Theme)
+                window.toggleAuthSlide = function(view) {
+                    const card = document.getElementById('slidingAuthCard');
+                    if (!card) return;
+                    if (view === 'register') {
+                        card.classList.remove('view-login');
+                        card.classList.add('view-register');
+                    } else {
+                        card.classList.remove('view-register');
+                        card.classList.add('view-login');
+                    }
+                };
+
+                const slidingLoginForm = document.getElementById('slidingLoginForm');
+                if (slidingLoginForm) {
+                    slidingLoginForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const identifier = document.getElementById('slideLoginEmail')?.value.trim();
+                        const password = document.getElementById('slideLoginPassword')?.value.trim();
+                        if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
+
+                        try {
+                            const res = await fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({ identifier, email: identifier, password })
+                            });
+                            const data = await res.json();
+                            if (!res.ok || !data.success) {
+                                showToast(data.message || data.error || 'Invalid credentials', 'error');
+                                return;
+                            }
+                            currentUser = data.user;
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            showToast('Authentication successful 🎉', 'success');
+                            loginUser();
+                        } catch (err) {
+                            showToast('Server connection error', 'error');
+                        }
+                    });
+                }
+
+                const slidingRegisterForm = document.getElementById('slidingRegisterForm');
+                if (slidingRegisterForm) {
+                    slidingRegisterForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const fullName = document.getElementById('slideRegName')?.value.trim();
+                        const email = document.getElementById('slideRegEmail')?.value.trim();
+                        const password = document.getElementById('slideRegPassword')?.value.trim();
+
+                        if (!fullName || !email || !password) {
+                            showToast('Please fill all fields', 'error');
+                            return;
+                        }
+
+                        const nameParts = fullName.split(' ');
+                        const firstName = nameParts[0];
+                        const lastName = nameParts.slice(1).join(' ') || '';
+
+                        try {
+                            const res = await fetch('/api/auth/register', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    email,
+                                    password,
+                                    firstName,
+                                    lastName,
+                                    accountType: 'normal_user'
+                                })
+                            });
+                            const data = await res.json();
+                            if (!res.ok || !data.success) {
+                                showToast(data.message || data.error || 'Registration failed', 'error');
+                                return;
+                            }
+                            currentUser = data.user;
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            showToast('Account created successfully 🎉', 'success');
+                            loginUser();
+                        } catch (err) {
+                            showToast('Server connection error', 'error');
+                        }
+                    });
+                }
 
                 document.querySelectorAll('.login-tab').forEach(tab => {
                     tab.addEventListener('click', function() {
