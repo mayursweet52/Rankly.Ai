@@ -4,21 +4,29 @@ const passport = require('../config/passport');
 const authController = require('../controllers/authController');
 const { isAuthenticated } = require('../middleware/auth');
 const { authLimiter, authBackoffLimiter } = require('../middleware/rateLimit');
+const { validate } = require('../middleware/validator');
+const {
+  registerSchema,
+  loginSchema,
+  sendOtpSchema,
+  verifyOtpSchema,
+  resetPasswordSchema
+} = require('../schemas/authSchemas');
 
 // -----------------------------------------------------------------------------
-// Public Local Auth Endpoints (Protected by IP + Account Exponential Backoff)
+// Public Local Auth Endpoints (Protected by Rate Limiting + Strict Schema Validation)
 // -----------------------------------------------------------------------------
-router.post('/register', authLimiter, authBackoffLimiter, authController.register);
-router.post('/candidate/register', authLimiter, authBackoffLimiter, authController.register);
-router.post('/login', authLimiter, authBackoffLimiter, authController.login);
-router.post('/candidate/login', authLimiter, authBackoffLimiter, authController.login);
-router.post('/enterprise/login', authLimiter, authBackoffLimiter, authController.login);
+router.post('/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
+router.post('/candidate/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
+router.post('/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
+router.post('/candidate/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
+router.post('/enterprise/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 
 // OTP Verification & Password Recovery
-router.post('/send-otp', authLimiter, authBackoffLimiter, authController.sendOtp);
-router.post('/forgot-password', authLimiter, authBackoffLimiter, authController.forgotPassword);
-router.post('/verify-otp', authLimiter, authBackoffLimiter, authController.verifyOtp);
-router.post('/reset-password', authLimiter, authBackoffLimiter, authController.resetPassword);
+router.post('/send-otp', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.sendOtp);
+router.post('/forgot-password', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
+router.post('/verify-otp', authLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyOtp);
+router.post('/reset-password', authLimiter, authBackoffLimiter, validate({ body: resetPasswordSchema }), authController.resetPassword);
 
 // Session State
 router.get('/me', authController.getMe);

@@ -16,8 +16,11 @@ const http = require('http');
 // Database Client
 const prisma = require('./src/config/database');
 
-// Rate Limiters
+// Rate Limiters & Input Validators
 const { apiLimiter, publicLimiter, authenticatedLimiter } = require('./src/middleware/rateLimit');
+const { validate } = require('./src/middleware/validator');
+const { createFeedbackSchema } = require('./src/schemas/feedbackSchemas');
+const { candidateIdParamSchema } = require('./src/schemas/pipelineSchemas');
 
 // Modular Route Handlers
 const authRoutes = require('./src/routes/authRoutes');
@@ -120,7 +123,7 @@ app.use('/api/team', userRoutes);
 app.use('/api/referral', userRoutes);
 
 // Direct alias for candidate deletion from upload.js
-app.delete('/api/candidates/:id', async (req, res) => {
+app.delete('/api/candidates/:id', validate({ params: candidateIdParamSchema }), async (req, res) => {
   try {
     const { id } = req.params;
     await prisma.candidate.deleteMany({ where: { id } });
@@ -134,7 +137,7 @@ app.delete('/api/candidates/:id', async (req, res) => {
 // -----------------------------------------------------------------------------
 // Feedback API (Collect user thoughts, bug reports, feature requests)
 // -----------------------------------------------------------------------------
-app.post(['/api/feedback', '/api/user/feedback'], publicLimiter, async (req, res) => {
+app.post(['/api/feedback', '/api/user/feedback'], publicLimiter, validate({ body: createFeedbackSchema }), async (req, res) => {
   try {
     const { message, category = 'general', rating = 5, email, name } = req.body;
     if (!message || !message.trim()) {
