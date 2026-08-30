@@ -1561,6 +1561,86 @@
         .page.active { display: block; }
         #loginPage.active { display: flex !important; }
 
+        /* ─── RESEND-INSPIRED DEVELOPER-FIRST UI ENHANCEMENTS (Hairline Gradients, Mono Badges, Live Pulse) ─── */
+        .resend-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: rgba(99, 102, 241, 0.08);
+            color: #6366F1;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.2s ease;
+        }
+        body.dark-theme .resend-badge,
+        #loginPage.dark-mode .resend-badge {
+            background: rgba(129, 140, 248, 0.12);
+            color: #A5B4FC;
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+        .resend-badge.emerald {
+            background: rgba(16, 185, 129, 0.08);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+        body.dark-theme .resend-badge.emerald,
+        #loginPage.dark-mode .resend-badge.emerald {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34D399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .resend-pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+            display: inline-block;
+            animation: resendPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes resendPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+        .resend-card {
+            border: 1px solid #E5E5DF;
+            background: #FFFFFF;
+            border-radius: 12px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .resend-card:hover {
+            border-color: #C8C8C0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            transform: translateY(-1px);
+        }
+        body.dark-theme .resend-card,
+        #loginPage.dark-mode .resend-card {
+            background: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resend-card:hover,
+        #loginPage.dark-mode .resend-card:hover {
+            border-color: rgba(255, 255, 255, 0.18) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+            transform: translateY(-1px);
+        }
+        .resend-code-box {
+            background: #0D0F17;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #E2E8F0;
+            padding: 14px 18px;
+            overflow-x: auto;
+            position: relative;
+        }
+
         /* ─── COMPREHENSIVE MULTI-DEVICE RESPONSIVE ENGINE (5 TIER BREAKPOINTS) ─── */
         .sidebar-backdrop {
             display: none;
