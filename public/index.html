@@ -3701,43 +3701,109 @@
                                 </div>
                             </div>
 
-                            <!-- Form Panel 1: Normal User Registration Form -->
-                            <div class="form-panel form-register" id="formRegister">
-                                <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-2">Sign Up</h2>
-                                <p class="text-xs text-[#666660] dark:text-gray-400 mb-3 text-center">Join Rankly.ai for next-gen AI resume screening and job matching.</p>
-                                <form id="slidingRegisterForm" class="w-full">
+                            <!-- Form Panel 1: Create Candidate Account Registration Form -->
+                            <div class="form-panel form-register" id="formRegister" style="justify-content: flex-start; overflow-y: auto; scrollbar-width: thin; padding: 22px 24px;">
+                                <div class="w-full text-left mb-2">
+                                    <h2 class="auth-form-title text-lg text-[#111111] dark:text-white mb-0.5 font-bold">Create Candidate Account</h2>
+                                    <p class="text-[11px] text-[#666660] dark:text-gray-400 font-medium">Enter your profile credentials for automated ATS ranking & evaluation.</p>
+                                </div>
+
+                                <form id="slidingRegisterForm" class="w-full" onsubmit="event.preventDefault(); handleCandidateRegistration();">
                                     <div class="auth-input-stack">
+                                        <!-- First & Last Name -->
                                         <div class="flex gap-2">
                                             <div class="flex-1">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">First Name *</label>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">First Name *</label>
                                                 <input type="text" id="slideRegFirstName" class="login-input" placeholder="First Name" required />
                                             </div>
                                             <div class="flex-1">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Last Name</label>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Last Name</label>
                                                 <input type="text" id="slideRegLastName" class="login-input" placeholder="Last Name" />
                                             </div>
                                         </div>
+
+                                        <!-- Username -->
                                         <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address (@gmail.com) *</label>
-                                            <input type="email" id="slideRegEmail" class="login-input" placeholder="alex@gmail.com" required />
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Username</label>
+                                            <input type="text" id="slideRegUsername" class="login-input" placeholder="candidate.username" />
                                         </div>
+
+                                        <!-- Email Address with Send OTP -->
                                         <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password *</label>
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address *</label>
+                                            <div class="flex gap-2">
+                                                <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="alex@gmail.com" required />
+                                                <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-indigo-500 whitespace-nowrap transition-all">
+                                                    Send OTP
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Phone Number (Optional) with locked country code -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Phone Number (Optional)</label>
+                                            <div class="flex items-center border border-[#E5E5DF] dark:border-gray-700 rounded-xl bg-[#FAFAF8] dark:bg-gray-800/60 overflow-hidden">
+                                                <span class="px-2.5 py-1.5 text-xs font-bold border-r border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#666660] dark:text-gray-400 whitespace-nowrap">🇮🇳 +91</span>
+                                                <input id="slideRegPhone" class="flex-1 bg-transparent border-0 px-2.5 py-1.5 text-xs outline-none text-[#111111] dark:text-white" maxlength="10" placeholder="10-digit number" type="tel" />
+                                            </div>
+                                        </div>
+
+                                        <!-- DOB & Age (Min 15+) -->
+                                        <div class="flex gap-2">
+                                            <div class="flex-1">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Date of Birth *</label>
+                                                <input type="date" id="slideRegDob" class="login-input" onchange="calculateCandidateAge(this.value)" required />
+                                            </div>
+                                            <div class="w-28">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Age (Min 15+)</label>
+                                                <input type="number" id="slideRegAge" class="login-input" min="15" placeholder="Age" required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Target Profession -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Target Profession</label>
+                                            <select id="slideRegProfession" class="login-select">
+                                                <option value="Full Stack Developer" selected>Full Stack Developer</option>
+                                                <option value="Frontend Engineer">Frontend Engineer</option>
+                                                <option value="Backend Engineer">Backend Engineer</option>
+                                                <option value="AI / ML Engineer">AI / ML Engineer</option>
+                                                <option value="Data Scientist">Data Scientist</option>
+                                                <option value="DevOps / Cloud Engineer">DevOps / Cloud Engineer</option>
+                                                <option value="UI / UX Designer">UI / UX Designer</option>
+                                                <option value="Product Manager">Product Manager</option>
+                                                <option value="QA / Automation Engineer">QA / Automation Engineer</option>
+                                                <option value="Other">Other Profession</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Password -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input type="password" id="slideRegPassword" class="login-input" placeholder="Create password (min 6 chars)" required />
                                                 <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Confirm Password -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Confirm Password *</label>
+                                            <div class="password-toggle w-full">
+                                                <input type="password" id="slideRegConfirmPassword" class="login-input" placeholder="Re-enter password" required />
+                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="my-2.5 text-[11px] text-[#666660] dark:text-gray-400 flex items-center gap-1.5 select-none">
                                         <input type="checkbox" id="regTermsCheck" checked required class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
-                                        <span>I accept the <a href="/terms" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Terms</a> & <a href="/privacy" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Privacy Policy</a></span>
+                                        <span>I accept <a href="/terms" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Terms of Service</a> & <a href="/privacy" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Privacy Policy</a></span>
                                     </div>
 
-                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main">SIGN UP</button>
+                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main">CREATE CANDIDATE ACCOUNT</button>
 
-                                    <div class="auth-divider-line"><span>OR</span></div>
+                                    <div class="auth-divider-line my-2"><span>OR</span></div>
 
                                     <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google')">
                                         <svg width="18" height="18" viewBox="0 0 24 24">
@@ -3749,7 +3815,7 @@
                                         <span>Sign up with Google</span>
                                     </button>
 
-                                    <div class="mt-2.5 text-center">
+                                    <div class="mt-2.5 text-center pb-1">
                                         <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400">Already have an account? <strong class="text-indigo-600 dark:text-indigo-400">Sign In</strong></button>
                                     </div>
                                 </form>
@@ -7601,61 +7667,115 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     });
                 }
 
-                // ─── USER SIGNUP FORM SUBMIT HANDLER ───
-                const slidingRegisterForm = document.getElementById('slidingRegisterForm');
-                if (slidingRegisterForm) {
-                    slidingRegisterForm.addEventListener('submit', async function(e) {
-                        e.preventDefault();
-                        const firstName = (document.getElementById('slideRegFirstName')?.value || document.getElementById('slideRegName')?.value || '').trim();
-                        const lastName = (document.getElementById('slideRegLastName')?.value || '').trim();
-                        const email = document.getElementById('slideRegEmail')?.value.trim();
-                        const password = document.getElementById('slideRegPassword')?.value.trim();
-                        const termsChecked = document.getElementById('regTermsCheck')?.checked;
+                // ─── CANDIDATE REGISTRATION HANDLERS ───
+                window.calculateCandidateAge = function(dobString) {
+                    if (!dobString) return;
+                    const dob = new Date(dobString);
+                    const today = new Date();
+                    let age = today.getFullYear() - dob.getFullYear();
+                    const m = today.getMonth() - dob.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                        age--;
+                    }
+                    const ageInput = document.getElementById('slideRegAge');
+                    if (ageInput && !isNaN(age)) {
+                        ageInput.value = Math.max(0, age);
+                        if (age < 15) {
+                            showToast('Candidate age must be at least 15 years old', 'warning');
+                        }
+                    }
+                };
 
-                        if (!firstName || !email || !password) {
-                            showToast('Please fill all required fields', 'error');
+                window.handleSendCandidateOtp = function() {
+                    const email = document.getElementById('slideRegEmail')?.value.trim();
+                    if (!email) {
+                        showToast('Please enter your email address first', 'error');
+                        return;
+                    }
+                    const sendBtn = document.getElementById('sendCandOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i> Sent';
+                        sendBtn.classList.add('border-emerald-500');
+                    }
+                    showToast('6-digit security code sent to ' + email + ' 📩', 'info');
+                };
+
+                window.handleCandidateRegistration = async function() {
+                    const firstName = document.getElementById('slideRegFirstName')?.value.trim();
+                    const lastName = document.getElementById('slideRegLastName')?.value.trim();
+                    const username = document.getElementById('slideRegUsername')?.value.trim() || (document.getElementById('slideRegEmail')?.value.split('@')[0]);
+                    const email = document.getElementById('slideRegEmail')?.value.trim();
+                    const phone = document.getElementById('slideRegPhone')?.value.trim();
+                    const dob = document.getElementById('slideRegDob')?.value;
+                    const age = parseInt(document.getElementById('slideRegAge')?.value) || 0;
+                    const profession = document.getElementById('slideRegProfession')?.value || 'Full Stack Developer';
+                    const password = document.getElementById('slideRegPassword')?.value;
+                    const confirmPassword = document.getElementById('slideRegConfirmPassword')?.value;
+                    const termsChecked = document.getElementById('regTermsCheck')?.checked;
+
+                    if (!firstName || !email || !password || !dob) {
+                        showToast('Please fill all required candidate profile fields (*)', 'error');
+                        return;
+                    }
+
+                    if (age < 15) {
+                        showToast('Minimum candidate age requirement is 15+', 'error');
+                        return;
+                    }
+
+                    if (password.length < 6) {
+                        showToast('Password must be at least 6 characters', 'error');
+                        return;
+                    }
+
+                    if (confirmPassword && password !== confirmPassword) {
+                        showToast('Passwords do not match! Please check and retry.', 'error');
+                        return;
+                    }
+
+                    if (!termsChecked) {
+                        showToast('Please accept the Terms of Service & Privacy Policy', 'warning');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('/api/auth/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                fname: firstName,
+                                lname: lastName,
+                                firstName,
+                                lastName,
+                                username: username || email.split('@')[0],
+                                email,
+                                phone,
+                                dob,
+                                age,
+                                targetProfession: profession,
+                                profession,
+                                password,
+                                role: 'candidate',
+                                accountType: 'candidate',
+                                isEmployee: false
+                            })
+                        });
+                        const data = await res.json();
+                        if (!res.ok || !data.success) {
+                            showToast(data.message || data.error || 'Registration failed', 'error');
                             return;
                         }
-
-                        if (password.length < 6) {
-                            showToast('Password must be at least 6 characters', 'error');
-                            return;
-                        }
-
-                        try {
-                            const res = await fetch('/api/auth/register', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                credentials: 'include',
-                                body: JSON.stringify({
-                                    fname: firstName,
-                                    lname: lastName,
-                                    firstName,
-                                    lastName,
-                                    username: email.split('@')[0],
-                                    email,
-                                    password,
-                                    role: 'candidate',
-                                    accountType: 'candidate',
-                                    isEmployee: false
-                                })
-                            });
-                            const data = await res.json();
-                            if (!res.ok || !data.success) {
-                                showToast(data.message || data.error || 'Registration failed', 'error');
-                                return;
-                            }
-                            currentUser = data.user;
-                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
-                            showToast('Welcome to Rankly.ai! 🎉 Account created successfully', 'success');
-                            loginUser();
-                        } catch (err) {
-                            showToast('Server connection error', 'error');
-                        }
-                    });
-                }
+                        currentUser = data.user;
+                        sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                        localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                        if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
+                        showToast('🎉 Candidate Account Created! Welcome, ' + (currentUser.firstName || 'Candidate'), 'success');
+                        loginUser();
+                    } catch (err) {
+                        showToast('Server connection error', 'error');
+                    }
+                };
 
                 // ─── ENTERPRISE PORTAL TAB SWITCHER ───
                 window.switchOrgPortalTab = function(tab) {
