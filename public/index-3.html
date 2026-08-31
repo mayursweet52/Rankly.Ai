@@ -850,7 +850,7 @@
             background: #FAFAFA;
         }
 
-        /* ─── GPU-ACCELERATED ULTRA-SMOOTH SLIDING AUTH CARD ─── */
+        /* ─── ULTRA-SMOOTH PROMOTION LIQUID PHYSICS ENGINE ─── */
         .sliding-auth-card {
             position: relative;
             width: 780px;
@@ -859,13 +859,14 @@
             border-radius: 24px;
             background: #FFFFFF;
             border: 1px solid #E5E5DF;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
             display: flex;
-            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
             transform: translateZ(0);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            contain: paint;
         }
 
         .sliding-auth-card .card-bg {
@@ -877,9 +878,9 @@
             width: 50%;
             border-radius: 20px;
             background: url('/assets/backgrounds/login-art.png') center center / cover no-repeat, linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%);
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+            box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.32);
             transform: translate3d(100%, 0, 0);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
             overflow: hidden;
         }
@@ -887,7 +888,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(10, 15, 25, 0.15) 0%, rgba(10, 15, 25, 0.45) 100%);
+            background: linear-gradient(180deg, rgba(10, 15, 25, 0.12) 0%, rgba(10, 15, 25, 0.42) 100%);
             border-radius: 20px;
             pointer-events: none;
         }
@@ -913,7 +914,7 @@
             visibility: hidden;
             pointer-events: none;
             will-change: transform, opacity;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, visibility 0.45s;
+            transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
         }
 
         .sliding-auth-card .hero.hero-login {
@@ -941,15 +942,17 @@
         .sliding-auth-card .hero-title {
             font-size: 26px;
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
             color: #FFFFFF;
             margin-bottom: 2px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         .sliding-auth-card .hero-subtitle {
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.88);
-            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.55;
             margin-bottom: 12px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
         .sliding-auth-card .hero-btn {
             padding: 11px 36px;
@@ -960,8 +963,10 @@
             font-weight: 700;
             color: #FFFFFF;
             border: 1.5px solid rgba(255, 255, 255, 0.85);
-            background: transparent;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             cursor: pointer;
             will-change: transform;
         }
@@ -969,7 +974,10 @@
             background: #FFFFFF;
             color: #183B33;
             transform: scale(1.04) translateZ(0);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.22);
+        }
+        .sliding-auth-card .hero-btn:active {
+            transform: scale(0.97) translateZ(0);
         }
 
         .sliding-auth-card .form-panel {
@@ -988,7 +996,7 @@
             visibility: hidden;
             pointer-events: none;
             will-change: transform, opacity;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, visibility 0.45s;
+            transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
         }
         .sliding-auth-card .form-panel::-webkit-scrollbar {
             width: 4px;
@@ -1027,9 +1035,9 @@
             transform: translate3d(0, 0, 0);
         }
 
-        /* ─── FULL AUTH CARD 3D FLIP ARCHITECTURE ─── */
+        /* ─── LUXURY 3D LIQUID FLIP ARCHITECTURE ─── */
         .auth-card-3d-wrapper {
-            perspective: 1600px;
+            perspective: 2000px;
             width: 780px;
             max-width: 100%;
             min-height: 560px;
@@ -1041,7 +1049,7 @@
             position: relative;
             width: 100%;
             min-height: 560px;
-            transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: transform 0.82s cubic-bezier(0.34, 1.25, 0.64, 1);
             transform-style: preserve-3d;
             will-change: transform;
         }
@@ -1072,7 +1080,7 @@
             border-radius: 24px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.12);
             padding: 30px 34px;
             scrollbar-width: thin;
             z-index: 1;
@@ -1088,16 +1096,41 @@
         #loginPage.dark-mode .auth-card-back {
             background: #12141F !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.75) !important;
         }
 
-        /* Global Smooth Scroll & Button Springs */
-        .btn-primary, .btn-secondary, .login-btn, .oauth-google-btn {
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        /* ─── LIQUID INPUT & INTERACTIVE BLOOMS ─── */
+        .login-input, .login-select {
+            transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease !important;
+        }
+        .login-input:focus, .login-select:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16) !important;
+        }
+
+        .btn-primary, .btn-secondary, .login-btn, .oauth-google-btn, .hero-btn {
+            transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1) !important;
             will-change: transform;
         }
         .btn-primary:active, .btn-secondary:active, .login-btn:active, .oauth-google-btn:active {
-            transform: scale(0.98) translateZ(0) !important;
+            transform: scale(0.975) translateZ(0) !important;
+        }
+
+        /* ─── LIQUID TAB CROSSFADES ─── */
+        @keyframes liquidTabFade {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 8px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+        #orgPortalLoginView:not(.hidden),
+        #orgPortalRegisterView:not(.hidden),
+        #standardLoginView:not(.hidden),
+        #inlineForgotView:not(.hidden) {
+            animation: liquidTabFade 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .org-otp-box {
