@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@nexus2520/figma-mcp-server"
+      ],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU",
+        "FIGMA_API_KEY": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU"
+      }
+    },
+    "figma-developer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--token",
+        "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU"
+      ],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU",
+        "FIGMA_API_KEY": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU"
+      }
+    }
+  }
+}
