@@ -2834,8 +2834,10 @@
             transition: all 0.2s ease !important;
         }
 
-        body.dark-theme .dash-sidebar .btn-signout i {
-            font-size: 14px !important;
+        body.dark-theme .dash-sidebar .btn-signout i,
+        body.dark-theme .dash-sidebar .btn-signout svg {
+            width: 16px !important;
+            height: 16px !important;
             margin: 0 !important;
         }
 
@@ -4299,8 +4301,14 @@
                         </div>
                     </div>
                     
-                    <button class="btn-signout" onclick="logoutUser()">
-                        <i class="fas fa-arrow-right-from-bracket"></i> SIGN OUT
+                    <button class="btn-signout" onclick="logoutUser()" title="Sign Out">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                        </svg>
+                        <span>SIGN OUT</span>
                     </button>
                 </div>
             </aside>
@@ -4929,8 +4937,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn-secondary w-full text-amber-700 border-amber-200 hover:bg-amber-50 hover:border-amber-300 justify-center py-2.5 rounded-xl font-medium transition-all" onclick="logoutUser()">
-                                    <i class="fas fa-right-from-bracket mr-2"></i> Terminate Active Session
+                                <button class="btn-secondary w-full text-amber-700 border-amber-200 hover:bg-amber-50 hover:border-amber-300 justify-center py-2.5 rounded-xl font-medium transition-all flex items-center gap-2" onclick="logoutUser()">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                    </svg>
+                                    <span>Terminate Active Session</span>
                                 </button>
                             </div>
 
