@@ -1,15 +1,21 @@
-# Implementation Plan: Update Logout Button Icon to Custom SVG
+# Implementation Plan: Interactive Motion Animation for Custom Logout Button
 
 ## Objective
-Replace the generic FontAwesome logout icons in the sidebar and profile termination cards with the user's custom SVG logout icon (`id="Logout 2"`), ensuring perfect color adaptation via `currentColor` in both Light and Dark themes.
+Add high-performance, ultra-smooth CSS micro-motion animation to the custom logout SVG icon on hover and active states, creating a modern interactive experience where the exit arrow smoothly slides outward upon interaction.
 
 ## Step-by-Step Execution
-1. **Sidebar Logout Button Update (`public/index-3.html`):**
-   - Replace `<i class="fas fa-arrow-right-from-bracket"></i>` inside `.btn-signout` with the custom SVG using `stroke="currentColor"` and appropriate dimensions.
-2. **Profile Modal Session Termination Button Update:**
-   - Replace `<i class="fas fa-right-from-bracket mr-2"></i>` with the custom SVG icon.
-3. **CSS Adjustment:**
-   - Ensure `body.dark-theme .dash-sidebar .btn-signout svg` has width/height and inherits colors properly on hover.
-4. **Sync & Verification:**
+1. **SVG Hierarchy Update (`public/index-3.html`):**
+   - Wrap the arrow paths of the logout SVG into `<g class="logout-arrow">`.
+   - Add class `logout-frame` to the door/frame path.
+   - Add class `logout-icon-svg` to the root SVG.
+
+2. **CSS Motion & Keyframes Animation:**
+   - Define physics-inspired transition `cubic-bezier(0.34, 1.56, 0.64, 1)` on `.logout-arrow`.
+   - On `.btn-signout:hover` and `.btn-secondary:hover`, animate `.logout-arrow` with `transform: translateX(3.5px)`.
+   - Add active tactile bounce `transform: scale(0.96)`.
+   - Enhance dark-theme hover styling with smooth accent glow.
+
+3. **Sync & Verification:**
    - Copy `public/index-3.html` to `public/index.html`.
+   - Verify smooth motion in the browser.
    - Commit & push to Git repository.

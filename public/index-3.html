@@ -648,11 +648,40 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .logout-icon-svg {
+            overflow: visible;
+            display: inline-block;
+            vertical-align: middle;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .logout-arrow {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .logout-frame {
+            transition: opacity 0.25s ease, stroke 0.25s ease;
+        }
+        .btn-signout:hover,
+        .btn-secondary:hover {
+            border-color: #EF4444;
         }
         .btn-signout:hover {
-            border-color: #111111;
-            background: #FAFAFA;
+            color: #EF4444;
+            background: #FEF2F2;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.12);
+        }
+        .btn-signout:hover .logout-arrow,
+        .btn-secondary:hover .logout-arrow {
+            transform: translateX(3.5px);
+        }
+        .btn-signout:hover .logout-frame,
+        .btn-secondary:hover .logout-frame {
+            opacity: 0.8;
+        }
+        .btn-signout:active,
+        .btn-secondary:active {
+            transform: scale(0.97);
         }
 
         .btn-danger {
@@ -4302,11 +4331,13 @@
                     </div>
                     
                     <button class="btn-signout" onclick="logoutUser()" title="Sign Out">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                            <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                            <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                            <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                        <svg class="logout-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="logout-frame" d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <g class="logout-arrow">
+                                <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            </g>
                         </svg>
                         <span>SIGN OUT</span>
                     </button>
@@ -4938,11 +4969,13 @@
                                     </div>
                                 </div>
                                 <button class="btn-secondary w-full text-amber-700 border-amber-200 hover:bg-amber-50 hover:border-amber-300 justify-center py-2.5 rounded-xl font-medium transition-all flex items-center gap-2" onclick="logoutUser()">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                        <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                        <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                        <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                    <svg class="logout-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="logout-frame" d="M13.0493 16.7637L13.0493 21.3887L2.5254 21.3887L2.5254 2.88867L13.0493 2.88867L13.0493 7.51367" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <g class="logout-arrow">
+                                            <path d="M21.9746 12.1396L8.03535 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M17.3789 7.54414C17.3789 9.90662 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        </g>
                                     </svg>
                                     <span>Terminate Active Session</span>
                                 </button>
