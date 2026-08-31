@@ -1015,60 +1015,65 @@
             transform: translateX(0);
         }
 
-        /* ─── 3D FLIP FORM PANEL LOGIC INSIDE SLIDING AUTH CARD ─── */
-        .panel-flip-container {
-            perspective: 1000px;
-            width: 100%;
+        /* ─── FULL AUTH CARD 3D FLIP ARCHITECTURE ─── */
+        .auth-card-3d-wrapper {
+            perspective: 1600px;
+            width: 780px;
+            max-width: 100%;
+            min-height: 560px;
             position: relative;
+            margin: 0 auto;
         }
-        .panel-flipper {
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        .auth-card-3d-flipper {
+            position: relative;
+            width: 100%;
+            min-height: 560px;
+            transition: transform 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-style: preserve-3d;
-            position: relative;
-            width: 100%;
         }
-        .panel-flipper.flipped {
+        .auth-card-3d-flipper.flipped {
             transform: rotateY(180deg);
         }
-        .panel-front, .panel-back {
+        .auth-card-front,
+        .auth-card-back {
+            width: 100%;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            width: 100%;
-            top: 0;
-            left: 0;
         }
-        .panel-front {
-            z-index: 2;
+        .auth-card-front {
             transform: rotateY(0deg);
             position: relative;
+            z-index: 2;
         }
-        .panel-back {
+        .auth-card-back {
             transform: rotateY(180deg);
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            max-height: 520px;
+            min-height: 560px;
+            max-height: 90vh;
             overflow-y: auto;
-            background: #FFFFFF;
-            border-radius: 12px;
-            padding-right: 4px;
+            border-radius: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 30px 34px;
             scrollbar-width: thin;
+            z-index: 1;
         }
-        .panel-back::-webkit-scrollbar {
-            width: 4px;
+        .auth-card-back::-webkit-scrollbar {
+            width: 5px;
         }
-        .panel-back::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15);
+        .auth-card-back::-webkit-scrollbar-thumb {
+            background: var(--border-color);
             border-radius: 4px;
         }
-        body.dark-theme .panel-back,
-        #loginPage.dark-mode .panel-back {
-            background: #090B10 !important;
-        }
-        body.dark-theme .panel-back::-webkit-scrollbar-thumb,
-        #loginPage.dark-mode .panel-back::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+        body.dark-theme .auth-card-back,
+        #loginPage.dark-mode .auth-card-back {
+            background: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7) !important;
         }
 
         .org-otp-box {
@@ -3676,70 +3681,70 @@
         <!-- Middle-Right Floating Sage Stone -->
         <div class="pebble-floating-mid-right hidden md:block"></div>
 
-        <!-- Center Animated Sliding Auth Card (Rankly.ai Branded with 3D Flipping Form Panel) -->
+        <!-- Center Animated Sliding Auth Card (Rankly.ai Branded with Full Card 3D Flip Architecture) -->
         <div class="w-full flex justify-center items-center my-auto z-10 py-6 px-3">
-            <div class="sliding-auth-card view-login" id="slidingAuthCard">
-                <!-- Sliding Background Hero Overlay -->
-                <div class="card-bg" id="cardBg"></div>
+            <div class="auth-card-3d-wrapper">
+                <div class="auth-card-3d-flipper" id="fullAuthCardFlipper">
+                    
+                    <!-- FRONT SIDE: Full Sliding Auth Card (User Sign In + User Sign Up + 3D Pebbles Artwork Hero Panel) -->
+                    <div class="auth-card-front">
+                        <div class="sliding-auth-card view-login" id="slidingAuthCard">
+                            <!-- Sliding Background Hero Overlay -->
+                            <div class="card-bg" id="cardBg"></div>
 
-                <!-- Hero Panel 1: Welcome Back (Takes user to Login) -->
-                <div class="hero hero-register" id="heroRegister">
-                    <div class="flex flex-col items-center justify-center">
-                        <h2 class="hero-title">Welcome back</h2>
-                        <p class="hero-subtitle">Login to review candidates, manage pipelines and access AI screening analytics.</p>
-                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('login')">LOGIN</button>
-                    </div>
-                </div>
-
-                <!-- Form Panel 1: Registration Form -->
-                <div class="form-panel form-register" id="formRegister">
-                    <h2 class="auth-form-title">Create Account</h2>
-                    <form id="slidingRegisterForm" class="w-full">
-                        <div class="auth-input-stack">
-                            <input type="text" id="slideRegName" placeholder="Full name" required />
-                            <input type="email" id="slideRegEmail" placeholder="Email address (@gmail.com)" required />
-                            <div class="password-toggle w-full">
-                                <input type="password" id="slideRegPassword" placeholder="Password (min 6 chars)" required />
-                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            <!-- Hero Panel 1: Welcome Back (Takes user to Login) -->
+                            <div class="hero hero-register" id="heroRegister">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="hero-title">Welcome back</h2>
+                                    <p class="hero-subtitle">Login to review candidates, manage pipelines and access AI screening analytics.</p>
+                                    <button type="button" class="hero-btn" onclick="toggleAuthSlide('login')">LOGIN</button>
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="auth-btn-main">SIGN UP</button>
 
-                        <div class="auth-divider-line"><span>OR</span></div>
+                            <!-- Form Panel 1: Registration Form -->
+                            <div class="form-panel form-register" id="formRegister">
+                                <h2 class="auth-form-title">Create Account</h2>
+                                <form id="slidingRegisterForm" class="w-full">
+                                    <div class="auth-input-stack">
+                                        <input type="text" id="slideRegName" placeholder="Full name" required />
+                                        <input type="email" id="slideRegEmail" placeholder="Email address (@gmail.com)" required />
+                                        <div class="password-toggle w-full">
+                                            <input type="password" id="slideRegPassword" placeholder="Password (min 6 chars)" required />
+                                            <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="auth-btn-main">SIGN UP</button>
 
-                        <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
-                            <svg width="18" height="18" viewBox="0 0 24 24">
-                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                            </svg>
-                            <span>Sign up with Google</span>
-                        </button>
+                                    <div class="auth-divider-line"><span>OR</span></div>
 
-                        <div class="mt-2 text-center">
-                            <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Already have account? <strong>Log in</strong></button>
-                        </div>
-                    </form>
-                </div>
+                                    <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
+                                        <svg width="18" height="18" viewBox="0 0 24 24">
+                                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                        </svg>
+                                        <span>Sign up with Google</span>
+                                    </button>
 
-                <!-- Hero Panel 2: Hello There (Takes user to Sign Up) -->
-                <div class="hero hero-login active" id="heroLogin">
-                    <div class="flex flex-col items-center justify-center">
-                        <h2 class="hero-title">Hello there</h2>
-                        <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment & Candidate Evaluation platform.</p>
-                        <button type="button" class="hero-btn" onclick="toggleAuthSlide('register')">SIGN UP</button>
-                    </div>
-                </div>
+                                    <div class="mt-2 text-center">
+                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Already have account? <strong>Log in</strong></button>
+                                    </div>
+                                </form>
+                            </div>
 
-                <!-- Form Panel 2: Login Form Panel (with 3D Flip to Create Org) -->
-                <div class="form-panel form-login active" id="formLogin">
-                    <div class="panel-flip-container">
-                        <div class="panel-flipper" id="loginPanelFlipper">
-                            
-                            <!-- Front Side: User Sign In -->
-                            <div class="panel-front p-1">
-                                <div id="standardLoginView">
+                            <!-- Hero Panel 2: Hello There (Takes user to Sign Up) -->
+                            <div class="hero hero-login active" id="heroLogin">
+                                <div class="flex flex-col items-center justify-center">
+                                    <h2 class="hero-title">Hello there</h2>
+                                    <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment & Candidate Evaluation platform.</p>
+                                    <button type="button" class="hero-btn" onclick="toggleAuthSlide('register')">SIGN UP</button>
+                                </div>
+                            </div>
+
+                            <!-- Form Panel 2: Front Standard Login Form -->
+                            <div class="form-panel form-login active" id="formLogin">
+                                <div id="standardLoginView" class="w-full">
                                     <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-2">Sign In</h2>
                                     <form id="slidingLoginForm" class="w-full">
                                         <div class="auth-input-stack">
@@ -3791,14 +3796,14 @@
 
                                         <div class="mt-3 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
                                             <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Sign up</button>
-                                            <!-- Switch to Company 3D Flip -->
-                                            <button type="button" id="showCompanyForm" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto">Register Organization 🏢 →</button>
+                                            <!-- Switch to Company Full Card 3D Flip -->
+                                            <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto">Register Organization 🏢 →</button>
                                         </div>
                                     </form>
                                 </div>
 
                                 <!-- Inline Toggleable Forgot Password View on Front -->
-                                <div id="inlineForgotView" class="hidden">
+                                <div id="inlineForgotView" class="hidden w-full">
                                     <div class="flex items-center gap-2 mb-2">
                                         <button type="button" onclick="toggleInlineForgotPassword(false)" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400"><i class="fa-solid fa-arrow-left"></i> Back</button>
                                         <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-0">Reset Password</h2>
@@ -3818,119 +3823,120 @@
                                     </form>
                                 </div>
                             </div>
-
-                            <!-- Back Side: Register Organization Form -->
-                            <div class="panel-back p-1" style="background: var(--bg-card);">
-                                <div class="text-left mb-2.5">
-                                    <h2 class="auth-form-title text-xl text-[#6366f1] dark:text-[#818cf8] mb-0.5">Register Organization</h2>
-                                    <p class="text-xs text-[var(--text-muted)] font-medium">Provision an enterprise recruitment workspace & verify admin credentials.</p>
-                                </div>
-
-                                <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
-                                    <!-- Corporate Email & OTP Verification Box -->
-                                    <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3 mb-2.5">
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
-                                        <div class="flex gap-2 mb-2">
-                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
-                                            <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--border-color)] transition-all whitespace-nowrap">
-                                                Send OTP
-                                            </button>
-                                        </div>
-
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
-                                        <div class="flex gap-2">
-                                            <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
-                                            <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-all whitespace-nowrap">
-                                                Verify
-                                            </button>
-                                        </div>
-
-                                        <div id="orgSecurityBanner" class="mt-2 p-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                                            <i class="fa-solid fa-shield-halved text-amber-500"></i>
-                                            <span>Security verification required to unlock profile registration fields.</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Personal & Organization Profile Fields -->
-                                    <div class="auth-input-stack">
-                                        <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
-                                            <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation" required type="text"/>
-                                        </div>
-
-                                        <!-- Side-by-side First & Last Name -->
-                                        <div class="flex gap-2">
-                                            <div class="flex-1">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
-                                                <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
-                                            </div>
-                                            <div class="flex-1">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
-                                                <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
-                                            </div>
-                                        </div>
-
-                                        <!-- Work Username -->
-                                        <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username</label>
-                                            <input id="orgUsername" class="login-input" placeholder="Corporate username" required type="text"/>
-                                        </div>
-
-                                        <!-- Side-by-side DOB & Age -->
-                                        <div class="flex gap-2">
-                                            <div class="flex-1">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
-                                                <input id="orgDob" class="login-input" type="date" placeholder="dd-mm-yyyy" onchange="calculateOrgAge(this.value)" required />
-                                            </div>
-                                            <div class="w-28">
-                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
-                                                <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
-                                            </div>
-                                        </div>
-
-                                        <!-- Phone Number with locked country code -->
-                                        <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
-                                            <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
-                                                <span class="px-2.5 py-2 text-xs font-semibold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 IN +91</span>
-                                                <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)]" maxlength="10" placeholder="Enter 10-digit number" required type="tel" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Role / Access Level -->
-                                        <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
-                                            <select id="orgRole" class="login-input">
-                                                <option value="admin">Administrator / Lead</option>
-                                                <option value="hr" selected>HR / Recruiter</option>
-                                                <option value="hiring_manager">Hiring Manager</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Master Admin Password -->
-                                        <div>
-                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
-                                            <div class="password-toggle w-full">
-                                                <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
-                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Submit & Back Buttons -->
-                                    <button type="submit" id="registerOrgSubmitBtn" class="login-btn auth-btn-main mt-3">Complete Registration</button>
-
-                                    <div class="mt-2 text-center pb-1">
-                                        <!-- Flip Trigger to Front -->
-                                        <button type="button" id="backToLogin" class="text-xs font-semibold text-[var(--text-muted)] hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center justify-center gap-1 mx-auto cursor-pointer">
-                                            <i class="fa-solid fa-arrow-left"></i> Back to User Sign In
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
                         </div>
                     </div>
+
+                    <!-- BACK SIDE: Full Enterprise Organization Registration Workspace Card -->
+                    <div class="auth-card-back">
+                        <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-[var(--border-color)]">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-sm">
+                                        <i class="fa-solid fa-building"></i>
+                                    </span>
+                                    <h2 class="auth-form-title text-xl text-indigo-600 dark:text-indigo-400 font-bold mb-0">Register Organization</h2>
+                                </div>
+                                <p class="text-xs text-[var(--text-muted)] mt-1 mb-0">Provision an enterprise recruitment workspace & verify administrative credentials.</p>
+                            </div>
+                            <button type="button" id="backToLogin" onclick="flipEntireAuthCard(false)" class="text-xs font-semibold text-[var(--text-muted)] hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-input)] cursor-pointer transition-all">
+                                <i class="fa-solid fa-arrow-left text-[11px]"></i> User Login
+                            </button>
+                        </div>
+
+                        <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
+                            <!-- Corporate Email & OTP Verification Box (Full Width) -->
+                            <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3.5 mb-3.5">
+                                <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
+                                <div class="flex gap-2 mb-2.5">
+                                    <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
+                                    <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-indigo-500 transition-all whitespace-nowrap">
+                                        Send OTP
+                                    </button>
+                                </div>
+
+                                <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
+                                <div class="flex gap-2">
+                                    <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
+                                    <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-all whitespace-nowrap shadow-xs">
+                                        Verify OTP
+                                    </button>
+                                </div>
+
+                                <div id="orgSecurityBanner" class="mt-2.5 p-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-2 text-[11.5px] text-[var(--text-muted)]">
+                                    <i class="fa-solid fa-shield-halved text-amber-500"></i>
+                                    <span>Security verification required to unlock profile registration fields.</span>
+                                </div>
+                            </div>
+
+                            <!-- 2-Column Responsive Grid for Organization Profile Fields -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
+                                    <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
+                                    <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
+                                    <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
+                                    <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
+                                    <select id="orgRole" class="login-select">
+                                        <option value="admin">Administrator / Lead</option>
+                                        <option value="hr" selected>HR / Recruiter</option>
+                                        <option value="hiring_manager">Hiring Manager</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
+                                    <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
+                                    <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
+                                    <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
+                                        <span class="px-3 py-2 text-xs font-bold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 IN +91</span>
+                                        <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)] font-medium" maxlength="10" placeholder="10-digit number" required type="tel" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
+                                    <div class="password-toggle w-full">
+                                        <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
+                                        <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button & Flip Back Button -->
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="flipEntireAuthCard(false)" class="px-4 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
+                                    Cancel
+                                </button>
+                                <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main py-2.5 text-xs font-bold">
+                                    Complete Organization Registration
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -7403,22 +7409,32 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                // ─── 3D FLIP PANEL CONTROLLER (Inside Login Panel) ───
-                const panelFlipper = document.getElementById('loginPanelFlipper');
-                const showCompanyForm = document.getElementById('showCompanyForm') || document.getElementById('showCompanyFlipBtn');
-                const backToLogin = document.getElementById('backToLogin') || document.getElementById('backToLoginFlipBtn');
+                // ─── FULL AUTH CARD 3D FLIP CONTROLLER ───
+                window.flipEntireAuthCard = function(flipToOrg) {
+                    const fullFlipper = document.getElementById('fullAuthCardFlipper');
+                    if (!fullFlipper) return;
+                    if (flipToOrg) {
+                        fullFlipper.classList.add('flipped');
+                    } else {
+                        fullFlipper.classList.remove('flipped');
+                    }
+                };
 
-                if (showCompanyForm && panelFlipper) {
+                const fullFlipper = document.getElementById('fullAuthCardFlipper');
+                const showCompanyForm = document.getElementById('showCompanyForm');
+                const backToLogin = document.getElementById('backToLogin');
+
+                if (showCompanyForm) {
                     showCompanyForm.addEventListener('click', function(e) {
                         e.preventDefault();
-                        panelFlipper.classList.add('flipped');
+                        window.flipEntireAuthCard(true);
                     });
                 }
 
-                if (backToLogin && panelFlipper) {
+                if (backToLogin) {
                     backToLogin.addEventListener('click', function(e) {
                         e.preventDefault();
-                        panelFlipper.classList.remove('flipped');
+                        window.flipEntireAuthCard(false);
                     });
                 }
 
