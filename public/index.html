@@ -3838,7 +3838,7 @@
                                         <div class="auth-input-stack">
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email / Username</label>
-                                                <input type="text" id="loginUsername" class="login-input" placeholder="admin@rankly.ai or username" required />
+                                                <input type="text" id="loginUsername" class="login-input" placeholder="alex@gmail.com or username" required />
                                             </div>
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password</label>
@@ -3846,15 +3846,6 @@
                                                     <input type="password" id="loginPassword" class="login-input" placeholder="••••••••••••" required />
                                                     <button type="button" class="toggle-eye" onclick="togglePassword('loginPassword', this)"><i class="fa-regular fa-eye"></i></button>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Access Role</label>
-                                                <select id="loginRole" class="login-select">
-                                                    <option value="admin">Administrator / Lead</option>
-                                                    <option value="hr">HR Recruiter / Talent Lead</option>
-                                                    <option value="hiring_manager">Hiring Manager</option>
-                                                    <option value="candidate">Candidate</option>
-                                                </select>
                                             </div>
                                         </div>
 
@@ -7637,7 +7628,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         e.preventDefault();
                         const identifier = (document.getElementById('loginUsername') || document.getElementById('slideLoginEmail'))?.value.trim();
                         const password = (document.getElementById('loginPassword') || document.getElementById('slideLoginPassword'))?.value.trim();
-                        const role = document.getElementById('loginRole')?.value || 'admin';
+                        const role = document.getElementById('loginRole')?.value || 'candidate';
                         const rememberMe = document.getElementById('rememberMe')?.checked ?? true;
 
                         if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
