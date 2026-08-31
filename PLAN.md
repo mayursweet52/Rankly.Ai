@@ -1,21 +1,14 @@
-# Implementation Plan: Remove All Pre-filled Dummy Data
+# Implementation Plan: Remove Microsoft Login Button
 
 ## Objective
-Remove all hardcoded pre-filled dummy values (e.g. `mayursweet52@gmail.com`, `Mayur`, `Sweet`, etc.) from all auth form inputs in `public/index.html` and `public/index-3.html`, replacing them with clean, neutral placeholders.
+Remove the Microsoft OAuth login button from the user login card (`#standardLoginView`), leaving the Google authentication button as a clean, full-width single OAuth action button.
 
 ## Step-by-Step Execution
-1. **Front Side Login Form:**
-   - Ensure `id="loginUsername"` has neutral placeholder `placeholder="Email or username"`.
-   - Remove any dummy pre-filled values.
+1. **Markup Update:**
+   - In `public/index-3.html`, locate the OAuth button container in `#standardLoginView`.
+   - Remove the Microsoft button element (`oauthLogin('Microsoft')`) and the `grid-cols-2` wrapper.
+   - Render the Google button (`oauthLogin('Google')`) with `Continue with Google` as a full-width `.oauth-google-btn`.
 
-2. **Back Side Register Organization Form:**
-   - `id="orgWorkEmailInput"`: remove `value="mayursweet52@gmail.com"`, use `placeholder="admin@company.com"`.
-   - `id="orgFirstName"`: change placeholder to `placeholder="First Name"`.
-   - `id="orgLastName"`: change placeholder to `placeholder="Last Name"`.
-   - `id="orgRole"`: convert to a select dropdown (`Administrator / Lead`, `HR / Recruiter`, `Hiring Manager`) without hardcoded readonly text.
-   - `id="orgPhone"`: change placeholder to `placeholder="Enter 10-digit mobile number"`.
-
-3. **Verification & Deployment:**
-   - Sync `public/index-3.html` to `public/index.html`.
-   - Test forms to ensure inputs are completely clean and unpolluted.
-   - Commit & push to Git repository.
+2. **Sync & Verification:**
+   - Copy `public/index-3.html` to `public/index.html`.
+   - Verify layout and commit to Git repository.
