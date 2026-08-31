@@ -1,32 +1,25 @@
-# Implementation Plan: Register Organization Form on 3D Flip Card Back Side
+# Implementation Plan: Register Organization Form Strict Color & Token Enforcement
 
 ## Objective
-Update the back side (`.panel-back` / `.back`) of the 3D flip card in `public/index.html` (and `public/index-3.html`) to implement the full "Register Organization" enterprise recruitment workspace setup form with Email + OTP verification, personal & corporate profile fields, age validation, and action buttons.
+Update `.panel-back` in `public/index.html` (and `public/index-3.html`) to strictly adhere to design system variables (`var(--bg-card)`, `var(--bg-input)`, `var(--border-color)`, `var(--text-muted)`, `var(--text-primary)`) with zero hardcoded background colors or raw hex mismatches.
 
 ## Step-by-Step Execution
-1. **Header & Subtitle:**
-   - Title: "Register Organization" with brand accent.
-   - Subtitle: "Provision an enterprise recruitment workspace & verify admin credentials."
+1. **Define Core Theme CSS Variables:**
+   - Ensure `:root` defines `--bg-card: #FFFFFF; --bg-input: #FAFAF8; --border-color: #E5E5DF; --text-primary: #111111; --text-muted: #666660;`
+   - Ensure dark theme overrides: `--bg-card: #090B10; --bg-input: rgba(30, 27, 75, 0.4); --border-color: rgba(255, 255, 255, 0.1); --text-primary: #FFFFFF; --text-muted: #9CA3AF;`
 
-2. **Corporate Email & OTP Verification Box:**
-   - Corporate Email input pre-filled with `"mayursweet52@gmail.com"`.
-   - "Resend OTP" / "Send OTP" button.
-   - 6-digit OTP input field (`id="orgOtpInput"`).
-   - "Verify" button (`id="verifyOrgOtpBtn"`).
-   - Security status notice banner unlocking the profile fields below.
+2. **Refactor `.panel-back` Form Markup:**
+   - Container: uses `background: var(--bg-card)` and `text-[var(--text-primary)]`.
+   - Header: "Register Organization" (`text-[#6366f1]`) + subtitle with `text-[var(--text-muted)]`.
+   - OTP Box: `border border-[var(--border-color)] bg-[var(--bg-input)] rounded-10 p-3`.
+   - Section Labels: strictly `class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1"`.
+   - Inputs & Selects: strictly `class="login-input"`.
+   - Action Buttons: `class="login-btn"` for submit; `border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--border-color)]` for secondary actions.
+   - Phone Input: prefix with `border-r border-[var(--border-color)] text-[var(--text-muted)] bg-[var(--bg-card)]`.
+   - Security Notice: themed subtle warning banner with zero jarring colors.
+   - Back Link: `id="backToLogin"` returning to user sign in.
 
-3. **Profile & Corporate Fields:**
-   - Grid with First Name (`id="orgFirstName"`) & Last Name (`id="orgLastName"`).
-   - Work Username (`id="orgUsername"`, "Corporate username").
-   - Grid with Date of Birth (`id="orgDob"`, type="date" or "dd-mm-yyyy") and Age calculation / input (`id="orgAge"`, Min 18+).
-   - Phone number with locked country code badge (`IN +91`) and 10-digit mobile field (`id="orgPhone"`).
-   - Role / Access Level (`id="orgRole"` pre-filled with `"HR / Recruiter"`).
-
-4. **Actions & Navigation:**
-   - Submit Button: "Complete Registration" (`id="registerOrgSubmitBtn"`).
-   - Back Link: `id="backToLogin"` to flip the 3D card back to standard login.
-
-5. **Styling & Theming:**
-   - Strict usage of `.login-input`, `.login-select`, `.login-btn`, and native theme CSS variables.
-   - Smooth custom scrollbar for `.panel-back` if needed.
-   - Sync `public/index-3.html` to `public/index.html`, test and commit to Git.
+3. **Verification & Deployment:**
+   - Mirror `public/index-3.html` to `public/index.html`.
+   - Test in both Light and Dark modes.
+   - Commit & push to Git repository.
