@@ -868,10 +868,19 @@
             bottom: 0;
             width: 50%;
             border-radius: 20px;
-            background: linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%), radial-gradient(circle at 80% 20%, rgba(217, 93, 57, 0.4), transparent 50%);
-            box-shadow: 0 10px 30px rgba(24, 59, 51, 0.35);
+            background: url('/assets/backgrounds/login-art.png') center center / cover no-repeat, linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
             transform: translateX(100%);
             transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .sliding-auth-card .card-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 15, 25, 0.3) 0%, rgba(10, 15, 25, 0.65) 100%);
+            border-radius: 20px;
+            pointer-events: none;
         }
 
         .sliding-auth-card.view-register .card-bg {
@@ -1308,8 +1317,8 @@
         }
         body.dark-theme .sliding-auth-card .card-bg,
         #loginPage.dark-mode .sliding-auth-card .card-bg {
-            background: linear-gradient(135deg, #090B10 0%, #1E1B4B 50%, #312E81 100%), radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.3), transparent 50%) !important;
-            box-shadow: 0 10px 35px rgba(49, 46, 129, 0.5) !important;
+            background: url('/assets/backgrounds/login-art.png') center center / cover no-repeat, linear-gradient(135deg, #090B10 0%, #1E1B4B 50%, #312E81 100%) !important;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6) !important;
         }
         body.dark-theme .sliding-auth-card .form-panel,
         #loginPage.dark-mode .sliding-auth-card .form-panel {
