@@ -5241,16 +5241,16 @@
                                 </div>
                             </div>
 
-                            <!-- Card 4: Session Termination -->
+                            <!-- Card 4: Sign Out -->
                             <div class="card border border-[#E2E8F0] shadow-sm">
                                 <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
                                     <div class="flex items-center gap-3">
                                         <div class="w-10 h-10 rounded-xl bg-[#FFFBEB] text-[#D97706] flex items-center justify-center border border-[#FDE68A] shadow-sm">
-                                            <i class="fas fa-key text-base"></i>
+                                            <i class="fas fa-right-from-bracket text-base"></i>
                                         </div>
                                         <div>
-                                            <h3 class="card-title text-[#111111] mb-0">Session Termination</h3>
-                                            <p class="text-xs text-[#64748B] font-mono mt-0.5">Terminate active session token across all connected workspaces</p>
+                                            <h3 class="card-title text-[#111111] mb-0">Sign Out</h3>
+                                            <p class="text-xs text-[#64748B] font-mono mt-0.5">Securely sign out of your account on this device</p>
                                         </div>
                                     </div>
                                 </div>
@@ -5263,7 +5263,7 @@
                                             <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                         </g>
                                     </svg>
-                                    <span>Terminate Active Session</span>
+                                    <span>Sign Out</span>
                                 </button>
                             </div>
 
@@ -6682,7 +6682,7 @@
                 const loginPage = document.getElementById('loginPage');
                 if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
                 if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-                showToast('Session terminated', 'info');
+                showToast('Signed out successfully 👋', 'info');
             };
 
             window.confirmDeleteAccount = async function() {
@@ -8344,8 +8344,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     },
                     {
                         id: 'signout',
-                        title: 'Sign Out / Session Termination',
-                        description: 'End active session token and return to sign in',
+                        title: 'Sign Out',
+                        description: 'End active session and return to sign in',
                         category: 'Security',
                         icon: 'fa-solid fa-arrow-right-from-bracket text-red-500',
                         badge: 'Auth',
