@@ -24,6 +24,12 @@
             }
         };
     </script>
+    <!-- Performance Preloads for Instant Asset Delivery -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" as="image" href="/assets/backgrounds/login-art.png" fetchpriority="high"/>
+
     <!-- Cloudflare Turnstile Verification API -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
@@ -844,13 +850,11 @@
             background: #FAFAFA;
         }
 
-        /* ─── RANKLY.AI BRANDED SLIDING HERO AUTH CARD ─── */
+        /* ─── GPU-ACCELERATED ULTRA-SMOOTH SLIDING AUTH CARD ─── */
         .sliding-auth-card {
             position: relative;
-            overflow: hidden;
             width: 780px;
             max-width: 100%;
-            min-height: 560px;
             height: 560px;
             border-radius: 24px;
             background: #FFFFFF;
@@ -858,6 +862,10 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
             display: flex;
             transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .sliding-auth-card .card-bg {
@@ -870,8 +878,9 @@
             border-radius: 20px;
             background: url('/assets/backgrounds/login-art.png') center center / cover no-repeat, linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%);
             box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
-            transform: translateX(100%);
-            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translate3d(100%, 0, 0);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
             overflow: hidden;
         }
         .sliding-auth-card .card-bg::before {
@@ -884,7 +893,7 @@
         }
 
         .sliding-auth-card.view-register .card-bg {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
         }
 
         .sliding-auth-card .hero {
@@ -903,29 +912,30 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease, visibility 0.65s;
+            will-change: transform, opacity;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, visibility 0.45s;
         }
 
         .sliding-auth-card .hero.hero-login {
             left: 50%;
-            transform: translateX(100%);
+            transform: translate3d(100%, 0, 0);
         }
         .sliding-auth-card.view-login .hero.hero-login {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
         }
 
         .sliding-auth-card .hero.hero-register {
             left: 0;
-            transform: translateX(-100%);
+            transform: translate3d(-100%, 0, 0);
         }
         .sliding-auth-card.view-register .hero.hero-register {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
         }
 
         .sliding-auth-card .hero-title {
@@ -951,13 +961,14 @@
             color: #FFFFFF;
             border: 1.5px solid rgba(255, 255, 255, 0.85);
             background: transparent;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
+            will-change: transform;
         }
         .sliding-auth-card .hero-btn:hover {
             background: #FFFFFF;
             color: #183B33;
-            transform: scale(1.04);
+            transform: scale(1.04) translateZ(0);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
@@ -976,7 +987,8 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease, visibility 0.65s;
+            will-change: transform, opacity;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, visibility 0.45s;
         }
         .sliding-auth-card .form-panel::-webkit-scrollbar {
             width: 4px;
@@ -995,24 +1007,24 @@
 
         .sliding-auth-card .form-panel.form-login {
             left: 0;
-            transform: translateX(-100%);
+            transform: translate3d(-100%, 0, 0);
         }
         .sliding-auth-card.view-login .form-panel.form-login {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
         }
 
         .sliding-auth-card .form-panel.form-register {
             left: 50%;
-            transform: translateX(100%);
+            transform: translate3d(100%, 0, 0);
         }
         .sliding-auth-card.view-register .form-panel.form-register {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
         }
 
         /* ─── FULL AUTH CARD 3D FLIP ARCHITECTURE ─── */
@@ -1023,13 +1035,15 @@
             min-height: 560px;
             position: relative;
             margin: 0 auto;
+            will-change: transform;
         }
         .auth-card-3d-flipper {
             position: relative;
             width: 100%;
             min-height: 560px;
-            transition: transform 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
             transform-style: preserve-3d;
+            will-change: transform;
         }
         .auth-card-3d-flipper.flipped {
             transform: rotateY(180deg);
@@ -1039,14 +1053,15 @@
             width: 100%;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
         .auth-card-front {
-            transform: rotateY(0deg);
+            transform: rotateY(0deg) translateZ(0);
             position: relative;
             z-index: 2;
         }
         .auth-card-back {
-            transform: rotateY(180deg);
+            transform: rotateY(180deg) translateZ(0);
             position: absolute;
             top: 0;
             left: 0;
@@ -1074,6 +1089,15 @@
             background: #12141F !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+        }
+
+        /* Global Smooth Scroll & Button Springs */
+        .btn-primary, .btn-secondary, .login-btn, .oauth-google-btn {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            will-change: transform;
+        }
+        .btn-primary:active, .btn-secondary:active, .login-btn:active, .oauth-google-btn:active {
+            transform: scale(0.98) translateZ(0) !important;
         }
 
         .org-otp-box {
