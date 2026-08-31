@@ -3705,9 +3705,9 @@
                                     <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3 mb-2.5">
                                         <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
                                         <div class="flex gap-2 mb-2">
-                                            <input id="orgWorkEmailInput" class="login-input flex-1" value="mayursweet52@gmail.com" required type="email" placeholder="admin@company.com" />
+                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
                                             <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--border-color)] transition-all whitespace-nowrap">
-                                                Resend OTP
+                                                Send OTP
                                             </button>
                                         </div>
 
@@ -3736,11 +3736,11 @@
                                         <div class="flex gap-2">
                                             <div class="flex-1">
                                                 <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
-                                                <input id="orgFirstName" class="login-input" placeholder="Mayur" required type="text"/>
+                                                <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
                                             </div>
                                             <div class="flex-1">
                                                 <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
-                                                <input id="orgLastName" class="login-input" placeholder="Sweet" type="text"/>
+                                                <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
                                             </div>
                                         </div>
 
@@ -3767,14 +3767,18 @@
                                             <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
                                             <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
                                                 <span class="px-2.5 py-2 text-xs font-semibold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 IN +91</span>
-                                                <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)]" maxlength="10" placeholder="9876543210" required type="tel" />
+                                                <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)]" maxlength="10" placeholder="Enter 10-digit number" required type="tel" />
                                             </div>
                                         </div>
 
                                         <!-- Role / Access Level -->
                                         <div>
                                             <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
-                                            <input id="orgRole" class="login-input" value="HR / Recruiter" readonly type="text"/>
+                                            <select id="orgRole" class="login-input">
+                                                <option value="admin">Administrator / Lead</option>
+                                                <option value="hr" selected>HR / Recruiter</option>
+                                                <option value="hiring_manager">Hiring Manager</option>
+                                            </select>
                                         </div>
 
                                         <!-- Master Admin Password -->
