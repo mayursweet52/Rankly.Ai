@@ -1,5 +1,6 @@
-Always ask before making changes.
-Never rewrite entire files.
-Always show me what you're changing before applying.
-One change at a time.
-Use the rules defined in `rules.md` as default behavior.
+# ANTIGRAVITY CORE RULES
+1. Do exactly what is asked. Nothing more, nothing less.
+2. Zero stealth refactoring. Never delete or modify existing code unless explicitly instructed.
+3. Surgical snippets only. Never rewrite whole files.
+4. Respect existing CSS variables, themes, and classes.
+5. All rules in `rules.md` are mandatory and must be read prior to every operation.
