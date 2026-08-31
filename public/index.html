@@ -4453,7 +4453,12 @@
                 <!-- Topbar with Active Page Title, Global Feature Search & Profile -->
                 <header class="dash-topbar">
                     <div class="flex items-center gap-4 flex-shrink-0">
-                        <button class="md:hidden text-[#666660] hover:text-[#111111]" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                        <button class="md:hidden text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white flex items-center justify-center p-1 rounded-lg transition-all" id="sidebarToggle" title="Toggle Sidebar">
+                            <svg id="sidebarToggleSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.2288 21 5.3431 21 4.1716 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.1716 4.17157C5.3431 3 7.2288 3 11 3Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="sidebarToggleInnerPanel" d="M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z" style="fill: var(--bg-card, #ffffff); transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);"/>
+                            </svg>
+                        </button>
                         <h1 class="text-base font-bold text-[#111111] dark:text-white" id="dashPageTitle">Dashboard</h1>
                     </div>
 
@@ -7339,17 +7344,29 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 initLoginHeading();
                 loadLoginTheme();
 
-                // Mobile Sidebar Drawer Toggle & Backdrop Interaction
+                // Mobile Sidebar Drawer Toggle & Backdrop Interaction (Unlumen-UI Morphing Icon)
                 const sidebarToggle = document.getElementById('sidebarToggle');
                 const dashSidebar = document.getElementById('dashSidebar');
                 const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+                const sidebarInnerPanel = document.getElementById('sidebarToggleInnerPanel');
+
+                const PANEL_CLOSED = "M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z";
+                const PANEL_OPEN = "M14 6 C14 5.057 14 4.586 13.707 4.293 C13.414 4 12.943 4 12 4 H10 C7.172 4 5.757 4 4.879 4.879 C4 5.757 4 7.172 4 10 V14 C4 16.828 4 18.243 4.879 19.121 C5.757 20 7.172 20 10 20 H12 C12.943 20 13.414 20 13.707 19.707 C14 19.414 14 18.943 14 18 V6 Z";
+
+                function updateSidebarToggleIcon(isOpen) {
+                    if (sidebarInnerPanel) {
+                        sidebarInnerPanel.setAttribute('d', isOpen ? PANEL_OPEN : PANEL_CLOSED);
+                    }
+                }
 
                 if (sidebarToggle && dashSidebar) {
                     sidebarToggle.addEventListener('click', function(e) {
                         e.stopPropagation();
                         dashSidebar.classList.toggle('open');
+                        const isOpen = dashSidebar.classList.contains('open');
+                        updateSidebarToggleIcon(isOpen);
                         if (sidebarBackdrop) {
-                            sidebarBackdrop.classList.toggle('active', dashSidebar.classList.contains('open'));
+                            sidebarBackdrop.classList.toggle('active', isOpen);
                         }
                     });
                 }
@@ -7357,6 +7374,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 if (sidebarBackdrop && dashSidebar) {
                     sidebarBackdrop.addEventListener('click', function() {
                         dashSidebar.classList.remove('open');
+                        updateSidebarToggleIcon(false);
                         sidebarBackdrop.classList.remove('active');
                     });
                 }
@@ -7366,6 +7384,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (window.innerWidth <= 1024) {
                         if (e.target.closest('.nav-item') || e.target.closest('.dock-item')) {
                             if (dashSidebar) dashSidebar.classList.remove('open');
+                            updateSidebarToggleIcon(false);
                             if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
                         }
                     }
