@@ -1186,10 +1186,11 @@
             outline: none;
             transition: all 0.2s ease;
         }
-        .login-input:focus {
-            border-color: #6366F1;
+        .login-input:focus,
+        .login-select:focus {
+            border-color: #183B33;
             background: #FFFFFF;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.12);
         }
         body.dark-theme .login-input,
         #loginPage.dark-mode .login-input {
@@ -1198,9 +1199,11 @@
             color: #FFFFFF !important;
         }
         body.dark-theme .login-input:focus,
-        #loginPage.dark-mode .login-input:focus {
-            border-color: #818CF8 !important;
-            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
+        #loginPage.dark-mode .login-input:focus,
+        body.dark-theme .login-select:focus,
+        #loginPage.dark-mode .login-select:focus {
+            border-color: #5B998C !important;
+            box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.25) !important;
         }
 
         .login-select {
@@ -1218,6 +1221,68 @@
         #loginPage.dark-mode .login-select {
             background: #1E1B4B !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        .login-phone-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid #E5E5DF;
+            background: #FAFAF8;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+        .login-phone-wrapper:focus-within {
+            border-color: #183B33;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.12);
+        }
+        .login-phone-prefix {
+            height: 100%;
+            padding: 0 11px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: #F0F0EC;
+            color: #444440;
+            border-right: 1px solid #E5E5DF;
+            user-select: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .login-phone-input {
+            flex: 1;
+            height: 100%;
+            padding: 0 11px;
+            font-size: 12.5px;
+            color: #111111;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-weight: 500;
+        }
+        body.dark-theme .login-phone-wrapper,
+        #loginPage.dark-mode .login-phone-wrapper {
+            background: rgba(30, 27, 75, 0.4) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark-theme .login-phone-wrapper:focus-within,
+        #loginPage.dark-mode .login-phone-wrapper:focus-within {
+            border-color: #5B998C !important;
+            box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.25) !important;
+        }
+        body.dark-theme .login-phone-prefix,
+        #loginPage.dark-mode .login-phone-prefix {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: #CBD5E1 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark-theme .login-phone-input,
+        #loginPage.dark-mode .login-phone-input {
             color: #FFFFFF !important;
         }
 
@@ -3782,18 +3847,29 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address *</label>
                                             <div class="flex gap-2">
                                                 <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="alex@gmail.com" required />
-                                                <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-indigo-500 whitespace-nowrap transition-all">
+                                                <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-[#183B33] hover:text-[#183B33] whitespace-nowrap transition-all cursor-pointer">
                                                     Send OTP
                                                 </button>
+                                            </div>
+
+                                            <!-- Dynamic Candidate OTP Verification Box (Hidden until Send OTP clicked) -->
+                                            <div id="candOtpContainer" class="hidden mt-2 p-2.5 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800/60">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Enter 6-Digit OTP</label>
+                                                <div class="flex gap-2">
+                                                    <input type="text" id="slideRegOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" />
+                                                    <button type="button" onclick="handleVerifyCandidateOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
+                                                        Verify OTP
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <!-- Phone Number (Optional) with locked country code -->
                                         <div>
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Phone Number (Optional)</label>
-                                            <div class="flex items-center border border-[#E5E5DF] dark:border-gray-700 rounded-xl bg-[#FAFAF8] dark:bg-gray-800/60 overflow-hidden">
-                                                <span class="px-2.5 py-1.5 text-xs font-bold border-r border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#666660] dark:text-gray-400 whitespace-nowrap">🇮🇳 +91</span>
-                                                <input id="slideRegPhone" class="flex-1 bg-transparent border-0 px-2.5 py-1.5 text-xs outline-none text-[#111111] dark:text-white" maxlength="10" placeholder="10-digit number" type="tel" />
+                                            <div class="login-phone-wrapper">
+                                                <span class="login-phone-prefix">🇮🇳 +91</span>
+                                                <input id="slideRegPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" type="tel" />
                                             </div>
                                         </div>
 
@@ -4043,20 +4119,23 @@
                                         <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
                                         <div class="flex gap-2 mb-2">
                                             <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
-                                            <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] transition-all whitespace-nowrap">
+                                            <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
                                         </div>
 
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
-                                        <div class="flex gap-2">
-                                            <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
-                                            <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs">
-                                                Verify OTP
-                                            </button>
+                                        <!-- Dynamic Enterprise OTP Verification Box (Hidden until Send OTP clicked) -->
+                                        <div id="orgOtpContainer" class="hidden mt-2 pt-2 border-t border-[var(--border-color)]">
+                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
+                                            <div class="flex gap-2 mb-2">
+                                                <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
+                                                <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
+                                                    Verify OTP
+                                                </button>
+                                            </div>
                                         </div>
 
-                                        <div id="orgSecurityBanner" class="mt-2 p-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+                                        <div id="orgSecurityBanner" class="mt-1.5 p-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
                                             <i class="fa-solid fa-shield-halved text-amber-500 text-xs"></i>
                                             <span>Security verification required to unlock profile fields.</span>
                                         </div>
@@ -4104,9 +4183,9 @@
 
                                         <div class="md:col-span-2">
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
-                                            <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
-                                                <span class="px-2.5 py-1.5 text-xs font-bold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 +91</span>
-                                                <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-1.5 text-xs outline-none text-[var(--text-primary)] font-medium" maxlength="10" placeholder="10-digit number" required type="tel" />
+                                            <div class="login-phone-wrapper">
+                                                <span class="login-phone-prefix">🇮🇳 +91</span>
+                                                <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
                                             </div>
                                         </div>
 
@@ -7726,18 +7805,36 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
+                // ─── CANDIDATE REGISTRATION OTP HANDLERS ───
                 window.handleSendCandidateOtp = function() {
                     const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!email) {
                         showToast('Please enter your email address first', 'error');
                         return;
                     }
+                    const otpContainer = document.getElementById('candOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.classList.remove('hidden');
+                    }
                     const sendBtn = document.getElementById('sendCandOtpBtn');
                     if (sendBtn) {
-                        sendBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i> Sent';
-                        sendBtn.classList.add('border-emerald-500');
+                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                     }
+                    document.getElementById('slideRegOtpInput')?.focus();
                     showToast('6-digit security code sent to ' + email + ' 📩', 'info');
+                };
+
+                window.handleVerifyCandidateOtp = function() {
+                    const otp = document.getElementById('slideRegOtpInput')?.value.trim();
+                    if (!otp || otp.length < 4) {
+                        showToast('Please enter the 6-digit OTP received in email', 'error');
+                        return;
+                    }
+                    const otpContainer = document.getElementById('candOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> Email Verified Successfully!</div>';
+                    }
+                    showToast('Email verified successfully ✅', 'success');
                 };
 
                 window.handleCandidateRegistration = async function() {
@@ -7893,6 +7990,15 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 window.handleSendOrgOtp = function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     if (!email) { showToast('Please enter corporate email', 'error'); return; }
+                    const otpContainer = document.getElementById('orgOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.classList.remove('hidden');
+                    }
+                    const sendBtn = document.getElementById('sendOrgOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                    }
+                    document.getElementById('orgOtpInput')?.focus();
                     showToast('6-digit security OTP sent to ' + email + ' 📩', 'info');
                 };
 
@@ -7902,7 +8008,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const banner = document.getElementById('orgSecurityBanner');
                     if (banner) {
                         banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
-                        banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Email & OTP Verified! Profile registration unlocked.</span>';
+                        banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
                     }
                     showToast('Corporate Email Verified Successfully! ✅', 'success');
                 };
