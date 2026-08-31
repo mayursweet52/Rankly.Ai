@@ -993,6 +993,88 @@
             top: 0;
             left: 0;
             width: 100%;
+            background: #FFFFFF;
+            border-radius: 12px;
+        }
+        body.dark-theme .panel-back,
+        #loginPage.dark-mode .panel-back {
+            background: #090B10 !important;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 9px 13px;
+            border-radius: 10px;
+            border: 1px solid #E5E5DF;
+            background: #FAFAF8;
+            font-size: 12.5px;
+            color: #111111;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .login-input:focus {
+            border-color: #6366F1;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        body.dark-theme .login-input,
+        #loginPage.dark-mode .login-input {
+            background: rgba(30, 27, 75, 0.4) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .login-input:focus,
+        #loginPage.dark-mode .login-input:focus {
+            border-color: #818CF8 !important;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
+        }
+
+        .login-select {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 1px solid #E5E5DF;
+            background: #FAFAF8;
+            font-size: 12.5px;
+            color: #111111;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        body.dark-theme .login-select,
+        #loginPage.dark-mode .login-select {
+            background: #1E1B4B !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #183B33;
+            color: #FFFFFF;
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+        }
+        .login-btn:hover {
+            background: #112822;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(24, 59, 51, 0.25);
+        }
+        body.dark-theme .login-btn,
+        #loginPage.dark-mode .login-btn {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%) !important;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        }
+        body.dark-theme .login-btn:hover,
+        #loginPage.dark-mode .login-btn:hover {
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5) !important;
+            transform: translateY(-1px);
         }
 
         .sliding-auth-card .auth-form-title {
@@ -3475,34 +3557,52 @@
                             </div>
 
                             <!-- Back Side: Create Organization -->
-                            <div class="panel-back">
-                                <h2 class="auth-form-title text-xl">Create Organization</h2>
+                            <div class="panel-back p-1">
+                                <h2 class="auth-form-title text-xl text-[#6366f1] dark:text-[#818cf8] mb-3">Create Organization</h2>
                                 <form id="orgForm" class="w-full">
                                     <div class="auth-input-stack">
-                                        <input id="orgNameInput" placeholder="Organization Name (e.g. TechCorp)" required type="text"/>
-                                        <input id="orgWorkEmailInput" placeholder="Work Email" required type="email"/>
-                                        <div class="flex gap-2">
-                                            <select id="orgIndustryInput" class="w-full border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-[#1E1B4B] text-xs p-2 rounded-lg outline-none">
-                                                <option value="Software / IT">Software / IT</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Healthcare">Healthcare</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                            <select id="orgSizeInput" class="w-full border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-[#1E1B4B] text-xs p-2 rounded-lg outline-none">
-                                                <option value="1-50">1-50 Emp</option>
-                                                <option value="51-200" selected>51-200 Emp</option>
-                                                <option value="201-500">201-500 Emp</option>
-                                                <option value="500+">500+ Emp</option>
-                                            </select>
+                                        <div>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Organization Name</label>
+                                            <input id="orgNameInput" class="login-input" placeholder="Acme Corporation" required type="text"/>
                                         </div>
-                                        <input id="orgAdminNameInput" placeholder="Admin Full Name" required type="text"/>
-                                        <div class="password-toggle w-full">
-                                            <input id="orgAdminPasswordInput" placeholder="Create Admin Password" required type="password"/>
-                                            <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)"><i class="fa-regular fa-eye"></i></button>
+                                        <div>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Work Email</label>
+                                            <input id="orgWorkEmailInput" class="login-input" placeholder="admin@company.com" required type="email"/>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <div class="flex-1">
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Industry</label>
+                                                <select id="orgIndustryInput" class="login-select">
+                                                    <option value="Software / IT">Software / IT</option>
+                                                    <option value="Finance">Finance</option>
+                                                    <option value="Healthcare">Healthcare</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Size</label>
+                                                <select id="orgSizeInput" class="login-select">
+                                                    <option value="1-50">1-50 Emp</option>
+                                                    <option value="51-200" selected>51-200 Emp</option>
+                                                    <option value="201-500">201-500 Emp</option>
+                                                    <option value="500+">500+ Emp</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Admin Full Name</label>
+                                            <input id="orgAdminNameInput" class="login-input" placeholder="John Doe" required type="text"/>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Admin Password</label>
+                                            <div class="password-toggle w-full">
+                                                <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Admin Password" required type="password"/>
+                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="auth-btn-main mt-2">CREATE WORKSPACE</button>
+                                    <button type="submit" class="login-btn auth-btn-main mt-2">CREATE WORKSPACE</button>
 
                                     <div class="mt-2 text-center">
                                         <!-- Flip Trigger to Front -->
