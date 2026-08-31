@@ -2995,6 +2995,101 @@
             color: #94A3B8;
         }
 
+        /* ─── GLOBAL FEATURE NAVIGATION SEARCH BAR ─── */
+        .global-feature-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            z-index: 50;
+        }
+        .global-feature-search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0 10px 0 12px;
+            height: 38px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .global-feature-search-box:focus-within {
+            background: var(--bg-card);
+            border-color: #6366F1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+        .global-feature-search-field {
+            flex: 1;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            padding: 0 8px !important;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .global-feature-search-field::placeholder {
+            color: var(--text-muted);
+        }
+        #globalFeatureSearchResults {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 6px);
+            max-height: 340px;
+            overflow-y: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            padding: 6px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+            z-index: 100;
+            scrollbar-width: thin;
+        }
+        .feature-result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .feature-result-item:hover,
+        .feature-result-item.selected {
+            background: rgba(99, 102, 241, 0.08);
+            transform: translateX(2px);
+        }
+        body.dark-theme .feature-result-item:hover,
+        body.dark-theme .feature-result-item.selected {
+            background: rgba(129, 140, 248, 0.15);
+        }
+        .feature-item-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366F1;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        body.dark-theme .feature-item-icon {
+            background: rgba(129, 140, 248, 0.15);
+            color: #818CF8;
+        }
+
         /* ─── COMMAND A PLAYGROUND (LIGHT THEME) ─── */
         .command-a-card {
             background: #FFFFFF !important;
@@ -4346,13 +4441,37 @@
 
             <!-- Main Content Area -->
             <div class="dash-content-wrapper">
-                <!-- Topbar with Active Page Title & Profile -->
+                <!-- Topbar with Active Page Title, Global Feature Search & Profile -->
                 <header class="dash-topbar">
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 flex-shrink-0">
                         <button class="md:hidden text-[#666660] hover:text-[#111111]" id="sidebarToggle"><i class="fas fa-bars"></i></button>
-                        <h1 class="text-base font-bold text-[#111111]" id="dashPageTitle">Dashboard</h1>
+                        <h1 class="text-base font-bold text-[#111111] dark:text-white" id="dashPageTitle">Dashboard</h1>
                     </div>
-                    <div class="flex items-center gap-3">
+
+                    <!-- ─── 1. GLOBAL NAVIGATION & FEATURE SEARCH BAR (NO CANDIDATES) ─── -->
+                    <div class="global-feature-search-wrapper mx-2 md:mx-4" id="globalFeatureSearchContainer">
+                        <div class="global-feature-search-box">
+                            <i class="fas fa-magnifying-glass text-xs text-[var(--text-muted)]"></i>
+                            <input 
+                                type="text" 
+                                id="globalFeatureSearchInput" 
+                                placeholder="Search features (e.g. Settings, Analytics, Jobs, Health)..." 
+                                class="global-feature-search-field"
+                                autocomplete="off"
+                                spellcheck="false"
+                            />
+                            <div class="flex items-center gap-1 flex-shrink-0">
+                                <kbd class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-semibold text-[var(--text-muted)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded shadow-xs">Ctrl K</kbd>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown Results Floating Modal -->
+                        <div id="globalFeatureSearchResults" class="hidden">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 flex-shrink-0">
                         <button type="button" onclick="toggleAppTheme()" class="bulb-theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
                             <svg class="bulb-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke-width="0.7" stroke="currentColor" fill="currentColor" stroke-linecap="round" viewBox="0 0 32 32">
                                 <path stroke-width="0" d="M9.4 9.9c1.8-1.8 4.1-2.7 6.6-2.7 5.1 0 9.3 4.2 9.3 9.3 0 2.3-.8 4.4-2.3 6.1-.7.8-2 2.8-2.5 4.4 0 .2-.2.4-.5.4-.2 0-.4-.2-.4-.5v-.1c.5-1.8 2-3.9 2.7-4.8 1.4-1.5 2.1-3.5 2.1-5.6 0-4.7-3.7-8.5-8.4-8.5-2.3 0-4.4.9-5.9 2.5-1.6 1.6-2.5 3.7-2.5 6 0 2.1.7 4 2.1 5.6.8.9 2.2 2.9 2.7 4.9 0 .2-.1.5-.4.5h-.1c-.2 0-.4-.1-.4-.4-.5-1.7-1.8-3.7-2.5-4.5-1.5-1.7-2.3-3.9-2.3-6.1 0-2.3 1-4.7 2.7-6.5z"/>
@@ -4652,7 +4771,7 @@
                                         type="text" 
                                         id="candidateSearchInput" 
                                         oninput="handleCandidateSearchInput(this)" 
-                                        placeholder="Search evaluated candidates, skills, match scores..." 
+                                        placeholder="Search candidate by name, surname, or email (e.g. Rahul, Sharma, rahul@...)" 
                                         class="sleek-search-field"
                                         autocomplete="off"
                                         spellcheck="false"
@@ -7758,6 +7877,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     window.filterEvaluatedCandidates('');
                 };
 
+                // ─── 2. CANDIDATE SEARCH CONTROLLER (BY FIRST NAME, SURNAME, EMAIL) ───
                 window.filterEvaluatedCandidates = function(query) {
                     if (!evaluatedCandidatesList) return;
                     const q = (query || '').toLowerCase().trim();
@@ -7767,15 +7887,300 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     const filtered = evaluatedCandidatesList.filter(item => {
-                        const name = (item.candidateName || item.resumeFileName || '').toLowerCase();
+                        const fullName = (item.candidateName || item.resumeFileName || '').toLowerCase();
+                        const firstName = (item.firstName || (fullName.split(' ')[0] || '')).toLowerCase();
+                        const lastName = (item.lastName || (fullName.split(' ').slice(1).join(' ') || '')).toLowerCase();
+                        const email = (item.email || item.candidateEmail || '').toLowerCase();
                         const role = (item.targetRole || '').toLowerCase();
                         const summary = (item.summary || '').toLowerCase();
                         const skills = Array.isArray(item.matchedSkills) ? item.matchedSkills.join(' ').toLowerCase() : String(item.matchedSkills || '').toLowerCase();
-                        return name.includes(q) || role.includes(q) || summary.includes(q) || skills.includes(q);
+                        
+                        return firstName.includes(q) || 
+                               lastName.includes(q) || 
+                               fullName.includes(q) || 
+                               email.includes(q) || 
+                               role.includes(q) || 
+                               summary.includes(q) || 
+                               skills.includes(q);
                     });
 
                     renderEvaluatedCandidates(filtered);
                 };
+
+                // ─── 1. GLOBAL FEATURE & NAVIGATION SEARCH CONTROLLER (NO CANDIDATES) ───
+                const APP_NAVIGATION_FEATURES = [
+                    {
+                        id: 'dashboard',
+                        title: 'Dashboard / Overview',
+                        description: 'Recruitment metrics, stats & live system overview',
+                        category: 'Overview',
+                        icon: 'fa-solid fa-table-columns',
+                        badge: 'Main',
+                        keywords: ['home', 'stats', 'metrics', 'overview', 'summary', 'main'],
+                        action: () => switchTab('dashboard')
+                    },
+                    {
+                        id: 'chatbot',
+                        title: 'AI Chatbot Assistant',
+                        description: 'Autonomous recruitment copilot & candidate Q&A',
+                        category: 'AI Tools',
+                        icon: 'fa-solid fa-robot',
+                        badge: 'AI',
+                        keywords: ['chat', 'bot', 'assistant', 'ask', 'copilot', 'ai', 'gpt'],
+                        action: () => switchTab('chatbot')
+                    },
+                    {
+                        id: 'screening',
+                        title: 'Screening Matrix',
+                        description: 'Automated resume parsing & vector semantic match scoring',
+                        category: 'Recruitment',
+                        icon: 'fa-solid fa-file-invoice',
+                        badge: 'Core',
+                        keywords: ['screening', 'resumes', 'matrix', 'match', 'scoring', 'rank', 'candidates'],
+                        action: () => switchTab('screening')
+                    },
+                    {
+                        id: 'pipeline',
+                        title: 'Talent Pipeline',
+                        description: 'Multi-stage hiring Kanban & candidate tracking',
+                        category: 'Recruitment',
+                        icon: 'fa-solid fa-users',
+                        badge: 'Workflow',
+                        keywords: ['pipeline', 'kanban', 'stages', 'hiring', 'track', 'applicants'],
+                        action: () => switchTab('pipeline')
+                    },
+                    {
+                        id: 'analytics',
+                        title: 'Analytics & Reports',
+                        description: 'Time-to-hire, funnel velocity & hiring intelligence',
+                        category: 'Intelligence',
+                        icon: 'fa-solid fa-chart-line',
+                        badge: 'Data',
+                        keywords: ['analytics', 'reports', 'charts', 'data', 'insights', 'graphs', 'velocity'],
+                        action: () => switchTab('analytics')
+                    },
+                    {
+                        id: 'resume',
+                        title: 'Resume Builder',
+                        description: 'AI-powered ATS-optimized resume formatting',
+                        category: 'Tools',
+                        icon: 'fa-solid fa-file-lines',
+                        badge: 'ATS',
+                        keywords: ['resume', 'cv', 'builder', 'creator', 'export', 'template', 'document'],
+                        action: () => switchTab('resume')
+                    },
+                    {
+                        id: 'health',
+                        title: 'System Health & AI Diagnostics',
+                        description: 'Live latency, database connections & server uptime',
+                        category: 'System',
+                        icon: 'fa-solid fa-heart-pulse text-emerald-500',
+                        badge: '99.9%',
+                        keywords: ['health', 'status', 'ping', 'server', 'uptime', 'diagnostic', 'api'],
+                        action: () => switchTab('health')
+                    },
+                    {
+                        id: 'settings',
+                        title: 'Account & Security Settings',
+                        description: 'API keys, notifications & account preferences',
+                        category: 'System',
+                        icon: 'fa-solid fa-gear',
+                        badge: 'Config',
+                        keywords: ['settings', 'config', 'preferences', 'keys', 'options', 'api', 'security'],
+                        action: () => switchTab('settings')
+                    },
+                    {
+                        id: 'profile',
+                        title: 'User Profile & Identity',
+                        description: 'View and update admin personal credentials',
+                        category: 'Account',
+                        icon: 'fa-solid fa-user-circle',
+                        badge: 'Identity',
+                        keywords: ['profile', 'user', 'account', 'edit', 'avatar', 'name', 'credentials'],
+                        action: () => openModal('updateProfileModal')
+                    },
+                    {
+                        id: 'feedback',
+                        title: 'Feedback & Support Center',
+                        description: 'Submit issue reports, feature requests & contact support',
+                        category: 'Support',
+                        icon: 'fa-solid fa-comment-dots',
+                        badge: 'Help',
+                        keywords: ['feedback', 'support', 'help', 'bug', 'feature', 'contact', 'faq'],
+                        action: () => switchTab('feedback')
+                    },
+                    {
+                        id: 'theme',
+                        title: 'Theme Mode Toggle',
+                        description: 'Switch between light and dark mode themes',
+                        category: 'Preferences',
+                        icon: 'fa-solid fa-moon',
+                        badge: 'UI',
+                        keywords: ['theme', 'dark', 'light', 'mode', 'color', 'bulb', 'night'],
+                        action: () => toggleAppTheme()
+                    },
+                    {
+                        id: 'signout',
+                        title: 'Sign Out / Session Termination',
+                        description: 'End active session token and return to sign in',
+                        category: 'Security',
+                        icon: 'fa-solid fa-arrow-right-from-bracket text-red-500',
+                        badge: 'Auth',
+                        keywords: ['logout', 'signout', 'exit', 'terminate', 'leave', 'disconnect'],
+                        action: () => logoutUser()
+                    }
+                ];
+
+                function initGlobalFeatureSearch() {
+                    const searchInput = document.getElementById('globalFeatureSearchInput');
+                    const searchResults = document.getElementById('globalFeatureSearchResults');
+                    const searchContainer = document.getElementById('globalFeatureSearchContainer');
+                    if (!searchInput || !searchResults) return;
+
+                    let selectedIndex = -1;
+                    let currentMatches = [];
+
+                    function renderFeatureResults(matches, query) {
+                        currentMatches = matches;
+                        selectedIndex = -1;
+
+                        if (!query.trim()) {
+                            searchResults.classList.add('hidden');
+                            searchResults.innerHTML = '';
+                            return;
+                        }
+
+                        if (matches.length === 0) {
+                            searchResults.innerHTML = `
+                                <div class="px-4 py-3.5 text-center">
+                                    <p class="text-xs font-medium text-[var(--text-muted)] mb-0">No matching features or pages found for "<strong>${escapeHtml(query)}</strong>"</p>
+                                    <p class="text-[11px] text-[var(--text-muted)] opacity-75 mt-1 mb-0">Tip: Try searching for Settings, Jobs, Analytics, Profile, or Theme.</p>
+                                </div>
+                            `;
+                            searchResults.classList.remove('hidden');
+                            return;
+                        }
+
+                        searchResults.innerHTML = matches.map((item, idx) => `
+                            <button type="button" class="feature-result-item" data-index="${idx}" onclick="selectGlobalFeature(${idx})">
+                                <div class="flex items-center gap-2.5 overflow-hidden">
+                                    <div class="feature-item-icon">
+                                        <i class="${item.icon}"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-xs text-[var(--text-primary)] truncate">${item.title}</span>
+                                            <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40">${item.category}</span>
+                                        </div>
+                                        <p class="text-[11px] text-[var(--text-muted)] truncate mb-0">${item.description}</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right text-[10px] text-[var(--text-muted)] opacity-60 ml-2"></i>
+                            </button>
+                        `).join('');
+
+                        searchResults.classList.remove('hidden');
+                    }
+
+                    window.selectGlobalFeature = function(index) {
+                        const feature = currentMatches[index];
+                        if (feature && typeof feature.action === 'function') {
+                            searchResults.classList.add('hidden');
+                            searchInput.value = '';
+                            feature.action();
+                            showToast(`Navigated to ${feature.title} 🚀`, 'info');
+                        }
+                    };
+
+                    searchInput.addEventListener('input', function(e) {
+                        const val = e.target.value.trim().toLowerCase();
+                        if (!val) {
+                            renderFeatureResults([], '');
+                            return;
+                        }
+
+                        const matches = APP_NAVIGATION_FEATURES.filter(item => {
+                            const matchTitle = item.title.toLowerCase().includes(val);
+                            const matchDesc = item.description.toLowerCase().includes(val);
+                            const matchCategory = item.category.toLowerCase().includes(val);
+                            const matchKeywords = item.keywords.some(k => k.toLowerCase().includes(val));
+                            return matchTitle || matchDesc || matchCategory || matchKeywords;
+                        });
+
+                        renderFeatureResults(matches, e.target.value);
+                    });
+
+                    searchInput.addEventListener('focus', function(e) {
+                        if (e.target.value.trim()) {
+                            searchInput.dispatchEvent(new Event('input'));
+                        }
+                    });
+
+                    searchInput.addEventListener('keydown', function(e) {
+                        const items = searchResults.querySelectorAll('.feature-result-item');
+                        if (!items.length || searchResults.classList.contains('hidden')) return;
+
+                        if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            selectedIndex = (selectedIndex + 1) % items.length;
+                            updateHighlight(items);
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+                            updateHighlight(items);
+                        } else if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (selectedIndex >= 0 && selectedIndex < items.length) {
+                                selectGlobalFeature(selectedIndex);
+                            } else if (items.length > 0) {
+                                selectGlobalFeature(0);
+                            }
+                        } else if (e.key === 'Escape') {
+                            searchResults.classList.add('hidden');
+                            searchInput.blur();
+                        }
+                    });
+
+                    function updateHighlight(items) {
+                        items.forEach((item, idx) => {
+                            if (idx === selectedIndex) {
+                                item.classList.add('selected');
+                                item.scrollIntoView({ block: 'nearest' });
+                            } else {
+                                item.classList.remove('selected');
+                            }
+                        });
+                    }
+
+                    // Global shortcut Ctrl+K / Cmd+K
+                    document.addEventListener('keydown', function(e) {
+                        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                            e.preventDefault();
+                            searchInput.focus();
+                            searchInput.select();
+                        }
+                    });
+
+                    // Close dropdown on outside click
+                    document.addEventListener('click', function(e) {
+                        if (searchContainer && !searchContainer.contains(e.target)) {
+                            searchResults.classList.add('hidden');
+                        }
+                    });
+                }
+
+                function escapeHtml(str) {
+                    return String(str || '').replace(/[&<>"']/g, function(m) {
+                        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+                    });
+                }
+
+                // Initialize on DOM ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initGlobalFeatureSearch);
+                } else {
+                    initGlobalFeatureSearch();
+                }
 
                 function renderEvaluatedCandidates(evaluations) {
                     const resEl = document.getElementById('screeningResults');
