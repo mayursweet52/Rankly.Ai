@@ -2434,30 +2434,52 @@
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.18);
         }
-        /* ─── DASHBOARD BACKGROUND & SIDEBAR – PURE BLACK MATTE ─── */
-        body.dark-theme {
-            background: #0a0a0f !important;
-            color: #e2e8f0 !important;
+        /* ─── DASHBOARD BACKGROUND & SIDEBAR – MATCHING LOGIN CELLULAR MESH & OBSIDIAN GLOW ─── */
+        body,
+        .rankly-bg,
+        .dash-layout,
+        .dash-main {
+            background-color: #F3F3ED !important;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 1px) !important;
+            background-size: 24px 24px !important;
+            color: #111111;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        body.dark-theme .dash-layout {
-            background: #0a0a0f !important;
+        body.dark-theme,
+        .dark body,
+        body.dark-theme .rankly-bg,
+        body.dark-theme .dash-layout,
+        body.dark-theme .dash-main {
+            background-color: #0B0D14 !important;
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+                radial-gradient(ellipse at 85% 15%, rgba(24, 59, 51, 0.22), transparent 50%),
+                radial-gradient(ellipse at 15% 85%, rgba(36, 62, 54, 0.22), transparent 50%) !important;
+            background-size: 24px 24px, 100% 100%, 100% 100% !important;
+            color: #FFFFFF !important;
+        }
+
+        .dash-topbar {
+            background: rgba(243, 243, 237, 0.85) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+            transition: all 0.3s ease;
         }
 
         body.dark-theme .dash-topbar {
-            background: #0a0a0f !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
-            color: #e2e8f0 !important;
+            background: rgba(11, 13, 20, 0.85) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #FFFFFF !important;
         }
 
         body.dark-theme .dash-topbar h1,
         body.dark-theme .dash-topbar button i {
-            color: #e2e8f0 !important;
-        }
-
-        body.dark-theme .dash-main {
-            background: #0a0a0f !important;
-            min-height: 100vh;
+            color: #FFFFFF !important;
         }
 
         /* ─── SLEEK COMPACT SIDEBAR DOCK (NO RIGHT BORDER LINE) ─── */
@@ -4762,21 +4784,11 @@
                     </div>
 
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <button type="button" onclick="toggleAppTheme()" class="bulb-theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
-                            <svg class="bulb-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke-width="0.7" stroke="currentColor" fill="currentColor" stroke-linecap="round" viewBox="0 0 32 32">
-                                <path stroke-width="0" d="M9.4 9.9c1.8-1.8 4.1-2.7 6.6-2.7 5.1 0 9.3 4.2 9.3 9.3 0 2.3-.8 4.4-2.3 6.1-.7.8-2 2.8-2.5 4.4 0 .2-.2.4-.5.4-.2 0-.4-.2-.4-.5v-.1c.5-1.8 2-3.9 2.7-4.8 1.4-1.5 2.1-3.5 2.1-5.6 0-4.7-3.7-8.5-8.4-8.5-2.3 0-4.4.9-5.9 2.5-1.6 1.6-2.5 3.7-2.5 6 0 2.1.7 4 2.1 5.6.8.9 2.2 2.9 2.7 4.9 0 .2-.1.5-.4.5h-.1c-.2 0-.4-.1-.4-.4-.5-1.7-1.8-3.7-2.5-4.5-1.5-1.7-2.3-3.9-2.3-6.1 0-2.3 1-4.7 2.7-6.5z"/>
-                                <path d="M19.8 28.3h-7.6"/>
-                                <path d="M19.8 29.5h-7.6"/>
-                                <path d="M19.8 30.7h-7.6"/>
-                                <path class="bulb-filament" fill="none" d="M14.6 27.1c0-3.4 0-6.8-.1-10.2-.2-1-1.1-1.7-2-1.7-1.2-.1-2.3 1-2.2 2.3.1 1 .9 1.9 2.1 2h7.2c1.1-.1 2-1 2.1-2 .1-1.2-1-2.3-2.2-2.3-.9 0-1.7.7-2 1.7 0 3.4 0 6.8-.1 10.2"/>
-                                <g class="bulb-rays">
-                                    <path d="M16 6.4V1.3"/>
-                                    <path d="M26.3 15.8h5.1"/>
-                                    <path d="m22.6 9 3.7-3.6"/>
-                                    <path d="M9.4 9 5.7 5.4"/>
-                                    <path d="M5.7 15.8H.6"/>
-                                </g>
-                            </svg>
+                        <!-- Prominent Dark / Light Mode Pill Button on Topbar -->
+                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                            <span class="theme-sun-icon text-amber-500 text-xs"><i class="fa-solid fa-sun"></i></span>
+                            <span class="theme-moon-icon text-indigo-400 text-xs hidden"><i class="fa-solid fa-moon"></i></span>
+                            <span class="theme-text-label text-[11px] font-semibold">Light Mode</span>
                         </button>
                         <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile">
                             <i class="fas fa-user-circle text-xl"></i>
@@ -8924,7 +8936,24 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const btnDark = document.getElementById('themeBtnDark');
                     const themeLabel = document.getElementById('currentThemeLabel');
                     const loginThemeBtn = document.getElementById('loginThemeToggleBtn');
+                    const dashThemeBtn = document.getElementById('dashThemeToggleBtn');
                     const loginPage = document.getElementById('loginPage');
+
+                    const updateToggleBtn = (btn, isDark) => {
+                        if (!btn) return;
+                        const sun = btn.querySelector('.theme-sun-icon');
+                        const moon = btn.querySelector('.theme-moon-icon');
+                        const label = btn.querySelector('.theme-text-label');
+                        if (isDark) {
+                            sun?.classList.add('hidden');
+                            moon?.classList.remove('hidden');
+                            if (label) label.textContent = 'Dark Mode';
+                        } else {
+                            sun?.classList.remove('hidden');
+                            moon?.classList.add('hidden');
+                            if (label) label.textContent = 'Light Mode';
+                        }
+                    };
 
                     if (theme === 'dark') {
                         document.body.classList.add('dark-theme', 'dark');
@@ -8933,12 +8962,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         localStorage.setItem('rankly_theme', 'dark');
                         if (themeLabel) themeLabel.textContent = 'DARK MODE';
 
-                        if (loginThemeBtn) {
-                            loginThemeBtn.querySelector('.theme-sun-icon')?.classList.add('hidden');
-                            loginThemeBtn.querySelector('.theme-moon-icon')?.classList.remove('hidden');
-                            const label = loginThemeBtn.querySelector('.theme-text-label');
-                            if (label) label.textContent = 'Dark Mode';
-                        }
+                        updateToggleBtn(loginThemeBtn, true);
+                        updateToggleBtn(dashThemeBtn, true);
 
                         if (btnDark) {
                             btnDark.className = 'theme-segmented-btn active dark-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
@@ -8960,12 +8985,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         localStorage.setItem('rankly_theme', 'light');
                         if (themeLabel) themeLabel.textContent = 'LIGHT MODE';
 
-                        if (loginThemeBtn) {
-                            loginThemeBtn.querySelector('.theme-sun-icon')?.classList.remove('hidden');
-                            loginThemeBtn.querySelector('.theme-moon-icon')?.classList.add('hidden');
-                            const label = loginThemeBtn.querySelector('.theme-text-label');
-                            if (label) label.textContent = 'Light Mode';
-                        }
+                        updateToggleBtn(loginThemeBtn, false);
+                        updateToggleBtn(dashThemeBtn, false);
 
                         if (btnLight) {
                             btnLight.className = 'theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all';
@@ -8993,17 +9014,31 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 const initialSavedTheme = localStorage.getItem('rankly_theme');
                 const initLoginPage = document.getElementById('loginPage');
                 const initLoginThemeBtn = document.getElementById('loginThemeToggleBtn');
+                const initDashThemeBtn = document.getElementById('dashThemeToggleBtn');
+
+                const syncInitialToggleBtn = (btn, isDark) => {
+                    if (!btn) return;
+                    const sun = btn.querySelector('.theme-sun-icon');
+                    const moon = btn.querySelector('.theme-moon-icon');
+                    const label = btn.querySelector('.theme-text-label');
+                    if (isDark) {
+                        sun?.classList.add('hidden');
+                        moon?.classList.remove('hidden');
+                        if (label) label.textContent = 'Dark Mode';
+                    } else {
+                        sun?.classList.remove('hidden');
+                        moon?.classList.add('hidden');
+                        if (label) label.textContent = 'Light Mode';
+                    }
+                };
 
                 if (initialSavedTheme === 'dark') {
                     document.body.classList.add('dark-theme', 'dark');
                     document.documentElement.classList.add('dark', 'dark-theme');
                     if (initLoginPage) initLoginPage.classList.add('dark-mode');
-                    if (initLoginThemeBtn) {
-                        initLoginThemeBtn.querySelector('.theme-sun-icon')?.classList.add('hidden');
-                        initLoginThemeBtn.querySelector('.theme-moon-icon')?.classList.remove('hidden');
-                        const label = initLoginThemeBtn.querySelector('.theme-text-label');
-                        if (label) label.textContent = 'Dark Mode';
-                    }
+                    syncInitialToggleBtn(initLoginThemeBtn, true);
+                    syncInitialToggleBtn(initDashThemeBtn, true);
+
                     const themeLabel = document.getElementById('currentThemeLabel');
                     if (themeLabel) themeLabel.textContent = 'DARK MODE';
                     const btnDark = document.getElementById('themeBtnDark');
@@ -9022,12 +9057,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     document.body.classList.remove('dark-theme', 'dark');
                     document.documentElement.classList.remove('dark', 'dark-theme');
                     if (initLoginPage) initLoginPage.classList.remove('dark-mode');
-                    if (initLoginThemeBtn) {
-                        initLoginThemeBtn.querySelector('.theme-sun-icon')?.classList.remove('hidden');
-                        initLoginThemeBtn.querySelector('.theme-moon-icon')?.classList.add('hidden');
-                        const label = initLoginThemeBtn.querySelector('.theme-text-label');
-                        if (label) label.textContent = 'Light Mode';
-                    }
+                    syncInitialToggleBtn(initLoginThemeBtn, false);
+                    syncInitialToggleBtn(initDashThemeBtn, false);
+
                     const btnDark = document.getElementById('themeBtnDark');
                     const btnLight = document.getElementById('themeBtnLight');
                     if (btnLight) {
