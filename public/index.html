@@ -3701,23 +3701,45 @@
                                 </div>
                             </div>
 
-                            <!-- Form Panel 1: Registration Form -->
+                            <!-- Form Panel 1: Normal User Registration Form -->
                             <div class="form-panel form-register" id="formRegister">
-                                <h2 class="auth-form-title">Create Account</h2>
+                                <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-2">Create Account</h2>
+                                <p class="text-xs text-[#666660] dark:text-gray-400 mb-3 text-center">Join Rankly.ai for next-gen AI resume screening and job matching.</p>
                                 <form id="slidingRegisterForm" class="w-full">
                                     <div class="auth-input-stack">
-                                        <input type="text" id="slideRegName" placeholder="Full name" required />
-                                        <input type="email" id="slideRegEmail" placeholder="Email address (@gmail.com)" required />
-                                        <div class="password-toggle w-full">
-                                            <input type="password" id="slideRegPassword" placeholder="Password (min 6 chars)" required />
-                                            <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                        <div class="flex gap-2">
+                                            <div class="flex-1">
+                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">First Name *</label>
+                                                <input type="text" id="slideRegFirstName" class="login-input" placeholder="First Name" required />
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Last Name</label>
+                                                <input type="text" id="slideRegLastName" class="login-input" placeholder="Last Name" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address (@gmail.com) *</label>
+                                            <input type="email" id="slideRegEmail" class="login-input" placeholder="alex@gmail.com" required />
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password *</label>
+                                            <div class="password-toggle w-full">
+                                                <input type="password" id="slideRegPassword" class="login-input" placeholder="Create password (min 6 chars)" required />
+                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="auth-btn-main">SIGN UP</button>
+
+                                    <div class="my-2.5 text-[11px] text-[#666660] dark:text-gray-400 flex items-center gap-1.5 select-none">
+                                        <input type="checkbox" id="regTermsCheck" checked required class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
+                                        <span>I accept the <a href="/terms" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Terms</a> & <a href="/privacy" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Privacy Policy</a></span>
+                                    </div>
+
+                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main">CREATE ACCOUNT</button>
 
                                     <div class="auth-divider-line"><span>OR</span></div>
 
-                                    <button type="button" class="oauth-google-btn" onclick="oauthLogin('Google')">
+                                    <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google')">
                                         <svg width="18" height="18" viewBox="0 0 24 24">
                                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -3727,8 +3749,8 @@
                                         <span>Sign up with Google</span>
                                     </button>
 
-                                    <div class="mt-2 text-center">
-                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Already have account? <strong>Log in</strong></button>
+                                    <div class="mt-2.5 text-center">
+                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400">Already have an account? <strong class="text-indigo-600 dark:text-indigo-400">Sign In</strong></button>
                                     </div>
                                 </form>
                             </div>
@@ -3797,7 +3819,7 @@
                                         <div class="mt-3 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
                                             <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400 md:hidden">Sign up</button>
                                             <!-- Switch to Company Full Card 3D Flip -->
-                                            <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto">Register Organization 🏢 →</button>
+                                            <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto">Company Portal 🏢 →</button>
                                         </div>
                                     </form>
                                 </div>
@@ -3826,115 +3848,183 @@
                         </div>
                     </div>
 
-                    <!-- BACK SIDE: Full Enterprise Organization Registration Workspace Card -->
+                    <!-- BACK SIDE: Full Enterprise Organization Workspace Portal (Sign In & Register) -->
                     <div class="auth-card-back">
-                        <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-[var(--border-color)]">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-sm">
-                                        <i class="fa-solid fa-building"></i>
-                                    </span>
-                                    <h2 class="auth-form-title text-xl text-indigo-600 dark:text-indigo-400 font-bold mb-0">Register Organization</h2>
+                        <!-- Top Header with Back to User Login -->
+                        <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-[var(--border-color)]">
+                            <div class="flex items-center gap-2">
+                                <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-sm">
+                                    <i class="fa-solid fa-building-user"></i>
+                                </span>
+                                <div>
+                                    <h2 class="auth-form-title text-lg text-indigo-600 dark:text-indigo-400 font-bold mb-0">Enterprise Portal</h2>
+                                    <p class="text-[11px] text-[var(--text-muted)] mb-0">Corporate recruitment workspace management</p>
                                 </div>
-                                <p class="text-xs text-[var(--text-muted)] mt-1 mb-0">Provision an enterprise recruitment workspace & verify administrative credentials.</p>
                             </div>
                             <button type="button" id="backToLogin" onclick="flipEntireAuthCard(false)" class="text-xs font-semibold text-[var(--text-muted)] hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-input)] cursor-pointer transition-all">
                                 <i class="fa-solid fa-arrow-left text-[11px]"></i> User Login
                             </button>
                         </div>
 
-                        <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
-                            <!-- Corporate Email & OTP Verification Box (Full Width) -->
-                            <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3.5 mb-3.5">
-                                <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
-                                <div class="flex gap-2 mb-2.5">
-                                    <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
-                                    <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-indigo-500 transition-all whitespace-nowrap">
-                                        Send OTP
-                                    </button>
-                                </div>
+                        <!-- Segmented Switcher for Organization: [Sign In] vs [Register New Workspace] -->
+                        <div class="flex p-1 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl mb-3.5">
+                            <button type="button" id="orgTabLoginBtn" onclick="switchOrgPortalTab('login')" class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[var(--bg-card)] text-indigo-600 dark:text-indigo-400 shadow-xs">
+                                🏢 Organization Sign In
+                            </button>
+                            <button type="button" id="orgTabRegBtn" onclick="switchOrgPortalTab('register')" class="flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]">
+                                ✨ Register Workspace
+                            </button>
+                        </div>
 
-                                <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
-                                <div class="flex gap-2">
-                                    <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
-                                    <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-all whitespace-nowrap shadow-xs">
-                                        Verify OTP
-                                    </button>
-                                </div>
-
-                                <div id="orgSecurityBanner" class="mt-2.5 p-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-2 text-[11.5px] text-[var(--text-muted)]">
-                                    <i class="fa-solid fa-shield-halved text-amber-500"></i>
-                                    <span>Security verification required to unlock profile registration fields.</span>
-                                </div>
+                        <!-- VIEW 1: Organization Sign In Form -->
+                        <div id="orgPortalLoginView" class="w-full">
+                            <div class="mb-3">
+                                <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Workspace Sign In</h3>
+                                <p class="text-xs text-[var(--text-muted)]">Sign in with your corporate email/username and master admin credentials.</p>
                             </div>
-
-                            <!-- 2-Column Responsive Grid for Organization Profile Fields -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                                <div class="md:col-span-2">
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
-                                    <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
-                                    <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
-                                </div>
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
-                                    <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
-                                    <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
-                                    <select id="orgRole" class="login-select">
-                                        <option value="admin">Administrator / Lead</option>
-                                        <option value="hr" selected>HR / Recruiter</option>
-                                        <option value="hiring_manager">Hiring Manager</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
-                                    <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
-                                    <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
-                                </div>
-
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
-                                    <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
-                                        <span class="px-3 py-2 text-xs font-bold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 IN +91</span>
-                                        <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)] font-medium" maxlength="10" placeholder="10-digit number" required type="tel" />
+                            <form id="orgLoginForm" class="w-full" onsubmit="event.preventDefault(); handleOrgLogin();">
+                                <div class="auth-input-stack mb-3">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email / Username *</label>
+                                        <input id="orgLoginIdentifier" class="login-input" placeholder="admin@company.com or username" required type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Password *</label>
+                                        <div class="password-toggle w-full">
+                                            <input id="orgLoginPassword" class="login-input" placeholder="••••••••••••" required type="password" />
+                                            <button class="toggle-eye" onclick="togglePassword('orgLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Workspace Role</label>
+                                        <select id="orgLoginRole" class="login-select">
+                                            <option value="admin">Administrator / Lead</option>
+                                            <option value="hr" selected>HR Recruiter / Talent Lead</option>
+                                            <option value="hiring_manager">Hiring Manager</option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
-                                    <div class="password-toggle w-full">
-                                        <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
-                                        <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                <div class="flex justify-between items-center w-full my-2.5 text-xs">
+                                    <label class="flex items-center gap-1.5 cursor-pointer text-[#666660] dark:text-gray-400 select-none">
+                                        <input type="checkbox" id="orgRememberMe" checked class="rounded border-[#E5E5DF] text-indigo-600 focus:ring-0 cursor-pointer" />
+                                        <span>Remember workspace session</span>
+                                    </label>
+                                    <button type="button" onclick="toggleInlineForgotPassword(true); flipEntireAuthCard(false);" class="forgot-link">Reset Password?</button>
+                                </div>
+
+                                <button type="submit" id="orgLoginSubmitBtn" class="w-full login-btn auth-btn-main py-2.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700">
+                                    SIGN IN TO WORKSPACE
+                                </button>
+
+                                <div class="mt-3.5 pt-2.5 border-t border-[var(--border-color)] text-center">
+                                    <span class="text-xs text-[var(--text-muted)]">Don't have an enterprise workspace? </span>
+                                    <button type="button" onclick="switchOrgPortalTab('register')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                        Register New Organization →
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- VIEW 2: Organization Registration Form -->
+                        <div id="orgPortalRegisterView" class="w-full hidden">
+                            <div class="mb-3">
+                                <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Register Organization Workspace</h3>
+                                <p class="text-xs text-[var(--text-muted)]">Verify corporate email to provision a secure AI recruitment environment.</p>
+                            </div>
+                            <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
+                                <!-- Corporate Email & OTP Verification Box (Full Width) -->
+                                <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3.5 mb-3.5">
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
+                                    <div class="flex gap-2 mb-2.5">
+                                        <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
+                                        <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-indigo-500 transition-all whitespace-nowrap">
+                                            Send OTP
+                                        </button>
+                                    </div>
+
+                                    <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
+                                    <div class="flex gap-2">
+                                        <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
+                                        <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-all whitespace-nowrap shadow-xs">
+                                            Verify OTP
+                                        </button>
+                                    </div>
+
+                                    <div id="orgSecurityBanner" class="mt-2.5 p-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-2 text-[11.5px] text-[var(--text-muted)]">
+                                        <i class="fa-solid fa-shield-halved text-amber-500"></i>
+                                        <span>Security verification required to unlock profile registration fields.</span>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Submit Button & Flip Back Button -->
-                            <div class="flex items-center gap-3">
-                                <button type="button" onclick="flipEntireAuthCard(false)" class="px-4 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
-                                    Cancel
-                                </button>
-                                <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main py-2.5 text-xs font-bold">
-                                    Complete Organization Registration
-                                </button>
-                            </div>
-                        </form>
+                                <!-- 2-Column Responsive Grid for Organization Profile Fields -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                    <div class="md:col-span-2">
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
+                                        <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
+                                        <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
+                                        <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
+                                        <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
+                                        <select id="orgRole" class="login-select">
+                                            <option value="admin">Administrator / Lead</option>
+                                            <option value="hr" selected>HR / Recruiter</option>
+                                            <option value="hiring_manager">Hiring Manager</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
+                                        <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
+                                        <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
+                                        <div class="flex items-center border border-[var(--border-color)] rounded-xl bg-[var(--bg-input)] overflow-hidden">
+                                            <span class="px-3 py-2 text-xs font-bold border-r border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-muted)] whitespace-nowrap">🇮🇳 IN +91</span>
+                                            <input id="orgPhone" class="flex-1 bg-transparent border-0 px-2.5 py-2 text-xs outline-none text-[var(--text-primary)] font-medium" maxlength="10" placeholder="10-digit number" required type="tel" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
+                                        <div class="password-toggle w-full">
+                                            <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
+                                            <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button & Switcher -->
+                                <div class="flex items-center gap-3">
+                                    <button type="button" onclick="switchOrgPortalTab('login')" class="px-4 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
+                                        Back to Sign In
+                                    </button>
+                                    <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main py-2.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700">
+                                        COMPLETE REGISTRATION
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
@@ -7511,23 +7601,26 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     });
                 }
 
-                // ─── SIGNUP FORM SUBMIT HANDLER ───
+                // ─── USER SIGNUP FORM SUBMIT HANDLER ───
                 const slidingRegisterForm = document.getElementById('slidingRegisterForm');
                 if (slidingRegisterForm) {
                     slidingRegisterForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
-                        const fullName = document.getElementById('slideRegName')?.value.trim();
+                        const firstName = (document.getElementById('slideRegFirstName')?.value || document.getElementById('slideRegName')?.value || '').trim();
+                        const lastName = (document.getElementById('slideRegLastName')?.value || '').trim();
                         const email = document.getElementById('slideRegEmail')?.value.trim();
                         const password = document.getElementById('slideRegPassword')?.value.trim();
+                        const termsChecked = document.getElementById('regTermsCheck')?.checked;
 
-                        if (!fullName || !email || !password) {
-                            showToast('Please fill all fields', 'error');
+                        if (!firstName || !email || !password) {
+                            showToast('Please fill all required fields', 'error');
                             return;
                         }
 
-                        const nameParts = fullName.split(' ');
-                        const firstName = nameParts[0];
-                        const lastName = nameParts.slice(1).join(' ') || '';
+                        if (password.length < 6) {
+                            showToast('Password must be at least 6 characters', 'error');
+                            return;
+                        }
 
                         try {
                             const res = await fetch('/api/auth/register', {
@@ -7542,8 +7635,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                     username: email.split('@')[0],
                                     email,
                                     password,
-                                    role: 'normal_user',
-                                    accountType: 'normal_user',
+                                    role: 'candidate',
+                                    accountType: 'candidate',
                                     isEmployee: false
                                 })
                             });
@@ -7555,13 +7648,88 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            showToast('Account created successfully 🎉', 'success');
+                            if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
+                            showToast('Welcome to Rankly.ai! 🎉 Account created successfully', 'success');
                             loginUser();
                         } catch (err) {
                             showToast('Server connection error', 'error');
                         }
                     });
                 }
+
+                // ─── ENTERPRISE PORTAL TAB SWITCHER ───
+                window.switchOrgPortalTab = function(tab) {
+                    const loginView = document.getElementById('orgPortalLoginView');
+                    const regView = document.getElementById('orgPortalRegisterView');
+                    const tabLoginBtn = document.getElementById('orgTabLoginBtn');
+                    const tabRegBtn = document.getElementById('orgTabRegBtn');
+
+                    if (!loginView || !regView) return;
+
+                    if (tab === 'register') {
+                        loginView.classList.add('hidden');
+                        regView.classList.remove('hidden');
+                        if (tabRegBtn) {
+                            tabRegBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[var(--bg-card)] text-indigo-600 dark:text-indigo-400 shadow-xs';
+                        }
+                        if (tabLoginBtn) {
+                            tabLoginBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]';
+                        }
+                    } else {
+                        regView.classList.add('hidden');
+                        loginView.classList.remove('hidden');
+                        if (tabLoginBtn) {
+                            tabLoginBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[var(--bg-card)] text-indigo-600 dark:text-indigo-400 shadow-xs';
+                        }
+                        if (tabRegBtn) {
+                            tabRegBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]';
+                        }
+                    }
+                };
+
+                // ─── ENTERPRISE / ORGANIZATION LOGIN SUBMIT HANDLER ───
+                window.handleOrgLogin = async function() {
+                    const identifier = document.getElementById('orgLoginIdentifier')?.value.trim();
+                    const password = document.getElementById('orgLoginPassword')?.value.trim();
+                    const role = document.getElementById('orgLoginRole')?.value || 'hr';
+                    const rememberMe = document.getElementById('orgRememberMe')?.checked ?? true;
+
+                    if (!identifier || !password) {
+                        showToast('Please enter corporate credentials', 'error');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                identifier,
+                                email: identifier,
+                                password,
+                                role,
+                                isEmployee: true,
+                                rememberMe
+                            })
+                        });
+                        const data = await res.json();
+                        if (!res.ok || !data.success) {
+                            showToast(data.message || data.error || 'Invalid corporate credentials', 'error');
+                            return;
+                        }
+                        currentUser = data.user;
+                        sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                        if (rememberMe) {
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                        }
+                        if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
+                        showToast('🏢 Enterprise Workspace Authenticated! Welcome, ' + (currentUser.firstName || 'Admin'), 'success');
+                        loginUser();
+                    } catch (err) {
+                        showToast('Server connection error', 'error');
+                    }
+                };
 
                 // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
                 window.handleSendOrgOtp = function() {
