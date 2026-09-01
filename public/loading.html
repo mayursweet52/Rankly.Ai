@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rankly.Ai | Loading</title>
+    <title>Rankly.Ai | Liquid Glass Loading</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -16,18 +16,16 @@
         }
 
         :root {
-            /* ─── Ultra-Vibrant Multi-Dimensional Cyber Palette ─── */
-            --bg-page: #090B10;
-            --text-main: #FFFFFF;
-            --c-violet: #8B5CF6;
-            --c-indigo: #6366F1;
-            --c-cyan: #06B6D4;
-            --c-emerald: #10B981;
-            --c-coral: #F43F5E;
-            --card-bg: rgba(15, 18, 28, 0.75);
-            --card-border: rgba(139, 92, 246, 0.25);
-            --glow-primary: rgba(139, 92, 246, 0.5);
-            --glow-cyan: rgba(6, 182, 212, 0.6);
+            --bg-page: #080A10;
+            --tile-border: rgba(255, 255, 255, 0.16);
+            --tile-bg: rgba(255, 255, 255, 0.04);
+            --tile-inset-glow: rgba(255, 255, 255, 0.3);
+            --brand-emerald: #183B33;
+            --brand-teal: #5B998C;
+            --brand-mint: #81E4DA;
+            --brand-cyan: #06B6D4;
+            --brand-violet: #8B5CF6;
+            --brand-magenta: #EC4899;
         }
 
         body {
@@ -45,171 +43,203 @@
             position: relative;
         }
 
-        /* Dual Ambient Neon Aurora Glows */
-        .ambient-glow-1 {
+        /* ─── FIGMA STEP 4: GLOW BACKGROUND BEHIND THE GRID ─── */
+        .glow-background-container {
             position: absolute;
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 70%);
-            border-radius: 50%;
-            top: 20%;
-            left: 30%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 450px;
             pointer-events: none;
-            filter: blur(60px);
-            animation: pulseAurora 6s ease-in-out infinite alternate;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .ambient-glow-2 {
+        /* Large Blurred Radial Gradient Glow Orbs (As taught in Step 4) */
+        .glow-orb-center {
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(16, 185, 129, 0.1) 40%, transparent 70%);
+            width: 320px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.7) 0%, rgba(236, 72, 153, 0.45) 45%, rgba(6, 182, 212, 0.25) 70%, transparent 85%);
+            filter: blur(55px);
             border-radius: 50%;
-            bottom: 20%;
-            right: 30%;
-            pointer-events: none;
-            filter: blur(60px);
-            animation: pulseAurora2 7s ease-in-out infinite alternate;
+            animation: pulseCenterOrb 4s ease-in-out infinite alternate;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        @keyframes pulseAurora {
-            0% { transform: translate(-10%, -10%) scale(0.9); opacity: 0.6; }
-            100% { transform: translate(10%, 10%) scale(1.15); opacity: 1; }
+        .glow-orb-teal {
+            position: absolute;
+            width: 260px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(129, 228, 218, 0.65) 0%, rgba(91, 153, 140, 0.4) 50%, transparent 75%);
+            filter: blur(48px);
+            border-radius: 50%;
+            transform: translate(60px, -20px);
+            animation: floatTealOrb 5s ease-in-out infinite alternate;
         }
 
-        @keyframes pulseAurora2 {
-            0% { transform: translate(10%, 10%) scale(0.9); opacity: 0.5; }
-            100% { transform: translate(-10%, -10%) scale(1.2); opacity: 0.95; }
+        @keyframes pulseCenterOrb {
+            0% { transform: scale(0.88); opacity: 0.7; }
+            100% { transform: scale(1.18); opacity: 1; }
         }
 
-        /* Glassmorphic Loader Container */
-        .loader-card {
+        @keyframes floatTealOrb {
+            0% { transform: translate(40px, -20px) scale(0.9); }
+            100% { transform: translate(-40px, 20px) scale(1.15); }
+        }
+
+        /* ─── MAIN STAGE CONTAINER ─── */
+        .stage-container {
             position: relative;
             z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 44px 54px;
-            background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--card-border);
-            border-radius: 36px;
+            gap: 28px;
+            padding: 24px;
+        }
+
+        /* Glassmorphic Panel housing the Liquid Glass Grid */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            padding: 28px 34px;
             box-shadow: 
-                0 30px 60px -15px rgba(0, 0, 0, 0.6),
-                0 0 40px -10px rgba(139, 92, 246, 0.2),
-                inset 0 1px 2px rgba(255, 255, 255, 0.15);
-            gap: 22px;
-            animation: cardFloat 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes cardFloat {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-10px); }
-        }
-
-        /* ─── ANIMATED "R" LOTTIE / MOTION GRAPHIC ─── */
-        .r-anim-wrapper {
+                0 30px 60px -15px rgba(0, 0, 0, 0.7),
+                0 0 40px -10px rgba(139, 92, 246, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
             position: relative;
-            width: 145px;
-            height: 145px;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* Outer Orbiting Dashed Energy Ring */
-        .energy-ring {
-            position: absolute;
-            inset: -10px;
-            border-radius: 50%;
-            border: 2px dashed rgba(139, 92, 246, 0.4);
-            animation: rotateRing 14s linear infinite;
+        /* ─── FIGMA STEP 2 & 3: LIQUID GLASS TILE STYLING ─── */
+        .tiles-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        @keyframes rotateRing {
-            to { transform: rotate(360deg); }
+        .tile-row {
+            display: flex;
+            gap: 6.5px;
+            justify-content: center;
         }
 
-        /* Outer Glowing Neon Dual Arc */
-        .energy-arc {
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--c-cyan);
-            border-right-color: var(--c-violet);
-            border-bottom-color: var(--c-emerald);
-            filter: drop-shadow(0 0 12px var(--glow-cyan));
-            animation: rotateArc 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        /* Single Liquid Glass Tile (As in Step 2: 120x120 scaled, radius, stroke, shadow, blur) */
+        .liquid-tile {
+            width: 14px;
+            height: 14px;
+            border-radius: 4.5px;
+            background: var(--tile-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--tile-border);
+            box-shadow: 
+                0 4px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 1.5px var(--tile-inset-glow);
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            will-change: transform, background, box-shadow;
         }
 
-        @keyframes rotateArc {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* ─── LIQUID GLASS ACTIVE LETTER STATES ─── */
+
+        /* Active Letter Tile: Deep Forest Emerald with Violet-Teal Glass Core */
+        .liquid-tile.tile-active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.85) 0%, rgba(24, 59, 51, 0.95) 60%, rgba(91, 153, 140, 0.9) 100%) !important;
+            border-color: rgba(255, 255, 255, 0.65) !important;
+            box-shadow: 
+                0 0 16px rgba(139, 92, 246, 0.65),
+                0 4px 12px rgba(0, 0, 0, 0.4),
+                inset 0 1.5px 2px rgba(255, 255, 255, 0.75) !important;
+            transform: scale(1.08);
+            opacity: 1 !important;
         }
 
-        /* Animated SVG Vector */
-        .r-svg-icon {
-            width: 115px;
-            height: 115px;
-            filter: drop-shadow(0 10px 25px rgba(139, 92, 246, 0.35));
-            animation: rHeartbeat 2.6s ease-in-out infinite;
+        /* Highlight Tile (.Ai and R accent): Glowing Mint-Cyan Neon Liquid Glass */
+        .liquid-tile.tile-highlight {
+            background: linear-gradient(135deg, rgba(129, 228, 218, 0.95) 0%, rgba(6, 182, 212, 0.9) 50%, rgba(236, 72, 153, 0.85) 100%) !important;
+            border-color: rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 
+                0 0 22px rgba(129, 228, 218, 0.85),
+                0 4px 14px rgba(6, 182, 212, 0.5),
+                inset 0 1.5px 2px rgba(255, 255, 255, 0.95) !important;
+            transform: scale(1.16);
+            opacity: 1 !important;
         }
 
-        @keyframes rHeartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.06); filter: drop-shadow(0 14px 30px rgba(6, 182, 212, 0.55)); }
+        /* Dynamic Laser Writing Pop Effect */
+        .liquid-tile.tile-pop {
+            transform: scale(1.55) !important;
+            background: linear-gradient(135deg, #FFFFFF 0%, #81E4DA 60%, #8B5CF6 100%) !important;
+            border-color: #FFFFFF !important;
+            box-shadow: 0 0 24px rgba(129, 228, 218, 1), 0 0 40px rgba(139, 92, 246, 0.8) !important;
+            z-index: 20;
         }
 
-        /* Animated Stroke Dashoffset Lines */
-        .r-stroke-main {
-            stroke-dasharray: 260;
-            stroke-dashoffset: 260;
-            animation: drawR 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        /* Liquid Wave Ripple Pulse */
+        .liquid-tile.tile-wave {
+            transform: scale(1.4) !important;
+            background: linear-gradient(135deg, #81E4DA 0%, #00FFCC 100%) !important;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.9) !important;
+            z-index: 15;
         }
 
-        .r-stroke-loop {
-            stroke-dasharray: 200;
-            stroke-dashoffset: 200;
-            animation: drawLoop 3s cubic-bezier(0.4, 0, 0.2, 1) 0.35s infinite alternate;
+        /* Inactive Subtle Shimmer */
+        .liquid-tile.tile-shimmer {
+            opacity: 0.3 !important;
+            transform: scale(0.92);
         }
 
-        .r-stroke-leg {
-            stroke-dasharray: 120;
-            stroke-dashoffset: 120;
-            animation: drawLeg 3s cubic-bezier(0.4, 0, 0.2, 1) 0.7s infinite alternate;
+        /* Hover Interaction */
+        .liquid-tile:hover {
+            transform: scale(1.6) !important;
+            background: linear-gradient(135deg, #81E4DA 0%, #8B5CF6 100%) !important;
+            box-shadow: 0 0 20px rgba(129, 228, 218, 1) !important;
+            z-index: 30;
         }
 
-        @keyframes drawR {
-            0% { stroke-dashoffset: 260; }
-            55%, 100% { stroke-dashoffset: 0; }
+        /* ─── BRAND TYPOGRAPHY & SMOOTHIE PROGRESS LOADER ─── */
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            animation: fadeInBrand 1s ease-out forwards;
         }
 
-        @keyframes drawLoop {
-            0% { stroke-dashoffset: 200; }
-            55%, 100% { stroke-dashoffset: 0; }
+        @keyframes fadeInBrand {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes drawLeg {
-            0% { stroke-dashoffset: 120; }
-            55%, 100% { stroke-dashoffset: 0; }
-        }
-
-        /* ─── BRAND TYPOGRAPHY & LOADING PROGRESS ─── */
-        .brand-name {
-            font-size: 28px;
+        .brand-title {
+            font-size: 26px;
             font-weight: 900;
             letter-spacing: -0.03em;
             color: #FFFFFF;
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 3px;
         }
 
-        .brand-name .text-gradient {
-            background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 30%, #67E8F9 70%, #6EE7B7 100%);
+        .brand-title .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 35%, #81E4DA 70%, #6EE7B7 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -221,170 +251,363 @@
         }
 
         .badge-ai {
-            background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+            background: linear-gradient(135deg, #183B33 0%, #5B998C 60%, #81E4DA 100%);
             color: #FFFFFF;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
-            padding: 2.5px 8px;
-            border-radius: 7px;
-            margin-left: 6px;
+            padding: 2px 7.5px;
+            border-radius: 6px;
+            margin-left: 5px;
             font-family: 'JetBrains Mono', monospace;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
-            animation: badgePulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes badgePulse {
-            0% { box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3); transform: scale(1); }
-            100% { box-shadow: 0 4px 18px rgba(6, 182, 212, 0.6); transform: scale(1.04); }
+            border: 1px solid rgba(129, 228, 218, 0.4);
+            box-shadow: 0 2px 10px rgba(91, 153, 140, 0.35);
         }
 
         /* Status Ticker */
         .status-row {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 8px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
             color: #94A3B8;
             letter-spacing: 0.04em;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--c-cyan);
+        .status-pulse-dot {
+            width: 7.5px;
+            height: 7.5px;
+            background-color: var(--brand-mint);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--c-cyan);
-            animation: blinkStatus 1.2s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px var(--brand-mint);
+            animation: blinkDot 1.2s ease-in-out infinite alternate;
         }
 
-        @keyframes blinkStatus {
+        @keyframes blinkDot {
             0% { opacity: 0.3; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1.25); }
         }
 
-        /* Sleek Loading Progress Beam */
+        /* Liquid Glass Smoothie Progress Beam */
         .progress-track {
-            width: 220px;
+            width: 240px;
             height: 4.5px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .progress-bar {
             height: 100%;
             width: 35%;
-            background: linear-gradient(90deg, #8B5CF6 0%, #06B6D4 50%, #10B981 100%);
+            background: linear-gradient(90deg, var(--brand-violet) 0%, var(--brand-mint) 50%, var(--brand-cyan) 100%);
             border-radius: 10px;
             position: absolute;
-            animation: travelProgress 2.2s ease-in-out infinite;
-            box-shadow: 0 0 12px rgba(6, 182, 212, 0.9);
+            animation: travelSmoothie 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: 0 0 12px rgba(129, 228, 218, 0.9);
         }
 
-        @keyframes travelProgress {
+        @keyframes travelSmoothie {
             0% { left: -40%; width: 25%; }
             50% { left: 35%; width: 45%; }
             100% { left: 110%; width: 25%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            .liquid-tile {
+                width: 10.5px;
+                height: 10.5px;
+                border-radius: 3.5px;
+            }
+            .tiles-grid {
+                gap: 5px;
+            }
+            .tile-row {
+                gap: 4.5px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .liquid-tile {
+                width: 6.5px;
+                height: 6.5px;
+                border-radius: 2px;
+            }
+            .tiles-grid {
+                gap: 3.5px;
+            }
+            .tile-row {
+                gap: 3px;
+            }
+            .glass-panel {
+                padding: 16px 14px;
+            }
+            .progress-track {
+                width: 180px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-glow-1"></div>
-    <div class="ambient-glow-2"></div>
+    <!-- FIGMA STEP 4: Glow Layers Placed Below The Grid -->
+    <div class="glow-background-container">
+        <div class="glow-orb-center" id="glowCenterOrb"></div>
+        <div class="glow-orb-teal"></div>
+    </div>
 
-    <div class="loader-card">
-        <!-- Iconic Letter "R" Motion Graphic -->
-        <div class="r-anim-wrapper">
-            <div class="energy-ring"></div>
-            <div class="energy-arc"></div>
-
-            <svg class="r-svg-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="rGradMain" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#C084FC"/>
-                        <stop offset="35%" stop-color="#8B5CF6"/>
-                        <stop offset="70%" stop-color="#6366F1"/>
-                        <stop offset="100%" stop-color="#06B6D4"/>
-                    </linearGradient>
-
-                    <linearGradient id="rGradCoral" x1="30" y1="40" x2="80" y2="85" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#38BDF8"/>
-                        <stop offset="50%" stop-color="#06B6D4"/>
-                        <stop offset="100%" stop-color="#10B981"/>
-                    </linearGradient>
-
-                    <linearGradient id="rGradCard" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#1E1B4B" stop-opacity="0.6"/>
-                        <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
-                    </linearGradient>
-
-                    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
-                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                    </filter>
-                </defs>
-
-                <!-- Base Card -->
-                <rect x="8" y="8" width="84" height="84" rx="24" fill="url(#rGradCard)" stroke="url(#rGradMain)" stroke-width="1.8" stroke-opacity="0.5"/>
-
-                <!-- Left Spine Path -->
-                <path class="r-stroke-main" d="M34 24V76" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
-
-                <!-- Upper Loop Path -->
-                <path class="r-stroke-loop" d="M34 28H54C62.8 28 69 34.2 69 43C69 51.8 62.8 58 54 58H34" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
-
-                <!-- Diagonal Kick Leg -->
-                <path class="r-stroke-leg" d="M48 57L67 76" stroke="url(#rGradCoral)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
-
-                <!-- Floating Gem Particle -->
-                <circle cx="72" cy="24" r="4" fill="#06B6D4" filter="url(#glowFilter)">
-                    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-                    <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
-                </circle>
-
-                <!-- Inner Core Accent Dot -->
-                <circle cx="54" cy="43" r="4.5" fill="#FFFFFF" opacity="0.9" filter="url(#glowFilter)"/>
-            </svg>
+    <div class="stage-container">
+        <!-- FIGMA STEP 3: Liquid Glass Panel with Refractive Tiles Grid -->
+        <div class="glass-panel" id="glassPanel">
+            <div class="tiles-grid" id="tilesGrid"></div>
         </div>
 
-        <!-- Typography & Progress Indicator -->
-        <div class="brand-name">
-            <span class="text-gradient">Rankly</span><span class="badge-ai">Ai</span>
-        </div>
+        <!-- Typography & Smoothie Progress Indicator -->
+        <div class="brand-section">
+            <div class="brand-title">
+                <span class="text-gradient">Rankly</span><span class="badge-ai">Ai</span>
+            </div>
 
-        <div class="status-row">
-            <div class="status-dot"></div>
-            <span id="loadingStatus">INITIALIZING RECRUITMENT INTELLIGENCE...</span>
-        </div>
+            <div class="status-row">
+                <div class="status-pulse-dot"></div>
+                <span id="loadingStatusText">INITIALIZING RECRUITMENT INTELLIGENCE...</span>
+            </div>
 
-        <div class="progress-track">
-            <div class="progress-bar"></div>
+            <div class="progress-track">
+                <div class="progress-bar"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        const statusMsgs = [
+        // ─── FULL 7-ROW PATTERNS ───
+        
+        // Pattern 1: Iconic Centered Large "R" (Opening Phase)
+        const patternR = [
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,1,1,1,1,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,0,0,0,1, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,0,0,0,1, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,1,1,1,1,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,1,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,0,1,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,0,0,1,2, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 1,0,0,0,0,1, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0]
+        ];
+
+        // Pattern 2: Full "RANKLY.AI" Letter-by-Letter Matrix
+        const patternFull = [
+            // Top Padding Row
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
+            // R A N K L Y . A I - Row 1
+            [0, 1,1,1,1,0, 0, 0,1,1,1,0, 0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,0,0, 0, 1,0,0,0,1, 0, 0,0, 0, 0,2,2,2,0, 0, 2,2,2, 0],
+            // Row 2
+            [0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,1,0,0,1, 0, 1,0,0,1,0, 0, 1,0,0,0, 0, 1,0,0,0,1, 0, 0,0, 0, 2,0,0,0,2, 0, 0,2,0, 0],
+            // Row 3
+            [0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,1,0,1, 0, 1,0,1,0,0, 0, 1,0,0,0, 0, 0,1,0,1,0, 0, 0,0, 0, 2,0,0,0,2, 0, 0,2,0, 0],
+            // Row 4
+            [0, 1,1,1,1,0, 0, 1,1,1,1,1, 0, 1,0,0,1,1, 0, 1,1,0,0,0, 0, 1,0,0,0, 0, 0,0,1,0,0, 0, 0,0, 0, 2,2,2,2,2, 0, 0,2,0, 0],
+            // Row 5
+            [0, 1,0,1,0,0, 0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,1,0,0, 0, 1,0,0,0, 0, 0,0,1,0,0, 0, 0,0, 0, 2,0,0,0,2, 0, 0,2,0, 0],
+            // Row 6
+            [0, 1,0,0,1,0, 0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,0,1,0, 0, 1,0,0,0, 0, 0,0,1,0,0, 0, 2,2, 0, 2,0,0,0,2, 0, 0,2,0, 0],
+            // Row 7
+            [0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,0,0,0,1, 0, 1,1,1,1, 0, 0,0,1,0,0, 0, 2,2, 0, 2,0,0,0,2, 0, 2,2,2, 0],
+            // Bottom Padding Row
+            [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0]
+        ];
+
+        const gridElement = document.getElementById('tilesGrid');
+        const glassPanel = document.getElementById('glassPanel');
+        const centerOrb = document.getElementById('glowCenterOrb');
+        const tilesMatrix = [];
+
+        const totalCols = patternFull[0].length;
+        const totalRows = patternFull.length;
+
+        // Build Liquid Glass Grid Tiles
+        function createLiquidGlassGrid() {
+            gridElement.innerHTML = '';
+            for (let r = 0; r < totalRows; r++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'tile-row';
+                tilesMatrix[r] = [];
+
+                for (let c = 0; c < totalCols; c++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'liquid-tile';
+                    tile.dataset.row = r;
+                    tile.dataset.col = c;
+
+                    // Mouse interactive refraction
+                    tile.addEventListener('mouseenter', () => triggerRefractionRipple(r, c));
+
+                    rowDiv.appendChild(tile);
+                    tilesMatrix[r][c] = tile;
+                }
+                gridElement.appendChild(rowDiv);
+            }
+        }
+
+        createLiquidGlassGrid();
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // CHOREOGRAPHED LIQUID GLASS LOADING MOTION CONTROLLER
+        // 1. First illuminates the iconic large "R" with blooming liquid glow
+        // 2. Liquid morphing wave transitions to write each letter: RANKLY.AI
+        // 3. Full-word harmonic liquid glass resonance
+        // 4. Smooth dissolve & infinite seamless loop
+        // ═══════════════════════════════════════════════════════════════════════
+
+        async function startLiquidGlassLoadingCycle() {
+            while (true) {
+                // Clear state
+                for (let r = 0; r < totalRows; r++) {
+                    for (let c = 0; c < totalCols; c++) {
+                        tilesMatrix[r][c].className = 'liquid-tile';
+                    }
+                }
+                gridElement.style.transform = 'scale(0.96)';
+                await delay(250);
+
+                // ─── STAGE 1: FIRST FORM THE ICONIC "R" WITH LIQUID GLOW ───
+                gridElement.style.transform = 'scale(1.05)';
+                centerOrb.style.transform = 'scale(1.3)';
+                centerOrb.style.opacity = '1';
+
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < totalRows; r++) {
+                        const cell = patternR[r][c];
+                        if (cell === 1 || cell === 2) {
+                            const tile = tilesMatrix[r][c];
+                            tile.classList.add('tile-pop');
+                            setTimeout(() => {
+                                tile.classList.remove('tile-pop');
+                                tile.classList.add(cell === 1 ? 'tile-active' : 'tile-highlight');
+                            }, 200);
+                        }
+                    }
+                    await delay(25);
+                }
+
+                // Hold "R" in glowing liquid refraction
+                await delay(1200);
+
+                // ─── STAGE 2: LIQUID MORPHING REVEAL INTO FULL "RANKLY.AI" ───
+                // Clear R tiles gracefully
+                for (let r = 0; r < totalRows; r++) {
+                    for (let c = 0; c < totalCols; c++) {
+                        if (patternR[r][c] && !patternFull[r][c]) {
+                            tilesMatrix[r][c].className = 'liquid-tile';
+                        }
+                    }
+                }
+
+                // Write out full "Rankly.Ai" letter-by-letter
+                for (let c = 0; c < totalCols; c++) {
+                    let hasActive = false;
+                    for (let r = 0; r < totalRows; r++) {
+                        const cell = patternFull[r][c];
+                        const tile = tilesMatrix[r][c];
+
+                        if (cell === 1 || cell === 2) {
+                            hasActive = true;
+                            tile.classList.add('tile-pop');
+                            setTimeout(() => {
+                                tile.classList.remove('tile-pop');
+                                tile.classList.add(cell === 1 ? 'tile-active' : 'tile-highlight');
+                            }, 180);
+                        } else {
+                            if (Math.random() > 0.88) {
+                                tile.classList.add('tile-shimmer');
+                                setTimeout(() => tile.classList.remove('tile-shimmer'), 300);
+                            }
+                        }
+                    }
+                    await delay(hasActive ? 42 : 16);
+                }
+
+                gridElement.style.transform = 'scale(1)';
+                await delay(200);
+
+                // ─── STAGE 3: FULL-WORD LIQUID GLASS RESONANCE ───
+                await delay(1800);
+
+                // Fast High-Voltage Liquid Wave Ripple
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < totalRows; r++) {
+                        const tile = tilesMatrix[r][c];
+                        tile.classList.add('tile-wave');
+                        setTimeout(() => tile.classList.remove('tile-wave'), 160);
+                    }
+                    await delay(22);
+                }
+
+                await delay(450);
+
+                // ─── STAGE 4: SMOOTH MATRIX DISSOLVE & RE-LOOP ───
+                gridElement.style.transform = 'scale(1.03)';
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < totalRows; r++) {
+                        tilesMatrix[r][c].classList.add('tile-shimmer');
+                    }
+                    await delay(15);
+                }
+
+                gridElement.style.transform = 'scale(0.95)';
+                await delay(350);
+            }
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        startLiquidGlassLoadingCycle();
+
+        // ─── INTERACTIVE MOUSE REFRACTION RIPPLE ───
+        function triggerRefractionRipple(centerRow, centerCol) {
+            for (let r = 0; r < totalRows; r++) {
+                for (let c = 0; c < totalCols; c++) {
+                    const dist = Math.hypot(r - centerRow, c - centerCol);
+                    if (dist <= 3.5) {
+                        setTimeout(() => {
+                            const tile = tilesMatrix[r][c];
+                            if (tile) {
+                                tile.style.transform = 'scale(1.4)';
+                                setTimeout(() => {
+                                    tile.style.transform = '';
+                                }, 220);
+                            }
+                        }, dist * 35);
+                    }
+                }
+            }
+        }
+
+        // ─── STATUS TEXT ROTATION ───
+        const statusList = [
             "INITIALIZING RECRUITMENT INTELLIGENCE...",
             "CALIBRATING NEURAL ATS RESUME ENGINE...",
             "SYNCHRONIZING AI INTERVIEW MATRIX...",
             "SECURING ENTERPRISE WORKSPACE..."
         ];
-        let statusIdx = 0;
-        const statusEl = document.getElementById('loadingStatus');
+        let statusIndex = 0;
+        const statusElement = document.getElementById('loadingStatusText');
 
         setInterval(() => {
-            statusIdx = (statusIdx + 1) % statusMsgs.length;
-            if (statusEl) {
-                statusEl.style.opacity = '0';
+            statusIndex = (statusIndex + 1) % statusList.length;
+            if (statusElement) {
+                statusElement.style.opacity = '0';
                 setTimeout(() => {
-                    statusEl.textContent = statusMsgs[statusIdx];
-                    statusEl.style.opacity = '1';
-                }, 220);
+                    statusElement.textContent = statusList[statusIndex];
+                    statusElement.style.opacity = '1';
+                }, 200);
             }
         }, 2200);
     </script>
