@@ -2410,19 +2410,89 @@
             }
         }
 
-        /* ─── LOGIN PAGE (FULL SCREEN COHERE LAYOUT) ─── */
-        #loginPage {
-            background-color: #FAFAF8 !important;
-            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px) !important;
-            background-size: 24px 24px !important;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 32px;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
+        /* ─── RANKLY LUXURY HIGH-VISIBILITY THEME TOGGLE PILL ─── */
+        .rankly-theme-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            
+            /* Light Mode Default: Crisp White & Forest Green with Gold Sun */
+            background: #FFFFFF !important;
+            border: 1.5px solid #183B33 !important;
+            color: #183B33 !important;
+            box-shadow: 0 2px 8px rgba(24, 59, 51, 0.08);
+        }
+
+        .rankly-theme-toggle-pill:hover {
+            background: #183B33 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 16px rgba(24, 59, 51, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .rankly-theme-toggle-pill .theme-sun-icon {
+            color: #D95D39 !important;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .rankly-theme-toggle-pill:hover .theme-sun-icon {
+            color: #FFA14A !important;
+        }
+
+        .rankly-theme-toggle-pill:hover .theme-text-label {
+            color: #FFFFFF !important;
+        }
+
+        .rankly-theme-toggle-pill .theme-moon-icon {
+            color: #5B998C !important;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .rankly-theme-toggle-pill .theme-text-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        /* Dark Mode Appearance: Deep Obsidian with Emerald Glow and Radiant Cyan Moon */
+        body.dark-theme .rankly-theme-toggle-pill,
+        .dark .rankly-theme-toggle-pill,
+        #loginPage.dark-mode .rankly-theme-toggle-pill {
+            background: #12141F !important;
+            border: 1.5px solid #5B998C !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 0 16px rgba(91, 153, 140, 0.28);
+        }
+
+        body.dark-theme .rankly-theme-toggle-pill:hover,
+        .dark .rankly-theme-toggle-pill:hover,
+        #loginPage.dark-mode .rankly-theme-toggle-pill:hover {
+            background: #183B33 !important;
+            border-color: #81E4DA !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 0 22px rgba(129, 228, 218, 0.5);
+            transform: translateY(-1px);
+        }
+
+        body.dark-theme .rankly-theme-toggle-pill .theme-moon-icon,
+        .dark .rankly-theme-toggle-pill .theme-moon-icon,
+        #loginPage.dark-mode .rankly-theme-toggle-pill .theme-moon-icon {
+            color: #81E4DA !important;
+            filter: drop-shadow(0 0 6px rgba(129, 228, 218, 0.7));
         }
 
         /* ─── LOGIN PAGE – DARK MODE TOGGLE ─── */
@@ -3916,11 +3986,11 @@
                 <span class="font-extrabold text-xl tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span></span>
             </div>
             <div class="flex items-center gap-3">
-                <!-- Prominent Dark / Light Mode Pill Button -->
-                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
-                    <span class="theme-sun-icon text-amber-500 text-xs"><i class="fa-solid fa-sun"></i></span>
-                    <span class="theme-moon-icon text-indigo-400 text-xs hidden"><i class="fa-solid fa-moon"></i></span>
-                    <span class="theme-text-label text-[11.5px] font-semibold">Light Mode</span>
+                <!-- Prominent High-Visibility Rankly Theme Pill Button -->
+                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                    <span class="theme-sun-icon"><i class="fa-solid fa-sun"></i></span>
+                    <span class="theme-moon-icon hidden"><i class="fa-solid fa-moon"></i></span>
+                    <span class="theme-text-label">Light Mode</span>
                 </button>
             </div>
         </header>
@@ -4918,11 +4988,11 @@
                     </div>
 
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <!-- Prominent Dark / Light Mode Pill Button on Topbar -->
-                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
-                            <span class="theme-sun-icon text-amber-500 text-xs"><i class="fa-solid fa-sun"></i></span>
-                            <span class="theme-moon-icon text-indigo-400 text-xs hidden"><i class="fa-solid fa-moon"></i></span>
-                            <span class="theme-text-label text-[11px] font-semibold">Light Mode</span>
+                        <!-- Prominent High-Visibility Rankly Theme Pill Button on Topbar -->
+                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                            <span class="theme-sun-icon"><i class="fa-solid fa-sun"></i></span>
+                            <span class="theme-moon-icon hidden"><i class="fa-solid fa-moon"></i></span>
+                            <span class="theme-text-label">Light Mode</span>
                         </button>
                         <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile">
                             <i class="fas fa-user-circle text-xl"></i>
