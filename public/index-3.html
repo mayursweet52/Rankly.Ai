@@ -4111,6 +4111,172 @@
             30% { left: 150%; }
             100% { left: 150%; }
         }
+    
+        /* ═══════════════════════════════════════════════════════════════════════
+           UNIVERSAL DARK MODE ENGINE – 100% COVERAGE FOR ALL WHITE/LIGHT ELEMENTS
+           ═══════════════════════════════════════════════════════════════════════ */
+        body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6,
+        .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+        body.dark-theme .text-\[\#111111\], .dark .text-\[\#111111\] {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .text-\[\#555550\], body.dark-theme .text-\[\#666660\],
+        .dark .text-\[\#555550\], .dark .text-\[\#666660\] {
+            color: #9CA3AF !important;
+        }
+
+        body.dark-theme .border-\[\#E5E5DF\], .dark .border-\[\#E5E5DF\],
+        body.dark-theme .border-gray-200, .dark .border-gray-200 {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        /* All Cards & Containers in Dark Mode */
+        body.dark-theme .card, .dark .card,
+        body.dark-theme .stat-card, .dark .stat-card,
+        body.dark-theme .bg-white, .dark .bg-white {
+            background-color: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .bg-\[\#FAFAF8\], .dark .bg-\[\#FAFAF8\],
+        body.dark-theme .bg-\[\#F8F8F5\], .dark .bg-\[\#F8F8F5\],
+        body.dark-theme .bg-\[\#F5F5F0\], .dark .bg-\[\#F5F5F0\] {
+            background-color: #161926 !important;
+        }
+
+        /* Modals & Dialogs in Dark Mode */
+        body.dark-theme .modal-box, .dark .modal-box,
+        body.dark-theme .modal-content, .dark .modal-content {
+            background-color: #12141F !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8) !important;
+        }
+
+        body.dark-theme .modal-box h2, body.dark-theme .modal-box h3, body.dark-theme .modal-box h4,
+        .dark .modal-box h2, .dark .modal-box h3, .dark .modal-box h4 {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .modal-box p, .dark .modal-box p {
+            color: #9CA3AF !important;
+        }
+
+        body.dark-theme .modal-box .border-t, body.dark-theme .modal-box .border-b,
+        .dark .modal-box .border-t, .dark .modal-box .border-b {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        /* Inputs, Selects & Textareas in Dark Mode */
+        body.dark-theme .form-input, .dark .form-input,
+        body.dark-theme input:not([type="checkbox"]):not([type="radio"]),
+        .dark input:not([type="checkbox"]):not([type="radio"]),
+        body.dark-theme select, .dark select,
+        body.dark-theme textarea, .dark textarea {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .form-input::placeholder, .dark .form-input::placeholder,
+        body.dark-theme input::placeholder, .dark input::placeholder,
+        body.dark-theme textarea::placeholder, .dark textarea::placeholder {
+            color: #64748B !important;
+        }
+
+        body.dark-theme .form-input:focus, .dark .form-input:focus,
+        body.dark-theme input:focus, .dark input:focus,
+        body.dark-theme select:focus, .dark select:focus,
+        body.dark-theme textarea:focus, .dark textarea:focus {
+            border-color: #5B998C !important;
+            box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.25) !important;
+            background-color: #1A1E2E !important;
+        }
+
+        body.dark-theme .form-label, .dark .form-label {
+            color: #9CA3AF !important;
+        }
+
+        /* Secondary Buttons in Dark Mode */
+        body.dark-theme .btn-secondary, .dark .btn-secondary {
+            background-color: #161926 !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        body.dark-theme .btn-secondary:hover, .dark .btn-secondary:hover {
+            background-color: #1E2336 !important;
+            border-color: #5B998C !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Tables in Dark Mode */
+        body.dark-theme table, .dark table {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme th, .dark th {
+            background-color: #161926 !important;
+            color: #9CA3AF !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.dark-theme td, .dark td {
+            border-color: rgba(255, 255, 255, 0.06) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme tr:hover, .dark tr:hover {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        /* Toasts in Dark Mode */
+        body.dark-theme .toast, .dark .toast {
+            background-color: #141724 !important;
+            border-color: rgba(91, 153, 140, 0.3) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* Global Feature Search in Dark Mode */
+        body.dark-theme .global-feature-search-box, .dark .global-feature-search-box,
+        body.dark-theme #globalFeatureSearchResults, .dark #globalFeatureSearchResults {
+            background-color: #141724 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .global-feature-search-field, .dark .global-feature-search-field {
+            color: #FFFFFF !important;
+        }
+
+        /* Chatbot & Upload Zones in Dark Mode */
+        body.dark-theme .chat-bubble.bot, .dark .chat-bubble.bot {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme .chat-input-box, .dark .chat-input-box {
+            background-color: #141724 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .upload-zone, .dark .upload-zone {
+            background-color: #141724 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme .sleek-search-container input, .dark .sleek-search-container input {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
     </style>
 </head>
 <body class="rankly-bg">
