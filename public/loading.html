@@ -16,21 +16,23 @@
             --bg-page: #F5F5F0;
             --dot-inactive: #E2E2DC;
             --dot-active: #183B33;
-            --dot-active-glow: rgba(24, 59, 51, 0.35);
+            --dot-active-glow: rgba(24, 59, 51, 0.45);
             --dot-highlight: #5B998C;
-            --dot-highlight-glow: rgba(91, 153, 140, 0.7);
+            --dot-highlight-glow: rgba(91, 153, 140, 0.85);
             --dot-accent: #81E4DA;
+            --dot-flash: #22C55E;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-page: #0B0D14;
-                --dot-inactive: #1A1E2B;
+                --dot-inactive: #181C28;
                 --dot-active: #81E4DA;
-                --dot-active-glow: rgba(129, 228, 218, 0.45);
+                --dot-active-glow: rgba(129, 228, 218, 0.55);
                 --dot-highlight: #5B998C;
-                --dot-highlight-glow: rgba(129, 228, 218, 0.6);
+                --dot-highlight-glow: rgba(129, 228, 218, 0.8);
                 --dot-accent: #FFFFFF;
+                --dot-flash: #00FFCC;
             }
         }
 
@@ -81,87 +83,76 @@
             position: relative;
             will-change: transform, opacity, background-color, filter;
             cursor: pointer;
-            transition: transform 0.25s ease, filter 0.25s ease;
+            transition: transform 0.2s ease, filter 0.2s ease, background-color 0.25s ease, opacity 0.25s ease;
         }
 
-        /* ─── RHYTHMIC BLINKING & BREATHING ANIMATIONS ─── */
+        /* ─── HIGH-ENERGY LOADING BLINK ANIMATIONS ─── */
 
-        /* Active Letter Dots (RANKLY) - Rhythmic Wave Blink */
+        /* Letter Dots (RANKLY) - Dynamic Sequential Cascade Blink */
         .dot.active {
             background-color: var(--dot-active);
-            animation: letterBlink 2s ease-in-out infinite alternate;
+            animation: activeLoadingBlink 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        @keyframes letterBlink {
-            0% {
-                transform: scale(1.02);
-                opacity: 0.75;
-                background-color: var(--dot-active);
-                filter: drop-shadow(0 0 0px var(--dot-active-glow));
+        @keyframes activeLoadingBlink {
+            0%, 100% {
+                opacity: 0.22;
+                transform: scale(0.92);
+                background-color: var(--dot-inactive);
+                filter: drop-shadow(0 0 0px transparent);
             }
-            50% {
-                transform: scale(1.15);
+            35%, 65% {
                 opacity: 1;
-                background-color: #2D6B5E;
+                transform: scale(1.18);
+                background-color: var(--dot-active);
                 filter: drop-shadow(0 0 8px var(--dot-active-glow));
             }
-            100% {
-                transform: scale(1.06);
-                opacity: 0.9;
-                background-color: var(--dot-active);
-                filter: drop-shadow(0 0 2px var(--dot-active-glow));
-            }
         }
 
-        /* Highlight Dots (.AI) - Luminous Neon Flash Blink */
+        /* Highlight Dots (.AI) - High-Voltage Neon Flash */
         .dot.highlight {
             background-color: var(--dot-highlight);
-            animation: highlightBlink 1.8s ease-in-out infinite alternate;
+            animation: highlightLoadingBlink 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        @keyframes highlightBlink {
-            0% {
-                transform: scale(1.08);
-                opacity: 0.7;
-                background-color: var(--dot-highlight);
-                filter: drop-shadow(0 0 3px var(--dot-highlight-glow));
+        @keyframes highlightLoadingBlink {
+            0%, 100% {
+                opacity: 0.25;
+                transform: scale(0.92);
+                background-color: var(--dot-inactive);
+                filter: drop-shadow(0 0 0px transparent);
             }
-            50% {
-                transform: scale(1.24);
+            35%, 65% {
                 opacity: 1;
-                background-color: var(--dot-accent);
-                filter: drop-shadow(0 0 12px var(--dot-highlight-glow));
-            }
-            100% {
-                transform: scale(1.12);
-                opacity: 0.85;
+                transform: scale(1.26);
                 background-color: var(--dot-highlight);
-                filter: drop-shadow(0 0 5px var(--dot-highlight-glow));
+                filter: drop-shadow(0 0 14px var(--dot-highlight-glow));
             }
         }
 
-        /* Inactive Background Dots - Organic Shimmer Twinkle */
-        .dot.twinkle {
-            animation: bgTwinkle 3.2s ease-in-out infinite;
+        /* Background Inactive Dots - Subtle Ambient Flicker */
+        .dot.ambient-flicker {
+            animation: ambientFlicker 2.4s ease-in-out infinite alternate;
         }
 
-        @keyframes bgTwinkle {
+        @keyframes ambientFlicker {
             0%, 100% {
                 opacity: 1;
                 transform: scale(1);
             }
             50% {
-                opacity: 0.38;
-                transform: scale(0.92);
+                opacity: 0.4;
+                transform: scale(0.94);
                 background-color: #D3D3CB;
             }
         }
 
-        /* Interactive Hover Sparkle */
+        /* Interactive Hover Pop */
         .dot:hover {
-            transform: scale(1.4) !important;
+            transform: scale(1.45) !important;
             background-color: var(--dot-accent) !important;
-            filter: drop-shadow(0 0 10px var(--dot-highlight-glow)) !important;
+            filter: drop-shadow(0 0 12px var(--dot-highlight-glow)) !important;
+            opacity: 1 !important;
             z-index: 10;
         }
 
@@ -238,18 +229,17 @@
 
                     if (cell === 1) {
                         dot.classList.add('active');
-                        // Staggered wave blink delay across columns
-                        dot.style.animationDelay = (cIndex * 0.055) + 's';
+                        // Staggered sequential loading wave delay across columns
+                        dot.style.animationDelay = (cIndex * 0.042) + 's';
                     } else if (cell === 2) {
                         dot.classList.add('highlight');
                         // Highlight pulse delay
-                        dot.style.animationDelay = (cIndex * 0.055) + 's';
+                        dot.style.animationDelay = (cIndex * 0.042) + 's';
                     } else {
-                        // Random background twinkling
-                        if (Math.random() > 0.4) {
-                            dot.classList.add('twinkle');
-                            dot.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
-                            dot.style.animationDuration = (Math.random() * 2 + 2.5).toFixed(2) + 's';
+                        // Ambient flickering on background dots
+                        if (Math.random() > 0.45) {
+                            dot.classList.add('ambient-flicker');
+                            dot.style.animationDelay = (Math.random() * 2.5).toFixed(2) + 's';
                         }
                     }
 
@@ -279,7 +269,7 @@
                         setTimeout(() => {
                             const d = dotsMatrix[r][c];
                             if (d) {
-                                d.style.transform = 'scale(1.35)';
+                                d.style.transform = 'scale(1.4)';
                                 setTimeout(() => {
                                     d.style.transform = '';
                                 }, 220);
