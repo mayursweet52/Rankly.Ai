@@ -20,17 +20,17 @@
             --dot-highlight: #5B998C;
             --dot-highlight-glow: rgba(91, 153, 140, 0.85);
             --dot-accent: #81E4DA;
-            --dot-flash: #22C55E;
+            --dot-flash: #00FFCC;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-page: #0B0D14;
-                --dot-inactive: #181C28;
+                --dot-inactive: #161A26;
                 --dot-active: #81E4DA;
-                --dot-active-glow: rgba(129, 228, 218, 0.55);
+                --dot-active-glow: rgba(129, 228, 218, 0.5);
                 --dot-highlight: #5B998C;
-                --dot-highlight-glow: rgba(129, 228, 218, 0.8);
+                --dot-highlight-glow: rgba(129, 228, 218, 0.85);
                 --dot-accent: #FFFFFF;
                 --dot-flash: #00FFCC;
             }
@@ -47,7 +47,7 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.4s ease;
         }
 
         .container {
@@ -57,15 +57,19 @@
             width: 100%;
             height: 100vh;
             padding: 20px;
+            perspective: 1000px;
         }
 
-        /* Hexagonal Grid Container */
+        /* Hexagonal Grid Container with Cinematic Zoom */
         .text-grid {
             display: flex;
             flex-direction: column;
             gap: 7px;
             align-items: center;
             justify-content: center;
+            transform-origin: center center;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform;
         }
 
         .row {
@@ -83,77 +87,99 @@
             position: relative;
             will-change: transform, opacity, background-color, filter;
             cursor: pointer;
-            transition: transform 0.2s ease, filter 0.2s ease, background-color 0.25s ease, opacity 0.25s ease;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        background-color 0.3s ease, 
+                        filter 0.3s ease, 
+                        opacity 0.3s ease;
         }
 
-        /* ─── HIGH-ENERGY LOADING BLINK ANIMATIONS ─── */
-
-        /* Letter Dots (RANKLY) - Dynamic Sequential Cascade Blink */
-        .dot.active {
-            background-color: var(--dot-active);
-            animation: activeLoadingBlink 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        /* ─── PHASE 1: WRITING / INK POP EFFECT ─── */
+        .dot.writing-pop {
+            transform: scale(1.45) !important;
+            background-color: var(--dot-accent) !important;
+            filter: drop-shadow(0 0 14px var(--dot-highlight-glow)) !important;
+            opacity: 1 !important;
+            z-index: 10;
         }
 
-        @keyframes activeLoadingBlink {
-            0%, 100% {
-                opacity: 0.22;
-                transform: scale(0.92);
-                background-color: var(--dot-inactive);
-                filter: drop-shadow(0 0 0px transparent);
+        /* Settled Active Letter Dot */
+        .dot.active-drawn {
+            background-color: var(--dot-active) !important;
+            transform: scale(1.08) !important;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 3px var(--dot-active-glow));
+        }
+
+        /* Settled Highlight Dot (.AI) */
+        .dot.highlight-drawn {
+            background-color: var(--dot-highlight) !important;
+            transform: scale(1.15) !important;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 8px var(--dot-highlight-glow));
+        }
+
+        /* ─── PHASE 2: SYNCHRONIZED POWER-UP GLOW PULSE ─── */
+        .text-grid.power-up .dot.active-drawn {
+            animation: syncGlowRankly 1.2s ease-in-out infinite alternate;
+        }
+
+        .text-grid.power-up .dot.highlight-drawn {
+            animation: syncGlowAi 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes syncGlowRankly {
+            0% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 2px var(--dot-active-glow));
             }
-            35%, 65% {
-                opacity: 1;
-                transform: scale(1.18);
-                background-color: var(--dot-active);
-                filter: drop-shadow(0 0 8px var(--dot-active-glow));
+            100% {
+                transform: scale(1.16);
+                background-color: #2D6B5E;
+                filter: drop-shadow(0 0 10px var(--dot-active-glow));
             }
         }
 
-        /* Highlight Dots (.AI) - High-Voltage Neon Flash */
-        .dot.highlight {
-            background-color: var(--dot-highlight);
-            animation: highlightLoadingBlink 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        @keyframes highlightLoadingBlink {
-            0%, 100% {
-                opacity: 0.25;
-                transform: scale(0.92);
-                background-color: var(--dot-inactive);
-                filter: drop-shadow(0 0 0px transparent);
+        @keyframes syncGlowAi {
+            0% {
+                transform: scale(1.12);
+                filter: drop-shadow(0 0 4px var(--dot-highlight-glow));
             }
-            35%, 65% {
-                opacity: 1;
-                transform: scale(1.26);
-                background-color: var(--dot-highlight);
-                filter: drop-shadow(0 0 14px var(--dot-highlight-glow));
+            100% {
+                transform: scale(1.28);
+                background-color: var(--dot-accent);
+                filter: drop-shadow(0 0 16px var(--dot-highlight-glow));
             }
         }
 
-        /* Background Inactive Dots - Subtle Ambient Flicker */
-        .dot.ambient-flicker {
-            animation: ambientFlicker 2.4s ease-in-out infinite alternate;
+        /* ─── PHASE 3: FAST ENERGY WAVE SWEEP ─── */
+        .dot.energy-wave {
+            transform: scale(1.4) !important;
+            background-color: var(--dot-flash) !important;
+            filter: drop-shadow(0 0 12px rgba(0, 255, 204, 0.95)) !important;
+            z-index: 8;
         }
 
-        @keyframes ambientFlicker {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.4;
-                transform: scale(0.94);
-                background-color: #D3D3CB;
-            }
+        /* ─── PHASE 4: DISSOLVE & FADE ─── */
+        .dot.dissolving {
+            transform: scale(0.7) !important;
+            opacity: 0.2 !important;
+            background-color: var(--dot-inactive) !important;
+            filter: none !important;
+        }
+
+        /* Inactive Background Dots - Organic Micro-Twinkle */
+        .dot.ambient-twinkle {
+            opacity: 0.35 !important;
+            transform: scale(0.92) !important;
         }
 
         /* Interactive Hover Pop */
         .dot:hover {
-            transform: scale(1.45) !important;
+            transform: scale(1.5) !important;
             background-color: var(--dot-accent) !important;
-            filter: drop-shadow(0 0 12px var(--dot-highlight-glow)) !important;
+            filter: drop-shadow(0 0 14px var(--dot-highlight-glow)) !important;
             opacity: 1 !important;
-            z-index: 10;
+            z-index: 20;
         }
 
         /* Responsive Scaling */
@@ -215,6 +241,7 @@
 
         const gridElement = document.getElementById('grid');
         const dotsMatrix = [];
+        const letterColumns = [];
 
         function createGrid() {
             gridElement.innerHTML = '';
@@ -226,28 +253,11 @@
                 row.forEach((cell, cIndex) => {
                     const dot = document.createElement('div');
                     dot.classList.add('dot');
-
-                    if (cell === 1) {
-                        dot.classList.add('active');
-                        // Staggered sequential loading wave delay across columns
-                        dot.style.animationDelay = (cIndex * 0.042) + 's';
-                    } else if (cell === 2) {
-                        dot.classList.add('highlight');
-                        // Highlight pulse delay
-                        dot.style.animationDelay = (cIndex * 0.042) + 's';
-                    } else {
-                        // Ambient flickering on background dots
-                        if (Math.random() > 0.45) {
-                            dot.classList.add('ambient-flicker');
-                            dot.style.animationDelay = (Math.random() * 2.5).toFixed(2) + 's';
-                        }
-                    }
-
                     dot.dataset.row = rIndex;
                     dot.dataset.col = cIndex;
                     dot.dataset.cellType = cell;
 
-                    // Interactive ripple on hover
+                    // Hover interactive ripple
                     dot.addEventListener('mouseenter', () => triggerRipple(rIndex, cIndex));
 
                     rowDiv.appendChild(dot);
@@ -259,10 +269,111 @@
 
         createGrid();
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // CINEMATIC 4-PHASE LOADING ANIMATION CONTROLLER
+        // Phase 1: Zoom + Typewriter/Drawing Write Out
+        // Phase 2: Full Word Power-Up Neon Pulse
+        // Phase 3: High-Speed Quantum Energy Wave Sweep
+        // Phase 4: Smooth Zoom Matrix Dissolve & Re-loop
+        // ═══════════════════════════════════════════════════════════════════════
+
+        const totalCols = pattern[0].length;
+        const totalRows = pattern.length;
+
+        async function startCinematicLoadingCycle() {
+            while (true) {
+                // RESET STATE
+                gridElement.classList.remove('power-up');
+                gridElement.style.transform = 'scale(0.95)';
+
+                // Clear all dots to inactive state
+                for (let r = 0; r < totalRows; r++) {
+                    for (let c = 0; c < totalCols; c++) {
+                        const dot = dotsMatrix[r][c];
+                        dot.className = 'dot';
+                    }
+                }
+
+                await delay(250);
+
+                // ─── PHASE 1: ZOOM-IN & TYPEWRITER LASER WRITING ───
+                gridElement.style.transform = 'scale(1.04)';
+
+                for (let c = 0; c < totalCols; c++) {
+                    let hasActiveCell = false;
+                    for (let r = 0; r < totalRows; r++) {
+                        const cell = pattern[r][c];
+                        const dot = dotsMatrix[r][c];
+
+                        if (cell === 1 || cell === 2) {
+                            hasActiveCell = true;
+                            // Flash ink pop
+                            dot.classList.add('writing-pop');
+                            
+                            setTimeout(() => {
+                                dot.classList.remove('writing-pop');
+                                dot.classList.add(cell === 1 ? 'active-drawn' : 'highlight-drawn');
+                            }, 180);
+                        } else {
+                            // Subtle surrounding dot sparkle during write
+                            if (Math.random() > 0.85) {
+                                dot.classList.add('ambient-twinkle');
+                                setTimeout(() => dot.classList.remove('ambient-twinkle'), 300);
+                            }
+                        }
+                    }
+                    // Writing speed delay
+                    await delay(hasActiveCell ? 48 : 20);
+                }
+
+                // Settle zoom
+                gridElement.style.transform = 'scale(1)';
+                await delay(200);
+
+                // ─── PHASE 2: SYNCHRONIZED POWER-UP NEON GLOW PULSE ───
+                gridElement.classList.add('power-up');
+                await delay(1600);
+
+                // ─── PHASE 3: SUPERCHARGED QUANTUM ENERGY WAVE SWEEP ───
+                gridElement.classList.remove('power-up');
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < totalRows; r++) {
+                        const dot = dotsMatrix[r][c];
+                        dot.classList.add('energy-wave');
+                        setTimeout(() => {
+                            dot.classList.remove('energy-wave');
+                        }, 160);
+                    }
+                    await delay(24);
+                }
+
+                await delay(400);
+
+                // ─── PHASE 4: SMOOTH MATRIX DISSOLVE & ZOOM ───
+                gridElement.style.transform = 'scale(1.03)';
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < totalRows; r++) {
+                        const dot = dotsMatrix[r][c];
+                        dot.classList.add('dissolving');
+                    }
+                    await delay(18);
+                }
+
+                gridElement.style.transform = 'scale(0.94)';
+                await delay(350);
+            }
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Start animation loop
+        startCinematicLoadingCycle();
+
         // Interactive Cursor Ripple
         function triggerRipple(centerRow, centerCol) {
-            const totalCols = pattern[0].length;
-            for (let r = 0; r < pattern.length; r++) {
+            for (let r = 0; r < totalRows; r++) {
                 for (let c = 0; c < totalCols; c++) {
                     const dist = Math.hypot(r - centerRow, c - centerCol);
                     if (dist <= 3.5) {
