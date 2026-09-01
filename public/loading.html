@@ -7,9 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- LottieFiles Web Player CDN -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
         * {
@@ -19,26 +16,18 @@
         }
 
         :root {
-            /* Rankly.ai Signature Precision Palette */
-            --bg-page: #F5F5F0;
-            --text-main: #183B33;
-            --brand-teal: #5B998C;
-            --brand-mint: #81E4DA;
-            --brand-glow: rgba(91, 153, 140, 0.45);
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --card-border: rgba(229, 229, 223, 0.8);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-page: #0B0D14;
-                --text-main: #FFFFFF;
-                --brand-teal: #5B998C;
-                --brand-mint: #81E4DA;
-                --brand-glow: rgba(129, 228, 218, 0.5);
-                --card-bg: rgba(18, 20, 31, 0.7);
-                --card-border: rgba(255, 255, 255, 0.08);
-            }
+            /* ─── Ultra-Vibrant Multi-Dimensional Cyber Palette ─── */
+            --bg-page: #090B10;
+            --text-main: #FFFFFF;
+            --c-violet: #8B5CF6;
+            --c-indigo: #6366F1;
+            --c-cyan: #06B6D4;
+            --c-emerald: #10B981;
+            --c-coral: #F43F5E;
+            --card-bg: rgba(15, 18, 28, 0.75);
+            --card-border: rgba(139, 92, 246, 0.25);
+            --glow-primary: rgba(139, 92, 246, 0.5);
+            --glow-cyan: rgba(6, 182, 212, 0.6);
         }
 
         body {
@@ -53,27 +42,47 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
-            transition: background-color 0.4s ease;
             position: relative;
         }
 
-        /* Ambient Glow Orb */
-        .ambient-glow {
+        /* Dual Ambient Neon Aurora Glows */
+        .ambient-glow-1 {
             position: absolute;
-            width: 480px;
-            height: 480px;
-            background: radial-gradient(circle, rgba(91, 153, 140, 0.18) 0%, rgba(129, 228, 218, 0.08) 40%, transparent 70%);
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 70%);
             border-radius: 50%;
+            top: 20%;
+            left: 30%;
             pointer-events: none;
-            filter: blur(50px);
-            animation: pulseGlow 4s ease-in-out infinite alternate;
+            filter: blur(60px);
+            animation: pulseAurora 6s ease-in-out infinite alternate;
         }
 
-        @keyframes pulseGlow {
-            0% { transform: scale(0.9); opacity: 0.6; }
-            100% { transform: scale(1.15); opacity: 1; }
+        .ambient-glow-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(16, 185, 129, 0.1) 40%, transparent 70%);
+            border-radius: 50%;
+            bottom: 20%;
+            right: 30%;
+            pointer-events: none;
+            filter: blur(60px);
+            animation: pulseAurora2 7s ease-in-out infinite alternate;
         }
 
+        @keyframes pulseAurora {
+            0% { transform: translate(-10%, -10%) scale(0.9); opacity: 0.6; }
+            100% { transform: translate(10%, 10%) scale(1.15); opacity: 1; }
+        }
+
+        @keyframes pulseAurora2 {
+            0% { transform: translate(10%, 10%) scale(0.9); opacity: 0.5; }
+            100% { transform: translate(-10%, -10%) scale(1.2); opacity: 0.95; }
+        }
+
+        /* Glassmorphic Loader Container */
         .loader-card {
             position: relative;
             z-index: 10;
@@ -81,57 +90,59 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 48px;
+            padding: 44px 54px;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--card-border);
-            border-radius: 32px;
+            border-radius: 36px;
             box-shadow: 
-                0 24px 48px -12px rgba(0, 0, 0, 0.06),
-                inset 0 1px 2px rgba(255, 255, 255, 0.8);
-            gap: 20px;
-            animation: cardFloat 3.5s ease-in-out infinite alternate;
+                0 30px 60px -15px rgba(0, 0, 0, 0.6),
+                0 0 40px -10px rgba(139, 92, 246, 0.2),
+                inset 0 1px 2px rgba(255, 255, 255, 0.15);
+            gap: 22px;
+            animation: cardFloat 4s ease-in-out infinite alternate;
         }
 
         @keyframes cardFloat {
             0% { transform: translateY(0px); }
-            100% { transform: translateY(-8px); }
+            100% { transform: translateY(-10px); }
         }
 
-        /* ─── ICONIC ANIMATED "R" LOTTIE / SVG MOTION WRAPPER ─── */
+        /* ─── ANIMATED "R" LOTTIE / MOTION GRAPHIC ─── */
         .r-anim-wrapper {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 145px;
+            height: 145px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Outer Orbiting Energy Ring */
+        /* Outer Orbiting Dashed Energy Ring */
         .energy-ring {
             position: absolute;
-            inset: -8px;
+            inset: -10px;
             border-radius: 50%;
-            border: 2px dashed rgba(91, 153, 140, 0.35);
-            animation: rotateRing 12s linear infinite;
+            border: 2px dashed rgba(139, 92, 246, 0.4);
+            animation: rotateRing 14s linear infinite;
         }
 
         @keyframes rotateRing {
             to { transform: rotate(360deg); }
         }
 
-        /* Outer Glowing Arc */
+        /* Outer Glowing Neon Dual Arc */
         .energy-arc {
             position: absolute;
             inset: -4px;
             border-radius: 50%;
-            border: 2.5px solid transparent;
-            border-top-color: var(--brand-mint);
-            border-right-color: var(--brand-teal);
-            filter: drop-shadow(0 0 8px var(--brand-glow));
-            animation: rotateArc 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            border: 3px solid transparent;
+            border-top-color: var(--c-cyan);
+            border-right-color: var(--c-violet);
+            border-bottom-color: var(--c-emerald);
+            filter: drop-shadow(0 0 12px var(--glow-cyan));
+            animation: rotateArc 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
         @keyframes rotateArc {
@@ -139,70 +150,70 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Animated Drawing "R" Vector */
+        /* Animated SVG Vector */
         .r-svg-icon {
-            width: 110px;
-            height: 110px;
-            filter: drop-shadow(0 8px 16px rgba(24, 59, 51, 0.18));
-            animation: rHeartbeat 2.4s ease-in-out infinite;
+            width: 115px;
+            height: 115px;
+            filter: drop-shadow(0 10px 25px rgba(139, 92, 246, 0.35));
+            animation: rHeartbeat 2.6s ease-in-out infinite;
         }
 
         @keyframes rHeartbeat {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.06); filter: drop-shadow(0 12px 24px var(--brand-glow)); }
+            50% { transform: scale(1.06); filter: drop-shadow(0 14px 30px rgba(6, 182, 212, 0.55)); }
         }
 
-        /* Stroke Dashoffset Drawing Animation on Letter "R" */
+        /* Animated Stroke Dashoffset Lines */
         .r-stroke-main {
             stroke-dasharray: 260;
             stroke-dashoffset: 260;
-            animation: drawR 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+            animation: drawR 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
         }
 
         .r-stroke-loop {
             stroke-dasharray: 200;
             stroke-dashoffset: 200;
-            animation: drawLoop 2.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s infinite alternate;
+            animation: drawLoop 3s cubic-bezier(0.4, 0, 0.2, 1) 0.35s infinite alternate;
         }
 
         .r-stroke-leg {
             stroke-dasharray: 120;
             stroke-dashoffset: 120;
-            animation: drawLeg 2.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s infinite alternate;
+            animation: drawLeg 3s cubic-bezier(0.4, 0, 0.2, 1) 0.7s infinite alternate;
         }
 
         @keyframes drawR {
             0% { stroke-dashoffset: 260; }
-            60%, 100% { stroke-dashoffset: 0; }
+            55%, 100% { stroke-dashoffset: 0; }
         }
 
         @keyframes drawLoop {
             0% { stroke-dashoffset: 200; }
-            60%, 100% { stroke-dashoffset: 0; }
+            55%, 100% { stroke-dashoffset: 0; }
         }
 
         @keyframes drawLeg {
             0% { stroke-dashoffset: 120; }
-            60%, 100% { stroke-dashoffset: 0; }
+            55%, 100% { stroke-dashoffset: 0; }
         }
 
         /* ─── BRAND TYPOGRAPHY & LOADING PROGRESS ─── */
         .brand-name {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             letter-spacing: -0.03em;
-            color: var(--text-main);
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             gap: 2px;
         }
 
         .brand-name .text-gradient {
-            background: linear-gradient(135deg, var(--text-main) 0%, var(--brand-teal) 50%, var(--brand-mint) 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 30%, #67E8F9 70%, #6EE7B7 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: textShine 3s linear infinite;
+            animation: textShine 3.5s linear infinite;
         }
 
         @keyframes textShine {
@@ -210,49 +221,55 @@
         }
 
         .badge-ai {
-            background: #183B33;
-            color: #81E4DA;
-            font-size: 13px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+            color: #FFFFFF;
+            font-size: 13.5px;
             font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 6px;
+            padding: 2.5px 8px;
+            border-radius: 7px;
             margin-left: 6px;
             font-family: 'JetBrains Mono', monospace;
-            border: 1px solid rgba(129, 228, 218, 0.3);
-            box-shadow: 0 2px 8px rgba(129, 228, 218, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
+            animation: badgePulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes badgePulse {
+            0% { box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3); transform: scale(1); }
+            100% { box-shadow: 0 4px 18px rgba(6, 182, 212, 0.6); transform: scale(1.04); }
         }
 
         /* Status Ticker */
         .status-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 9px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 600;
-            color: #666660;
+            color: #94A3B8;
             letter-spacing: 0.04em;
         }
 
         .status-dot {
-            width: 7px;
-            height: 7px;
-            background-color: var(--brand-mint);
+            width: 8px;
+            height: 8px;
+            background-color: var(--c-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--brand-mint);
+            box-shadow: 0 0 10px var(--c-cyan);
             animation: blinkStatus 1.2s ease-in-out infinite alternate;
         }
 
         @keyframes blinkStatus {
             0% { opacity: 0.3; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1.25); }
         }
 
         /* Sleek Loading Progress Beam */
         .progress-track {
-            width: 200px;
-            height: 4px;
-            background: rgba(229, 229, 223, 0.6);
+            width: 220px;
+            height: 4.5px;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -261,11 +278,11 @@
         .progress-bar {
             height: 100%;
             width: 35%;
-            background: linear-gradient(90deg, #183B33 0%, var(--brand-teal) 50%, var(--brand-mint) 100%);
+            background: linear-gradient(90deg, #8B5CF6 0%, #06B6D4 50%, #10B981 100%);
             border-radius: 10px;
             position: absolute;
-            animation: travelProgress 2s ease-in-out infinite;
-            box-shadow: 0 0 10px rgba(129, 228, 218, 0.85);
+            animation: travelProgress 2.2s ease-in-out infinite;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.9);
         }
 
         @keyframes travelProgress {
@@ -277,7 +294,8 @@
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
 
     <div class="loader-card">
         <!-- Iconic Letter "R" Motion Graphic -->
@@ -287,43 +305,50 @@
 
             <svg class="r-svg-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="rGradMain" x1="20" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#183B33"/>
-                        <stop offset="50%" stop-color="#5B998C"/>
-                        <stop offset="100%" stop-color="#81E4DA"/>
+                    <linearGradient id="rGradMain" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#C084FC"/>
+                        <stop offset="35%" stop-color="#8B5CF6"/>
+                        <stop offset="70%" stop-color="#6366F1"/>
+                        <stop offset="100%" stop-color="#06B6D4"/>
                     </linearGradient>
-                    <linearGradient id="rGradGlow" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#81E4DA"/>
-                        <stop offset="100%" stop-color="#00FFCC"/>
+
+                    <linearGradient id="rGradCoral" x1="30" y1="40" x2="80" y2="85" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#38BDF8"/>
+                        <stop offset="50%" stop-color="#06B6D4"/>
+                        <stop offset="100%" stop-color="#10B981"/>
                     </linearGradient>
+
+                    <linearGradient id="rGradCard" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#1E1B4B" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#0F172A" stop-opacity="0.8"/>
+                    </linearGradient>
+
                     <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
                         <feComposite in="SourceGraphic" in2="blur" operator="over"/>
                     </filter>
                 </defs>
 
-                <!-- Background Base Plate -->
-                <rect x="8" y="8" width="84" height="84" rx="24" fill="url(#rGradMain)" fill-opacity="0.08" stroke="url(#rGradMain)" stroke-width="1.5" stroke-opacity="0.3"/>
+                <!-- Base Card -->
+                <rect x="8" y="8" width="84" height="84" rx="24" fill="url(#rGradCard)" stroke="url(#rGradMain)" stroke-width="1.8" stroke-opacity="0.5"/>
 
                 <!-- Left Spine Path -->
-                <path class="r-stroke-main" d="M34 24V76" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="r-stroke-main" d="M34 24V76" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
 
                 <!-- Upper Loop Path -->
-                <path class="r-stroke-loop" d="M34 28H54C62.8 28 69 34.2 69 43C69 51.8 62.8 58 54 58H34" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="r-stroke-loop" d="M34 28H54C62.8 28 69 34.2 69 43C69 51.8 62.8 58 54 58H34" stroke="url(#rGradMain)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
 
                 <!-- Diagonal Kick Leg -->
-                <path class="r-stroke-leg" d="M48 57L67 76" stroke="url(#rGradGlow)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
+                <path class="r-stroke-leg" d="M48 57L67 76" stroke="url(#rGradCoral)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)"/>
 
-                <!-- Glowing Core Dot -->
-                <circle cx="54" cy="43" r="4.5" fill="#81E4DA" filter="url(#glowFilter)">
+                <!-- Floating Gem Particle -->
+                <circle cx="72" cy="24" r="4" fill="#06B6D4" filter="url(#glowFilter)">
                     <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-                    <animate attributeName="r" values="3.5;5.5;3.5" dur="2s" repeatCount="indefinite"/>
+                    <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
                 </circle>
 
-                <!-- Floating Accent Particle -->
-                <circle cx="74" cy="22" r="3.5" fill="#81E4DA">
-                    <animate attributeName="transform" type="translate" values="0 0; 0 -4; 0 0" dur="2.5s" repeatCount="indefinite"/>
-                </circle>
+                <!-- Inner Core Accent Dot -->
+                <circle cx="54" cy="43" r="4.5" fill="#FFFFFF" opacity="0.9" filter="url(#glowFilter)"/>
             </svg>
         </div>
 
@@ -343,7 +368,6 @@
     </div>
 
     <script>
-        // Rotating Loading Status Messages
         const statusMsgs = [
             "INITIALIZING RECRUITMENT INTELLIGENCE...",
             "CALIBRATING NEURAL ATS RESUME ENGINE...",
@@ -360,7 +384,7 @@
                 setTimeout(() => {
                     statusEl.textContent = statusMsgs[statusIdx];
                     statusEl.style.opacity = '1';
-                }, 250);
+                }, 220);
             }
         }, 2200);
     </script>
