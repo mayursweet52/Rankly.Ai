@@ -98,13 +98,18 @@
             max-height: 100vh !important;
             width: 100vw !important;
             max-width: 100% !important;
-            display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
             position: relative !important;
             overflow: hidden !important;
             padding: 12px 24px !important;
             box-sizing: border-box !important;
+        }
+        #loginPage:not(.active) {
+            display: none !important;
+        }
+        #loginPage.active {
+            display: flex !important;
         }
 
         /* ── 3D FLIP CARD EFFECT ── */
@@ -1595,6 +1600,137 @@
             opacity: 1;
             filter: drop-shadow(0 0 10px rgba(91, 153, 140, 0.45));
         }
+
+        /* ═══════════════════════════════════════════════════════════════════════
+           ULTRA-OPTIMIZED 60/120 FPS BORDER-BEAM BUTTON LOADING ANIMATION
+           Hardware-accelerated border tracer beam for authentication buttons
+           ═══════════════════════════════════════════════════════════════════════ */
+        @keyframes btn-beam-spin {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+
+        .btn-loading,
+        .btn-beam-loading {
+            position: relative !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            cursor: wait !important;
+            isolation: isolate !important;
+            border-color: transparent !important;
+        }
+
+        /* Hardware-accelerated Conic-Gradient Rotating Tracer Beam */
+        .btn-loading::before,
+        .btn-beam-loading::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            width: 320% !important;
+            height: 600% !important;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent 220deg,
+                var(--btn-beam-c1, rgba(91, 153, 140, 0)) 250deg,
+                var(--btn-beam-c2, #5B998C) 295deg,
+                var(--btn-beam-c3, #81E4DA) 340deg,
+                var(--btn-beam-c4, #FFFFFF) 360deg
+            ) !important;
+            animation: btn-beam-spin var(--btn-beam-speed, 1.1s) linear infinite !important;
+            will-change: transform !important;
+            transform: translate3d(-50%, -50%, 0) rotate(0deg) !important;
+            z-index: 1 !important;
+            pointer-events: none !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+            transform-origin: center center !important;
+        }
+
+        /* Mask Plate to preserve button core and expose glowing 1.5px/2px border tracer */
+        .btn-loading::after,
+        .btn-beam-loading::after {
+            content: '' !important;
+            position: absolute !important;
+            inset: 1.5px !important;
+            border-radius: inherit !important;
+            background: var(--btn-loading-bg, #183B33) !important;
+            z-index: 2 !important;
+            pointer-events: none !important;
+            transition: background 0.2s ease !important;
+        }
+
+        /* Maintain crystal-sharp elevated typography and icons above the mask */
+        .btn-loading > *,
+        .btn-beam-loading > * {
+            position: relative !important;
+            z-index: 3 !important;
+        }
+
+        /* Preset: Standard Login / Main Emerald Auth Buttons */
+        .login-btn.btn-loading,
+        .auth-btn-main.btn-loading,
+        .btn-primary.btn-loading {
+            --btn-loading-bg: #183B33;
+            --btn-beam-c1: rgba(91, 153, 140, 0.05);
+            --btn-beam-c2: #5B998C;
+            --btn-beam-c3: #81E4DA;
+            --btn-beam-c4: #FFFFFF;
+            --btn-beam-speed: 1.05s;
+            box-shadow: 0 0 16px rgba(91, 153, 140, 0.4) !important;
+        }
+
+        /* Preset: Google Sign In / Sign Up (Signature 4-Color Beam) */
+        .oauth-google-btn.btn-loading {
+            --btn-loading-bg: #FFFFFF;
+            --btn-beam-c1: rgba(66, 133, 244, 0);
+            --btn-beam-c2: #4285F4; /* Google Blue */
+            --btn-beam-c3: #34A853; /* Google Green */
+            --btn-beam-c4: #EA4335; /* Google Red */
+            --btn-beam-speed: 1.1s;
+            border-color: transparent !important;
+            box-shadow: 0 0 18px rgba(66, 133, 244, 0.3) !important;
+        }
+
+        /* Dark Theme Radiance & Background Sync */
+        body.dark-theme .oauth-google-btn.btn-loading,
+        #loginPage.dark-mode .oauth-google-btn.btn-loading {
+            --btn-loading-bg: #1E1E1C !important;
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.45) !important;
+        }
+
+        body.dark-theme .login-btn.btn-loading,
+        body.dark-theme .auth-btn-main.btn-loading,
+        #loginPage.dark-mode .login-btn.btn-loading,
+        #loginPage.dark-mode .auth-btn-main.btn-loading {
+            --btn-loading-bg: #0F2620 !important;
+            box-shadow: 0 0 22px rgba(129, 228, 218, 0.48) !important;
+        }
+
+        /* Smooth micro-spinner for loading buttons */
+        .btn-loading-spinner {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #FFFFFF;
+            border-radius: 50%;
+            animation: btn-beam-spin 0.65s linear infinite;
+            will-change: transform;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .oauth-google-btn .btn-loading-spinner {
+            border-color: rgba(66, 133, 244, 0.25);
+            border-top-color: #4285F4;
+        }
+
 
         /* ═══════════════════════════════════════════════════════════════════════
            MAGIC UI ANIMATED THEME TOGGLER (VIEW TRANSITION REVEAL)
@@ -4151,7 +4287,7 @@
 
                                     <div class="auth-divider-line my-2"><span>OR</span></div>
 
-                                    <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google')">
+                                    <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google', event)">
                                         <svg width="18" height="18" viewBox="0 0 24 24">
                                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -4215,7 +4351,7 @@
                                         <div class="auth-divider-line"><span>OR</span></div>
 
                                         <div class="w-full">
-                                            <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google')">
+                                            <button type="button" class="oauth-google-btn w-full" onclick="oauthLogin('Google', event)">
                                                 <svg width="18" height="18" viewBox="0 0 24 24">
                                                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -6729,7 +6865,9 @@
                     return;
                 }
 
-                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Resetting Password...'; }
+                if (submitBtn) {
+                    setButtonLoading(submitBtn, true, 'RESETTING PASSWORD...');
+                }
                 try {
                     const res = await fetch('/api/auth/reset-password', {
                         method: 'POST',
@@ -6744,11 +6882,12 @@
                     const data = await res.json();
                     if (!res.ok || !data.success) {
                         showToast(data.message || data.error || 'Failed to reset password.', 'error');
-                        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Reset Password & Log In'; }
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                         return;
                     }
 
                     showToast('Password reset successfully! You can now log in.', 'success');
+                    if (submitBtn) setButtonLoading(submitBtn, false);
                     closeModal('forgotPasswordModal');
                     resetFpToStep1();
 
@@ -6759,7 +6898,7 @@
                     if (compEmail) compEmail.value = fpTargetEmail;
                 } catch (err) {
                     showToast('Reset failed: ' + err.message, 'error');
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Reset Password & Log In'; }
+                    if (submitBtn) setButtonLoading(submitBtn, false);
                 }
             }
             window.resetPassword = resetPassword;
@@ -6807,7 +6946,10 @@
                     return;
                 }
 
-                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Verifying Referral...'; }
+                if (submitBtn) {
+                    setButtonLoading(submitBtn, true, 'VERIFYING REFERRAL...');
+                }
+
                 try {
                     const res = await fetch('/api/auth/company/reset-password', {
                         method: 'POST',
@@ -6823,11 +6965,12 @@
                     const data = await res.json();
                     if (!res.ok || !data.success) {
                         showToast(data.message || data.error || 'Password reset attempt denied.', 'error');
-                        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify Referral & Reset Password'; }
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                         return;
                     }
 
                     showToast(data.message || '🎉 Company Portal password reset successfully. You can now log in.', 'success');
+                    if (submitBtn) setButtonLoading(submitBtn, false);
                     closeModal('forgotPasswordModal');
 
                     // Pre-fill in org login input
@@ -6837,10 +6980,10 @@
                     switchOrgPortalTab('login');
                 } catch (err) {
                     showToast('Reset failed: ' + err.message, 'error');
-                } finally {
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify Referral & Reset Password'; }
+                    if (submitBtn) setButtonLoading(submitBtn, false);
                 }
             };
+
 
 
             let currentTabsList = [];
@@ -7358,10 +7501,64 @@
                 }, 1000);
             };
 
-            window.oauthLogin = function(provider) {
-                showToast('Redirecting to Google...', 'info');
-                window.location.href = '/auth/google';
+            // ─── GPU-ACCELERATED BORDER-BEAM BUTTON LOADING CONTROLLER ───
+            window.setButtonLoading = function(btnOrId, isLoading, loadingText = null) {
+                const btn = typeof btnOrId === 'string' ? document.getElementById(btnOrId) : btnOrId;
+                if (!btn) return;
+
+                if (isLoading) {
+                    if (!btn.dataset.originalHtml) {
+                        btn.dataset.originalHtml = btn.innerHTML;
+                    }
+                    btn.classList.add('btn-loading');
+                    btn.disabled = true;
+                    btn.setAttribute('aria-busy', 'true');
+
+                    if (loadingText) {
+                        const isGoogle = btn.classList.contains('oauth-google-btn');
+                        if (isGoogle) {
+                            btn.innerHTML = `
+                                <svg width="18" height="18" viewBox="0 0 24 24" class="shrink-0">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                                <span>${loadingText}</span>
+                            `;
+                        } else {
+                            btn.innerHTML = `<span class="btn-loading-spinner"></span><span>${loadingText}</span>`;
+                        }
+                    }
+                } else {
+                    btn.classList.remove('btn-loading');
+                    btn.disabled = false;
+                    btn.removeAttribute('aria-busy');
+                    if (btn.dataset.originalHtml) {
+                        btn.innerHTML = btn.dataset.originalHtml;
+                        delete btn.dataset.originalHtml;
+                    }
+                }
             };
+
+            window.oauthLogin = function(provider, event) {
+                let btn = null;
+                if (event && event.currentTarget) {
+                    btn = event.currentTarget;
+                } else if (event && event.target) {
+                    btn = event.target.closest('.oauth-google-btn') || event.target;
+                } else {
+                    btn = document.querySelector('.oauth-google-btn');
+                }
+                if (btn) {
+                    setButtonLoading(btn, true, 'CONNECTING TO GOOGLE...');
+                }
+                showToast('Initiating Google authentication...', 'info');
+                setTimeout(() => {
+                    window.location.href = '/auth/google';
+                }, 250);
+            };
+
 
             // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
             let chatSoundEnabled = localStorage.getItem('rankly_chat_sound') !== 'false';
@@ -8238,7 +8435,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const btn = document.getElementById('inlineResetBtn');
                     if (!email) { showToast('Please enter your account email', 'error'); return; }
 
-                    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Checking Account...'; }
+                    if (btn) {
+                        setButtonLoading(btn, true, 'CHECKING ACCOUNT...');
+                    }
                     try {
                         const res = await fetch('/api/auth/forgot-password', {
                             method: 'POST',
@@ -8249,10 +8448,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             showToast(data.message || data.error || 'No account found with this email address.', 'error');
-                            if (btn) {
-                                btn.disabled = false;
-                                btn.innerHTML = '<span>SEND RESET LINK & CODE</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
-                            }
+                            if (btn) setButtonLoading(btn, false);
                             return;
                         }
                         showToast(`Password reset code sent to ${email}. Please check your inbox.`, 'success');
@@ -8274,25 +8470,29 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     } catch (err) {
                         showToast('Server error: ' + err.message, 'error');
                     } finally {
-                        if (btn) {
-                            btn.disabled = false;
-                            btn.innerHTML = '<span>SEND RESET LINK & CODE</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
-                        }
+                        if (btn) setButtonLoading(btn, false);
                     }
                 };
 
 
-                // ─── LOGIN FORM SUBMIT HANDLER ───
+
+                // ─── LOGIN FORM SUBMIT HANDLER (INSTANT BORDER-BEAM LOADING) ───
                 const slidingLoginForm = document.getElementById('slidingLoginForm');
                 if (slidingLoginForm) {
                     slidingLoginForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
+                        const submitBtn = document.getElementById('loginBtn') || slidingLoginForm.querySelector('button[type="submit"]');
                         const identifier = (document.getElementById('loginUsername') || document.getElementById('slideLoginEmail'))?.value.trim();
                         const password = (document.getElementById('loginPassword') || document.getElementById('slideLoginPassword'))?.value.trim();
                         const role = document.getElementById('loginRole')?.value || 'candidate';
                         const rememberMe = document.getElementById('rememberMe')?.checked ?? true;
 
                         if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
+
+                        // Trigger loading beam state immediately on button click
+                        if (submitBtn) {
+                            setButtonLoading(submitBtn, true, 'SIGNING IN...');
+                        }
 
                         try {
                             const res = await fetch('/api/auth/login', {
@@ -8304,6 +8504,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             const data = await res.json();
                             if (!res.ok || !data.success) {
                                 showToast(data.message || data.error || 'Invalid credentials', 'error');
+                                if (submitBtn) setButtonLoading(submitBtn, false);
                                 return;
                             }
                             currentUser = data.user;
@@ -8315,6 +8516,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             loginUser();
                         } catch (err) {
                             showToast('Server connection error', 'error');
+                            if (submitBtn) setButtonLoading(submitBtn, false);
                         }
                     });
                 }
@@ -8371,6 +8573,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 window.handleCandidateRegistration = async function() {
+                    const submitBtn = document.getElementById('slideRegSubmitBtn');
                     const firstName = document.getElementById('slideRegFirstName')?.value.trim();
                     const lastName = document.getElementById('slideRegLastName')?.value.trim();
                     const username = document.getElementById('slideRegUsername')?.value.trim() || (document.getElementById('slideRegEmail')?.value.split('@')[0]);
@@ -8408,6 +8611,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         return;
                     }
 
+                    if (submitBtn) {
+                        setButtonLoading(submitBtn, true, 'CREATING ACCOUNT...');
+                    }
+
                     try {
                         const res = await fetch('/api/auth/register', {
                             method: 'POST',
@@ -8434,6 +8641,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             showToast(data.message || data.error || 'Registration failed', 'error');
+                            if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
                         currentUser = data.user;
@@ -8444,6 +8652,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         loginUser();
                     } catch (err) {
                         showToast('Server connection error', 'error');
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                     }
                 };
 
@@ -8512,8 +8721,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Verifying Referral Code...';
+                        setButtonLoading(submitBtn, true, 'VERIFYING REFERRAL...');
                     }
 
                     try {
@@ -8537,6 +8745,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 refInput.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-950/30');
                                 setTimeout(() => refInput.classList.remove('border-red-500', 'bg-red-50', 'dark:bg-red-950/30'), 3000);
                             }
+                            if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
 
@@ -8550,21 +8759,20 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const loginIdentifier = document.getElementById('orgLoginIdentifier');
                         if (loginIdentifier) loginIdentifier.value = identifier;
 
+                        if (submitBtn) setButtonLoading(submitBtn, false);
+
                         // Switch back to login view
                         switchOrgPortalTab('login');
                     } catch (err) {
                         showToast('Server error: ' + err.message, 'error');
-                    } finally {
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = '<span>VERIFY REFERRAL & RESET PASSWORD</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
-                        }
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                     }
                 };
 
 
                 // ─── ENTERPRISE / ORGANIZATION LOGIN SUBMIT HANDLER ───
                 window.handleOrgLogin = async function() {
+                    const submitBtn = document.getElementById('orgLoginSubmitBtn');
                     const identifier = document.getElementById('orgLoginIdentifier')?.value.trim();
                     const password = document.getElementById('orgLoginPassword')?.value.trim();
                     const rememberMe = document.getElementById('orgRememberMe')?.checked ?? true;
@@ -8572,6 +8780,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (!identifier || !password) {
                         showToast('Please enter corporate credentials', 'error');
                         return;
+                    }
+
+                    if (submitBtn) {
+                        setButtonLoading(submitBtn, true, 'AUTHENTICATING WORKSPACE...');
                     }
 
                     try {
@@ -8590,6 +8802,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             showToast(data.message || data.error || 'Invalid corporate credentials', 'error');
+                            if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
                         currentUser = data.user;
@@ -8602,6 +8815,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         loginUser();
                     } catch (err) {
                         showToast('Server connection error', 'error');
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                     }
                 };
 
@@ -8649,6 +8863,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 // ─── REGISTER ORGANIZATION FORM SUBMIT HANDLER ───
                 window.handleOrgRegistration = async function() {
+                    const submitBtn = document.getElementById('registerOrgSubmitBtn');
                     const orgName = document.getElementById('orgNameInput')?.value.trim();
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     const firstName = document.getElementById('orgFirstName')?.value.trim();
@@ -8668,6 +8883,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (age && parseInt(age, 10) < 18) {
                         showToast('Admin must be at least 18 years old', 'error');
                         return;
+                    }
+
+                    if (submitBtn) {
+                        setButtonLoading(submitBtn, true, 'PROVISIONING WORKSPACE...');
                     }
 
                     try {
@@ -8697,6 +8916,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             showToast(data.message || data.error || 'Organization registration failed', 'error');
+                            if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
                         currentUser = data.user;
@@ -8706,8 +8926,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         loginUser();
                     } catch (err) {
                         showToast('Server connection error', 'error');
+                        if (submitBtn) setButtonLoading(submitBtn, false);
                     }
                 };
+
 
                 const orgForm = document.getElementById('orgForm');
                 if (orgForm) {
