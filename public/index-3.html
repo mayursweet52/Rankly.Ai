@@ -7014,22 +7014,14 @@
             }
             window.initSidebarDock = initSidebarDock;
 
-            function updateSidebarMode() {
-                const isDark = document.body.classList.contains('dark-theme');
+                        function updateSidebarMode() {
                 const dock = document.getElementById('sidebarDock');
                 const dashNav = document.getElementById('dashNav');
                 const sectionTitle = document.querySelector('.sidebar-section-title');
 
-                if (isDark) {
-                    if (dock) dock.style.display = 'flex';
-                    if (dashNav) dashNav.style.display = 'none';
-                    if (sectionTitle) sectionTitle.style.display = 'none';
-                    initSidebarDock();
-                } else {
-                    if (dock) dock.style.display = 'none';
-                    if (dashNav) dashNav.style.display = 'flex';
-                    if (sectionTitle) sectionTitle.style.display = 'block';
-                }
+                if (dock) dock.style.display = 'none';
+                if (dashNav) dashNav.style.display = 'flex';
+                if (sectionTitle) sectionTitle.style.display = 'block';
             }
             window.updateSidebarMode = updateSidebarMode;
 
