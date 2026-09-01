@@ -11,10 +11,29 @@
             padding: 0;
         }
 
+        :root {
+            /* Rankly.ai Signature Palette */
+            --bg-page: #F5F5F0;
+            --dot-inactive: #E2E2DC;
+            --dot-active: #183B33;
+            --dot-highlight: #5B998C;
+            --dot-highlight-glow: rgba(91, 153, 140, 0.45);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-page: #0B0D14;
+                --dot-inactive: #1A1E2B;
+                --dot-active: #81E4DA;
+                --dot-highlight: #5B998C;
+                --dot-highlight-glow: rgba(129, 228, 218, 0.4);
+            }
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #f2f0ed;
+            background-color: var(--bg-page);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,19 +41,19 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
+            transition: background-color 0.3s ease;
         }
 
-        /* Container for Centered Hexagonal Matrix */
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100vh;
-            padding: 16px;
+            padding: 20px;
         }
 
-        /* Text grid container */
+        /* Hexagonal Grid Container */
         .text-grid {
             display: flex;
             flex-direction: column;
@@ -49,54 +68,68 @@
             justify-content: center;
         }
 
-        /* Individual Hexagon Dot Styling */
+        /* Hexagonal Dot Geometry */
         .dot {
             width: 13px;
             height: 15px;
-            background-color: #d6d5d2;
+            background-color: var(--dot-inactive);
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            transition: background-color 0.28s ease, transform 0.28s ease, filter 0.28s ease, opacity 0.28s ease;
+            transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                        filter 0.35s ease, 
+                        opacity 0.35s ease;
             position: relative;
-            will-change: transform, background-color;
+            will-change: transform, opacity, background-color;
             cursor: pointer;
         }
 
-        /* Active Name Dot State (Deep Charcoal / Rankly Forest Slate) */
+        /* Active Letter Dots (Rankly Deep Forest Slate #183B33) */
         .dot.active {
-            background-color: #1e1e1e;
-            transform: scale(1.08);
+            background-color: var(--dot-active);
+            transform: scale(1.05);
+            animation: dotBreathe 2.4s ease-in-out infinite alternate;
         }
 
-        /* Highlight Dot State (Electric Lime-Green for .AI) */
+        /* Highlight Dots for .AI (Rankly Emerald / Teal Glow #5B998C / #81E4DA) */
         .dot.highlight {
-            background-color: #bfff00;
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 6px rgba(191, 255, 0, 0.8));
-            animation: pulseHighlight 2s ease-in-out infinite alternate;
+            background-color: var(--dot-highlight);
+            transform: scale(1.12);
+            filter: drop-shadow(0 0 8px var(--dot-highlight-glow));
+            animation: highlightPulse 2s ease-in-out infinite alternate;
         }
 
-        @keyframes pulseHighlight {
-            0% { filter: drop-shadow(0 0 4px rgba(191, 255, 0, 0.5)); transform: scale(1.1); }
-            100% { filter: drop-shadow(0 0 9px rgba(191, 255, 0, 0.95)); transform: scale(1.18); }
+        @keyframes dotBreathe {
+            0% {
+                transform: scale(1.03);
+                opacity: 0.92;
+            }
+            100% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
         }
 
-        /* Traveling Wave Light Beam */
-        .dot.wave-active {
-            background-color: #00ffcc !important;
-            filter: drop-shadow(0 0 8px rgba(0, 255, 204, 0.9)) !important;
-            transform: scale(1.3) !important;
-            z-index: 2;
+        @keyframes highlightPulse {
+            0% {
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 4px var(--dot-highlight-glow));
+            }
+            100% {
+                transform: scale(1.18);
+                filter: drop-shadow(0 0 10px var(--dot-highlight-glow));
+            }
         }
 
+        /* Interactive Hover Wave Effect */
         .dot:hover {
-            transform: scale(1.4) !important;
-            background-color: #bfff00 !important;
-            filter: drop-shadow(0 0 8px rgba(191, 255, 0, 0.9)) !important;
-            z-index: 5;
+            transform: scale(1.35) !important;
+            background-color: var(--dot-highlight) !important;
+            filter: drop-shadow(0 0 8px var(--dot-highlight-glow)) !important;
+            z-index: 10;
         }
 
-        /* Responsive scaling on smaller screens */
-        @media (max-width: 900px) {
+        /* Responsive Scaling */
+        @media (max-width: 950px) {
             .dot {
                 width: 10px;
                 height: 12px;
@@ -111,8 +144,8 @@
 
         @media (max-width: 600px) {
             .dot {
-                width: 6.5px;
-                height: 8px;
+                width: 6px;
+                height: 7.5px;
             }
             .text-grid {
                 gap: 3.5px;
@@ -131,9 +164,9 @@
 
     <script>
         // Crystal-Clear 7-Row Matrix Pattern for "RANKLY.AI"
-        // 0: Inactive Dot (#d6d5d2)
-        // 1: Active Carbon Dot (#1e1e1e)
-        // 2: Highlight Lime-Green Dot (#bfff00)
+        // 0: Inactive Dot (var(--dot-inactive))
+        // 1: Active Forest Emerald Dot (var(--dot-active) / #183B33)
+        // 2: Highlight Teal Dot (var(--dot-highlight) / #5B998C)
         const pattern = [
             // Top Padding Row
             [0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0,0, 0, 0,0, 0, 0,0,0,0,0, 0, 0,0,0, 0],
@@ -158,7 +191,6 @@
         const gridElement = document.getElementById('grid');
         const dotsMatrix = [];
 
-        // Render Hexagonal Matrix Grid
         function createGrid() {
             gridElement.innerHTML = '';
             pattern.forEach((row, rIndex) => {
@@ -175,7 +207,7 @@
                     dot.dataset.col = cIndex;
                     dot.dataset.cellType = cell;
 
-                    // Interactive reactive wave on hover
+                    // Interactive ripple on hover
                     dot.addEventListener('mouseenter', () => triggerRipple(rIndex, cIndex));
 
                     rowDiv.appendChild(dot);
@@ -187,68 +219,48 @@
 
         createGrid();
 
-        // 1. Organic Matrix Twinkle & Subtle Breathing
+        // Rhythmic, Organic Hexagon Dot Twinkle & Micro-Blinking
         setInterval(() => {
             const dots = document.querySelectorAll('.dot');
             dots.forEach(dot => {
                 const cellType = dot.dataset.cellType;
                 if (cellType === '0') {
-                    // Background dots twinkle randomly
-                    if (Math.random() > 0.90) {
-                        dot.style.opacity = (Math.random() * 0.4 + 0.6).toFixed(2);
-                        dot.style.transform = Math.random() > 0.5 ? 'scale(1.08)' : 'scale(1)';
+                    // Subtle occasional shimmer on inactive dots
+                    if (Math.random() > 0.92) {
+                        dot.style.opacity = (Math.random() * 0.35 + 0.65).toFixed(2);
+                        dot.style.transform = 'scale(1.06)';
                     } else {
                         dot.style.opacity = '1';
                         dot.style.transform = 'scale(1)';
                     }
                 } else if (cellType === '1') {
-                    // Active letters micro-pulse
-                    if (Math.random() > 0.88) {
-                        dot.style.transform = 'scale(1.15)';
-                    } else {
-                        dot.style.transform = 'scale(1.08)';
+                    // Soft micro-sparkle on letter dots
+                    if (Math.random() > 0.94) {
+                        dot.style.filter = 'brightness(1.25)';
+                        setTimeout(() => {
+                            dot.style.filter = 'none';
+                        }, 220);
                     }
                 }
             });
         }, 300);
 
-        // 2. Continuous Cybernetic Light Wave Sweep across columns
-        let sweepCol = 0;
-        const totalCols = pattern[0].length;
-
-        function runWaveSweep() {
-            for (let r = 0; r < pattern.length; r++) {
-                // Clear previous wave
-                const prevDot = dotsMatrix[r][(sweepCol - 1 + totalCols) % totalCols];
-                if (prevDot) prevDot.classList.remove('wave-active');
-
-                // Activate current wave column
-                const currDot = dotsMatrix[r][sweepCol];
-                if (currDot) {
-                    currDot.classList.add('wave-active');
-                }
-            }
-
-            sweepCol = (sweepCol + 1) % totalCols;
-        }
-
-        setInterval(runWaveSweep, 85);
-
-        // 3. Interactive Cursor Ripple Wave
+        // Interactive Cursor Ripple
         function triggerRipple(centerRow, centerCol) {
+            const totalCols = pattern[0].length;
             for (let r = 0; r < pattern.length; r++) {
                 for (let c = 0; c < totalCols; c++) {
                     const dist = Math.hypot(r - centerRow, c - centerCol);
-                    if (dist <= 3) {
+                    if (dist <= 3.5) {
                         setTimeout(() => {
                             const d = dotsMatrix[r][c];
                             if (d) {
-                                d.style.transform = 'scale(1.35)';
+                                d.style.transform = 'scale(1.3)';
                                 setTimeout(() => {
                                     d.style.transform = '';
-                                }, 250);
+                                }, 220);
                             }
-                        }, dist * 45);
+                        }, dist * 40);
                     }
                 }
             }
