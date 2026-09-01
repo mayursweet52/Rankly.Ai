@@ -3995,23 +3995,25 @@
             </div>
         </header>
 
-        <!-- ─── 3D PEBBLES LAYER (COHERE ACCENTS) ─── -->
-        <!-- Bottom-Left Realistic 3D Cluster -->
-        <div class="pebble-cluster-bottom-left hidden md:block">
-            <div class="pebble-3d-grey"></div>
-            <div class="pebble-3d-coral"></div>
-            <div class="pebble-3d-iridescent"></div>
-            <div class="pebble-3d-sage"></div>
+        <!-- ─── 3D PEBBLES BACKGROUND LAYER (COHERE ACCENTS) ─── -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+            <!-- Bottom-Left Realistic 3D Cluster -->
+            <div class="pebble-cluster-bottom-left hidden md:block">
+                <div class="pebble-3d-grey"></div>
+                <div class="pebble-3d-coral"></div>
+                <div class="pebble-3d-iridescent"></div>
+                <div class="pebble-3d-sage"></div>
+            </div>
+
+            <!-- Top-Right Floating Terracotta Prism -->
+            <div class="pebble-floating-top-right hidden md:block"></div>
+
+            <!-- Middle-Right Floating Sage Stone -->
+            <div class="pebble-floating-mid-right hidden md:block"></div>
         </div>
 
-        <!-- Top-Right Floating Terracotta Prism -->
-        <div class="pebble-floating-top-right hidden md:block"></div>
-
-        <!-- Middle-Right Floating Sage Stone -->
-        <div class="pebble-floating-mid-right hidden md:block"></div>
-
         <!-- Center Animated Sliding Auth Card (Rankly.ai Branded with Full Card 3D Flip Architecture) -->
-        <div class="w-full flex justify-center items-center my-auto z-10 py-0 px-2">
+        <main class="w-full flex-1 flex justify-center items-center z-10 min-h-0 py-1">
             <div class="auth-card-3d-wrapper">
                 <div class="auth-card-3d-flipper" id="fullAuthCardFlipper">
                     
@@ -4488,9 +4490,9 @@
 
                 </div>
             </div>
-        </div>
+        </main>
 
-        <footer class="w-full text-center text-xs text-[#888880] z-10 py-2">
+        <footer class="w-full text-center text-xs text-[#888880] z-20 shrink-0 py-1.5 select-none">
             © 2026 Rankly.ai Inc. Enterprise Recruitment Intelligence Platform.
         </footer>
     </div>
