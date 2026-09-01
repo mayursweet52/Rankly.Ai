@@ -2557,71 +2557,103 @@
         }
 
         /* ─── RANKLY LUXURY HIGH-VISIBILITY THEME TOGGLE PILL ─── */
+        /* ─── ICONLY PRO LUXURY GEOMETRIC THEME TOGGLE PILL WITH MICRO-ANIMATION ─── */
         .rankly-theme-toggle-pill {
+            background: #FFFFFF;
+            border: 1px solid #E5E5DF;
+            border-radius: 9999px;
+            padding: 6px 14px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: inherit;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #111111;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
             user-select: none;
-            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-            
-            /* Light Mode Default: Crisp White & Forest Green with Gold Sun */
-            background: #FFFFFF !important;
-            border: 1.5px solid #183B33 !important;
-            color: #183B33 !important;
-            box-shadow: 0 2px 8px rgba(24, 59, 51, 0.08);
+            position: relative;
+            outline: none;
         }
 
         .rankly-theme-toggle-pill:hover {
-            background: #183B33 !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 16px rgba(24, 59, 51, 0.2);
+            border-color: #183B33;
+            background: #FAFAF8;
+            box-shadow: 0 4px 14px rgba(24, 59, 51, 0.1);
             transform: translateY(-1px);
         }
 
-        .rankly-theme-toggle-pill .theme-sun-icon {
-            color: #D95D39 !important;
-            font-size: 13px;
+        .rankly-theme-toggle-pill:active,
+        .rankly-theme-toggle-pill.theme-pulse {
+            animation: themePillPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes themePillPop {
+            0% { transform: scale(1); }
+            35% { transform: scale(0.92); }
+            70% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        .theme-icon-container {
+            position: relative;
+            width: 17px;
+            height: 17px;
             display: inline-flex;
             align-items: center;
-            transition: transform 0.3s ease, color 0.3s ease;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .rankly-theme-toggle-pill:hover .theme-sun-icon {
-            color: #FFA14A !important;
+        .theme-icon-svg {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease, filter 0.35s ease;
+            transform-origin: center center;
         }
 
-        .rankly-theme-toggle-pill:hover .theme-text-label {
-            color: #FFFFFF !important;
+        .theme-sun-svg {
+            color: #D95D39;
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+            filter: drop-shadow(0 0 4px rgba(217, 93, 57, 0.35));
         }
 
-        .rankly-theme-toggle-pill .theme-moon-icon {
-            color: #5B998C !important;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            transition: transform 0.3s ease, color 0.3s ease;
+        .theme-moon-svg {
+            color: #81E4DA;
+            opacity: 0;
+            transform: rotate(-120deg) scale(0);
+            filter: drop-shadow(0 0 6px rgba(129, 228, 218, 0.6));
+        }
+
+        .rankly-theme-toggle-pill:hover .theme-sun-svg {
+            color: #FFA14A;
+            transform: rotate(45deg) scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255, 161, 74, 0.6));
+        }
+
+        .rankly-theme-toggle-pill:hover .theme-moon-svg {
+            color: #A5F3FC;
+            transform: rotate(-15deg) scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(165, 243, 252, 0.8));
         }
 
         .rankly-theme-toggle-pill .theme-text-label {
             font-size: 12px;
             font-weight: 700;
             letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+            color: #111111;
         }
 
-        /* Dark Mode Appearance: Deep Obsidian with Emerald Glow and Radiant Cyan Moon */
+        /* ─── DARK MODE APPEARANCE FOR PILL TOGGLE ─── */
         body.dark-theme .rankly-theme-toggle-pill,
         .dark .rankly-theme-toggle-pill,
         #loginPage.dark-mode .rankly-theme-toggle-pill {
-            background: #12141F !important;
+            background: #141724 !important;
             border: 1.5px solid #5B998C !important;
             color: #FFFFFF !important;
-            box-shadow: 0 0 16px rgba(91, 153, 140, 0.28);
+            box-shadow: 0 0 16px rgba(91, 153, 140, 0.25);
         }
 
         body.dark-theme .rankly-theme-toggle-pill:hover,
@@ -2630,16 +2662,31 @@
             background: #183B33 !important;
             border-color: #81E4DA !important;
             color: #FFFFFF !important;
-            box-shadow: 0 0 22px rgba(129, 228, 218, 0.5);
+            box-shadow: 0 0 22px rgba(129, 228, 218, 0.45);
             transform: translateY(-1px);
         }
 
-        body.dark-theme .rankly-theme-toggle-pill .theme-moon-icon,
-        .dark .rankly-theme-toggle-pill .theme-moon-icon,
-        #loginPage.dark-mode .rankly-theme-toggle-pill .theme-moon-icon {
-            color: #81E4DA !important;
-            filter: drop-shadow(0 0 6px rgba(129, 228, 218, 0.7));
+        body.dark-theme .theme-sun-svg,
+        .dark .theme-sun-svg,
+        #loginPage.dark-mode .theme-sun-svg {
+            opacity: 0 !important;
+            transform: rotate(120deg) scale(0) !important;
         }
+
+        body.dark-theme .theme-moon-svg,
+        .dark .theme-moon-svg,
+        #loginPage.dark-mode .theme-moon-svg {
+            opacity: 1 !important;
+            transform: rotate(0deg) scale(1) !important;
+        }
+
+        body.dark-theme .rankly-theme-toggle-pill .theme-text-label,
+        .dark .rankly-theme-toggle-pill .theme-text-label,
+        #loginPage.dark-mode .rankly-theme-toggle-pill .theme-text-label {
+            color: #FFFFFF !important;
+        }
+
+        /* ─── LOGIN PAGE – DARK MODE TOGGLE ─── */
 
         /* ─── LOGIN PAGE – DARK MODE TOGGLE ─── */
         #loginPage.dark-mode,
@@ -4101,9 +4148,17 @@
             </div>
             <div class="flex items-center gap-3">
                 <!-- Prominent High-Visibility Rankly Theme Pill Button -->
-                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
-                    <span class="theme-sun-icon"><i class="fa-solid fa-sun"></i></span>
-                    <span class="theme-moon-icon hidden"><i class="fa-solid fa-moon"></i></span>
+                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill group" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                    <span class="theme-icon-container">
+                        <svg class="theme-icon-svg theme-sun-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                            <path d="M12 2.5V4.5M12 19.5V21.5M4.5 12H2.5M21.5 12H19.5M5.28 5.28L6.7 6.7M17.3 17.3L18.72 18.72M5.28 18.72L6.7 17.3M17.3 6.7L18.72 5.28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="theme-icon-svg theme-moon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <path d="M18.5 4.5L19.2 6.2L21 6.9L19.2 7.6L18.5 9.3L17.8 7.6L16 6.9L17.8 6.2L18.5 4.5Z" fill="currentColor"/>
+                        </svg>
+                    </span>
                     <span class="theme-text-label">Light Mode</span>
                 </button>
             </div>
@@ -5331,9 +5386,17 @@
 
                     <div class="flex items-center gap-3 flex-shrink-0">
                         <!-- Prominent High-Visibility Rankly Theme Pill Button on Topbar -->
-                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
-                            <span class="theme-sun-icon"><i class="fa-solid fa-sun"></i></span>
-                            <span class="theme-moon-icon hidden"><i class="fa-solid fa-moon"></i></span>
+                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill group" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                            <span class="theme-icon-container">
+                                <svg class="theme-icon-svg theme-sun-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                                    <path d="M12 2.5V4.5M12 19.5V21.5M4.5 12H2.5M21.5 12H19.5M5.28 5.28L6.7 6.7M17.3 17.3L18.72 18.72M5.28 18.72L6.7 17.3M17.3 6.7L18.72 5.28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                <svg class="theme-icon-svg theme-moon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    <path d="M18.5 4.5L19.2 6.2L21 6.9L19.2 7.6L18.5 9.3L17.8 7.6L16 6.9L17.8 6.2L18.5 4.5Z" fill="currentColor"/>
+                                </svg>
+                            </span>
                             <span class="theme-text-label">Light Mode</span>
                         </button>
                         <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile">
