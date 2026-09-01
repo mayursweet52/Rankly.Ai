@@ -864,23 +864,19 @@
 
         /* ─── ULTRA-SMOOTH PROMOTION LIQUID PHYSICS ENGINE ─── */
         .sliding-auth-card {
-            position: relative;
-            width: 780px;
-            max-width: 100%;
-            height: 540px;
-            min-height: 540px;
-            max-height: 540px;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             border-radius: 24px;
             background: #FFFFFF;
             border: 1px solid #E5E5DF;
             box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
             display: flex;
             transition: background 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform;
-            transform: translateZ(0);
+            overflow: hidden;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            contain: paint;
         }
 
         .sliding-auth-card .card-bg {
@@ -1051,59 +1047,57 @@
 
         /* ─── LUXURY 3D LIQUID FLIP ARCHITECTURE ─── */
         .auth-card-3d-wrapper {
-            perspective: 2000px;
+            perspective: 1600px;
             width: 780px;
-            max-width: 100%;
+            max-width: calc(100vw - 32px);
             height: 540px;
-            min-height: 540px;
-            max-height: 540px;
             position: relative;
             margin: 0 auto;
-            will-change: transform;
         }
         .auth-card-3d-flipper {
             position: relative;
             width: 100%;
-            height: 540px;
-            min-height: 540px;
-            max-height: 540px;
-            transition: transform 0.82s cubic-bezier(0.34, 1.25, 0.64, 1);
+            height: 100%;
+            transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
             transform-style: preserve-3d;
-            will-change: transform;
+            transform-origin: 50% 50%;
         }
         .auth-card-3d-flipper.flipped {
             transform: rotateY(180deg);
         }
         .auth-card-front,
         .auth-card-back {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            height: 540px;
-            min-height: 540px;
-            max-height: 540px;
+            height: 100%;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             transform-style: preserve-3d;
+            border-radius: 24px;
+            box-sizing: border-box;
         }
         .auth-card-front {
-            transform: rotateY(0deg) translateZ(0);
-            position: relative;
+            transform: rotateY(0deg);
             z-index: 2;
         }
         .auth-card-back {
-            transform: rotateY(180deg) translateZ(0);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 540px;
-            border-radius: 24px;
+            transform: rotateY(180deg);
+            z-index: 1;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.12);
             overflow: hidden;
             display: flex;
-            z-index: 1;
             padding: 0;
+        }
+        .auth-card-3d-flipper.flipped .auth-card-front {
+            pointer-events: none;
+            z-index: 1;
+        }
+        .auth-card-3d-flipper.flipped .auth-card-back {
+            pointer-events: auto;
+            z-index: 2;
         }
         body.dark-theme .auth-card-back,
         #loginPage.dark-mode .auth-card-back {
@@ -4581,67 +4575,132 @@
         </footer>
     </div>
 
-    <!-- ─── FORGOT PASSWORD MODAL ─── -->
+    <!-- ─── FORGOT PASSWORD MODAL (DUAL FLOW: CANDIDATE VS COMPANY PORTAL) ─── -->
     <div id="forgotPasswordModal" class="modal-overlay" onclick="if(event.target===this) closeModal('forgotPasswordModal')">
-        <div class="modal-box" style="max-width:450px;">
-            <h3> Reset Your Password</h3>
-            <p class="text-sm text-gray-500 mb-4">Enter your email to receive OTP.</p>
-            <form id="forgotPasswordForm" onsubmit="event.preventDefault();">
-                <!-- Step 1: Email -->
-                <div id="fpStep1">
-                    <div class="mb-3">
-                        <label class="form-label font-bold text-gray-800">Account Email Address *</label>
-                        <input type="email" id="fpEmail" class="form-input" required placeholder="yourname@gmail.com" />
-                    </div>
-                    <button type="button" onclick="sendForgotOTP()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Reset Code</button>
-                </div>
+        <div class="modal-box" style="max-width:480px;">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-bold text-[var(--text-primary)]">Reset Account Password</h3>
+                <button type="button" onclick="closeModal('forgotPasswordModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[var(--text-muted)] mb-3.5">Select your account workflow below to proceed with secure password recovery.</p>
 
-                <!-- Step 2: OTP -->
-                <div id="fpStep2" style="display:none;" class="mt-2">
-                    <div class="mb-3 p-3 bg-blue-50/70 border border-blue-200 rounded-lg text-xs text-blue-800 flex items-center gap-2">
-                        <i class="fa-solid fa-envelope-open-text text-blue-600 text-sm"></i>
-                        <span>Verification code sent to <strong id="fpTargetEmailText"></strong>.</span>
-                    </div>
-                    <label class="form-label font-bold text-gray-800">Enter 6-Digit OTP *</label>
-                    <div class="otp-row mb-3">
-                        <input type="text" id="fpOtp" class="form-input" placeholder="Enter 6-digit OTP" maxlength="6" />
-                        <button type="button" id="fpVerifyBtn" onclick="verifyForgotOTP()" class="btn-primary" style="padding:8px 16px; font-weight:600;">Verify</button>
-                    </div>
-                    <div class="flex justify-between items-center text-xs mt-2 pt-2 border-t border-gray-100">
-                        <button type="button" id="fpResendBtn" onclick="sendForgotOTP()" class="text-indigo-600 font-semibold hover:underline">Resend OTP</button>
-                        <button type="button" onclick="resetFpToStep1()" class="text-gray-500 hover:underline">Change Email</button>
-                    </div>
-                </div>
+            <!-- Dual Workflow Tab Switcher -->
+            <div class="flex p-1 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl mb-4 select-none">
+                <button type="button" id="modalTabCandidateBtn" onclick="switchForgotModalTab('candidate')" class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs">
+                    <i class="fa-regular fa-user mr-1.5"></i>Candidate / User
+                </button>
+                <button type="button" id="modalTabCompanyBtn" onclick="switchForgotModalTab('company')" class="flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all">
+                    <i class="fa-solid fa-shield-halved mr-1.5"></i>Company Portal
+                </button>
+            </div>
 
-                <!-- Step 3: New Password -->
-                <div id="fpStep3" style="display:none;" class="mt-2">
-                    <div class="mb-3 p-2.5 bg-green-50 border border-green-200 rounded-lg text-xs text-green-800 font-semibold flex items-center gap-2">
-                        <i class="fa-solid fa-check-circle text-green-600"></i>
-                        <span>Identity verified! Enter your new password below.</span>
+            <!-- FLOW 1: CANDIDATE / NORMAL USER FLOW -->
+            <div id="modalCandidateSection">
+                <form id="forgotPasswordForm" onsubmit="event.preventDefault();">
+                    <!-- Step 1: Email -->
+                    <div id="fpStep1">
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Registered Account Email Address *</label>
+                            <input type="email" id="fpEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <span class="block text-[11px] text-[var(--text-muted)] mt-1">If this email is registered in our database, a verification reset code will be delivered.</span>
+                        </div>
+                        <button type="button" onclick="sendForgotOTP()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Reset Code</button>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label font-bold text-gray-800">New Password *</label>
-                        <div class="password-toggle">
-                            <input type="password" id="fpNewPassword" class="form-input" placeholder="Minimum 6 characters" required />
-                            <button type="button" class="toggle-eye" onclick="togglePassword('fpNewPassword', this)"><i class="fa-regular fa-eye"></i></button>
+
+                    <!-- Step 2: OTP -->
+                    <div id="fpStep2" style="display:none;" class="mt-2">
+                        <div class="mb-3 p-3 bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 rounded-lg text-xs text-blue-800 dark:text-blue-300 flex items-center gap-2">
+                            <i class="fa-solid fa-envelope-open-text text-blue-600 dark:text-blue-400 text-sm"></i>
+                            <span>Verification code sent to <strong id="fpTargetEmailText"></strong>.</span>
+                        </div>
+                        <label class="form-label font-bold text-[var(--text-primary)]">Enter 6-Digit OTP *</label>
+                        <div class="otp-row mb-3">
+                            <input type="text" id="fpOtp" class="form-input tracking-widest text-center font-mono font-bold" placeholder="123456" maxlength="6" />
+                            <button type="button" id="fpVerifyBtn" onclick="verifyForgotOTP()" class="btn-primary" style="padding:8px 16px; font-weight:600;">Verify</button>
+                        </div>
+                        <div class="flex justify-between items-center text-xs mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                            <button type="button" id="fpResendBtn" onclick="sendForgotOTP()" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Resend OTP</button>
+                            <button type="button" onclick="resetFpToStep1()" class="text-gray-500 dark:text-gray-400 hover:underline">Change Email</button>
                         </div>
                     </div>
+
+                    <!-- Step 3: New Password -->
+                    <div id="fpStep3" style="display:none;" class="mt-2">
+                        <div class="mb-3 p-2.5 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800/50 rounded-lg text-xs text-green-800 dark:text-green-300 font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-green-600 dark:text-green-400"></i>
+                            <span>Identity verified! Enter your new password below.</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">New Password *</label>
+                            <div class="password-toggle">
+                                <input type="password" id="fpNewPassword" class="form-input" placeholder="Minimum 6 characters" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('fpNewPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
+                            <div class="password-toggle">
+                                <input type="password" id="fpConfirmPassword" class="form-input" placeholder="Confirm new password" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('fpConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="resetPassword()" class="btn-primary w-full" id="fpResetSubmitBtn" style="padding: 10px 16px; font-weight:600;">Reset Password & Log In</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FLOW 2: COMPANY PORTAL FLOW (REFERRAL CODE REQUIRED) -->
+            <div id="modalCompanySection" class="hidden">
+                <div class="mb-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2">
+                    <i class="fa-solid fa-shield-halved mt-0.5 text-amber-600 dark:text-amber-400"></i>
+                    <span><strong>Company Authorization:</strong> An authorized referral code is required to initiate an enterprise password reset. Incorrect codes will be denied.</span>
+                </div>
+
+                <form id="modalCompanyForgotForm" onsubmit="event.preventDefault(); handleModalCompanyPasswordReset();">
+                    <div class="mb-3">
+                        <label class="form-label font-bold text-[var(--text-primary)]">Corporate Email / Username *</label>
+                        <input type="text" id="modalCompanyEmail" class="form-input" required placeholder="admin@company.com or username" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-bold text-[var(--text-primary)]">Organization Referral Code *</label>
+                        <div class="relative w-full">
+                            <input type="text" id="modalCompanyReferralCode" class="form-input uppercase tracking-wider font-mono font-bold text-[#183B33] dark:text-emerald-400" required placeholder="e.g. RNK-XXXXXX" maxlength="30" oninput="this.value = this.value.toUpperCase();" />
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)]"><i class="fa-solid fa-key"></i></span>
+                        </div>
+                        <span class="block text-[10px] text-[var(--text-muted)] mt-0.5">Enter the invitation / referral code assigned to your organization.</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-bold text-[var(--text-primary)]">New Master Password *</label>
+                        <div class="password-toggle">
+                            <input type="password" id="modalCompanyNewPassword" class="form-input" required placeholder="•••••••••••• (Min 6 chars)" />
+                            <button type="button" class="toggle-eye" onclick="togglePassword('modalCompanyNewPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                        </div>
+                    </div>
+
                     <div class="mb-4">
-                        <label class="form-label font-bold text-gray-800">Confirm New Password *</label>
+                        <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
                         <div class="password-toggle">
-                            <input type="password" id="fpConfirmPassword" class="form-input" placeholder="Confirm new password" required />
-                            <button type="button" class="toggle-eye" onclick="togglePassword('fpConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            <input type="password" id="modalCompanyConfirmPassword" class="form-input" required placeholder="Confirm new password" />
+                            <button type="button" class="toggle-eye" onclick="togglePassword('modalCompanyConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
                         </div>
                     </div>
-                    <button type="button" onclick="resetPassword()" class="btn-primary w-full" id="fpResetSubmitBtn" style="padding: 10px 16px; font-weight:600;">Reset Password & Log In</button>
-                </div>
 
-                <div class="modal-actions mt-5">
-                    <button type="button" class="btn-secondary w-full" onclick="closeModal('forgotPasswordModal')">Cancel</button>
-                </div>
-            </form>
+                    <button type="submit" id="modalCompanySubmitBtn" class="btn-primary w-full" style="padding: 10px 16px; font-weight:600;">
+                        Verify Referral & Reset Password
+                    </button>
+                </form>
+            </div>
+
+            <div class="modal-actions mt-4 pt-3 border-t border-[var(--border-color)]">
+                <button type="button" class="btn-secondary w-full" onclick="closeModal('forgotPasswordModal')">Cancel</button>
+            </div>
         </div>
     </div>
+
 
     <!-- ─── NORMAL USER SIGNUP MODAL ─── -->
     <div id="signupModal" class="modal-overlay" onclick="if(event.target===this) closeModal('signupModal')">
@@ -6705,6 +6764,85 @@
             }
             window.resetPassword = resetPassword;
 
+            // ─── DUAL FORGOT PASSWORD MODAL TAB SWITCHER & COMPANY HANDLER ───
+            window.switchForgotModalTab = function(tab) {
+                const candSection = document.getElementById('modalCandidateSection');
+                const compSection = document.getElementById('modalCompanySection');
+                const candBtn = document.getElementById('modalTabCandidateBtn');
+                const compBtn = document.getElementById('modalTabCompanyBtn');
+                if (!candSection || !compSection) return;
+
+                if (tab === 'company') {
+                    candSection.classList.add('hidden');
+                    compSection.classList.remove('hidden');
+                    if (compBtn) compBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
+                    if (candBtn) candBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all';
+                } else {
+                    compSection.classList.add('hidden');
+                    candSection.classList.remove('hidden');
+                    if (candBtn) candBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
+                    if (compBtn) compBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all';
+                }
+            };
+
+            window.handleModalCompanyPasswordReset = async function() {
+                const identifier = document.getElementById('modalCompanyEmail')?.value.trim();
+                const referralCode = document.getElementById('modalCompanyReferralCode')?.value.trim();
+                const newPassword = document.getElementById('modalCompanyNewPassword')?.value;
+                const confirmPassword = document.getElementById('modalCompanyConfirmPassword')?.value;
+                const submitBtn = document.getElementById('modalCompanySubmitBtn');
+
+                if (!identifier || !referralCode || !newPassword) {
+                    showToast('Please fill all required fields.', 'error');
+                    return;
+                }
+
+                if (newPassword.length < 6) {
+                    showToast('New password must be at least 6 characters long.', 'error');
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showToast('Passwords do not match.', 'error');
+                    return;
+                }
+
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Verifying Referral...'; }
+                try {
+                    const res = await fetch('/api/auth/company/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            identifier,
+                            email: identifier,
+                            referralCode,
+                            newPassword
+                        })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        showToast(data.message || data.error || 'Password reset attempt denied.', 'error');
+                        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify Referral & Reset Password'; }
+                        return;
+                    }
+
+                    showToast(data.message || '🎉 Company Portal password reset successfully. You can now log in.', 'success');
+                    closeModal('forgotPasswordModal');
+
+                    // Pre-fill in org login input
+                    const orgLoginInput = document.getElementById('orgLoginIdentifier');
+                    if (orgLoginInput) orgLoginInput.value = identifier;
+                    flipEntireAuthCard(true);
+                    switchOrgPortalTab('login');
+                } catch (err) {
+                    showToast('Reset failed: ' + err.message, 'error');
+                } finally {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify Referral & Reset Password'; }
+                }
+            };
+
+
             let currentTabsList = [];
 
             function getTabIcon(tabId) {
@@ -8095,26 +8233,54 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 window.handleInlinePasswordReset = async function() {
-                    const email = document.getElementById('inlineResetEmail')?.value.trim();
+                    const emailInput = document.getElementById('inlineResetEmail');
+                    const email = emailInput?.value.trim();
+                    const btn = document.getElementById('inlineResetBtn');
                     if (!email) { showToast('Please enter your account email', 'error'); return; }
+
+                    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Checking Account...'; }
                     try {
                         const res = await fetch('/api/auth/forgot-password', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
                             body: JSON.stringify({ email })
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Password reset request failed', 'error');
+                            showToast(data.message || data.error || 'No account found with this email address.', 'error');
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.innerHTML = '<span>SEND RESET LINK & CODE</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
+                            }
                             return;
                         }
-                        showToast('Password reset link sent to ' + email, 'success');
+                        showToast(`Password reset code sent to ${email}. Please check your inbox.`, 'success');
+                        
+                        // Switch modal directly to Candidate Flow Step 2
+                        openModal('forgotPasswordModal');
+                        switchForgotModalTab('candidate');
+                        fpTargetEmail = email;
+                        const targetText = document.getElementById('fpTargetEmailText');
+                        if (targetText) targetText.textContent = email;
+                        const fpEmailInput = document.getElementById('fpEmail');
+                        if (fpEmailInput) fpEmailInput.value = email;
+                        const step1 = document.getElementById('fpStep1');
+                        const step2 = document.getElementById('fpStep2');
+                        if (step1) step1.style.display = 'none';
+                        if (step2) step2.style.display = 'block';
+                        startFpCountdown();
                         toggleInlineForgotPassword(false);
                     } catch (err) {
-                        showToast('Password reset requested successfully', 'success');
-                        toggleInlineForgotPassword(false);
+                        showToast('Server error: ' + err.message, 'error');
+                    } finally {
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.innerHTML = '<span>SEND RESET LINK & CODE</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
+                        }
                     }
                 };
+
 
                 // ─── LOGIN FORM SUBMIT HANDLER ───
                 const slidingLoginForm = document.getElementById('slidingLoginForm');
@@ -8281,27 +8447,38 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                // ─── ENTERPRISE PORTAL TAB SWITCHER ───
+                // ─── ENTERPRISE PORTAL TAB SWITCHER (LOGIN / REGISTER / FORGOT) ───
                 window.switchOrgPortalTab = function(tab) {
                     const loginView = document.getElementById('orgPortalLoginView');
                     const regView = document.getElementById('orgPortalRegisterView');
+                    const forgotView = document.getElementById('orgPortalForgotView');
                     const tabLoginBtn = document.getElementById('orgTabLoginBtn');
                     const tabRegBtn = document.getElementById('orgTabRegBtn');
 
-                    if (!loginView || !regView) return;
-
                     if (tab === 'register') {
-                        loginView.classList.add('hidden');
-                        regView.classList.remove('hidden');
+                        if (loginView) loginView.classList.add('hidden');
+                        if (forgotView) forgotView.classList.add('hidden');
+                        if (regView) regView.classList.remove('hidden');
                         if (tabRegBtn) {
                             tabRegBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
                         }
                         if (tabLoginBtn) {
                             tabLoginBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]';
                         }
+                    } else if (tab === 'forgot') {
+                        if (loginView) loginView.classList.add('hidden');
+                        if (regView) regView.classList.add('hidden');
+                        if (forgotView) forgotView.classList.remove('hidden');
+                        if (tabLoginBtn) {
+                            tabLoginBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]';
+                        }
+                        if (tabRegBtn) {
+                            tabRegBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]';
+                        }
                     } else {
-                        regView.classList.add('hidden');
-                        loginView.classList.remove('hidden');
+                        if (regView) regView.classList.add('hidden');
+                        if (forgotView) forgotView.classList.add('hidden');
+                        if (loginView) loginView.classList.remove('hidden');
                         if (tabLoginBtn) {
                             tabLoginBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
                         }
@@ -8310,6 +8487,81 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                     }
                 };
+
+                // ─── COMPANY PORTAL PASSWORD RESET HANDLER (REFERRAL CODE REQUIRED) ───
+                window.handleOrgPasswordReset = async function() {
+                    const identifier = document.getElementById('orgForgotIdentifier')?.value.trim();
+                    const referralCode = document.getElementById('orgForgotReferralCode')?.value.trim();
+                    const newPassword = document.getElementById('orgForgotNewPassword')?.value;
+                    const confirmPassword = document.getElementById('orgForgotConfirmPassword')?.value;
+                    const submitBtn = document.getElementById('orgForgotSubmitBtn');
+
+                    if (!identifier || !referralCode || !newPassword) {
+                        showToast('Please fill all required fields.', 'error');
+                        return;
+                    }
+
+                    if (newPassword.length < 6) {
+                        showToast('New master password must be at least 6 characters long.', 'error');
+                        return;
+                    }
+
+                    if (newPassword !== confirmPassword) {
+                        showToast('Passwords do not match! Please check and retry.', 'error');
+                        return;
+                    }
+
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Verifying Referral Code...';
+                    }
+
+                    try {
+                        const res = await fetch('/api/auth/company/reset-password', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                identifier,
+                                email: identifier,
+                                referralCode,
+                                newPassword
+                            })
+                        });
+                        const data = await res.json();
+
+                        if (!res.ok || !data.success) {
+                            showToast(data.message || data.error || '❌ Invalid referral code. Password reset attempt denied.', 'error');
+                            const refInput = document.getElementById('orgForgotReferralCode');
+                            if (refInput) {
+                                refInput.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-950/30');
+                                setTimeout(() => refInput.classList.remove('border-red-500', 'bg-red-50', 'dark:bg-red-950/30'), 3000);
+                            }
+                            return;
+                        }
+
+                        showToast(data.message || '🎉 Company Portal password reset successfully! You can now sign in.', 'success');
+                        
+                        // Clear form
+                        const orgForgotForm = document.getElementById('orgForgotForm');
+                        if (orgForgotForm) orgForgotForm.reset();
+
+                        // Pre-fill email in login
+                        const loginIdentifier = document.getElementById('orgLoginIdentifier');
+                        if (loginIdentifier) loginIdentifier.value = identifier;
+
+                        // Switch back to login view
+                        switchOrgPortalTab('login');
+                    } catch (err) {
+                        showToast('Server error: ' + err.message, 'error');
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<span>VERIFY REFERRAL & RESET PASSWORD</span><svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path></svg>';
+                        }
+                    }
+                };
+
 
                 // ─── ENTERPRISE / ORGANIZATION LOGIN SUBMIT HANDLER ───
                 window.handleOrgLogin = async function() {
