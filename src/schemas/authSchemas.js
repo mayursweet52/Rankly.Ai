@@ -56,10 +56,32 @@ const resetPasswordSchema = {
   newPassword: { type: 'string', required: true, min: 6, max: 128 }
 };
 
+const companyForgotPasswordSchema = {
+  email: { type: 'string', min: 1, max: 100 },
+  identifier: { type: 'string', min: 1, max: 100 },
+  referralCode: { type: 'string', required: true, min: 3, max: 50 }
+};
+
+const companyResetPasswordSchema = {
+  email: { type: 'string', min: 1, max: 100 },
+  identifier: { type: 'string', min: 1, max: 100 },
+  referralCode: { type: 'string', required: true, min: 3, max: 50 },
+  newPassword: { type: 'string', required: true, min: 6, max: 128 }
+};
+
+const verifyReferralSchema = {
+  referralCode: { type: 'string', required: true, min: 3, max: 50 },
+  email: { type: 'string', min: 1, max: 100 }
+};
+
 module.exports = {
   registerSchema,
   loginSchema,
   sendOtpSchema,
   verifyOtpSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  companyForgotPasswordSchema,
+  companyResetPasswordSchema,
+  verifyReferralSchema
 };
+

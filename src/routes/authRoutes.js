@@ -10,7 +10,10 @@ const {
   loginSchema,
   sendOtpSchema,
   verifyOtpSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  companyForgotPasswordSchema,
+  companyResetPasswordSchema,
+  verifyReferralSchema
 } = require('../schemas/authSchemas');
 
 // -----------------------------------------------------------------------------
@@ -22,11 +25,22 @@ router.post('/login', authLimiter, authBackoffLimiter, validate({ body: loginSch
 router.post('/candidate/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 router.post('/enterprise/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 
-// OTP Verification & Password Recovery
+// Candidate / Normal User Password Recovery (Email Existence Check + OTP / Link)
 router.post('/send-otp', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.sendOtp);
 router.post('/forgot-password', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
+router.post('/candidate/forgot-password', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
 router.post('/verify-otp', authLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyOtp);
 router.post('/reset-password', authLimiter, authBackoffLimiter, validate({ body: resetPasswordSchema }), authController.resetPassword);
+router.post('/candidate/reset-password', authLimiter, authBackoffLimiter, validate({ body: resetPasswordSchema }), authController.resetPassword);
+
+// Company Portal / Enterprise Password Recovery (Referral Code Verification Required)
+router.post('/company/forgot-password', authLimiter, authBackoffLimiter, validate({ body: companyForgotPasswordSchema }), authController.companyResetPassword);
+router.post('/enterprise/forgot-password', authLimiter, authBackoffLimiter, validate({ body: companyForgotPasswordSchema }), authController.companyResetPassword);
+router.post('/company/reset-password', authLimiter, authBackoffLimiter, validate({ body: companyResetPasswordSchema }), authController.companyResetPassword);
+router.post('/enterprise/reset-password', authLimiter, authBackoffLimiter, validate({ body: companyResetPasswordSchema }), authController.companyResetPassword);
+router.post('/company/verify-referral', authLimiter, authBackoffLimiter, validate({ body: verifyReferralSchema }), authController.verifyCompanyReferral);
+router.post('/enterprise/verify-referral', authLimiter, authBackoffLimiter, validate({ body: verifyReferralSchema }), authController.verifyCompanyReferral);
+
 
 // Session State
 router.get('/me', authController.getMe);

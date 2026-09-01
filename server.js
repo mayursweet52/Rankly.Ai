@@ -553,6 +553,14 @@ app.get(['/terms', '/terms-of-service', '/terms-of-use'], (req, res) => {
   return res.redirect('/');
 });
 
+app.get('/loading', (req, res) => {
+  const loadingPath = path.join(__dirname, 'public', 'loading.html');
+  if (fs.existsSync(loadingPath)) {
+    return res.sendFile(loadingPath);
+  }
+  return res.redirect('/');
+});
+
 app.get('/login', (req, res) => {
   const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
   if (fs.existsSync(cleanIndexPath)) {

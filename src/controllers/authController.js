@@ -589,15 +589,89 @@ async function verifyOtp(req, res) {
 }
 
 /**
- * Forgot Password - Send Reset OTP
+ * Forgot Password - Send Reset OTP (Normal Candidate / User Flow)
+ * Validates that email exists in the web application before sending reset code/link
  */
 async function forgotPassword(req, res) {
-  req.body.type = 'password_reset';
-  return sendOtp(req, res);
+  try {
+    const { email, identifier, to } = req.body;
+    const recipientEmail = (email || identifier || to || '').toLowerCase().trim();
+
+    if (!recipientEmail) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email address is required.',
+        message: 'Email address is required.'
+      });
+    }
+
+    const emailValidation = validateEmailAddress(recipientEmail, false);
+    if (!emailValidation.valid) {
+      return res.status(400).json({
+        success: false,
+        error: emailValidation.message,
+        message: emailValidation.message
+      });
+    }
+
+    // Check if user is registered in the web application
+    const user = await prisma.user.findUnique({
+      where: { email: recipientEmail }
+    });
+
+    if (!user) {
+      recordAuthFailure(req, recipientEmail);
+      return res.status(404).json({
+        success: false,
+        error: 'No account found with this email address. Please check the email or sign up.',
+        message: 'No account found with this email address. Please check the email or sign up.'
+      });
+    }
+
+    // Invalidate prior active OTPs for this email
+    await prisma.oTP.updateMany({
+      where: { email: recipientEmail, isUsed: false },
+      data: { isUsed: true }
+    });
+
+    const otpCode = generateOtp(6);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes;
+
+    await prisma.oTP.create({
+      data: {
+        email: recipientEmail,
+        otp: otpCode,
+        type: 'password_reset',
+        expiresAt
+      }
+    });
+
+    // Send real verification / reset code email
+    const emailSent = await sendOTPEmail(recipientEmail, otpCode, 'password_reset');
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to send password reset email. Please try again later.',
+        message: 'Failed to send password reset email. Please try again later.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: `Password reset instructions sent to ${recipientEmail}. Please check your inbox or spam folder.`
+    });
+  } catch (error) {
+    console.error('Forgot Password Error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to process password reset request: ' + error.message,
+      message: 'Failed to process password reset request: ' + error.message
+    });
+  }
 }
 
 /**
- * Reset Password with Verified OTP
+ * Reset Password with Verified OTP (Normal Candidate / User Flow)
  */
 async function resetPassword(req, res) {
   try {
@@ -606,7 +680,7 @@ async function resetPassword(req, res) {
 
     if (!normalizedEmail || !otp || !newPassword) {
       recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({ success: false, error: 'Email, OTP, and new password are required.', message: 'Email, OTP, and new password are required.' });
+      return res.status(400).json({ success: false, error: 'Email, OTP code, and new password are required.', message: 'Email, OTP code, and new password are required.' });
     }
 
     if (newPassword.length < 6) {
@@ -636,7 +710,7 @@ async function resetPassword(req, res) {
 
     if (!otpRecord) {
       recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({ success: false, error: 'Invalid or expired OTP session. Please request a new code.', message: 'Invalid or expired OTP session.' });
+      return res.status(400).json({ success: false, error: 'Invalid or expired OTP session. Please request a new code.', message: 'Invalid or expired OTP session. Please request a new code.' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -665,6 +739,195 @@ async function resetPassword(req, res) {
     return res.status(500).json({ success: false, error: 'Failed to reset password: ' + (error.message || 'Server error'), message: 'Failed to reset password.' });
   }
 }
+
+/**
+ * Verify Referral Code (Company Portal Validation Helper)
+ */
+async function verifyCompanyReferral(req, res) {
+  try {
+    const { referralCode } = req.body;
+    if (!referralCode || !referralCode.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Referral code is required.',
+        message: 'Referral code is required.'
+      });
+    }
+
+    const cleanCode = referralCode.toUpperCase().trim();
+    const referralRecord = await prisma.referralCode.findUnique({
+      where: { code: cleanCode },
+      include: { organization: true }
+    });
+
+    if (!referralRecord) {
+      recordAuthFailure(req);
+      return res.status(400).json({
+        success: false,
+        error: '❌ Invalid referral code. Password reset attempt denied.',
+        message: '❌ Invalid referral code. Password reset attempt denied.'
+      });
+    }
+
+    if (referralRecord.expiresAt < new Date()) {
+      recordAuthFailure(req);
+      return res.status(400).json({
+        success: false,
+        error: '❌ Referral code has expired. Password reset attempt denied.',
+        message: '❌ Referral code has expired. Password reset attempt denied.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      verified: true,
+      organizationName: referralRecord.organization?.name || 'Authorized Organization',
+      assignedRole: referralRecord.assignedRole || 'hr',
+      message: 'Referral code validated successfully.'
+    });
+  } catch (error) {
+    console.error('Verify Referral Error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to verify referral code: ' + error.message,
+      message: 'Failed to verify referral code: ' + error.message
+    });
+  }
+}
+
+/**
+ * Company Portal Password Reset Flow (Referral Code Verification Required)
+ * If referral code is correct, allows password reset; if incorrect, strictly denies attempt.
+ */
+async function companyResetPassword(req, res) {
+  try {
+    const { email, identifier, referralCode, newPassword } = req.body;
+    const searchId = (email || identifier || '').toLowerCase().trim();
+    const cleanReferral = (referralCode || '').toUpperCase().trim();
+    const cleanNewPassword = (newPassword || '').trim();
+
+    if (!searchId) {
+      recordAuthFailure(req);
+      return res.status(400).json({
+        success: false,
+        error: 'Corporate email or work username is required.',
+        message: 'Corporate email or work username is required.'
+      });
+    }
+
+    if (!cleanReferral) {
+      recordAuthFailure(req, searchId);
+      return res.status(400).json({
+        success: false,
+        error: 'Referral code is required to initiate Company Portal password reset.',
+        message: 'Referral code is required to initiate Company Portal password reset.'
+      });
+    }
+
+    if (!cleanNewPassword) {
+      recordAuthFailure(req, searchId);
+      return res.status(400).json({
+        success: false,
+        error: 'New password is required.',
+        message: 'New password is required.'
+      });
+    }
+
+    if (cleanNewPassword.length < 6) {
+      recordAuthFailure(req, searchId);
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be at least 6 characters long.',
+        message: 'Password must be at least 6 characters long.'
+      });
+    }
+
+    // 1. Verify Referral Code in Database
+    const referralRecord = await prisma.referralCode.findUnique({
+      where: { code: cleanReferral },
+      include: { organization: true }
+    });
+
+    if (!referralRecord) {
+      recordAuthFailure(req, searchId);
+      return res.status(400).json({
+        success: false,
+        error: '❌ Invalid referral code. Password reset attempt denied.',
+        message: '❌ Invalid referral code. Password reset attempt denied.'
+      });
+    }
+
+    if (referralRecord.expiresAt < new Date()) {
+      recordAuthFailure(req, searchId);
+      return res.status(400).json({
+        success: false,
+        error: '❌ Referral code has expired. Password reset attempt denied.',
+        message: '❌ Referral code has expired. Password reset attempt denied.'
+      });
+    }
+
+    // 2. Find Organization User
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: searchId },
+          { username: searchId }
+        ]
+      },
+      include: { organization: true }
+    });
+
+    if (!user) {
+      recordAuthFailure(req, searchId);
+      return res.status(404).json({
+        success: false,
+        error: '❌ No organization account found with this corporate email/username.',
+        message: '❌ No organization account found with this corporate email/username.'
+      });
+    }
+
+    // 3. Hash New Password and Update User Record
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(cleanNewPassword, salt);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        // Ensure user is associated with organization if not already
+        organizationId: user.organizationId || referralRecord.organizationId
+      }
+    });
+
+    // 4. Update Referral Code usage
+    const newUsedCount = referralRecord.usedCount + 1;
+    await prisma.referralCode.update({
+      where: { id: referralRecord.id },
+      data: {
+        usedCount: newUsedCount,
+        isUsed: newUsedCount >= referralRecord.maxUses
+      }
+    });
+
+    // Reset rate limiter on successful reset
+    resetAuthFailure(req, searchId);
+    if (user.email) resetAuthFailure(req, user.email);
+
+    return res.json({
+      success: true,
+      message: '🎉 Company Portal password reset successfully. You can now sign in to your workspace.'
+    });
+  } catch (error) {
+    recordAuthFailure(req);
+    console.error('Company Reset Password Error:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to reset organization password: ' + (error.message || 'Server error'),
+      message: 'Failed to reset organization password: ' + (error.message || 'Server error')
+    });
+  }
+}
+
 
 /**
  * Create Organization
@@ -768,6 +1031,10 @@ module.exports = {
   verifyOtp,
   forgotPassword,
   resetPassword,
+  companyResetPassword,
+  companyForgotPassword: companyResetPassword,
+  verifyCompanyReferral,
   createOrganization,
   joinOrganization
 };
+

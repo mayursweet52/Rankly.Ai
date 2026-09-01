@@ -1,0 +1,499 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankly.Ai | Loading Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f2f0ed;
+            --dot-inactive: #d1d0ce;
+            --dot-active: #1e1e1e;
+            --dot-highlight: #bfff00;
+            --dot-highlight-glow: rgba(191, 255, 0, 0.85);
+            --dot-wave-glow: rgba(0, 255, 204, 0.9);
+            --text-main: #183B33;
+            --text-sub: #666660;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-page);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Backdrop */
+        .ambient-glow {
+            position: absolute;
+            width: 700px;
+            height: 420px;
+            background: radial-gradient(circle at center, rgba(191, 255, 0, 0.12) 0%, rgba(91, 153, 140, 0.08) 45%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(45px);
+            animation: pulseAmbient 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseAmbient {
+            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            padding: 24px;
+        }
+
+        /* Glass / Display Panel Container */
+        .matrix-board {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-radius: 22px;
+            padding: 30px 36px;
+            box-shadow: 
+                0 20px 40px -12px rgba(0, 0, 0, 0.06),
+                0 0 0 1px rgba(0, 0, 0, 0.02),
+                inset 0 1px 2px rgba(255, 255, 255, 0.95);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Running Scanner Light Beam across Matrix */
+        .matrix-board::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+            transform: skewX(-20deg);
+            animation: sweepScan 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sweepScan {
+            0% { left: -100%; }
+            50%, 100% { left: 200%; }
+        }
+
+        /* Text grid container */
+        .text-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6.5px;
+            align-items: center;
+        }
+
+        .row {
+            display: flex;
+            gap: 5.5px;
+        }
+
+        /* Individual Hexagon/Dot styling */
+        .dot {
+            width: 13px;
+            height: 15px;
+            background-color: var(--dot-inactive);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            transition: background-color 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        filter 0.28s ease, 
+                        opacity 0.28s ease;
+            position: relative;
+            will-change: transform, background-color, filter;
+            cursor: pointer;
+        }
+
+        .dot:hover {
+            transform: scale(1.4) !important;
+            background-color: var(--dot-highlight) !important;
+            filter: drop-shadow(0 0 8px var(--dot-highlight-glow)) !important;
+            z-index: 5;
+        }
+
+        /* Active Letter Dot State (Dark Carbon) */
+        .dot.active {
+            background-color: var(--dot-active);
+            transform: scale(1.08);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Highlight Dot State (Electric Lime Green for .Ai) */
+        .dot.highlight {
+            background-color: var(--dot-highlight);
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 7px var(--dot-highlight-glow));
+            animation: pulseHighlight 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseHighlight {
+            0% { filter: drop-shadow(0 0 5px rgba(191, 255, 0, 0.6)); transform: scale(1.12); }
+            100% { filter: drop-shadow(0 0 11px rgba(191, 255, 0, 0.95)); transform: scale(1.2); }
+        }
+
+        /* Traveling Wave Light Effect */
+        .dot.wave-active {
+            background-color: #00ffcc !important;
+            filter: drop-shadow(0 0 9px rgba(0, 255, 204, 0.9)) !important;
+            transform: scale(1.28) !important;
+            z-index: 2;
+        }
+
+        /* ─── UNDER-MATRIX ANIMATED TYPOGRAPHY & CONTROLS ─── */
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            animation: fadeInBrand 1s ease-out forwards;
+        }
+
+        @keyframes fadeInBrand {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animated Title */
+        .brand-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #111111;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            position: relative;
+            user-select: none;
+        }
+
+        /* Shimmer gradient animation on text */
+        .brand-title .text-gradient {
+            background: linear-gradient(135deg, #111111 0%, #183B33 45%, #5B998C 75%, #111111 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        .brand-title .badge-ai {
+            background: #111111;
+            color: var(--dot-highlight);
+            font-size: 14px;
+            font-weight: 800;
+            padding: 2.5px 8px;
+            border-radius: 7px;
+            margin-left: 6px;
+            border: 1px solid rgba(191, 255, 0, 0.35);
+            box-shadow: 0 2px 10px rgba(191, 255, 0, 0.28);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.02em;
+            animation: badgeFloat 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes badgeFloat {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-2px) scale(1.04); box-shadow: 0 4px 14px rgba(191, 255, 0, 0.45); }
+        }
+
+        /* Live Status Text */
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666660;
+            letter-spacing: 0.04em;
+        }
+
+        .status-radar {
+            width: 8px;
+            height: 8px;
+            background-color: var(--dot-highlight);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 8px var(--dot-highlight);
+        }
+
+        .status-radar::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1.5px solid var(--dot-highlight);
+            animation: rippleRadar 1.5s cubic-bezier(0.1, 0.2, 0.3, 1) infinite;
+        }
+
+        @keyframes rippleRadar {
+            0% { transform: scale(0.6); opacity: 1; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* High-Tech Progress Loading Beam */
+        .progress-track {
+            width: 260px;
+            height: 4.5px;
+            background: #e2e0dc;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, #183B33 0%, var(--dot-highlight) 50%, #00ffcc 100%);
+            border-radius: 10px;
+            position: absolute;
+            animation: travelProgress 2.2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(191, 255, 0, 0.85);
+        }
+
+        @keyframes travelProgress {
+            0% { left: -40%; width: 25%; }
+            50% { left: 35%; width: 50%; }
+            100% { left: 110%; width: 25%; }
+        }
+
+        /* Subtle Footnote */
+        .tagline {
+            font-size: 11px;
+            color: #888880;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .matrix-board {
+                padding: 18px 14px;
+            }
+            .dot {
+                width: 7.5px;
+                height: 9px;
+            }
+            .text-grid {
+                gap: 4px;
+            }
+            .row {
+                gap: 3.5px;
+            }
+            .brand-title {
+                font-size: 22px;
+            }
+            .progress-track {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="container">
+        <!-- Hexagonal Dot Matrix Board -->
+        <div class="matrix-board">
+            <div class="text-grid" id="grid"></div>
+        </div>
+
+        <!-- Animated Typography & Status Indicator under the Blinking Dots -->
+        <div class="brand-section">
+            <div class="brand-title">
+                <span class="text-gradient">Rankly</span><span style="color: #183B33;">.</span><span class="badge-ai">Ai</span>
+            </div>
+
+            <div class="status-row">
+                <div class="status-radar"></div>
+                <span id="statusText">INITIALIZING RECRUITMENT INTELLIGENCE...</span>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-bar"></div>
+            </div>
+
+            <span class="tagline">Next-Gen Autonomous Candidate Evaluation</span>
+        </div>
+    </div>
+
+    <script>
+        // High-Precision Matrix pattern for "RANKLY.AI"
+        // 0: Inactive Dot (#d1d0ce)
+        // 1: Active Carbon Dot (#1e1e1e)
+        // 2: Highlight Lime-Green Dot (#bfff00)
+        const pattern = [
+            // Row 0: Top Padding Row
+            [0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0, 0, 0,0,0, 0, 0, 0, 0,0,0,0, 0, 0,0,0, 0],
+            // Row 1: R A N K L Y . A I
+            [0, 1,1,1,0, 0, 0,1,1,0, 0, 1,0,0,1, 0, 1,0,0,1, 0, 1,0,0, 0, 1,0,1, 0, 0, 0, 0,2,2,0, 0, 2,2,2, 0],
+            // Row 2
+            [0, 1,0,0,1, 0, 1,0,0,1, 0, 1,1,0,1, 0, 1,0,1,0, 0, 1,0,0, 0, 1,0,1, 0, 0, 0, 2,0,0,2, 0, 0,2,0, 0],
+            // Row 3
+            [0, 1,1,1,0, 0, 1,1,1,1, 0, 1,0,1,1, 0, 1,1,0,0, 0, 1,0,0, 0, 0,1,0, 0, 0, 0, 2,2,2,2, 0, 0,2,0, 0],
+            // Row 4
+            [0, 1,0,0,1, 0, 1,0,0,1, 0, 1,0,0,1, 0, 1,0,1,0, 0, 1,0,0, 0, 0,1,0, 0, 0, 0, 2,0,0,2, 0, 0,2,0, 0],
+            // Row 5
+            [0, 1,0,0,1, 0, 1,0,0,1, 0, 1,0,0,1, 0, 1,0,0,1, 0, 1,1,1, 0, 0,1,0, 0, 2, 0, 2,0,0,2, 0, 2,2,2, 0],
+            // Row 6: Bottom Padding Row
+            [0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0,0, 0, 0,0,0, 0, 0,0,0, 0, 0, 0, 0,0,0,0, 0, 0,0,0, 0]
+        ];
+
+        const gridElement = document.getElementById('grid');
+        const dotsMatrix = [];
+
+        // Render Hexagonal Matrix Grid
+        function createGrid() {
+            gridElement.innerHTML = '';
+            pattern.forEach((row, rIndex) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.classList.add('row');
+                dotsMatrix[rIndex] = [];
+
+                row.forEach((cell, cIndex) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    if (cell === 1) dot.classList.add('active');
+                    if (cell === 2) dot.classList.add('highlight');
+                    dot.dataset.row = rIndex;
+                    dot.dataset.col = cIndex;
+                    dot.dataset.cellType = cell;
+
+                    // Interactive reactive wave on hover
+                    dot.addEventListener('mouseenter', () => triggerRipple(rIndex, cIndex));
+
+                    rowDiv.appendChild(dot);
+                    dotsMatrix[rIndex][cIndex] = dot;
+                });
+                gridElement.appendChild(rowDiv);
+            });
+        }
+
+        createGrid();
+
+        // 1. Organic Matrix Twinkle & Subtle Breathing
+        setInterval(() => {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach(dot => {
+                const cellType = dot.dataset.cellType;
+                if (cellType === '0') {
+                    // Background dots twinkle occasionally
+                    if (Math.random() > 0.90) {
+                        dot.style.opacity = (Math.random() * 0.4 + 0.6).toFixed(2);
+                        dot.style.transform = Math.random() > 0.5 ? 'scale(1.08)' : 'scale(1)';
+                    } else {
+                        dot.style.opacity = '1';
+                        dot.style.transform = 'scale(1)';
+                    }
+                } else if (cellType === '1') {
+                    // Active letters micro-pulse
+                    if (Math.random() > 0.88) {
+                        dot.style.transform = 'scale(1.15)';
+                    } else {
+                        dot.style.transform = 'scale(1.08)';
+                    }
+                }
+            });
+        }, 320);
+
+        // 2. Continuous Cybernetic Light Wave Sweep across columns
+        let sweepCol = 0;
+        const totalCols = pattern[0].length;
+
+        function runWaveSweep() {
+            for (let r = 0; r < pattern.length; r++) {
+                // Clear previous wave
+                const prevDot = dotsMatrix[r][(sweepCol - 1 + totalCols) % totalCols];
+                if (prevDot) prevDot.classList.remove('wave-active');
+
+                // Activate current wave column
+                const currDot = dotsMatrix[r][sweepCol];
+                if (currDot) {
+                    currDot.classList.add('wave-active');
+                }
+            }
+
+            sweepCol = (sweepCol + 1) % totalCols;
+        }
+
+        setInterval(runWaveSweep, 90);
+
+        // 3. Interactive Cursor Ripple Wave
+        function triggerRipple(centerRow, centerCol) {
+            for (let r = 0; r < pattern.length; r++) {
+                for (let c = 0; c < totalCols; c++) {
+                    const dist = Math.hypot(r - centerRow, c - centerCol);
+                    if (dist <= 3) {
+                        setTimeout(() => {
+                            const d = dotsMatrix[r][c];
+                            if (d) {
+                                d.style.transform = 'scale(1.35)';
+                                setTimeout(() => {
+                                    d.style.transform = '';
+                                }, 250);
+                            }
+                        }, dist * 50);
+                    }
+                }
+            }
+        }
+
+        // 4. Dynamic Loading Status Text Cycler
+        const statusMessages = [
+            "INITIALIZING RECRUITMENT INTELLIGENCE...",
+            "CALIBRATING NEURAL ATS RESUME PARSER...",
+            "SYNCHRONIZING AI INTERVIEW ENGINE...",
+            "DEPLOYING CANDIDATE EVALUATION SUITE...",
+            "SYSTEM READY // SECURE WORKSPACE LOADED"
+        ];
+        let statusIdx = 0;
+        const statusTextEl = document.getElementById('statusText');
+
+        setInterval(() => {
+            statusIdx = (statusIdx + 1) % statusMessages.length;
+            if (statusTextEl) {
+                statusTextEl.style.opacity = '0';
+                setTimeout(() => {
+                    statusTextEl.textContent = statusMessages[statusIdx];
+                    statusTextEl.style.opacity = '1';
+                }, 200);
+            }
+        }, 2400);
+    </script>
+
+</body>
+</html>
