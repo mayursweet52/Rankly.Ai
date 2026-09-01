@@ -1502,6 +1502,85 @@
             color: #FFFFFF !important;
         }
 
+        /* ═══════════════════════════════════════════════════════════════════════
+           MAGIC UI BORDER BEAM (ANIMATED LUMINOUS BORDER EFFECT)
+           Ref: https://magicui.design/docs/components/border-beam
+           ═══════════════════════════════════════════════════════════════════════ */
+        @keyframes border-beam-spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .border-beam-container {
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .border-beam {
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: var(--border-beam-width, 1.5px);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 25;
+            opacity: 0.85;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .border-beam::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250%;
+            height: 250%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent 250deg,
+                var(--border-beam-from, #D95D39) 305deg,
+                var(--border-beam-to, #5B998C) 360deg
+            );
+            animation: border-beam-spin var(--border-beam-duration, 8s) linear infinite;
+            will-change: transform;
+            transform: translate(-50%, -50%);
+        }
+
+        .border-beam.reverse::before {
+            animation-direction: reverse;
+        }
+
+        /* Color presets */
+        .border-beam-emerald {
+            --border-beam-from: #183B33;
+            --border-beam-to: #5B998C;
+        }
+
+        .border-beam-amber {
+            --border-beam-from: #F59E0B;
+            --border-beam-to: #D95D39;
+        }
+
+        .border-beam-indigo {
+            --border-beam-from: #6366F1;
+            --border-beam-to: #8B5CF6;
+        }
+
+        /* Dark mode enhanced radiance */
+        body.dark-theme .border-beam,
+        #loginPage.dark-mode .border-beam {
+            opacity: 1;
+            filter: drop-shadow(0 0 10px rgba(91, 153, 140, 0.45));
+        }
+
         /* Mobile viewport responsiveness for sliding auth card */
         @media screen and (max-width: 679px) {
             .sliding-auth-card {
@@ -3819,7 +3898,10 @@
                     
                     <!-- FRONT SIDE: Full Sliding Auth Card (User Sign In + User Sign Up + 3D Pebbles Artwork Hero Panel) -->
                     <div class="auth-card-front">
-                        <div class="sliding-auth-card view-login" id="slidingAuthCard">
+                        <div class="sliding-auth-card view-login border-beam-container" id="slidingAuthCard">
+                            <!-- Magic UI Animated Luminous Border Beam -->
+                            <div class="border-beam" style="--border-beam-duration: 8s; --border-beam-from: #D95D39; --border-beam-to: #5B998C;"></div>
+
                             <!-- Sliding Background Hero Overlay -->
                             <div class="card-bg" id="cardBg"></div>
 
@@ -4048,7 +4130,10 @@
                     </div>
 
                     <!-- BACK SIDE: Full Enterprise Organization Workspace Portal (2-Column Luxury Split) -->
-                    <div class="auth-card-back">
+                    <div class="auth-card-back border-beam-container">
+                        <!-- Magic UI Animated Luminous Border Beam -->
+                        <div class="border-beam border-beam-emerald" style="--border-beam-duration: 7s;"></div>
+
                         <!-- Left Hero Column: Deep Emerald 3D Pebbles Artwork -->
                         <div class="w-[42%] h-full relative flex flex-col justify-between p-6 text-white overflow-hidden" style="background: url('/assets/backgrounds/login-art.png') center center / cover no-repeat, linear-gradient(135deg, #183B33 0%, #243E36 50%, #1e4a3f 100%);">
                             <div class="absolute inset-0 bg-gradient-to-b from-[#0A0F19]/25 via-[#0A0F19]/45 to-[#0A0F19]/65 pointer-events-none"></div>
@@ -4807,17 +4892,20 @@
                             </div>
                         </div>
 
-                        <!-- Live Stats Grid (3 cards) -->
+                        <!-- Live Stats Grid (3 cards with Magic UI Animated Border Beam) -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div class="stat-card">
+                            <div class="stat-card border-beam-container">
+                                <div class="border-beam border-beam-emerald" style="--border-beam-duration: 9s;"></div>
                                 <span class="stat-label">Resumes Uploaded</span>
                                 <span class="stat-value" id="resumeCount">0</span>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card border-beam-container">
+                                <div class="border-beam border-beam-amber" style="--border-beam-duration: 7s;"></div>
                                 <span class="stat-label">AI Matches</span>
                                 <span class="stat-value" id="matchCount">0</span>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card border-beam-container">
+                                <div class="border-beam border-beam-emerald" style="--border-beam-duration: 8s;"></div>
                                 <span class="stat-label">Profile Strength</span>
                                 <span class="stat-value" id="profileStrength">0%</span>
                             </div>
