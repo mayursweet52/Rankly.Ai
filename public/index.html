@@ -4350,21 +4350,154 @@
             overflow: visible;
         }
 
+    
+        /* ─── FINSWEET LOADING 09 + RANKLY R LOGO CUSTOM LOADER ─── */
+        .finsweet-loading-09-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-09-ring-outer {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px dashed rgba(129, 228, 218, 0.4);
+            border-top-color: #D95D39;
+            border-right-color: #81E4DA;
+            border-bottom-color: #B588F7;
+            animation: spinRingClockwise 2.8s linear infinite;
+            box-shadow: 0 0 20px rgba(129, 228, 218, 0.2);
+        }
+
+        .loading-09-ring-mid {
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #81E4DA;
+            border-left-color: #FFA14A;
+            animation: spinRingCounter 1.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .loading-09-ring-inner {
+            position: absolute;
+            inset: 22px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(255, 255, 255, 0.2);
+            border-top-color: #B588F7;
+            border-bottom-color: #D95D39;
+            animation: spinRingClockwise 1.2s linear infinite;
+        }
+
+        .loading-09-glow-core {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(217, 93, 57, 0.35) 0%, rgba(129, 228, 218, 0.2) 60%, transparent 80%);
+            filter: blur(12px);
+            animation: pulseCoreGlow 2.5s ease-in-out infinite alternate;
+        }
+
+        .loading-09-logo-r {
+            position: relative;
+            z-index: 10;
+            animation: floatLogoR 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 16px rgba(129, 228, 218, 0.6));
+        }
+
+        @keyframes spinRingClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinRingCounter {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes pulseCoreGlow {
+            0% { transform: scale(0.85); opacity: 0.6; }
+            100% { transform: scale(1.15); opacity: 1; }
+        }
+
+        @keyframes floatLogoR {
+            0% { transform: translateY(0px) scale(0.97); }
+            100% { transform: translateY(-4px) scale(1.03); }
+        }
+
     </style>
     <!-- Finsweet Lottie Animation Player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body class="rankly-bg">
 
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- FINSWEET LOADING 09 + RANKLY 'R' LOGO GLOBAL APP LOADER           -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- RANKLY.AI LIQUID GLASS TILES GLOBAL APP LOADER (FIGMA TUTORIAL)   -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <div id="appGlobalLoader" class="fixed inset-0 z-[9999999] flex justify-center items-center bg-[#080A10] transition-opacity duration-700 select-none">
-        <!-- Glow Layers Below The Grid -->
+    <div id="appGlobalLoader" class="fixed inset-0 z-[9999999] flex justify-center items-center bg-[#07090E] transition-opacity duration-700 select-none">
+        <!-- Ambient Blurred Glow Behind Loader -->
         <div class="absolute inset-0 flex justify-center items-center pointer-events-none overflow-hidden">
-            <div id="appGlowOrb" class="w-[550px] h-[350px] bg-purple-600/35 rounded-full blur-[70px] animate-pulse transition-transform duration-700"></div>
-            <div class="w-[450px] h-[300px] bg-teal-500/25 rounded-full blur-[60px] -translate-x-12 translate-y-8"></div>
+            <div class="w-[500px] h-[350px] bg-emerald-600/20 rounded-full blur-[80px] animate-pulse"></div>
+            <div class="w-[400px] h-[300px] bg-purple-600/25 rounded-full blur-[70px] -translate-x-10 translate-y-10"></div>
         </div>
+
+        <div class="relative z-10 flex flex-col items-center gap-6 p-6">
+            <!-- Finsweet Loading-09 Concentric Animated Rings with Custom Rankly R Logo Core -->
+            <div class="finsweet-loading-09-container">
+                <div class="loading-09-glow-core"></div>
+                <div class="loading-09-ring-outer"></div>
+                <div class="loading-09-ring-mid"></div>
+                <div class="loading-09-ring-inner"></div>
+
+                <!-- Custom Rankly 'R' 3-Gradient Logo -->
+                <div class="loading-09-logo-r">
+                    <svg width="54" height="54" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="finsweet-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#B588F7"/>
+                                <stop offset="100%" stop-color="#8E65DF"/>
+                            </linearGradient>
+                            <linearGradient id="finsweet-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#FFA14A"/>
+                                <stop offset="100%" stop-color="#F06A4A"/>
+                            </linearGradient>
+                            <linearGradient id="finsweet-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#81E4DA"/>
+                                <stop offset="100%" stop-color="#45A89E"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="32" height="32" rx="9" fill="#111111" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+                        <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#finsweet-g1)"/>
+                        <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
+                        <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#finsweet-g2)"/>
+                        <circle cx="24" cy="8" r="3" fill="url(#finsweet-g3)" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Typography & Smooth Progress Track -->
+            <div class="flex flex-col items-center gap-2.5">
+                <div class="flex items-center gap-1.5 text-2xl font-black tracking-tight text-white">
+                    <span>Rankly<span class="text-[#D95D39]">.ai</span></span>
+                </div>
+
+                <div class="flex items-center gap-2 text-[11px] font-mono font-semibold text-slate-400">
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#81E4DA] shadow-[0_0_8px_#81E4DA] animate-pulse"></div>
+                    <span id="appLoaderStatusText">INITIALIZING RECRUITMENT INTELLIGENCE...</span>
+                </div>
+
+                <!-- Smoothie Progress Track -->
+                <div class="w-44 h-1 bg-white/10 rounded-full overflow-hidden relative border border-white/5 mt-1">
+                    <div class="h-full bg-gradient-to-r from-purple-500 via-[#81E4DA] to-[#D95D39] rounded-full absolute progress-bar-smoothie shadow-[0_0_10px_rgba(129,228,218,0.9)]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <div class="relative z-10 flex flex-col items-center gap-6 p-6">
             <!-- Liquid Glass Panel with Refractive Tiles Grid -->
@@ -10682,6 +10815,41 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     window.triggerLottieClickBurst(e);
                 }
             }, true);
+        })();
+
+    </script>
+    <script>
+
+        /* ─── FINSWEET LOADING 09 APP LOADER DISMISS HANDLER ─── */
+        (function() {
+            const loader = document.getElementById('appGlobalLoader');
+            if (!loader) return;
+            const statusText = document.getElementById('appLoaderStatusText');
+            
+            const stages = [
+                'CONNECTING NEURAL MODELS...',
+                'CALIBRATING ATS WEIGHTS...',
+                'SECURE WORKSPACE READY'
+            ];
+            let stageIdx = 0;
+            const interval = setInterval(() => {
+                if (stageIdx < stages.length) {
+                    if (statusText) statusText.textContent = stages[stageIdx];
+                    stageIdx++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 350);
+
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.pointerEvents = 'none';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 700);
+                }, 1100);
+            });
         })();
 
     </script>
