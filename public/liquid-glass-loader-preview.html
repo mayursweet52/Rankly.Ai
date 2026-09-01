@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Glass Tiles Loading Screen - Preview | Rankly.ai</title>
+    <title>3D Liquid Glass Tiles - Exact Figma Replication | Rankly.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -18,38 +18,55 @@
         }
 
         :root {
-            --bg-base: #F8F9FD;
-            --tile-fill: rgba(255, 255, 255, 0.12);
-            --tile-border: rgba(255, 255, 255, 0.45);
-            --tile-shadow: 0 12px 30px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            --glow-color-1: #7A5CFF;
-            --glow-color-2: #FF9AE2;
-            --glow-color-3: #FFA14A;
+            --bg-canvas: #F0F2F9;
+            --tile-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 100%);
+            --tile-border: rgba(255, 255, 255, 0.75);
+            --tile-inner-highlight: inset 0 2px 3px rgba(255, 255, 255, 0.9), inset 0 -2px 3px rgba(0, 0, 0, 0.04);
+            --tile-outer-shadow: 0 14px 28px -6px rgba(100, 110, 140, 0.18), 0 2px 6px rgba(0, 0, 0, 0.04);
+            --core-glow-1: #FFA24C;
+            --core-glow-2: #FF4DA6;
+            --core-glow-3: #7952FF;
+            --core-glow-4: #4EE2C0;
         }
 
         body.dark-mode {
-            --bg-base: #0B0D14;
-            --tile-fill: rgba(255, 255, 255, 0.05);
-            --tile-border: rgba(255, 255, 255, 0.15);
-            --tile-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-            --glow-color-1: #5B998C;
-            --glow-color-2: #D95D39;
-            --glow-color-3: #81E4DA;
+            --bg-canvas: #090B10;
+            --tile-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.02) 100%);
+            --tile-border: rgba(255, 255, 255, 0.22);
+            --tile-inner-highlight: inset 0 2px 3px rgba(255, 255, 255, 0.45), inset 0 -2px 3px rgba(0, 0, 0, 0.4);
+            --tile-outer-shadow: 0 18px 36px -6px rgba(0, 0, 0, 0.7), 0 0 2px rgba(255, 255, 255, 0.1);
+            --core-glow-1: #D95D39;
+            --core-glow-2: #81E4DA;
+            --core-glow-3: #183B33;
+            --core-glow-4: #5B998C;
         }
 
         body {
-            background-color: var(--bg-base);
+            background-color: var(--bg-canvas);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            padding: 40px 20px;
             transition: background 0.4s ease;
         }
 
-        /* ─── MULTI-LAYERED RADIAL GLOW ENGINE (FIGMA STEP 4) ─── */
-        .glow-background-container {
+        /* ─── STAGE CONTAINER ─── */
+        .glass-stage {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ─── BACKGROUND VIBRANT GLOW SPHERES (FIGMA STEP 4) ─── */
+        .glow-sphere-container {
             position: absolute;
             inset: 0;
             display: flex;
@@ -59,290 +76,367 @@
             z-index: 1;
         }
 
-        .glow-ellipse {
+        .glow-core {
             position: absolute;
             border-radius: 50%;
-            filter: blur(55px);
-            opacity: 0.85;
-            animation: pulseGlow 5s ease-in-out infinite alternate;
+            filter: blur(50px);
+            animation: fluidCorePulse 6s ease-in-out infinite alternate;
         }
 
-        .glow-ellipse-1 {
+        /* Central Intense Radiant Core */
+        .glow-core-center {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, var(--core-glow-1) 0%, var(--core-glow-2) 65%, transparent 100%);
+            opacity: 0.95;
+            z-index: 2;
+        }
+
+        /* Electric Violet & Magenta Mid Orbit */
+        .glow-core-orbit-1 {
             width: 440px;
             height: 440px;
-            background: radial-gradient(circle, var(--glow-color-1) 0%, transparent 70%);
-            transform: translate(-40px, -30px);
-            animation-delay: 0s;
+            background: radial-gradient(circle, var(--core-glow-2) 0%, var(--core-glow-3) 60%, transparent 100%);
+            opacity: 0.85;
+            transform: translate(-30px, -20px);
+            animation-delay: -2s;
+            z-index: 1;
         }
 
-        .glow-ellipse-2 {
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle, var(--glow-color-2) 0%, transparent 70%);
-            transform: translate(50px, 40px);
-            animation-delay: -1.8s;
+        /* Cyan/Emerald Outer Glow */
+        .glow-core-orbit-2 {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, var(--core-glow-3) 0%, var(--core-glow-4) 50%, transparent 75%);
+            opacity: 0.7;
+            transform: translate(30px, 30px);
+            animation-delay: -4s;
+            z-index: 0;
         }
 
-        .glow-ellipse-3 {
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, var(--glow-color-3) 0%, transparent 65%);
-            transform: translate(0, 0);
-            animation-delay: -3.2s;
+        @keyframes fluidCorePulse {
+            0% { transform: scale(0.92) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.12) rotate(20deg); opacity: 1; }
+            100% { transform: scale(0.98) rotate(-15deg); opacity: 0.85; }
         }
 
-        @keyframes pulseGlow {
-            0% { transform: scale(0.9) rotate(0deg); opacity: 0.7; }
-            50% { transform: scale(1.15) rotate(15deg); opacity: 0.95; }
-            100% { transform: scale(1) rotate(-10deg); opacity: 0.8; }
-        }
-
-        /* ─── 7x7 LIQUID GLASS TILES GRID (FIGMA STEP 2 & 3) ─── */
-        .glass-grid-wrapper {
+        /* ─── 7x7 LIQUID GLASS TILES GRID (FIGMA STEP 2, 3, 4) ─── */
+        .tiles-grid {
             position: relative;
             z-index: 10;
             display: grid;
-            grid-template-columns: repeat(7, 56px);
-            grid-template-rows: repeat(7, 56px);
-            gap: 12px;
-            padding: 20px;
+            grid-template-columns: repeat(7, 46px);
+            grid-template-rows: repeat(7, 46px);
+            gap: 10px;
+            padding: 16px;
         }
 
-        @media (min-width: 640px) {
-            .glass-grid-wrapper {
-                grid-template-columns: repeat(7, 72px);
-                grid-template-rows: repeat(7, 72px);
-                gap: 14px;
+        @media (min-width: 500px) {
+            .tiles-grid {
+                grid-template-columns: repeat(7, 62px);
+                grid-template-rows: repeat(7, 62px);
+                gap: 12px;
+                padding: 20px;
             }
         }
 
-        .glass-tile {
+        @media (min-width: 768px) {
+            .tiles-grid {
+                grid-template-columns: repeat(7, 76px);
+                grid-template-rows: repeat(7, 76px);
+                gap: 14px;
+                padding: 24px;
+            }
+        }
+
+        /* ─── INDIVIDUAL LIQUID GLASS TILE CUSHION ─── */
+        .tile-cushion {
             position: relative;
-            border-radius: 20px;
-            background: var(--tile-fill);
-            backdrop-filter: blur(24px) saturate(160%);
-            -webkit-backdrop-filter: blur(24px) saturate(160%);
-            border: 1px solid var(--tile-border);
-            box-shadow: var(--tile-shadow);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: tileWave 4s ease-in-out infinite;
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            background: var(--tile-bg);
+            backdrop-filter: blur(20px) saturate(180%) contrast(105%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%) contrast(105%);
+            border: 1.5px solid var(--tile-border);
+            box-shadow: var(--tile-inner-highlight), var(--tile-outer-shadow);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: cushionBreath 4.5s ease-in-out infinite;
         }
 
-        /* Fluid Wave Dynamic Animation across 49 tiles */
-        @keyframes tileWave {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-4px) scale(1.02); }
+        @media (min-width: 768px) {
+            .tile-cushion {
+                border-radius: 22px;
+            }
         }
 
-        .glass-tile:hover {
-            transform: translateY(-8px) scale(1.08) !important;
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), inset 0 2px 0 rgba(255, 255, 255, 0.9);
-            z-index: 20;
+        /* Subtle 3D Glass Corner Specular Reflection */
+        .tile-cushion::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 5px;
+            right: 5px;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.0) 100%);
+            border-radius: 14px 14px 8px 8px;
+            pointer-events: none;
+            opacity: 0.7;
         }
 
-        /* ─── CENTER FLOATING GLASS LOADER CARD ─── */
-        .loader-center-card {
+        body.dark-mode .tile-cushion::before {
+            opacity: 0.3;
+        }
+
+        /* Breathing Wave Animation across 49 Tiles */
+        @keyframes cushionBreath {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-5px) scale(1.03);
+            }
+        }
+
+        /* Interactive Tactile Hover Effect */
+        .tile-cushion:hover {
+            transform: translateY(-10px) scale(1.15) rotate(2deg) !important;
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 24px 45px -4px rgba(0, 0, 0, 0.25), inset 0 3px 4px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.6);
+            z-index: 50;
+        }
+
+        /* ─── CENTER FLOATING BRAND & LOADER BADGE ─── */
+        .loader-center-badge {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 30;
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(30px) saturate(190%);
-            -webkit-backdrop-filter: blur(30px) saturate(190%);
-            border: 1.5px solid rgba(255, 255, 255, 0.8);
-            border-radius: 28px;
-            padding: 28px 36px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 20px 28px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-            min-width: 300px;
+            gap: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.95);
+            min-width: 260px;
             text-align: center;
-            transition: all 0.4s ease;
+            pointer-events: none;
+            transition: all 0.3s ease;
         }
 
-        body.dark-mode .loader-center-card {
-            background: rgba(18, 20, 31, 0.75);
-            border-color: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        body.dark-mode .loader-center-badge {
+            background: rgba(14, 17, 26, 0.82);
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
         }
 
-        /* Animated Progress Beam */
-        .progress-beam-track {
+        /* Smooth Progress Beam */
+        .progress-track {
             width: 100%;
-            height: 6px;
-            background: rgba(0, 0, 0, 0.06);
+            height: 5px;
+            background: rgba(0, 0, 0, 0.08);
             border-radius: 9999px;
             overflow: hidden;
             position: relative;
         }
 
-        body.dark-mode .progress-beam-track {
-            background: rgba(255, 255, 255, 0.1);
+        body.dark-mode .progress-track {
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        .progress-beam-fill {
+        .progress-bar {
             height: 100%;
-            width: 45%;
+            width: 50%;
             border-radius: 9999px;
             background: linear-gradient(90deg, #183B33, #D95D39, #5B998C);
-            animation: beamSlide 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            animation: slideProgress 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
         }
 
-        @keyframes beamSlide {
+        @keyframes slideProgress {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(250%); }
         }
 
-        /* Floating Control Panel at Top-Right */
-        .preview-controls {
+        /* ─── TOP CONTROL BAR ─── */
+        .top-nav {
             position: fixed;
             top: 20px;
-            right: 20px;
-            z-index: 50;
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 9999px;
-            padding: 6px 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border-radius: 50px;
+            padding: 6px 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            z-index: 100;
         }
 
-        body.dark-mode .preview-controls {
-            background: rgba(20, 23, 36, 0.85);
-            border-color: rgba(255, 255, 255, 0.12);
+        body.dark-mode .top-nav {
+            background: rgba(20, 24, 38, 0.88);
+            border-color: rgba(255, 255, 255, 0.14);
             color: white;
         }
     </style>
 </head>
 <body>
 
-    <!-- ─── FLOATING PREVIEW CONTROLLER ─── -->
-    <div class="preview-controls">
-        <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-[#183B33] text-white hover:opacity-90 flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-moon"></i> <span id="themeBtnText">Toggle Dark Mode</span>
+    <!-- ─── TOP CONTROL BAR ─── -->
+    <div class="top-nav">
+        <button onclick="toggleTheme()" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-[#183B33] text-white hover:opacity-90 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-moon"></i> <span id="themeBtnText">Dark Mode</span>
         </button>
-        <button onclick="switchPalette('rankly')" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white hover:opacity-90 cursor-pointer">
-            Rankly Palette
+        <button onclick="setPalette('figma')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 cursor-pointer">
+            Figma Colors
         </button>
-        <button onclick="switchPalette('figma')" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-purple-600 text-white hover:opacity-90 cursor-pointer">
-            Figma UIUX Palette
+        <button onclick="setPalette('rankly')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-[#183B33] text-white hover:opacity-90 cursor-pointer">
+            Rankly Brand
         </button>
-        <a href="/" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-black/10 dark:bg-white/10 hover:bg-black/20 text-gray-800 dark:text-gray-200 cursor-pointer flex items-center gap-1">
-            <i class="fa-solid fa-arrow-left text-[10px]"></i> Back to App
+        <button onclick="toggleCenterCard()" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:opacity-90 cursor-pointer">
+            <i class="fa-solid fa-eye"></i> <span id="cardToggleText">Hide Center Badge</span>
+        </button>
+        <a href="/" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-black/10 dark:bg-white/10 hover:bg-black/20 text-gray-800 dark:text-gray-200 cursor-pointer flex items-center gap-1">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> App
         </a>
     </div>
 
-    <!-- ─── RADIAL GLOW LAYER (FIGMA STEP 4) ─── -->
-    <div class="glow-background-container">
-        <div class="glow-ellipse glow-ellipse-1" id="glow1"></div>
-        <div class="glow-ellipse glow-ellipse-2" id="glow2"></div>
-        <div class="glow-ellipse glow-ellipse-3" id="glow3"></div>
+    <!-- ─── LIQUID GLASS STAGE ─── -->
+    <div class="glass-stage">
+        <!-- ─── LAYER 1: BLURRED GLOW SPHERES (BEHIND TILES) ─── -->
+        <div class="glow-sphere-container">
+            <div class="glow-core glow-core-orbit-2" id="glow3"></div>
+            <div class="glow-core glow-core-orbit-1" id="glow2"></div>
+            <div class="glow-core glow-core-center" id="glow1"></div>
+        </div>
+
+        <!-- ─── LAYER 2: 7x7 (49) LIQUID GLASS TILES GRID ─── -->
+        <div class="tiles-grid" id="tilesGrid">
+            <!-- 49 tactile glass cushion tiles injected by JS -->
+        </div>
+
+        <!-- ─── LAYER 3: FLOATING CENTER LOADER BADGE ─── -->
+        <div class="loader-center-badge" id="loaderBadge">
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#B588F7"/>
+                        <stop offset="100%" stop-color="#8E65DF"/>
+                    </linearGradient>
+                    <linearGradient id="g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FFA14A"/>
+                        <stop offset="100%" stop-color="#F06A4A"/>
+                    </linearGradient>
+                    <linearGradient id="g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#81E4DA"/>
+                        <stop offset="100%" stop-color="#45A89E"/>
+                    </linearGradient>
+                </defs>
+                <rect width="32" height="32" rx="9" fill="#111111" />
+                <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#g1)"/>
+                <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
+                <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#g2)"/>
+                <circle cx="24" cy="8" r="3" fill="url(#g3)" />
+            </svg>
+
+            <div>
+                <h3 class="text-base font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    Rankly<span class="text-[#D95D39]">.ai</span>
+                </h3>
+                <p class="text-[11px] font-semibold text-gray-500 dark:text-gray-400">
+                    Liquid Glass Engine Loading...
+                </p>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-bar"></div>
+            </div>
+
+            <div class="flex items-center gap-2 text-[10px] font-mono text-gray-500 dark:text-gray-400">
+                <i class="fa-solid fa-circle-notch fa-spin text-emerald-600 dark:text-emerald-400"></i>
+                <span id="loaderStatus">Initializing neural models...</span>
+            </div>
+        </div>
     </div>
 
-    <!-- ─── 7x7 LIQUID GLASS TILES (FIGMA STEPS 2, 3, 4) ─── -->
-    <div class="glass-grid-wrapper" id="glassGrid">
-        <!-- 49 dynamic glass tiles generated by JS with wave delays -->
-    </div>
-
-    <!-- ─── CENTER LIQUID GLASS LOADER CARD ─── -->
-    <div class="loader-center-card">
-        <!-- Custom Gradient Emblem Logo for Rankly.ai -->
-        <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-bounce">
-            <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#B588F7"/>
-                    <stop offset="100%" stop-color="#8E65DF"/>
-                </linearGradient>
-                <linearGradient id="g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFA14A"/>
-                    <stop offset="100%" stop-color="#F06A4A"/>
-                </linearGradient>
-                <linearGradient id="g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#81E4DA"/>
-                    <stop offset="100%" stop-color="#45A89E"/>
-                </linearGradient>
-            </defs>
-            <rect width="32" height="32" rx="9" fill="#111111" />
-            <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#g1)"/>
-            <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-            <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#g2)"/>
-            <circle cx="24" cy="8" r="3" fill="url(#g3)" />
-        </svg>
-
-        <div>
-            <h2 class="text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                Rankly<span class="text-[#D95D39]">.ai</span>
-            </h2>
-            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5 tracking-wide">
-                Initializing Liquid AI Engine...
-            </p>
-        </div>
-
-        <!-- Progress Track -->
-        <div class="progress-beam-track mt-1">
-            <div class="progress-beam-fill"></div>
-        </div>
-
-        <div class="flex items-center gap-2 text-[11px] font-mono text-gray-500 dark:text-gray-400">
-            <i class="fa-solid fa-spinner fa-spin text-emerald-600 dark:text-emerald-400"></i>
-            <span id="loadingStatusText">Calibrating ATS models & workspace</span>
-        </div>
+    <!-- ─── FOOTER EXPLANATION ─── -->
+    <div class="mt-8 text-center text-xs text-gray-500 dark:text-gray-400 font-mono max-w-md z-10">
+        💡 Hover over any glass cushion tile to see real-time 3D refraction & specular lighting.
     </div>
 
     <script>
-        // Generate 7x7 (49 tiles) with diagonal wave ripple delay
-        const grid = document.getElementById('glassGrid');
-        for (let row = 0; row < 7; row++) {
-            for (let col = 0; col < 7; col++) {
+        // Generate 7x7 (49 cushion tiles) with radial ripple wave delay
+        const grid = document.getElementById('tilesGrid');
+        for (let r = 0; r < 7; r++) {
+            for (let c = 0; c < 7; c++) {
                 const tile = document.createElement('div');
-                tile.className = 'glass-tile';
-                const distFromCenter = Math.sqrt(Math.pow(row - 3, 2) + Math.pow(col - 3, 2));
-                tile.style.animationDelay = `${(distFromCenter * 0.25).toFixed(2)}s`;
+                tile.className = 'tile-cushion';
+                
+                // Calculate distance from center tile (3, 3)
+                const dist = Math.sqrt(Math.pow(r - 3, 2) + Math.pow(c - 3, 2));
+                tile.style.animationDelay = `${(dist * 0.22).toFixed(2)}s`;
+                
+                tile.title = `Glass Cushion Tile (${r + 1}, ${c + 1})`;
                 grid.appendChild(tile);
             }
         }
 
-        // Theme Toggle
+        // Toggle Theme
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('themeBtnText').textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+            document.getElementById('themeBtnText').textContent = isDark ? 'Light Mode' : 'Dark Mode';
         }
 
-        // Palette Switcher
-        function switchPalette(type) {
+        // Set Palettes
+        function setPalette(type) {
             const root = document.documentElement;
             if (type === 'figma') {
-                root.style.setProperty('--glow-color-1', '#7A5CFF');
-                root.style.setProperty('--glow-color-2', '#FF9AE2');
-                root.style.setProperty('--glow-color-3', '#FFA14A');
+                root.style.setProperty('--core-glow-1', '#FFA24C');
+                root.style.setProperty('--core-glow-2', '#FF4DA6');
+                root.style.setProperty('--core-glow-3', '#7952FF');
+                root.style.setProperty('--core-glow-4', '#4EE2C0');
             } else {
-                root.style.setProperty('--glow-color-1', '#183B33');
-                root.style.setProperty('--glow-color-2', '#D95D39');
-                root.style.setProperty('--glow-color-3', '#5B998C');
+                root.style.setProperty('--core-glow-1', '#D95D39');
+                root.style.setProperty('--core-glow-2', '#81E4DA');
+                root.style.setProperty('--core-glow-3', '#183B33');
+                root.style.setProperty('--core-glow-4', '#5B998C');
             }
         }
 
-        // Dynamic Loading Status Ticker
-        const statusMsgs = [
-            'Calibrating ATS neural models...',
-            'Connecting to secure workspace...',
-            'Encrypting AI scoring pipeline...',
+        // Toggle Center Badge so user can inspect pure 49 tiles grid
+        function toggleCenterCard() {
+            const badge = document.getElementById('loaderBadge');
+            const text = document.getElementById('cardToggleText');
+            if (badge.style.display === 'none') {
+                badge.style.display = 'flex';
+                text.textContent = 'Hide Center Badge';
+            } else {
+                badge.style.display = 'none';
+                text.textContent = 'Show Center Badge';
+            }
+        }
+
+        // Dynamic Loading Messages
+        const msgs = [
+            'Initializing ATS neural models...',
+            'Calibrating scoring weights...',
+            'Connecting to enterprise workspace...',
             'Liquid Glass Engine Ready ✨'
         ];
-        let idx = 0;
+        let step = 0;
         setInterval(() => {
-            idx = (idx + 1) % statusMsgs.length;
-            const el = document.getElementById('loadingStatusText');
-            if (el) el.textContent = statusMsgs[idx];
-        }, 1600);
+            step = (step + 1) % msgs.length;
+            const el = document.getElementById('loaderStatus');
+            if (el) el.textContent = msgs[step];
+        }, 1800);
     </script>
 </body>
 </html>
