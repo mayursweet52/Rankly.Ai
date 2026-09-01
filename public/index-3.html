@@ -86,13 +86,17 @@
             background-color: #F3F3ED !important;
             background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px) !important;
             background-size: 24px 24px !important;
+            height: 100vh;
             min-height: 100vh;
+            max-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
             overflow: hidden;
-            padding: 24px 32px;
+            padding: 16px 28px;
+            box-sizing: border-box;
         }
 
         /* ── 3D FLIP CARD EFFECT ── */
@@ -3920,7 +3924,7 @@
         <div class="pebble-floating-mid-right hidden md:block"></div>
 
         <!-- Center Animated Sliding Auth Card (Rankly.ai Branded with Full Card 3D Flip Architecture) -->
-        <div class="w-full flex justify-center items-center my-auto z-10 py-6 px-3">
+        <div class="w-full flex justify-center items-center my-auto z-10 py-0 px-2">
             <div class="auth-card-3d-wrapper">
                 <div class="auth-card-3d-flipper" id="fullAuthCardFlipper">
                     
@@ -9045,9 +9049,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 /* ═══════════════════════════════════════════════════════════════════════
-                   MAGIC UI ANIMATED THEME TOGGLER ENGINE
+                   ULTRA-FAST ZERO-JANK THEME TOGGLER (60FPS / 120FPS SILKY SMOOTH)
                    ═══════════════════════════════════════════════════════════════════════ */
-                window.applyThemeState = function(theme) {
+                window.toggleAppTheme = function(theme, event) {
+                    if (!theme) {
+                        theme = document.body.classList.contains('dark-theme') || document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                    }
                     const btnLight = document.getElementById('themeBtnLight');
                     const btnDark = document.getElementById('themeBtnDark');
                     const themeLabel = document.getElementById('currentThemeLabel');
@@ -9060,6 +9067,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const sun = btn.querySelector('.theme-sun-icon');
                         const moon = btn.querySelector('.theme-moon-icon');
                         const label = btn.querySelector('.theme-text-label');
+                        btn.style.transform = 'scale(0.95)';
+                        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
                         if (isDark) {
                             sun?.classList.add('hidden');
                             moon?.classList.remove('hidden');
@@ -9124,65 +9133,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (typeof initDarkModeEngines === 'function') {
                         initDarkModeEngines();
                     }
-                };
-
-                window.toggleAppTheme = function(theme, event) {
-                    if (!event && window.event) event = window.event;
-                    const isDarkCurrent = document.body.classList.contains('dark-theme') || document.documentElement.classList.contains('dark');
-                    const targetTheme = theme || (isDarkCurrent ? 'light' : 'dark');
-
-                    // If user is already on the requested theme, do nothing
-                    if (theme && ((theme === 'dark' && isDarkCurrent) || (theme === 'light' && !isDarkCurrent))) {
-                        return;
-                    }
-
-                    // Fallback for browsers without View Transitions API or if user prefers reduced motion
-                    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        applyThemeState(targetTheme);
-                        return;
-                    }
-
-                    // Calculate origin coordinates from click event or active button
-                    let x = window.innerWidth - 60;
-                    let y = 40;
-                    if (event && typeof event.clientX === 'number' && typeof event.clientY === 'number' && (event.clientX || event.clientY)) {
-                        x = event.clientX;
-                        y = event.clientY;
-                    } else {
-                        const activeBtn = document.getElementById('loginThemeToggleBtn') || document.getElementById('dashThemeToggleBtn') || document.getElementById('themeBtnDark');
-                        if (activeBtn && activeBtn.offsetParent !== null) {
-                            const rect = activeBtn.getBoundingClientRect();
-                            x = rect.left + rect.width / 2;
-                            y = rect.top + rect.height / 2;
-                        }
-                    }
-
-                    const endRadius = Math.hypot(
-                        Math.max(x, window.innerWidth - x),
-                        Math.max(y, window.innerHeight - y)
-                    );
-
-                    const transition = document.startViewTransition(() => {
-                        applyThemeState(targetTheme);
-                    });
-
-                    transition.ready.then(() => {
-                        const clipPath = [
-                            `circle(0px at ${x}px ${y}px)`,
-                            `circle(${endRadius}px at ${x}px ${y}px)`
-                        ];
-
-                        document.documentElement.animate(
-                            {
-                                clipPath: targetTheme === 'dark' ? clipPath : [...clipPath].reverse()
-                            },
-                            {
-                                duration: 550,
-                                easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                                pseudoElement: targetTheme === 'dark' ? '::view-transition-new(root)' : '::view-transition-old(root)'
-                            }
-                        );
-                    });
                 };
 
                 // Initialize saved theme on load
