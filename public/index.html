@@ -4141,10 +4141,17 @@
 
                                     <div class="my-2.5 text-[11px] text-[#666660] dark:text-gray-400 flex items-center gap-1.5 select-none">
                                         <input type="checkbox" id="regTermsCheck" checked required class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
-                                        <span>I accept <a href="/terms" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Terms of Service</a> & <a href="/privacy" target="_blank" class="underline text-indigo-600 dark:text-indigo-400">Privacy Policy</a></span>
+                                        <span>I accept <a href="/terms" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Terms of Service</a> & <a href="/privacy" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Privacy Policy</a></span>
                                     </div>
 
-                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main">CREATE CANDIDATE ACCOUNT</button>
+                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                        <span>CREATE CANDIDATE ACCOUNT</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        </svg>
+                                    </button>
 
                                     <div class="auth-divider-line my-2"><span>OR</span></div>
 
@@ -4159,7 +4166,7 @@
                                     </button>
 
                                     <div class="mt-2.5 text-center pb-1">
-                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400">Already have an account? <strong class="text-indigo-600 dark:text-indigo-400">Sign In</strong></button>
+                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400">Already have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign In</strong></button>
                                     </div>
                                 </form>
                             </div>
@@ -4200,7 +4207,14 @@
                                             <button type="button" onclick="toggleInlineForgotPassword(true)" class="forgot-link">Forgot password?</button>
                                         </div>
 
-                                        <button type="submit" id="loginBtn" class="login-btn auth-btn-main">SIGN IN</button>
+                                        <button type="submit" id="loginBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                            <span>SIGN IN</span>
+                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            </svg>
+                                        </button>
 
                                         <div class="auth-divider-line"><span>OR</span></div>
 
@@ -4217,9 +4231,16 @@
                                         </div>
 
                                         <div class="mt-3 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
-                                            <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400">Don't have an account? <strong class="text-indigo-600 dark:text-indigo-400">Sign Up</strong></button>
+                                            <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400">Don't have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign Up</strong></button>
                                             <!-- Switch to Company Full Card 3D Flip -->
-                                            <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto">Company Portal →</button>
+                                            <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all cursor-pointer ml-auto inline-flex items-center gap-1.5 group">
+                                                <span>Company Portal</span>
+                                                <svg class="transition-transform duration-200 group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -4227,8 +4248,15 @@
                                 <!-- Inline Toggleable Forgot Password View on Front -->
                                 <div id="inlineForgotView" class="hidden w-full">
                                     <div class="flex items-center gap-2 mb-2">
-                                        <button type="button" onclick="toggleInlineForgotPassword(false)" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                                        <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-0">Reset Password</h2>
+                                        <button type="button" onclick="toggleInlineForgotPassword(false)" class="text-xs font-semibold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] flex items-center gap-1.5 transition-colors group">
+                                            <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            </svg>
+                                            <span>Back to Sign In</span>
+                                        </button>
+                                        <h2 class="auth-form-title text-xl text-[#111111] dark:text-white mb-0 ml-auto">Reset Password</h2>
                                     </div>
                                     <p class="text-xs text-[#666660] dark:text-gray-400 mb-3">Enter your verified email address to receive reset instructions.</p>
                                     <form id="inlineForgotForm" class="w-full" onsubmit="event.preventDefault(); handleInlinePasswordReset();">
@@ -4268,8 +4296,13 @@
 
                             <!-- Bottom Back to User Login Button -->
                             <div class="relative z-10">
-                                <button type="button" id="backToLogin" onclick="flipEntireAuthCard(false)" class="w-full py-2.5 px-4 rounded-xl border border-white/30 bg-white/10 hover:bg-white hover:text-[#183B33] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 backdrop-blur-md cursor-pointer shadow-sm">
-                                    <i class="fa-solid fa-arrow-left text-[11px]"></i> Return to User Sign In
+                                <button type="button" id="backToLogin" onclick="flipEntireAuthCard(false)" class="w-full py-2.5 px-4 rounded-xl border border-white/30 bg-white/10 hover:bg-white hover:text-[#183B33] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 backdrop-blur-md cursor-pointer shadow-sm group">
+                                    <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                                        <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                    </svg>
+                                    <span>Return to User Sign In</span>
                                 </button>
                             </div>
                         </div>
@@ -4281,7 +4314,7 @@
                                 <button type="button" id="orgTabLoginBtn" onclick="switchOrgPortalTab('login')" class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs">
                                     Organization Sign In
                                 </button>
-                                <button type="button" id="orgTabRegBtn" onclick="switchOrgPortalTab('register')" class="flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] rounded-lg transition-all hover:text-[var(--text-primary)]">
+                                <button type="button" id="orgTabRegBtn" onclick="switchOrgPortalTab('register')" class="flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all">
                                     Register Workspace
                                 </button>
                             </div>
@@ -4315,14 +4348,24 @@
                                         <button type="button" onclick="toggleInlineForgotPassword(true); flipEntireAuthCard(false);" class="forgot-link text-[11px]">Reset Password?</button>
                                     </div>
 
-                                    <button type="submit" id="orgLoginSubmitBtn" class="w-full login-btn auth-btn-main">
-                                        SIGN IN TO WORKSPACE
+                                    <button type="submit" id="orgLoginSubmitBtn" class="w-full login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                        <span>SIGN IN TO WORKSPACE</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                        </svg>
                                     </button>
 
                                     <div class="mt-3 pt-2.5 border-t border-[var(--border-color)] text-center">
                                         <span class="text-[11px] text-[var(--text-muted)]">Don't have an enterprise workspace? </span>
-                                        <button type="button" onclick="switchOrgPortalTab('register')" class="text-[11px] font-bold text-[#183B33] dark:text-[#5B998C] hover:underline">
-                                            Register Workspace →
+                                        <button type="button" onclick="switchOrgPortalTab('register')" class="text-[11px] font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all inline-flex items-center gap-1 group">
+                                            <span>Register Workspace</span>
+                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </form>
@@ -4421,11 +4464,21 @@
 
                                     <!-- Submit Button & Switcher -->
                                     <div class="flex items-center gap-2.5 pb-2">
-                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
-                                            Back to Sign In
+                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
+                                            <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            </svg>
+                                            <span>Back to Sign In</span>
                                         </button>
-                                        <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main">
-                                            REGISTER WORKSPACE
+                                        <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                            <span>REGISTER WORKSPACE</span>
+                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </form>
@@ -4606,7 +4659,14 @@
 
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal('signupModal')">Cancel</button>
-                    <button type="submit" class="btn-primary">Complete Registration</button>
+                    <button type="submit" class="btn-primary flex items-center justify-center gap-2 group">
+                        <span>Complete Registration</span>
+                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                        </svg>
+                    </button>
                 </div>
             </form>
         </div>
@@ -4736,7 +4796,14 @@
 
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal('employeeSignupModal')">Cancel</button>
-                    <button type="submit" id="empSubmitBtn" class="btn-primary emp-locked-field" disabled>Provision Workspace</button>
+                    <button type="submit" id="empSubmitBtn" class="btn-primary emp-locked-field flex items-center justify-center gap-2 group" disabled>
+                        <span>Provision Workspace</span>
+                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                        </svg>
+                    </button>
                 </div>
             </form>
         </div>
