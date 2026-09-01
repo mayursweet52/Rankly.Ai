@@ -1581,6 +1581,34 @@
             filter: drop-shadow(0 0 10px rgba(91, 153, 140, 0.45));
         }
 
+        /* ═══════════════════════════════════════════════════════════════════════
+           MAGIC UI ANIMATED THEME TOGGLER (VIEW TRANSITION REVEAL)
+           Ref: https://magicui.design/docs/components/animated-theme-toggler
+           ═══════════════════════════════════════════════════════════════════════ */
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+
+        ::view-transition-old(root) {
+            z-index: 1;
+        }
+
+        ::view-transition-new(root) {
+            z-index: 99999;
+        }
+
+        .dark::view-transition-old(root),
+        body.dark-theme::view-transition-old(root) {
+            z-index: 99999;
+        }
+
+        .dark::view-transition-new(root),
+        body.dark-theme::view-transition-new(root) {
+            z-index: 1;
+        }
+
         /* Mobile viewport responsiveness for sliding auth card */
         @media screen and (max-width: 679px) {
             .sliding-auth-card {
@@ -3868,7 +3896,7 @@
             </div>
             <div class="flex items-center gap-3">
                 <!-- Prominent Dark / Light Mode Pill Button -->
-                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
                     <span class="theme-sun-icon text-amber-500 text-xs"><i class="fa-solid fa-sun"></i></span>
                     <span class="theme-moon-icon text-indigo-400 text-xs hidden"><i class="fa-solid fa-moon"></i></span>
                     <span class="theme-text-label text-[11.5px] font-semibold">Light Mode</span>
@@ -4870,7 +4898,7 @@
 
                     <div class="flex items-center gap-3 flex-shrink-0">
                         <!-- Prominent Dark / Light Mode Pill Button on Topbar -->
-                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                        <button type="button" id="dashThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E5E5DF] dark:border-white/15 bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-xs font-bold text-[#111111] dark:text-white shadow-xs hover:border-[#183B33] dark:hover:border-emerald-400 transition-all cursor-pointer select-none backdrop-blur-md" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
                             <span class="theme-sun-icon text-amber-500 text-xs"><i class="fa-solid fa-sun"></i></span>
                             <span class="theme-moon-icon text-indigo-400 text-xs hidden"><i class="fa-solid fa-moon"></i></span>
                             <span class="theme-text-label text-[11px] font-semibold">Light Mode</span>
@@ -5394,7 +5422,7 @@
                                 </div>
                                 <div class="flex items-center justify-between p-3.5 bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl">
                                     <div class="flex items-center gap-3">
-                                        <button type="button" onclick="toggleAppTheme()" class="bulb-theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Theme">
+                                        <button type="button" onclick="toggleAppTheme(null, event)" class="bulb-theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Theme">
                                             <svg class="bulb-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke-width="0.7" stroke="currentColor" fill="currentColor" stroke-linecap="round" viewBox="0 0 32 32">
                                                 <path stroke-width="0" d="M9.4 9.9c1.8-1.8 4.1-2.7 6.6-2.7 5.1 0 9.3 4.2 9.3 9.3 0 2.3-.8 4.4-2.3 6.1-.7.8-2 2.8-2.5 4.4 0 .2-.2.4-.5.4-.2 0-.4-.2-.4-.5v-.1c.5-1.8 2-3.9 2.7-4.8 1.4-1.5 2.1-3.5 2.1-5.6 0-4.7-3.7-8.5-8.4-8.5-2.3 0-4.4.9-5.9 2.5-1.6 1.6-2.5 3.7-2.5 6 0 2.1.7 4 2.1 5.6.8.9 2.2 2.9 2.7 4.9 0 .2-.1.5-.4.5h-.1c-.2 0-.4-.1-.4-.4-.5-1.7-1.8-3.7-2.5-4.5-1.5-1.7-2.3-3.9-2.3-6.1 0-2.3 1-4.7 2.7-6.5z"/>
                                                 <path d="M19.8 28.3h-7.6"/>
@@ -5416,12 +5444,12 @@
                                         </div>
                                     </div>
                                     <div class="theme-segmented-switch flex items-center p-1 bg-[#EAEAE4] dark:bg-[#11131B] border border-[#DCDCD5] dark:border-white/10 rounded-xl gap-1 shadow-inner">
-                                        <button type="button" id="themeBtnLight" class="theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('light')">
+                                        <button type="button" id="themeBtnLight" class="theme-segmented-btn active light-active flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('light', event)">
                                             <i class="fas fa-sun text-amber-500"></i>
                                             <span>Light</span>
                                             <i class="fas fa-check text-[10px] ml-1 theme-check-icon"></i>
                                         </button>
-                                        <button type="button" id="themeBtnDark" class="theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('dark')">
+                                        <button type="button" id="themeBtnDark" class="theme-segmented-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all" onclick="toggleAppTheme('dark', event)">
                                             <i class="fas fa-moon text-indigo-400"></i>
                                             <span>Dark</span>
                                             <i class="fas fa-check text-[10px] ml-1 theme-check-icon" style="display:none;"></i>
@@ -9016,10 +9044,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                window.toggleAppTheme = function(theme) {
-                    if (!theme) {
-                        theme = document.body.classList.contains('dark-theme') || document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-                    }
+                /* ═══════════════════════════════════════════════════════════════════════
+                   MAGIC UI ANIMATED THEME TOGGLER ENGINE
+                   ═══════════════════════════════════════════════════════════════════════ */
+                window.applyThemeState = function(theme) {
                     const btnLight = document.getElementById('themeBtnLight');
                     const btnDark = document.getElementById('themeBtnDark');
                     const themeLabel = document.getElementById('currentThemeLabel');
@@ -9096,6 +9124,65 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (typeof initDarkModeEngines === 'function') {
                         initDarkModeEngines();
                     }
+                };
+
+                window.toggleAppTheme = function(theme, event) {
+                    if (!event && window.event) event = window.event;
+                    const isDarkCurrent = document.body.classList.contains('dark-theme') || document.documentElement.classList.contains('dark');
+                    const targetTheme = theme || (isDarkCurrent ? 'light' : 'dark');
+
+                    // If user is already on the requested theme, do nothing
+                    if (theme && ((theme === 'dark' && isDarkCurrent) || (theme === 'light' && !isDarkCurrent))) {
+                        return;
+                    }
+
+                    // Fallback for browsers without View Transitions API or if user prefers reduced motion
+                    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        applyThemeState(targetTheme);
+                        return;
+                    }
+
+                    // Calculate origin coordinates from click event or active button
+                    let x = window.innerWidth - 60;
+                    let y = 40;
+                    if (event && typeof event.clientX === 'number' && typeof event.clientY === 'number' && (event.clientX || event.clientY)) {
+                        x = event.clientX;
+                        y = event.clientY;
+                    } else {
+                        const activeBtn = document.getElementById('loginThemeToggleBtn') || document.getElementById('dashThemeToggleBtn') || document.getElementById('themeBtnDark');
+                        if (activeBtn && activeBtn.offsetParent !== null) {
+                            const rect = activeBtn.getBoundingClientRect();
+                            x = rect.left + rect.width / 2;
+                            y = rect.top + rect.height / 2;
+                        }
+                    }
+
+                    const endRadius = Math.hypot(
+                        Math.max(x, window.innerWidth - x),
+                        Math.max(y, window.innerHeight - y)
+                    );
+
+                    const transition = document.startViewTransition(() => {
+                        applyThemeState(targetTheme);
+                    });
+
+                    transition.ready.then(() => {
+                        const clipPath = [
+                            `circle(0px at ${x}px ${y}px)`,
+                            `circle(${endRadius}px at ${x}px ${y}px)`
+                        ];
+
+                        document.documentElement.animate(
+                            {
+                                clipPath: targetTheme === 'dark' ? clipPath : [...clipPath].reverse()
+                            },
+                            {
+                                duration: 550,
+                                easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                                pseudoElement: targetTheme === 'dark' ? '::view-transition-new(root)' : '::view-transition-old(root)'
+                            }
+                        );
+                    });
                 };
 
                 // Initialize saved theme on load
