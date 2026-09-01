@@ -10592,5 +10592,52 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
     <script>
 
         </script>
+    <script>
+
+        /* ═══════════════════════════════════════════════════════════════════════
+           LOGO.DEV API INTEGRATION ENGINE – LIVE COMPANY LOGOS AUTO-FETCH
+           ═══════════════════════════════════════════════════════════════════════ */
+        window.LOGO_DEV_TOKEN = 'pk_EJiYI6zfSfSYg_x25fXJSg';
+
+        window.getCompanyLogoUrl = function(identifier, options = {}) {
+            if (!identifier) return '';
+            const token = window.LOGO_DEV_TOKEN;
+            const format = options.format || 'png';
+            const size = options.size || 128;
+            const theme = options.theme || (document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+            const retina = options.retina !== false ? '&retina=true' : '';
+            const fallback = options.fallback || 'monogram';
+
+            const cleanId = identifier.trim().toLowerCase();
+            const path = cleanId.includes('.') ? encodeURIComponent(cleanId) : `name/${encodeURIComponent(cleanId)}`;
+            return `https://img.logo.dev/${path}?token=${token}&size=${size}&format=${format}&theme=${theme}&fallback=${fallback}${retina}`;
+        };
+
+        // Attach live logo preview to Organization & Company inputs
+        document.addEventListener('DOMContentLoaded', () => {
+            const orgInput = document.getElementById('orgNameInput');
+            if (orgInput) {
+                orgInput.addEventListener('input', (e) => {
+                    const val = e.target.value.trim();
+                    let preview = document.getElementById('orgLogoPreview');
+                    if (!preview && val.length > 1) {
+                        preview = document.createElement('img');
+                        preview.id = 'orgLogoPreview';
+                        preview.className = 'w-6 h-6 rounded-md object-contain border border-gray-200 dark:border-gray-700 bg-white p-0.5 ml-2 shadow-sm inline-block align-middle';
+                        orgInput.parentNode.appendChild(preview);
+                    }
+                    if (preview) {
+                        if (val.length > 1) {
+                            preview.src = window.getCompanyLogoUrl(val, { size: 64 });
+                            preview.style.display = 'inline-block';
+                        } else {
+                            preview.style.display = 'none';
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
 </body>
 </html>
