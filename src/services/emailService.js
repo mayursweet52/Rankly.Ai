@@ -36,14 +36,16 @@ async function sendSystemEmail({ to, subject, html, text }) {
     if (googleWebhookUrl) {
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            const timeoutId = setTimeout(() => controller.abort(), 12000);
             const res = await fetch(googleWebhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 signal: controller.signal,
+                redirect: 'follow',
                 body: JSON.stringify({
                     to: cleanRecipient,
                     recipient: cleanRecipient,
+                    email: cleanRecipient,
                     subject: subject,
                     html: html,
                     htmlBody: html,
@@ -52,10 +54,15 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 })
             });
             clearTimeout(timeoutId);
-            const resData = await res.json();
-            if (resData && resData.success) {
+            const resText = await res.text();
+            let resData = null;
+            try { resData = JSON.parse(resText); } catch (e) {}
+
+            if ((resData && resData.success) || (res.ok && resText.includes('"success":true'))) {
                 console.log('✅ Real OTP email delivered via Google Webhook (Port 443 HTTPS) to:', cleanRecipient);
                 return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
+            } else {
+                console.warn('⚠️ [Google Webhook Non-Success Response]:', resText);
             }
         } catch (gErr) {
             console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
