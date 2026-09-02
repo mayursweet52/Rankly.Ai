@@ -4,6 +4,11 @@ const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
 const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
 
 const transporter = nodemailer.createTransport({
+    pool: true,
+    maxConnections: 5,
+    maxMessages: 200,
+    rateDelta: 1000,
+    rateLimit: 5,
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: smtpPort,
     secure: isSecure,
@@ -11,9 +16,9 @@ const transporter = nodemailer.createTransport({
         user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
         pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
     },
-    connectionTimeout: 8000,
-    greetingTimeout: 8000,
-    socketTimeout: 8000,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
     tls: { rejectUnauthorized: false }
 });
 
