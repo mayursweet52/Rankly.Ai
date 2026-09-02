@@ -234,6 +234,60 @@ app.get('/api/feedback', async (req, res) => {
   }
 });
 
+// ─── EMAIL DIAGNOSTICS & DELIVERABILITY PROBE ───
+app.get('/api/test-email', async (req, res) => {
+  const nodemailer = require('nodemailer');
+  const targetEmail = (req.query.to || 'mayursweet52@gmail.com').trim().toLowerCase();
+  const diag = { target: targetEmail, smtp465: null, smtp587: null };
+
+  const pass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '');
+  const user = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+
+  // Test 1: Port 465 SSL
+  try {
+    const t465 = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+      connectionTimeout: 8000
+    });
+    const info465 = await t465.sendMail({
+      from: `"Rankly.ai" <${user}>`,
+      to: targetEmail,
+      subject: `Diagnostic 465: OTP Test to ${targetEmail}`,
+      text: 'Diagnostic test port 465'
+    });
+    diag.smtp465 = { success: true, response: info465.response };
+  } catch (e465) {
+    diag.smtp465 = { success: false, error: e465.message, code: e465.code };
+  }
+
+  // Test 2: Port 587 STARTTLS (if 465 had issues)
+  if (!diag.smtp465.success) {
+    try {
+      const t587 = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: { user, pass },
+        connectionTimeout: 8000
+      });
+      const info587 = await t587.sendMail({
+        from: `"Rankly.ai" <${user}>`,
+        to: targetEmail,
+        subject: `Diagnostic 587: OTP Test to ${targetEmail}`,
+        text: 'Diagnostic test port 587'
+      });
+      diag.smtp587 = { success: true, response: info587.response };
+    } catch (e587) {
+      diag.smtp587 = { success: false, error: e587.message, code: e587.code };
+    }
+  }
+
+  return res.json({ success: true, diagnostics: diag });
+});
+
 // ─── AI STATUS CHECK (10 PROVIDERS) ───
 app.get('/api/ai/status', async (req, res) => {
   const results = {};
