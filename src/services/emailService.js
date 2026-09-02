@@ -31,7 +31,38 @@ async function sendSystemEmail({ to, subject, html, text }) {
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
     const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
 
-    // 1. Tier 1: Nodemailer Direct SMTP (Port 465 SSL via smtp.gmail.com) - Primary Real Delivery
+    // 1. Tier 1: Official Google Apps Script REST Webhook (Port 443 HTTPS - Immune to Railway SMTP port blocks!)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
+    if (googleWebhookUrl) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            const res = await fetch(googleWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                signal: controller.signal,
+                body: JSON.stringify({
+                    to: cleanRecipient,
+                    recipient: cleanRecipient,
+                    subject: subject,
+                    html: html,
+                    htmlBody: html,
+                    body: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
+                    text: text || (html ? html.replace(/<[^>]*>?/gm, '') : '')
+                })
+            });
+            clearTimeout(timeoutId);
+            const resData = await res.json();
+            if (resData && resData.success) {
+                console.log('✅ Real OTP email delivered via Google Webhook (Port 443 HTTPS) to:', cleanRecipient);
+                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
+            }
+        } catch (gErr) {
+            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
+        }
+    }
+
+    // 2. Tier 2: Direct Nodemailer SMTP (Port 465 SSL via smtp.gmail.com)
     try {
         const info = await Promise.race([
             transporter.sendMail({
@@ -42,39 +73,12 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
                 html: html
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 7000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 5000))
         ]);
         console.log('✅ Email delivered via Direct Gmail SMTP to:', cleanRecipient, 'MessageId:', info?.messageId);
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
     } catch (smtpErr) {
-        console.warn('⚠️ [Direct SMTP Warning]:', smtpErr.message, 'Trying backup tiers...');
-    }
-
-    // 2. Tier 2: Official Google Webhook (Port 443 HTTPS REST Backup)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || '').trim();
-    if (googleWebhookUrl) {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 6000);
-            const res = await fetch(googleWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                signal: controller.signal,
-                body: JSON.stringify({
-                    to: cleanRecipient,
-                    subject: subject,
-                    html: html
-                })
-            });
-            clearTimeout(timeoutId);
-            const resData = await res.json();
-            if (resData && resData.success) {
-                console.log('✅ Email delivered via Google Webhook (HTTPS 443) to:', cleanRecipient);
-                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
-            }
-        } catch (gErr) {
-            console.warn('[Google Webhook Warning]:', gErr.message);
-        }
+        console.warn('⚠️ [Direct SMTP Warning]:', smtpErr.message);
     }
 
     // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
