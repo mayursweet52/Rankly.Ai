@@ -110,7 +110,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = isReset ? `Rankly.ai Password Reset Code: ${otp}` : `Your Rankly.ai Verification Code: ${otp}`;
+    const subject = isReset ? `Rankly.ai: ${otp} is your password reset code` : `Rankly.ai: ${otp} is your verification code`;
 
     const html = `
     <!DOCTYPE html>
@@ -118,53 +118,55 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>OTP Verification</title>
-        <style>
-            body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; padding: 40px; margin: 0; }
-            .container { max-width: 520px; margin: auto; background: #ffffff; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-top: 6px solid #4f46e5; }
-            .logo { font-size: 28px; font-weight: 800; color: #4f46e5; text-align: center; }
-            .tagline { text-align: center; color: #6b7280; font-size: 14px; margin-top: 4px; }
-            .greeting { color: #1e293b; font-size: 16px; margin: 20px 0 10px; }
-            .otp-box { background: #f0f4ff; padding: 16px; text-align: center; font-size: 36px; font-weight: 700; letter-spacing: 8px; border-radius: 12px; margin: 20px 0; color: #1e293b; border: 1px dashed #c7d2fe; font-family: monospace; }
-            .validity { text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 24px; }
-            .brand-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 24px; }
-            .brand-box h4 { margin: 0; color: #4f46e5; font-size: 14px; }
-            .brand-box p { margin: 6px 0 0; color: #475569; font-size: 14px; }
-            .footer { margin-top: 24px; text-align: center; font-size: 12px; color: #9ca3af; }
-            .footer a { color: #4f46e5; text-decoration: none; }
-        </style>
+        <title>Verification Code</title>
     </head>
-    <body>
-        <div class="container">
-            <div class="logo">🚀 Rankly.ai</div>
-            <div class="tagline">AI-Powered Recruitment Platform</div>
-
-            <div class="greeting">Hi <strong style="color: #111111;">${cleanRecipient}</strong>,</div>
-            <p style="color: #1e293b; font-size: 16px;">${isReset ? 'Your password reset code is:' : 'Your one-time verification code is:'}</p>
-
-            <div class="otp-box">${otp}</div>
-
-            <div class="validity">⏳ This OTP is valid for <strong>5 minutes</strong>. Do not share it with anyone.</div>
-
-            <div class="brand-box">
-                <h4>💡 Hire Smarter, Faster & Fairer</h4>
-                <p>Rankly.ai helps you screen resumes, manage pipelines, and make data-driven hiring decisions.</p>
-            </div>
-
-            <div class="footer">
-                <p>© 2026 Rankly.ai — All rights reserved.</p>
-                <p><a href="https://rankly-ai-production.up.railway.app">rankly-ai-production.up.railway.app</a> &bull; <a href="https://rankly-ai-production.up.railway.app/privacy">Privacy Policy</a></p>
-            </div>
-        </div>
+    <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f6f9fc; color: #333333;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; border: 1px solid #e6ebf1; padding: 32px;">
+            <tr>
+                <td style="text-align: left; padding-bottom: 20px;">
+                    <span style="font-size: 20px; font-weight: 700; color: #111827; letter-spacing: -0.5px;">Rankly.ai</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-bottom: 16px; font-size: 15px; line-height: 24px; color: #374151;">
+                    Hello,
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-bottom: 24px; font-size: 15px; line-height: 24px; color: #374151;">
+                    ${isReset ? 'Use the following one-time code to reset your Rankly.ai password:' : 'Use the following one-time code to verify your email address on Rankly.ai:'}
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-bottom: 24px;">
+                    <div style="background-color: #f3f4f6; border-radius: 6px; padding: 16px; text-align: center; font-size: 32px; font-weight: 700; letter-spacing: 6px; color: #111827; font-family: monospace;">
+                        ${otp}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-bottom: 24px; font-size: 13px; line-height: 20px; color: #6b7280;">
+                    This code is valid for <strong>10 minutes</strong>. If you did not request this verification code, please disregard this email.
+                </td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #9ca3af; line-height: 18px;">
+                    Rankly.ai Security Team<br/>
+                    Automated security notification — do not reply directly.
+                </td>
+            </tr>
+        </table>
     </body>
     </html>
     `;
+
+    const text = `Rankly.ai Verification Code\n\nHello,\n\nYour one-time verification code is: ${otp}\n\nThis code is valid for 10 minutes.\nIf you did not request this code, you can safely ignore this email.\n\nRankly.ai Security Team`;
 
     const res = await sendSystemEmail({
         to: cleanRecipient,
         subject,
         html,
-        text: `Hi ${cleanRecipient},\n\nYour Rankly.ai verification code is: ${otp}\n\nThis OTP is valid for 5 minutes.\n\nBest regards,\nRankly.ai Security`
+        text
     });
 
     return res.success;
