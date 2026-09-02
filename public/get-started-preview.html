@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started with Rankly.ai - Interactive Onboarding Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --bg-base: #F4F4EE;
+            --card-bg: #FFFFFF;
+            --card-border: #E5E5DF;
+            --text-main: #111111;
+            --text-sub: #666660;
+            --brand-forest: #183B33;
+            --brand-terracotta: #D95D39;
+            --brand-mint: #5B998C;
+            --brand-mint-glow: #81E4DA;
+        }
+
+        body.dark-mode {
+            --bg-base: #0B0D14;
+            --card-bg: #12141F;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #FFFFFF;
+            --text-sub: #94A3B8;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+                radial-gradient(ellipse at 80% 20%, rgba(24, 59, 51, 0.25), transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(217, 93, 57, 0.15), transparent 50%);
+            background-size: 24px 24px, 100% 100%, 100% 100%;
+        }
+
+        /* Glass Bento Cards */
+        .bento-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            border-color: #183B33;
+        }
+
+        body.dark-mode .bento-card:hover {
+            border-color: rgba(129, 228, 218, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(91, 153, 140, 0.2);
+        }
+
+        .persona-active {
+            border-color: #D95D39 !important;
+            box-shadow: 0 0 0 2px #D95D39, 0 16px 36px rgba(217, 93, 57, 0.15) !important;
+        }
+
+        body.dark-mode .persona-active {
+            box-shadow: 0 0 0 2px #D95D39, 0 16px 40px rgba(217, 93, 57, 0.3) !important;
+        }
+
+        /* Custom Input */
+        .step-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .step-input {
+            background: #161926;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .step-input:focus {
+            border-color: #183B33;
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.12);
+        }
+
+        body.dark-mode .step-input:focus {
+            border-color: #81E4DA;
+            box-shadow: 0 0 0 3px rgba(129, 228, 218, 0.2);
+        }
+
+        /* Top Bar */
+        .top-nav {
+            width: 100%;
+            max-width: 1200px;
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Stepper Node */
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-sub);
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .step-pill {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .step-pill.active {
+            background: #183B33;
+            color: #FFFFFF;
+        }
+
+        body.dark-mode .step-pill.active {
+            background: #5B998C;
+            color: #0B0D14;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── TOP HEADER ─── -->
+    <header class="top-nav">
+        <div class="flex items-center gap-3">
+            <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="rk-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#B588F7"/>
+                        <stop offset="100%" stop-color="#8E65DF"/>
+                    </linearGradient>
+                    <linearGradient id="rk-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FFA14A"/>
+                        <stop offset="100%" stop-color="#F06A4A"/>
+                    </linearGradient>
+                    <linearGradient id="rk-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#81E4DA"/>
+                        <stop offset="100%" stop-color="#45A89E"/>
+                    </linearGradient>
+                </defs>
+                <rect width="32" height="32" rx="9" fill="#111111" />
+                <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rk-g1)"/>
+                <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
+                <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rk-g2)"/>
+                <circle cx="24" cy="8" r="3" fill="url(#rk-g3)" />
+            </svg>
+            <span class="text-xl font-extrabold tracking-tight">Rankly<span class="text-[#D95D39]">.ai</span></span>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:border-gray-400 transition-all">
+                <i class="fa-solid fa-moon"></i> <span id="themeToggleText">Dark Mode</span>
+            </button>
+            <a href="/" class="px-3.5 py-1.5 rounded-full bg-[#183B33] text-white text-xs font-bold hover:opacity-90 transition-all flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left text-[10px]"></i> Main App
+            </a>
+        </div>
+    </header>
+
+    <!-- ─── STEP PROGRESS INDICATOR ─── -->
+    <div class="flex items-center gap-2 mb-8 mt-2">
+        <div class="step-pill active" id="stepPill1">
+            <span class="w-4 h-4 rounded-full bg-white/20 dark:bg-black/20 flex items-center justify-center text-[10px]">1</span>
+            Select Path
+        </div>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i>
+        <div class="step-pill" id="stepPill2">
+            <span class="w-4 h-4 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center text-[10px]">2</span>
+            Setup Details
+        </div>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i>
+        <div class="step-pill" id="stepPill3">
+            <span class="w-4 h-4 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center text-[10px]">3</span>
+            Instant AI Launch
+        </div>
+    </div>
+
+    <!-- ─── MAIN ONBOARDING CONTAINER ─── -->
+    <main class="w-full max-w-4xl px-4 mb-16">
+        
+        <!-- STEP 1: DUAL-PERSONA FORK (Recruiter vs Candidate) -->
+        <section id="stepSection1" class="flex flex-col items-center text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D95D39]/10 text-[#D95D39] text-xs font-bold mb-3 border border-[#D95D39]/20">
+                <i class="fa-solid fa-bolt"></i> GET STARTED IN 60 SECONDS
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
+                How would you like to use Rankly?
+            </h1>
+            <p class="text-sm md:text-base text-[var(--text-sub)] max-w-xl mb-10">
+                Choose your track below to personalize your AI screening, ATS integration, or career ranking sandbox.
+            </p>
+
+            <!-- 2-Card Bento Grid Fork -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-left">
+                
+                <!-- CARD 1: ENTERPRISE & RECRUITERS -->
+                <div class="bento-card p-8 cursor-pointer flex flex-col justify-between group" onclick="selectPersona('recruiter')">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-[#183B33] text-[#81E4DA] flex items-center justify-center text-2xl shadow-md group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+                            <span class="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                Enterprise Track
+                            </span>
+                        </div>
+
+                        <h2 class="text-2xl font-bold mb-2 text-[var(--text-main)] group-hover:text-[#183B33] dark:group-hover:text-[#81E4DA] transition-colors">
+                            I'm Hiring Talent
+                        </h2>
+                        <p class="text-sm text-[var(--text-sub)] mb-6 leading-relaxed">
+                            Screen candidates with automated AI interviews, calibrate ATS pipelines, and analyze talent intelligence across departments.
+                        </p>
+
+                        <!-- Feature Badges -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Logo.dev Auto-Sync
+                            </span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> ATS Webhooks
+                            </span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Live Interview Scoring
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="w-full py-3 px-4 rounded-xl bg-[#183B33] hover:bg-[#243E36] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
+                        Create Hiring Workspace <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- CARD 2: CANDIDATE / JOB SEEKER -->
+                <div class="bento-card p-8 cursor-pointer flex flex-col justify-between group" onclick="selectPersona('candidate')">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-[#D95D39] text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                            </div>
+                            <span class="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#D95D39]/10 text-[#D95D39] border border-[#D95D39]/20">
+                                Candidate Track
+                            </span>
+                        </div>
+
+                        <h2 class="text-2xl font-bold mb-2 text-[var(--text-main)] group-hover:text-[#D95D39] transition-colors">
+                            I'm Looking for a Role
+                        </h2>
+                        <p class="text-sm text-[var(--text-sub)] mb-6 leading-relaxed">
+                            Analyze your resume against top ATS models, practice real-time AI mock interviews, and get ranked by top employers worldwide.
+                        </p>
+
+                        <!-- Feature Badges -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-[#D95D39] text-[10px]"></i> AI Resume Parser
+                            </span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-[#D95D39] text-[10px]"></i> Skill Match Score
+                            </span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-[var(--card-border)] font-medium text-[var(--text-sub)] flex items-center gap-1.5">
+                                <i class="fa-solid fa-check text-[#D95D39] text-[10px]"></i> Mock Interview Sandbox
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="w-full py-3 px-4 rounded-xl bg-[#D95D39] hover:bg-[#FFA14A] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
+                        Analyze My Resume <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- STEP 2: RECRUITER SETUP (Logo.dev Integration Showcase) -->
+        <section id="stepSectionRecruiter" class="hidden flex-col items-center">
+            <div class="bento-card p-8 md:p-10 w-full max-w-2xl text-left">
+                <button onclick="goToStep(1)" class="text-xs font-bold text-[var(--text-sub)] hover:text-[var(--text-main)] mb-6 flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Change Path
+                </button>
+
+                <h2 class="text-2xl font-extrabold mb-1">Setup Your Hiring Workspace</h2>
+                <p class="text-sm text-[var(--text-sub)] mb-6">Type your company name or website to auto-fetch your company logo and customize your ATS portal.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[var(--text-sub)] mb-1.5">Company Name or Domain</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="previewOrgDomain" class="step-input pr-12 font-medium" placeholder="e.g. stripe.com or Airbnb" oninput="handleLogoLookup(this.value)" value="stripe.com" />
+                            <div class="absolute right-3 w-7 h-7 rounded-lg border border-[var(--card-border)] bg-white p-0.5 flex items-center justify-center overflow-hidden shadow-sm">
+                                <img id="logoDevAvatar" src="https://img.logo.dev/stripe.com?token=pk_EJiYI6zfSfSYg_x25fXJSg&size=64" class="w-full h-full object-contain" alt="Company Logo" />
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 font-mono flex items-center gap-1">
+                            <i class="fa-solid fa-check-circle"></i> Powered by Logo.dev API (Instant brand matching)
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[var(--text-sub)] mb-1.5">Hiring Scale</label>
+                            <select class="step-input font-medium cursor-pointer">
+                                <option>1 - 10 Roles / Quarter</option>
+                                <option>10 - 50 Roles (Scaling)</option>
+                                <option>50+ Enterprise Batch</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[var(--text-sub)] mb-1.5">Primary ATS</label>
+                            <select class="step-input font-medium cursor-pointer">
+                                <option>Greenhouse</option>
+                                <option>Workday</option>
+                                <option>Lever</option>
+                                <option>Ashby</option>
+                                <option>Rankly Native ATS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="goToStep(3, 'recruiter')" class="w-full py-3.5 mt-4 rounded-xl bg-[#183B33] hover:bg-[#243E36] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md">
+                        Launch Enterprise Workspace <i class="fa-solid fa-rocket text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: CANDIDATE SETUP (Instant Resume Sandbox) -->
+        <section id="stepSectionCandidate" class="hidden flex-col items-center">
+            <div class="bento-card p-8 md:p-10 w-full max-w-2xl text-left">
+                <button onclick="goToStep(1)" class="text-xs font-bold text-[var(--text-sub)] hover:text-[var(--text-main)] mb-6 flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Change Path
+                </button>
+
+                <h2 class="text-2xl font-extrabold mb-1">Upload Your Resume for AI Scoring</h2>
+                <p class="text-sm text-[var(--text-sub)] mb-6">Drop your PDF/DOCX to get instant calibrated match scores and interview feedback.</p>
+
+                <!-- Dropzone -->
+                <div class="border-2 border-dashed border-[var(--card-border)] hover:border-[#D95D39] rounded-2xl p-8 text-center bg-black/[0.01] dark:bg-white/[0.02] transition-all cursor-pointer mb-6 group">
+                    <div class="w-12 h-12 rounded-full bg-[#D95D39]/10 text-[#D95D39] flex items-center justify-center mx-auto text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <p class="text-sm font-bold text-[var(--text-main)] mb-1">Click to upload or drag and drop</p>
+                    <p class="text-xs text-[var(--text-sub)] font-mono">PDF, DOCX up to 10MB</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[var(--text-sub)] mb-1.5">Target Job Title</label>
+                        <input type="text" class="step-input font-medium" placeholder="e.g. Senior AI Engineer / Product Manager" value="Fullstack AI Engineer" />
+                    </div>
+
+                    <button onclick="goToStep(3, 'candidate')" class="w-full py-3.5 rounded-xl bg-[#D95D39] hover:bg-[#FFA14A] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md">
+                        Generate Instant Match Matrix <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 3: SUCCESS & LAUNCH READY -->
+        <section id="stepSectionSuccess" class="hidden flex-col items-center text-center">
+            <div class="bento-card p-10 max-w-lg w-full">
+                <div class="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-3xl mx-auto mb-4 border border-emerald-500/20 shadow-sm animate-bounce">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold mb-2" id="successTitle">Workspace Ready!</h2>
+                <p class="text-sm text-[var(--text-sub)] mb-6" id="successDesc">Your profile has been provisioned with neural scoring models and live telemetry.</p>
+
+                <a href="/" class="w-full py-3.5 rounded-xl bg-[#183B33] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md hover:opacity-90">
+                    Enter Rankly Dashboard <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Logo.dev Token
+        const LOGO_DEV_TOKEN = 'pk_EJiYI6zfSfSYg_x25fXJSg';
+
+        function handleLogoLookup(val) {
+            val = val.trim().toLowerCase();
+            const img = document.getElementById('logoDevAvatar');
+            if (!img) return;
+            if (val.length > 1) {
+                const path = val.includes('.') ? encodeURIComponent(val) : `name/${encodeURIComponent(val)}`;
+                img.src = `https://img.logo.dev/${path}?token=${LOGO_DEV_TOKEN}&size=64&format=png&retina=true`;
+            }
+        }
+
+        // Persona Selection Step Management
+        function selectPersona(type) {
+            if (type === 'recruiter') {
+                document.getElementById('stepSection1').classList.add('hidden');
+                document.getElementById('stepSectionRecruiter').classList.remove('hidden');
+                document.getElementById('stepSectionRecruiter').classList.add('flex');
+            } else {
+                document.getElementById('stepSection1').classList.add('hidden');
+                document.getElementById('stepSectionCandidate').classList.remove('hidden');
+                document.getElementById('stepSectionCandidate').classList.add('flex');
+            }
+            updateStepPill(2);
+        }
+
+        function goToStep(stepNum, persona) {
+            document.getElementById('stepSection1').classList.add('hidden');
+            document.getElementById('stepSectionRecruiter').classList.add('hidden');
+            document.getElementById('stepSectionCandidate').classList.add('hidden');
+            document.getElementById('stepSectionSuccess').classList.add('hidden');
+
+            document.getElementById('stepSectionRecruiter').classList.remove('flex');
+            document.getElementById('stepSectionCandidate').classList.remove('flex');
+            document.getElementById('stepSectionSuccess').classList.remove('flex');
+
+            if (stepNum === 1) {
+                document.getElementById('stepSection1').classList.remove('hidden');
+                updateStepPill(1);
+            } else if (stepNum === 3) {
+                document.getElementById('stepSectionSuccess').classList.remove('hidden');
+                document.getElementById('stepSectionSuccess').classList.add('flex');
+                updateStepPill(3);
+                if (persona === 'recruiter') {
+                    document.getElementById('successTitle').textContent = 'Enterprise Workspace Configured!';
+                    document.getElementById('successDesc').textContent = 'Your company hiring pipeline, ATS connectors, and evaluation matrix are live.';
+                } else {
+                    document.getElementById('successTitle').textContent = 'Candidate Profile Activated!';
+                    document.getElementById('successDesc').textContent = 'Your ATS resume score is 94/100. AI practice interview room is now unlocked.';
+                }
+            }
+        }
+
+        function updateStepPill(num) {
+            for (let i = 1; i <= 3; i++) {
+                const pill = document.getElementById(`stepPill${i}`);
+                if (i <= num) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            }
+        }
+
+        // Toggle Theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('themeToggleText').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        }
+    </script>
+</body>
+</html>
