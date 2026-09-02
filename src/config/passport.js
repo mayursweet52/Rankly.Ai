@@ -22,13 +22,11 @@ passport.deserializeUser(async (id, done) => {
 // -----------------------------------------------------------------------------
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-const isProduction = process.env.NODE_ENV === 'production';
-const baseUrl = process.env.BASE_URL || process.env.APP_URL || (isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000');
+const isProduction = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const baseUrl = isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000';
 
-let googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/google/callback';
-if (googleCallbackUrl.includes('localhost') || !googleCallbackUrl.startsWith('https://')) {
-  googleCallbackUrl = 'https://rankly-ai-production.up.railway.app/auth/google/callback';
-}
+// ─── RAILWAY PRODUCTION GOOGLE CALLBACK ──────────────────────────────
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/google/callback';
 
 if (googleClientId && googleClientSecret) {
   passport.use(

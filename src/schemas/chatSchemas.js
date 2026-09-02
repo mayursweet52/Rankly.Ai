@@ -14,6 +14,9 @@ const sendMessageSchema = {
         content: { type: 'string', required: true, max: 8000 }
       }
     }
+  },
+  context: {
+    type: 'object'
   }
 };
 

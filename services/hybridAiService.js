@@ -5,7 +5,30 @@ async function executeAiInference(prompt, isJson = true) {
   const isJsonFlag = typeof isJson === 'boolean' ? isJson : (typeof isJson === 'object' && isJson !== null ? !!isJson.isJson : (typeof isJson === 'string' ? false : true));
   const errors = [];
 
-  // 1. Try Groq (If API key exists)
+  // 1. Try NVIDIA Nemotron (If API key exists)
+  if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_API_KEY.trim().startsWith('nvapi-')) {
+    try {
+      const baseUrl = process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1';
+      const res = await axios.post(`${baseUrl}/chat/completions`, {
+        model: 'nvidia/nemotron-3-ultra-550b-a55b',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.2,
+        extra_body: { chat_template_kwargs: { enable_thinking: true } }
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NVIDIA_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        timeout: 25000
+      });
+      const content = res.data.choices[0].message.content;
+      return isJsonFlag ? JSON.parse(content) : content;
+    } catch (err) {
+      errors.push(`NVIDIA Nemotron: ${err.response?.data?.message || err.message}`);
+    }
+  }
+
+  // 2. Try Groq (If API key exists)
   if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim().length > 5 && !process.env.GROQ_API_KEY.includes('your_')) {
     try {
       const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {

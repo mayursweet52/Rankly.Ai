@@ -36,6 +36,16 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 
+// Security 1: Disable fingerprinting header
+app.disable('x-powered-by');
+
+// Security 2: Enforce essential HTTP Security Headers with Helmet
+const helmet = require('helmet');
+app.use(helmet({
+  contentSecurityPolicy: false, // Allows inline styles & scripts used by the front-end SPA
+  crossOriginEmbedderPolicy: false
+}));
+
 // Fix 3: Enable Reverse Proxy Trust for Render/Heroku load balancers
 app.set('trust proxy', 1);
 
@@ -229,6 +239,12 @@ app.get('/api/ai/status', async (req, res) => {
   const results = {};
 
   const providers = [
+    { 
+      name: 'NVIDIA Nemotron', 
+      key: 'NVIDIA_API_KEY', 
+      endpoint: 'https://integrate.api.nvidia.com/v1/models',
+      headers: (k) => ({ 'Authorization': `Bearer ${k}` })
+    },
     { 
       name: 'Groq', 
       key: 'GROQ_API_KEY', 

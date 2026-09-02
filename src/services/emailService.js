@@ -26,8 +26,27 @@ async function sendSystemEmail({ to, subject, html, text }) {
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
     const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
 
-    // 1. Tier 1: Official Google Webhook (Port 443 HTTPS REST - 100% immune to SMTP port blocks on Railway!)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
+    // 1. Tier 1: Nodemailer Direct SMTP (Port 465 SSL via smtp.gmail.com) - Primary Real Delivery
+    try {
+        const info = await Promise.race([
+            transporter.sendMail({
+                from: fromAddress,
+                replyTo: senderUser,
+                to: cleanRecipient,
+                subject: subject,
+                text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
+                html: html
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 7000))
+        ]);
+        console.log('✅ Email delivered via Direct Gmail SMTP to:', cleanRecipient, 'MessageId:', info?.messageId);
+        return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
+    } catch (smtpErr) {
+        console.warn('⚠️ [Direct SMTP Warning]:', smtpErr.message, 'Trying backup tiers...');
+    }
+
+    // 2. Tier 2: Official Google Webhook (Port 443 HTTPS REST Backup)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || '').trim();
     if (googleWebhookUrl) {
         try {
             const controller = new AbortController();
@@ -53,7 +72,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
         }
     }
 
-    // 2. Tier 2: Resend REST API (Port 443 HTTPS)
+    // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
     const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
     if (resendApiKey) {
         try {
@@ -80,24 +99,8 @@ async function sendSystemEmail({ to, subject, html, text }) {
         }
     }
 
-    // 3. Tier 3: Nodemailer SMTP (Port 465 SSL Direct)
-    try {
-        const info = await Promise.race([
-            transporter.sendMail({
-                from: fromAddress,
-                to: cleanRecipient,
-                subject: subject,
-                text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
-                html: html
-            }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout on cloud host')), 6000))
-        ]);
-        console.log('✅ Email delivered via Direct SMTP to:', cleanRecipient);
-        return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
-    } catch (smtpErr) {
-        console.error('❌ All email delivery tiers failed:', smtpErr.message);
-        return { success: false, message: smtpErr.message };
-    }
+    console.error('❌ All email delivery tiers failed for:', cleanRecipient);
+    return { success: false, message: 'All email delivery tiers failed' };
 }
 
 /**
@@ -107,7 +110,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification') {
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = isReset ? '🔐 Your Rankly.ai Password Reset Code' : '🔐 Your Rankly.ai OTP Code';
+    const subject = isReset ? `Rankly.ai Password Reset Code: ${otp}` : `Your Rankly.ai Verification Code: ${otp}`;
 
     const html = `
     <!DOCTYPE html>

@@ -30,6 +30,16 @@
         "FIGMA_ACCESS_TOKEN": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU",
         "FIGMA_API_KEY": "figd_xWx7Mzu79R7Iv168Hyb_IBQ-ahXSyF11ELGnsnWU"
       }
+    },
+    "nvidia-nemotron": {
+      "command": "C:\\Users\\mayur\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+      "args": [
+        "c:\\Users\\mayur\\Downloads\\Rankly.ai\\scripts\\nvidia_mcp_server.py"
+      ],
+      "env": {
+        "NVIDIA_API_KEY": "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",
+        "PYTHONIOENCODING": "utf-8"
+      }
     }
   }
 }

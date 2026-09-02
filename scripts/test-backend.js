@@ -15,8 +15,8 @@ async function testBackend() {
     const health = await axios.get(`${baseURL}/api/health`);
     console.log('✅ 1. Health Check:', health.data);
 
-    // 2. Register
-    const email = `test_${Date.now()}@example.com`;
+    // 2. Register (Normal user requires valid Gmail address)
+    const email = `test_${Date.now()}@gmail.com`;
     const reg = await axios.post(`${baseURL}/api/auth/register`, {
       firstName: 'Mayur',
       lastName: 'Dev',

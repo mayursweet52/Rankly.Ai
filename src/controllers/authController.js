@@ -488,6 +488,22 @@ async function sendOtp(req, res) {
       }
     }
 
+    // Cooldown check (20s) to prevent spamming Google SMTP server
+    const recentOtp = await prisma.oTP.findFirst({
+      where: {
+        email: recipientEmail,
+        createdAt: { gte: new Date(Date.now() - 20 * 1000) }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    if (recentOtp) {
+      return res.status(429).json({
+        success: false,
+        error: 'Please wait 20 seconds before requesting another code.',
+        message: 'Please wait 20 seconds before requesting another code.'
+      });
+    }
+
     await prisma.oTP.updateMany({
       where: { email: recipientEmail, isUsed: false },
       data: { isUsed: true }

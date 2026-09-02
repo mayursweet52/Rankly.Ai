@@ -9,7 +9,36 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
   const errors = [];
 
   // =========================================================================
-  // 1. Tier 1: OpenRouter (DeepSeek / Qwen / Llama) - [VERIFIED ACTIVE]
+  // 1. Tier 1: NVIDIA Nemotron (550B Ultra Reasoning Engine) - [NVIDIA MCP / API]
+  // =========================================================================
+  if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_API_KEY.trim().startsWith('nvapi-')) {
+    try {
+      const baseUrl = process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1';
+      const res = await axios.post(`${baseUrl}/chat/completions`, {
+        model: 'nvidia/nemotron-3-ultra-550b-a55b',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.2,
+        extra_body: { chat_template_kwargs: { enable_thinking: true } }
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NVIDIA_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        timeout: 25000
+      });
+
+      const content = res.data.choices[0].message.content;
+      return isJson ? safeJsonParse(content) : content;
+    } catch (err) {
+      errors.push(`NVIDIA Nemotron: ${err.response?.data?.message || err.message}`);
+    }
+  }
+
+  // =========================================================================
+  // 2. Tier 2: OpenRouter (DeepSeek / Qwen / Llama) - [VERIFIED ACTIVE]
   // =========================================================================
   if (process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_API_KEY.trim().startsWith('sk-or-')) {
     try {
