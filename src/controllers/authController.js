@@ -404,6 +404,17 @@ async function login(req, res) {
     resetAuthFailure(req, searchId);
     if (user.email) resetAuthFailure(req, user.email);
 
+    // Strict Verification Gate: Block unverified users from entering dashboard
+    if (!user.isEmailVerified) {
+      return res.status(403).json({
+        success: false,
+        requiresEmailVerification: true,
+        email: user.email,
+        error: 'Email is not verified. Please check your Gmail and click the verification link to unlock your dashboard.',
+        message: 'Email is not verified. Please check your Gmail and click the verification link to unlock your dashboard.'
+      });
+    }
+
     // Establish Express Session
     req.session.userId = user.id;
 

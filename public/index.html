@@ -7476,6 +7476,13 @@
             }
 
             function loginUser() {
+                if (currentUser && currentUser.isEmailVerified === false) {
+                    showToast('Please verify your email via the link sent to your Gmail inbox first.', 'warning');
+                    if (typeof window.showEmailVerificationNotice === 'function') {
+                        window.showEmailVerificationNotice(currentUser.email);
+                    }
+                    return;
+                }
                 const loginPage = document.getElementById('loginPage');
                 const dashPage = document.getElementById('dashboardPage');
                 if (loginPage) { loginPage.style.display = 'none'; loginPage.classList.remove('active'); }
