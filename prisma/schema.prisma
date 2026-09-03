@@ -292,6 +292,11 @@ model Employee {
   // Access Control Roles
   accessRoles              EmployeeAccessRole[]
 
+  // Skill Marketplace & Upskilling
+  skills                   EmployeeSkill[]
+  trainingRecommendations  RecommendedTraining[]
+  draftedEmails            AgentEmailDraft[]
+
   createdAt                DateTime             @default(now())
   updatedAt                DateTime             @updatedAt
 }
@@ -414,5 +419,107 @@ model EmployeeAccessRole {
 
   @@unique([employeeId, roleId])
 }
+
+// =========================================================
+// 2. AI AGENT MODULE DATA MODELS (Anti-Gravity Spec v1.0)
+// =========================================================
+model AiAgent {
+  id                  String                  @id @default(uuid())
+  agentId             String                  @unique // e.g. "agent_ai_8892"
+  name                String                  // e.g. "Operations Co-Pilot", "HR Assistant Agent"
+  modelType           String                  @default("nvidia/nemotron-3-ultra-550b-a55b") // "llama3.3:8b" | "nvidia/nemotron-3-ultra-550b-a55b"
+  capabilities        String                  @default("[]") // JSON Array: ["automated_email_drafting", "database_semantic_retrieval", "skill_gap_analysis"]
+  status              String                  @default("active")
+
+  conversations       AgentConversation[]
+  emailDrafts         AgentEmailDraft[]
+  analyticsMetrics    AgentAnalyticsMetrics?
+
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+}
+
+model AgentConversation {
+  id        String   @id @default(uuid())
+  agentId   String
+  agent     AiAgent  @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
+  role      String   // "user" | "assistant" | "system"
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model AgentEmailDraft {
+  id          String    @id @default(uuid())
+  draftId     String    @unique // e.g. "drf_1029"
+  agentId     String
+  agent       AiAgent   @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
+  recipient   String    // Recipient email
+  subject     String
+  body        String?
+  status      String    @default("pending_approval") // "pending_approval" | "approved" | "sent" | "rejected"
+  employeeId  String?
+  employee    Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AgentAnalyticsMetrics {
+  id                 String   @id @default(uuid())
+  agentId            String   @unique
+  agent              AiAgent  @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
+  satisfactionScore  Float    @default(4.85)
+  responseTimeMs     Int      @default(320)
+  totalQueriesServed Int      @default(0)
+
+  updatedAt          DateTime @updatedAt
+}
+
+// =========================================================
+// 3. INTERNAL SKILL MARKETPLACE DATA MODELS (Anti-Gravity Spec v1.0)
+// =========================================================
+model Skill {
+  id          String                @id @default(uuid())
+  skillId     String                @unique // Master Primary Key, e.g. "SKL_NODE_01", "SKILL_REACT"
+  name        String                // e.g. "Node.js & Express Microservices"
+  category    String                // Domain: "Backend Engineering", "Frontend", "Cloud Infra"
+
+  employees   EmployeeSkill[]
+  trainings   RecommendedTraining[]
+
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+}
+
+model EmployeeSkill {
+  id                String   @id @default(uuid())
+  assignmentId      String   @unique // e.g. "ESK_8831"
+  employeeId        String
+  employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skillId           String
+  skill             Skill    @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
+  proficiencyLevel  String   // "Beginner" | "Intermediate" | "Advanced" | "Master"
+  yearsOfExperience Float    // e.g. 4.5
+
+  assignedAt        DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([employeeId, skillId])
+}
+
+model RecommendedTraining {
+  id               String   @id @default(uuid())
+  recommendationId String   @unique // e.g. "REC_9912"
+  employeeId       String
+  employee         Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skillId          String
+  skill            Skill    @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
+  courseName       String   // e.g. "Cloud Native Kubernetes Architecture"
+  status           String   @default("Assigned") // "Assigned" | "In Progress" | "Completed" | "Waived"
+
+  assignedAt       DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
 
 

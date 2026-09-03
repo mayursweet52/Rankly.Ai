@@ -31,6 +31,8 @@ const analyticsRoutes = require('./src/routes/analyticsRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
 const healthRoutes = require('./src/routes/healthRoutes');
 const employeeRoutes = require('./src/routes/employeeRoutes');
+const aiAgentRoutes = require('./src/routes/aiAgentRoutes');
+const skillMarketplaceRoutes = require('./src/routes/skillMarketplaceRoutes');
 const { startHealthChecker } = require('./src/services/healthChecker');
 
 const app = express();
@@ -119,6 +121,8 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/agents', aiAgentRoutes);
+app.use('/api/skills', skillMarketplaceRoutes);
 app.use('/health', healthRoutes);
 
 // -----------------------------------------------------------------------------

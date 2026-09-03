@@ -33,15 +33,21 @@ function formatEmployeeToJson(emp) {
     contact_number: emp.phoneNumber || '',
     status: emp.employmentStatus || 'active',
     home_address: emp.currentAddress || '',
-    emergency_contact: emp.emergencyContactPhone || emp.emergencyContactName || '',
+    emergency_contact: {
+      name: emp.emergencyContactName || '',
+      relation: emp.emergencyContactRelation || '',
+      phone: emp.emergencyContactPhone || ''
+    },
     reporting_manager_id: emp.reportingManager ? emp.reportingManager.employeeCode : (emp.reportingManagerId || ''),
     bank_account_details: {
       account_number: emp.bankDetails ? emp.bankDetails.accountNumber : '',
-      ifsc_code: emp.bankDetails ? emp.bankDetails.ifscCode : ''
+      ifsc_code: emp.bankDetails ? emp.bankDetails.ifscCode : '',
+      bank_name: emp.bankDetails?.bankName || 'HDFC Bank'
     },
     salary_info: {
-      base_pay: emp.salary ? emp.salary.basicSalary : 0,
-      pay_rate: emp.salary ? emp.salary.paymentFrequency : 'monthly'
+      base_pay: emp.salary ? (emp.salary.paymentFrequency === 'Annual' || emp.salary.paymentFrequency === 'annual' ? emp.salary.annualCtc : emp.salary.basicSalary) : 0,
+      currency: emp.salary?.currency || 'INR',
+      pay_rate: emp.salary ? (emp.salary.paymentFrequency === 'monthly' ? 'Monthly' : 'Annual') : 'Annual'
     },
     access_control_level: accessControlLevel
   };
@@ -67,13 +73,23 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
 
   // 1. Resolve or Create Department
   const deptName = (payload.department || 'General').trim();
-  const deptCode = deptName.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8) || 'GEN';
+  const baseCode = deptName.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6) || 'GEN';
   let dept = await prisma.department.findFirst({
-    where: { organizationId: orgId, name: deptName }
+    where: {
+      organizationId: orgId,
+      OR: [{ name: deptName }, { code: baseCode }]
+    }
   });
   if (!dept) {
+    let finalCode = baseCode;
+    const existingWithCode = await prisma.department.findFirst({
+      where: { organizationId: orgId, code: finalCode }
+    });
+    if (existingWithCode) {
+      finalCode = `${baseCode}_${Math.floor(10 + Math.random() * 90)}`;
+    }
     dept = await prisma.department.create({
-      data: { name: deptName, code: deptCode, organizationId: orgId }
+      data: { name: deptName, code: finalCode, organizationId: orgId }
     });
   }
 
@@ -95,6 +111,18 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
   // 4. Parse Joining Date
   const joiningDate = payload.joining_date ? new Date(payload.joining_date) : new Date();
 
+  // 4. Parse Emergency Contact
+  let emergencyContactName = null;
+  let emergencyContactRelation = null;
+  let emergencyContactPhone = null;
+  if (typeof payload.emergency_contact === 'object' && payload.emergency_contact !== null) {
+    emergencyContactName = payload.emergency_contact.name || null;
+    emergencyContactRelation = payload.emergency_contact.relation || null;
+    emergencyContactPhone = payload.emergency_contact.phone || null;
+  } else if (typeof payload.emergency_contact === 'string') {
+    emergencyContactPhone = payload.emergency_contact;
+  }
+
   // 5. Upsert Employee Core Record
   const empCode = (payload.employee_id || `EMP-${Date.now()}`).trim();
   const employee = await prisma.employee.upsert({
@@ -107,8 +135,10 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
       departmentId: dept.id,
       phoneNumber: payload.contact_number || null,
       employmentStatus: payload.status || 'active',
-      currentAddress: payload.home_address || null,
-      emergencyContactPhone: payload.emergency_contact || null,
+      currentAddress: typeof payload.home_address === 'object' ? JSON.stringify(payload.home_address) : (payload.home_address || null),
+      emergencyContactName,
+      emergencyContactRelation,
+      emergencyContactPhone,
       reportingManagerId,
       dateOfJoining: joiningDate
     },
@@ -122,8 +152,10 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
       departmentId: dept.id,
       phoneNumber: payload.contact_number || null,
       employmentStatus: payload.status || 'active',
-      currentAddress: payload.home_address || null,
-      emergencyContactPhone: payload.emergency_contact || null,
+      currentAddress: typeof payload.home_address === 'object' ? JSON.stringify(payload.home_address) : (payload.home_address || null),
+      emergencyContactName,
+      emergencyContactRelation,
+      emergencyContactPhone,
       reportingManagerId,
       dateOfJoining: joiningDate
     }
@@ -131,20 +163,21 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
 
   // 6. Upsert Bank Account Details
   if (payload.bank_account_details && payload.bank_account_details.account_number) {
+    const bankName = payload.bank_account_details.bank_name || 'HDFC Bank';
     await prisma.employeeBankDetails.upsert({
       where: { employeeId: employee.id },
       update: {
         accountNumber: payload.bank_account_details.account_number,
         ifscCode: payload.bank_account_details.ifsc_code || 'N/A',
         accountHolderName: rawName,
-        bankName: 'Primary Bank'
+        bankName
       },
       create: {
         employeeId: employee.id,
         accountNumber: payload.bank_account_details.account_number,
         ifscCode: payload.bank_account_details.ifsc_code || 'N/A',
         accountHolderName: rawName,
-        bankName: 'Primary Bank'
+        bankName
       }
     });
   }
@@ -152,25 +185,28 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
   // 7. Upsert Salary Info
   if (payload.salary_info && typeof payload.salary_info.base_pay === 'number') {
     const basePay = payload.salary_info.base_pay;
-    const frequency = payload.salary_info.pay_rate || 'monthly';
-    const annualCtc = frequency === 'monthly' ? basePay * 12 : basePay;
+    const frequency = (payload.salary_info.pay_rate || 'Annual').toLowerCase() === 'annual' ? 'Annual' : 'monthly';
+    const currency = payload.salary_info.currency || 'INR';
+    const annualCtc = frequency === 'Annual' ? basePay : basePay * 12;
 
     await prisma.employeeSalary.upsert({
       where: { employeeId: employee.id },
       update: {
         annualCtc,
-        basicSalary: basePay,
-        hra: basePay * 0.4,
-        netMonthlyPay: basePay * 0.9,
-        paymentFrequency: frequency
+        basicSalary: frequency === 'Annual' ? Math.round(basePay / 12) : basePay,
+        hra: Math.round((basePay / 12) * 0.4),
+        netMonthlyPay: Math.round((basePay / 12) * 0.9),
+        paymentFrequency: frequency,
+        currency
       },
       create: {
         employeeId: employee.id,
         annualCtc,
-        basicSalary: basePay,
-        hra: basePay * 0.4,
-        netMonthlyPay: basePay * 0.9,
-        paymentFrequency: frequency
+        basicSalary: frequency === 'Annual' ? Math.round(basePay / 12) : basePay,
+        hra: Math.round((basePay / 12) * 0.4),
+        netMonthlyPay: Math.round((basePay / 12) * 0.9),
+        paymentFrequency: frequency,
+        currency
       }
     });
   }
