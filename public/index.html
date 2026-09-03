@@ -9372,6 +9372,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
+                        if (data.requiresEmailVerification) {
+                            if (submitBtn) setButtonLoading(submitBtn, false);
+                            window.showEmailVerificationNotice(data.email || email);
+                            return;
+                        }
                         currentUser = data.user;
                         sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                         localStorage.setItem('rankly_session', JSON.stringify(currentUser));
@@ -9382,15 +9387,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         if (submitBtn) setButtonLoading(submitBtn, false);
                     }
                 };
-
-
-                const orgForm = document.getElementById('orgForm');
-                if (orgForm) {
-                    orgForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        handleOrgRegistration();
-                    });
-                }
 
                 document.querySelectorAll('.login-tab').forEach(tab => {
                     tab.addEventListener('click', function() {

@@ -227,27 +227,37 @@ async function register(req, res) {
     }
 
     // Create User in SQLite Database via Prisma
-    const newUser = await prisma.user.create({
-      data: {
-        email: normalizedEmail,
-        password: hashedPassword,
-        firstName: effectiveFirstName,
-        lastName: effectiveLastName || null,
-        username: candidateUsername,
-        phone: safePhone,
-        accountType: effectiveAccountType,
-        role: assignedOrgId ? assignedRole : (orgName ? 'admin' : (effectiveAccountType === 'employee' ? assignedRole : 'normal_user')),
-        profession: profession || targetProfession || (isEmp ? assignedRole : null),
-        linkedInUrl: linkedInUrl || null,
-        age: parsedAge,
-        dob: parsedDob,
-        gender: gender || null,
-        status: 'active',
-        isEmailVerified: false, // Set false until Gmail link verification is clicked
-        isPhoneVerified: true,
-        organizationId: assignedOrgId
+    let newUser;
+    try {
+      newUser = await prisma.user.create({
+        data: {
+          email: normalizedEmail,
+          password: hashedPassword,
+          firstName: effectiveFirstName,
+          lastName: effectiveLastName || null,
+          username: candidateUsername,
+          phone: safePhone,
+          accountType: effectiveAccountType,
+          role: assignedOrgId ? assignedRole : (orgName ? 'admin' : (effectiveAccountType === 'employee' ? assignedRole : 'normal_user')),
+          profession: profession || targetProfession || (isEmp ? assignedRole : null),
+          linkedInUrl: linkedInUrl || null,
+          age: parsedAge,
+          dob: parsedDob,
+          gender: gender || null,
+          status: 'active',
+          isEmailVerified: false, // Set false until Gmail link verification is clicked
+          isPhoneVerified: true,
+          organizationId: assignedOrgId
+        }
+      });
+    } catch (createErr) {
+      if (createErr.code === 'P2002' || (createErr.message && createErr.message.includes('Unique constraint'))) {
+        newUser = await prisma.user.findUnique({ where: { email: normalizedEmail } });
+        if (!newUser) throw createErr;
+      } else {
+        throw createErr;
       }
-    });
+    }
 
     // If Enterprise Admin provided a new organization name
     if (effectiveOrgName && !assignedOrgId) {
