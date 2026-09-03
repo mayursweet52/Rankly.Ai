@@ -550,19 +550,19 @@ async function sendOtp(req, res) {
       }
     }
 
-    // Cooldown check (5s) to prevent double clicks while allowing smooth Resend OTP
+    // Cooldown check (2s) to prevent double clicks while allowing smooth Resend OTP
     const recentOtp = await prisma.oTP.findFirst({
       where: {
         email: recipientEmail,
-        createdAt: { gte: new Date(Date.now() - 5 * 1000) }
+        createdAt: { gte: new Date(Date.now() - 2 * 1000) }
       },
       orderBy: { createdAt: 'desc' }
     });
     if (recentOtp) {
       return res.status(429).json({
         success: false,
-        error: 'Please wait 5 seconds before requesting another code.',
-        message: 'Please wait 5 seconds before requesting another code.'
+        error: 'Please wait 2 seconds before requesting another code.',
+        message: 'Please wait 2 seconds before requesting another code.'
       });
     }
 
@@ -1280,7 +1280,7 @@ async function resendOtp(req, res) {
     });
 
     // 3. Dispatch Email with user's resend subject
-    const subject = '🔄 Resend: Your rankly.ai OTP Code';
+    const subject = `Your rankly.ai OTP is: ${newOtp}`;
     await sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject);
 
     console.log(`\n======================================================`);

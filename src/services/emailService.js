@@ -144,7 +144,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
     const isReset = type === 'password_reset';
     const subject = customSubject || (isReset 
         ? `🔐 Your rankly.ai Password Reset Code: ${otp}` 
-        : `🔐 Your rankly.ai Verification Code`);
+        : `Your rankly.ai OTP is: ${otp}`);
 
     const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
