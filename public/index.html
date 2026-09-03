@@ -8757,31 +8757,85 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 // ─── CANDIDATE REGISTRATION OTP HANDLERS ───
-                window.handleSendCandidateOtp = function() {
+                window.handleSendCandidateOtp = async function() {
+                    const emailInput = document.getElementById('slideRegEmail');
+                    const email = emailInput?.value.trim();
+                    if (!email) {
+                        showToast('Please enter your email address first', 'error');
+                        emailInput?.focus();
+                        return;
+                    }
+                    if (!email.includes('@') || !email.includes('.')) {
+                        showToast('Please enter a valid email address', 'error');
+                        return;
+                    }
+
+                    const sendBtn = document.getElementById('sendCandOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.disabled = true;
+                        sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                    }
+
+                    const otpContainer = document.getElementById('candOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.classList.remove('hidden');
+                    }
+
+                    try {
+                        const res = await fetch('/api/auth/send-otp', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            showToast('✅ 6-digit OTP sent to ' + email + '! Please check your Gmail.', 'success');
+                            if (sendBtn) {
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                                sendBtn.disabled = false;
+                            }
+                            const otpInput = document.getElementById('slideRegOtpInput');
+                            if (otpInput) {
+                                otpInput.value = '';
+                                otpInput.focus();
+                            }
+                        } else {
+                            showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
+                            if (sendBtn) {
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                                sendBtn.disabled = false;
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Send OTP error:', err);
+                        showToast('Error connecting to OTP server. Please retry.', 'error');
+                        if (sendBtn) {
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                            sendBtn.disabled = false;
+                        }
+                    }
+                };
+
+                window.handleVerifyCandidateOtp = async function() {
+                    const otpInput = document.getElementById('slideRegOtpInput');
+                    const otp = otpInput?.value.trim();
                     const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!email) {
                         showToast('Please enter your email address first', 'error');
                         return;
                     }
-                    const otpContainer = document.getElementById('candOtpContainer');
-                    if (otpContainer) {
-                        otpContainer.classList.remove('hidden');
-                    }
-                    const sendBtn = document.getElementById('sendCandOtpBtn');
-                    if (sendBtn) {
-                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                    }
-                    document.getElementById('slideRegOtpInput')?.focus();
-                    showToast('6-digit security code sent to ' + email + ' ', 'info');
-                };
-
-                window.handleVerifyCandidateOtp = async function() {
-                    const otp = document.getElementById('slideRegOtpInput')?.value.trim();
-                    const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!otp || otp.length < 4) {
                         showToast('Please enter the 6-digit OTP received in email', 'error');
+                        otpInput?.focus();
                         return;
                     }
+
+                    const verifyBtn = document.querySelector('button[onclick="handleVerifyCandidateOtp()"]');
+                    if (verifyBtn) {
+                        verifyBtn.disabled = true;
+                        verifyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+                    }
+
                     try {
                         const res = await fetch('/api/auth/verify-otp', {
                             method: 'POST',
@@ -8789,17 +8843,29 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             body: JSON.stringify({ email, otp })
                         });
                         const data = await res.json();
-                        if (data.success) {
+                        if (res.ok && data.success) {
                             const otpContainer = document.getElementById('candOtpContainer');
                             if (otpContainer) {
-                                otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> OTP Verified Successfully! Now complete details & click Create Account.</div>';
+                                otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-2"><i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i> OTP Verified Successfully! Now complete profile & click Create Account.</div>';
                             }
-                            showToast('OTP verified successfully! Please complete profile details.', 'success');
+                            showToast('✅ OTP Verified Successfully! Please complete profile details.', 'success');
                         } else {
-                            showToast(data.message || 'Invalid or expired OTP', 'error');
+                            showToast(data.message || data.error || 'Invalid or expired OTP. Please check or click Resend OTP.', 'error');
+                            if (verifyBtn) {
+                                verifyBtn.disabled = false;
+                                verifyBtn.innerText = 'Verify OTP';
+                            }
+                            if (otpInput) {
+                                otpInput.focus();
+                                otpInput.select();
+                            }
                         }
                     } catch (e) {
                         showToast('Verification failed: ' + e.message, 'error');
+                        if (verifyBtn) {
+                            verifyBtn.disabled = false;
+                            verifyBtn.innerText = 'Verify OTP';
+                        }
                     }
                 };
 
@@ -9104,30 +9170,93 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
-                window.handleSendOrgOtp = function() {
+                window.handleSendOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     if (!email) { showToast('Please enter corporate email', 'error'); return; }
+                    const sendBtn = document.getElementById('sendOrgOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.disabled = true;
+                        sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                    }
                     const otpContainer = document.getElementById('orgOtpContainer');
                     if (otpContainer) {
                         otpContainer.classList.remove('hidden');
                     }
-                    const sendBtn = document.getElementById('sendOrgOtpBtn');
-                    if (sendBtn) {
-                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+
+                    try {
+                        const res = await fetch('/api/auth/send-otp', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, type: 'corporate_verification' })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            showToast('✅ Corporate OTP sent to ' + email + '! Check your Gmail.', 'success');
+                            if (sendBtn) {
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                                sendBtn.disabled = false;
+                            }
+                            const otpInput = document.getElementById('orgOtpInput');
+                            if (otpInput) {
+                                otpInput.value = '';
+                                otpInput.focus();
+                            }
+                        } else {
+                            showToast(data.message || data.error || 'Failed to send corporate OTP', 'error');
+                            if (sendBtn) {
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                                sendBtn.disabled = false;
+                            }
+                        }
+                    } catch (err) {
+                        showToast('Network error while sending OTP', 'error');
+                        if (sendBtn) {
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                            sendBtn.disabled = false;
+                        }
                     }
-                    document.getElementById('orgOtpInput')?.focus();
-                    showToast('6-digit security OTP sent to ' + email + ' ', 'info');
                 };
 
-                window.handleVerifyOrgOtp = function() {
+                window.handleVerifyOrgOtp = async function() {
+                    const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     const otp = document.getElementById('orgOtpInput')?.value.trim();
+                    if (!email) { showToast('Please enter corporate email first', 'error'); return; }
                     if (!otp || otp.length < 4) { showToast('Please enter valid 6-digit OTP', 'error'); return; }
-                    const banner = document.getElementById('orgSecurityBanner');
-                    if (banner) {
-                        banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
-                        banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
+
+                    const verifyBtn = document.getElementById('verifyOrgOtpBtn');
+                    if (verifyBtn) {
+                        verifyBtn.disabled = true;
+                        verifyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
                     }
-                    showToast('Corporate Email Verified Successfully! ', 'success');
+
+                    try {
+                        const res = await fetch('/api/auth/verify-otp', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, otp })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            const banner = document.getElementById('orgSecurityBanner');
+                            if (banner) {
+                                banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
+                                banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
+                            }
+                            showToast('✅ Corporate Email Verified Successfully!', 'success');
+                        } else {
+                            showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
+                            if (verifyBtn) {
+                                verifyBtn.disabled = false;
+                                verifyBtn.innerText = 'Verify OTP';
+                            }
+                        }
+                    } catch (e) {
+                        showToast('Verification failed: ' + e.message, 'error');
+                        if (verifyBtn) {
+                            verifyBtn.disabled = false;
+                            verifyBtn.innerText = 'Verify OTP';
+                        }
+                    }
                 };
 
                 window.calculateOrgAge = function(dobString) {
