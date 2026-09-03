@@ -50,41 +50,6 @@ async function sendSystemEmail({ to, subject, html, text }) {
         console.warn('⚠️ [Direct SMTP Notice]:', smtpErr.message);
     }
 
-    // 2. Tier 2: Google Apps Script HTTPS Webhook (Port 443 HTTPS - Works on Railway and all Cloud hosts!)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
-    if (googleWebhookUrl) {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 6000);
-            const res = await fetch(googleWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                signal: controller.signal,
-                redirect: 'follow',
-                body: JSON.stringify({
-                    to: cleanRecipient,
-                    recipient: cleanRecipient,
-                    email: cleanRecipient,
-                    subject: subject,
-                    html: html,
-                    htmlBody: html,
-                    body: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
-                    text: text || (html ? html.replace(/<[^>]*>?/gm, '') : '')
-                })
-            });
-            clearTimeout(timeoutId);
-            const resText = await res.text();
-            let resData = null;
-            try { resData = JSON.parse(resText); } catch (e) {}
-
-            if ((resData && resData.success) || (res.ok && resText.includes('"success":true'))) {
-                console.log('✅ Email delivered via HTTPS Webhook (Port 443) to:', cleanRecipient);
-                return { success: true, method: 'google_webhook', message: 'Delivered via HTTPS Webhook' };
-            }
-        } catch (gErr) {
-            console.warn('[HTTPS Webhook Warning]:', gErr.message);
-        }
-    }
 
     // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
     const resendApiKey = (process.env.RESEND_API_KEY || '').trim();

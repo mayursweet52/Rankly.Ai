@@ -306,25 +306,7 @@ app.get('/api/test-email', async (req, res) => {
     }
   }
 
-  // Test 3: Google Webhook HTTPS Port 443
-  const gUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
-  try {
-    const gRes = await fetch(gUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        to: targetEmail,
-        recipient: targetEmail,
-        subject: `Webhook Probe to ${targetEmail}`,
-        html: '<p>Test probe</p>',
-        text: 'Test probe'
-      })
-    });
-    const gText = await gRes.text();
-    diag.googleWebhook = { status: gRes.status, body: gText };
-  } catch (gErr) {
-    diag.googleWebhook = { error: gErr.message };
-  }
+
 
   return res.json({ success: true, diagnostics: diag });
 });
