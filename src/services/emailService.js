@@ -42,7 +42,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
                 html: html
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 4000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 12000))
         ]);
         console.log("✅ E-mail Successfully Bhej Diya Gaya:", info?.response || info?.messageId || 'OK');
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };

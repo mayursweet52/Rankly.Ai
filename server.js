@@ -143,6 +143,7 @@ app.use('/health', healthRoutes);
 // -----------------------------------------------------------------------------
 app.use('/auth', authRoutes);
 app.use('/api/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
+app.use(['/verify-otp', '/api/verify-otp'], (req, res) => res.redirect(307, '/api/auth/verify-otp'));
 // 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Using NVIDIA Nemotron & Multi-Tier AI)
 const { Ollama } = require('ollama');
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434' });

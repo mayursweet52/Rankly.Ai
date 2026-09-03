@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const prisma = require('../config/database');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
 const { sendOTPEmail, sendOtpEmail } = require('../services/emailService');
@@ -528,7 +529,7 @@ async function sendOtp(req, res) {
     console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
     console.log(`======================================================\n`);
 
-    if (!emailSent) {
+    if (!emailSent && process.env.NODE_ENV === 'production') {
       return res.status(500).json({
         success: false,
         error: 'Failed to send OTP email. Please try again later.',
@@ -588,20 +589,61 @@ async function verifyOtp(req, res) {
       data: { isUsed: true }
     });
 
-    if (type === 'email_verification') {
-      await prisma.user.updateMany({
-        where: { email: recipientEmail },
+    // Check if user exists and mark verified
+    let user = await prisma.user.findUnique({
+      where: { email: recipientEmail }
+    });
+
+    if (user && type === 'email_verification') {
+      user = await prisma.user.update({
+        where: { id: user.id },
         data: { isEmailVerified: true }
       });
+    }
+
+    // Generate secure JWT Token (7-day validity)
+    const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+    const tokenPayload = {
+      id: user ? user.id : recipientEmail,
+      userId: user ? user.id : recipientEmail,
+      email: recipientEmail,
+      role: user ? user.role : 'authenticated',
+      verified: true
+    };
+    const token = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
+
+    // Establish active session
+    if (req.session) {
+      req.session.authenticated = true;
+      req.session.userEmail = recipientEmail;
+      req.session.jwtToken = token;
+      if (user) {
+        req.session.userId = user.id;
+        req.session.user = {
+          id: user.id,
+          email: user.email,
+          fname: user.fname,
+          lname: user.lname,
+          role: user.role
+        };
+      }
     }
 
     // Reset backoff counter on successful OTP verification
     resetAuthFailure(req, recipientEmail);
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       verified: true,
-      message: 'OTP verified successfully.'
+      message: 'OTP verified successfully.',
+      token,
+      user: user ? {
+        id: user.id,
+        email: user.email,
+        fname: user.fname,
+        lname: user.lname,
+        role: user.role
+      } : { email: recipientEmail, verified: true }
     });
   } catch (error) {
     recordAuthFailure(req);
