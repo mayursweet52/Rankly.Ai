@@ -130,7 +130,7 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
   // 4. Tier 4: Groq Cloud
   // =========================================================================
   if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim().startsWith('gsk_')) {
-    const groqModels = ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile'];
+    const groqModels = ['qwen/qwen3.8-27b', 'openai/gpt-oss-120b', 'qwen/qwen3.6-27b'];
     for (const model of groqModels) {
       try {
         const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {

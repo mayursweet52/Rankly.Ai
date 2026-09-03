@@ -143,7 +143,75 @@ app.use('/health', healthRoutes);
 // -----------------------------------------------------------------------------
 app.use('/auth', authRoutes);
 app.use('/api/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
-app.use('/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
+// 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Using NVIDIA Nemotron & Multi-Tier AI)
+const { Ollama } = require('ollama');
+const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434' });
+
+app.post('/api/ai/code-review', async (req, res) => {
+  try {
+    const { codeSnippet, userQuery } = req.body;
+
+    if (!codeSnippet && !userQuery) {
+      return res.status(400).json({ success: false, error: "Bhai, analyze karne ke liye kuch code ya query toh bhej!" });
+    }
+
+    const systemPrompt = `You are an elite Senior Principal Software Architect, Security Expert, and Bug Hunter. ;
+Your job is to deeply analyze the provided project code/snippet. 
+1. Point out any syntax errors, logic bugs, security vulnerabilities, or bad practices.
+2. Explain WHY the error is happening.
+3. Provide clean, optimized, production-ready corrected code.
+Be precise, technical, and direct.`;
+
+    const userPrompt = `Here is my project code / query to review:\n\n${codeSnippet || userQuery}`;
+
+    console.log("🤖 Nemotron analyzing code...");
+
+    let analysisText = null;
+    let modelUsed = 'nemotron (ollama)';
+
+    // 1. Try Local Ollama First
+    try {
+      const response = await Promise.race([
+        ollama.chat({
+          model: process.env.OLLAMA_MODEL || 'nemotron',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          options: { temperature: 0.2 }
+        }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Local Ollama timeout')), 4000))
+      ]);
+      if (response && response.message && response.message.content) {
+        analysisText = response.message.content;
+      }
+    } catch (ollamaErr) {
+      console.log("ℹ️ Local Ollama not active on port 11434, utilizing Rankly AI Multi-Tier Engine:", ollamaErr.message);
+    }
+
+    // 2. Fallback to Cloud AI Engine (Groq / Gemini / OpenRouter)
+    if (!analysisText) {
+      const { executeAiInference } = require('./src/services/aiService');
+      analysisText = await executeAiInference(userPrompt, false, systemPrompt);
+      modelUsed = 'nemotron-cloud-engine';
+    }
+
+    return res.json({ 
+      success: true, 
+      modelUsed,
+      analysis: analysisText 
+    });
+
+  } catch (error) {
+    console.error("❌ Nemotron AI Error:", error);
+    return res.status(500).json({ 
+      success: false, 
+      error: "Nemotron se connect nahi ho paya.",
+      details: error.message 
+    });
+  }
+});
+
 app.use('/api/ai/chat', chatRoutes);
 app.use('/api/ai', resumeRoutes);
 app.use('/api/resume', resumeRoutes);
