@@ -46,6 +46,7 @@ model User {
   feedbacks        Feedback[]
   createdReferrals ReferralCode[] @relation("CreatedReferrals")
   administeredOrgs Organization[] @relation("AdminOrgs")
+  employeeProfile  Employee?
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -65,6 +66,8 @@ model Organization {
   candidates  Candidate[]
   referrals   ReferralCode[]
   invitations TeamInvitation[]
+  departments Department[]
+  employees   Employee[]
 
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -222,4 +225,194 @@ model Feedback {
   message   String
   createdAt DateTime @default(now())
 }
+
+// ---------------------------------------------------------
+// Department Model
+// ---------------------------------------------------------
+model Department {
+  id             String       @id @default(uuid())
+  name           String       // e.g. "Engineering", "Human Resources", "Finance", "Product"
+  code           String       // e.g. "ENG", "HR", "FIN", "PROD"
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  employees      Employee[]
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([organizationId, code])
+}
+
+// ---------------------------------------------------------
+// Employee Model (Core Profile & Hierarchy)
+// ---------------------------------------------------------
+model Employee {
+  id                       String               @id @default(uuid())
+  employeeCode             String               @unique // e.g. "EMP-001"
+  userId                   String?              @unique
+  user                     User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId           String
+  organization             Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Basic Personal Information
+  firstName                String
+  lastName                 String?
+  personalEmail            String?
+  workEmail                String               @unique
+  phoneNumber              String?
+  dob                      DateTime?
+  gender                   String?              // "male" | "female" | "other" | "prefer_not_to_say"
+  maritalStatus            String?              // "single" | "married" | "other"
+  currentAddress           String?
+  permanentAddress         String?
+  emergencyContactName     String?
+  emergencyContactPhone    String?
+  emergencyContactRelation String?
+
+  // Role, Department & Employment Details
+  departmentId             String
+  department               Department           @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  designation              String               // e.g. "Lead Software Engineer"
+  employmentType           String               @default("full_time") // "full_time" | "part_time" | "contract" | "intern"
+  employmentStatus         String               @default("active")    // "active" | "probation" | "notice_period" | "terminated" | "on_leave"
+  dateOfJoining            DateTime
+  dateOfExit               DateTime?
+
+  // Reporting Hierarchy (Self-referencing relationship)
+  reportingManagerId       String?
+  reportingManager         Employee?            @relation("ManagementHierarchy", fields: [reportingManagerId], references: [id], onDelete: SetNull)
+  reportees                Employee[]           @relation("ManagementHierarchy")
+
+  // Financial & Compensation Relations
+  bankDetails              EmployeeBankDetails?
+  salary                   EmployeeSalary?
+  salaryRevisions          SalaryRevision[]
+
+  // Access Control Roles
+  accessRoles              EmployeeAccessRole[]
+
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+}
+
+// ---------------------------------------------------------
+// Employee Bank Details Model (Financials)
+// ---------------------------------------------------------
+model EmployeeBankDetails {
+  id                String    @id @default(uuid())
+  employeeId        String    @unique
+  employee          Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  accountHolderName String
+  bankName          String
+  accountNumber     String    // Stored with encryption or masking
+  ifscCode          String
+  branchName        String?
+  panNumber         String?
+  aadhaarNumber     String?
+
+  isVerified        Boolean   @default(false)
+  verifiedAt        DateTime?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// ---------------------------------------------------------
+// Employee Salary Model (Current Compensation Breakdown)
+// ---------------------------------------------------------
+model EmployeeSalary {
+  id               String    @id @default(uuid())
+  employeeId       String    @unique
+  employee         Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  annualCtc        Float     // Gross annual CTC
+  basicSalary      Float     // Base pay
+  hra              Float     // House Rent Allowance
+  specialAllowance Float     @default(0)
+  pfDeduction      Float     @default(0) // Provident Fund deduction
+  professionalTax  Float     @default(0) // PT
+  tds              Float     @default(0) // Tax deducted at source
+  netMonthlyPay    Float     // In-hand monthly salary
+
+  currency         String    @default("INR")
+  paymentFrequency String    @default("monthly") // "monthly" | "bi_weekly"
+  effectiveFrom    DateTime  @default(now())
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+// ---------------------------------------------------------
+// Salary Revision Audit Trail Model
+// ---------------------------------------------------------
+model SalaryRevision {
+  id             String    @id @default(uuid())
+  employeeId     String
+  employee       Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  previousCtc    Float
+  newCtc         Float
+  hikePercentage Float
+  reason         String?   // "annual_appraisal" | "promotion" | "market_correction" | "probation_confirmation"
+  effectiveDate  DateTime
+  approvedById   String?
+
+  createdAt      DateTime  @default(now())
+}
+
+// ---------------------------------------------------------
+// Access Control Models (Multi-Level RBAC)
+// ---------------------------------------------------------
+model AccessRole {
+  id          String               @id @default(uuid())
+  name        String               @unique // "employee", "team_lead", "dept_head", "hr_admin", "super_admin"
+  displayName String
+  level       Int                  @default(1) // Level 1 (lowest) to Level 5 (highest executive)
+  description String?
+
+  permissions RolePermission[]
+  employees   EmployeeAccessRole[]
+
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  code        String           @unique // e.g. "employee:read", "salary:write", "leaves:approve"
+  name        String
+  category    String           // "employee" | "salary" | "leaves" | "ats" | "system"
+  description String?
+
+  roles       RolePermission[]
+
+  createdAt   DateTime         @default(now())
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String
+  role         AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+}
+
+model EmployeeAccessRole {
+  id         String     @id @default(uuid())
+  employeeId String
+  employee   Employee   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  roleId     String
+  role       AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  assignedAt DateTime   @default(now())
+
+  @@unique([employeeId, roleId])
+}
+
 
