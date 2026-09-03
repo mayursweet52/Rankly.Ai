@@ -149,5 +149,6 @@ module.exports = {
   createOrUpdateEmployee,
   getEmployee,
   listEmployees,
+  getAllEmployees: listEmployees,
   deleteEmployee
 };
