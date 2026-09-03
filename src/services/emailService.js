@@ -44,10 +44,10 @@ async function sendSystemEmail({ to, subject, html, text }) {
             }),
             new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 4000))
         ]);
-        console.log('✅ Email delivered via Direct Gmail SMTP to:', cleanRecipient, 'MessageId:', info?.messageId);
+        console.log("✅ E-mail Successfully Bhej Diya Gaya:", info?.response || info?.messageId || 'OK');
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
     } catch (smtpErr) {
-        console.warn('⚠️ [Direct SMTP Notice]:', smtpErr.message);
+        console.error("❌ E-mail Bhejne Mein Error Aaya:", smtpErr);
     }
 
 

@@ -473,6 +473,7 @@ async function getMe(req, res) {
 async function sendOtp(req, res) {
   try {
     const { email, identifier, to, workEmail, corporateEmail, isEmployee, type = 'email_verification' } = req.body;
+    console.log("👉 OTP bhejne ki koshish is email par ho rahi hai:", email);
     const recipientEmail = (email || identifier || to || workEmail || corporateEmail || '').toLowerCase().trim();
 
     const isEmp = isEmployee === true || isEmployee === 'true' || type === 'corporate_email_verification';
@@ -531,10 +532,9 @@ async function sendOtp(req, res) {
       });
     }
 
-    return res.json({
+    return res.status(200).json({
       success: true,
-      message: 'OTP sent successfully',
-      details: `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
+      message: "OTP sent successfully!"
     });
   } catch (error) {
     console.error('Send OTP Error:', error);
