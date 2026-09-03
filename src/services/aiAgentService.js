@@ -154,13 +154,28 @@ async function dispatchAgentTurn(agentId, userMessage, targetRecipient = null) {
     const recipient = targetRecipient || 'aarav.sharma@antigravity.io';
     const subject = 'Welcome to Anti-Gravity Engineering';
 
+    let draftBody = `Dear Aarav,\n\nWelcome to Anti-Gravity Engineering! We are thrilled to have you lead Platform Architecture.\n\nBest regards,\nAnti-Gravity HR Team`;
+    try {
+      const { queryAI } = require('./aiService');
+      const aiGenerated = await queryAI(
+        `Draft a concise, professional corporate email based on: "${userMessage}". Output only the email body.`,
+        'You are an executive HR email drafting agent in Anti-Gravity Enterprise.',
+        false
+      );
+      if (aiGenerated && aiGenerated.trim()) {
+        draftBody = aiGenerated.trim();
+      }
+    } catch (e) {
+      // Use fallback template
+    }
+
     const draft = await prisma.agentEmailDraft.create({
       data: {
         draftId,
         agentId: agent.agentId,
         recipient,
         subject,
-        body: `Dear Aarav,\n\nWelcome to Anti-Gravity Engineering! We are thrilled to have you lead Platform Architecture.\n\nBest regards,\nAnti-Gravity HR Team`,
+        body: draftBody,
         status: 'pending_approval'
       }
     });
@@ -168,7 +183,14 @@ async function dispatchAgentTurn(agentId, userMessage, targetRecipient = null) {
     emailDraftCreated = draft;
     assistantResponse = 'Email draft generated and added to staging queue.';
   } else {
-    assistantResponse = `Autonomous execution completed by ${agent.name} (${agent.modelType}).`;
+    try {
+      const { queryAI } = require('./aiService');
+      const systemPrompt = `You are ${agent.name}, an autonomous enterprise AI agent in Anti-Gravity Platform (${agent.modelType}).`;
+      const aiReply = await queryAI(userMessage, systemPrompt, false);
+      assistantResponse = aiReply || `Autonomous execution completed by ${agent.name} (${agent.modelType}).`;
+    } catch (e) {
+      assistantResponse = `Autonomous execution completed by ${agent.name} (${agent.modelType}).`;
+    }
   }
 
   // 3. Record Assistant Response
