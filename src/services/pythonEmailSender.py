@@ -1,0 +1,47 @@
+import sys
+import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email():
+    try:
+        raw_input = sys.stdin.read()
+        if not raw_input:
+            print(json.dumps({"success": False, "error": "No input provided"}))
+            sys.exit(1)
+
+        data = json.loads(raw_input)
+        to_email = data.get("to")
+        subject = data.get("subject", "Rankly.ai Verification Code")
+        html_content = data.get("html", "")
+        text_content = data.get("text", "")
+
+        user = data.get("user", "rankly.ai.com@gmail.com")
+        password = data.get("pass", "nkfbubodfvjtgkju").strip().replace(" ", "")
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = f"Rankly.ai <{user}>"
+        msg["To"] = to_email
+
+        if text_content:
+            msg.attach(MIMEText(text_content, "plain"))
+        if html_content:
+            msg.attach(MIMEText(html_content, "html"))
+        elif not text_content:
+            msg.attach(MIMEText(subject, "plain"))
+
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=12)
+        server.login(user, password)
+        server.sendmail(user, [to_email], msg.as_string())
+        server.quit()
+
+        print(json.dumps({"success": True, "message": f"Email delivered cleanly to {to_email}"}))
+        sys.exit(0)
+    except Exception as e:
+        print(json.dumps({"success": False, "error": str(e)}))
+        sys.exit(1)
+
+if __name__ == "__main__":
+    send_email()
