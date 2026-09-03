@@ -51,9 +51,15 @@ router.post('/employees', async (req, res) => {
 router.get('/employees', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM employees ORDER BY employee_id ASC');
-    res.json(result.rows);
+    const employees = result.rows || [];
+    res.json({
+      success: true,
+      employees,
+      data: employees,
+      count: employees.length
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message || err.toString() });
+    res.status(500).json({ success: false, error: err.message || err.toString() });
   }
 });
 
