@@ -1,1 +1,2 @@
-// Re-export PostgreSQL pool adapter for conveniencemodule.exports = require('./pgDatabase');
+// Re-export PostgreSQL pool adapter for convenience
+module.exports = require('./pgDatabase');
