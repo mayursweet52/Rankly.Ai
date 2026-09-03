@@ -23,7 +23,8 @@ const registerSchema = {
   orgName: { type: 'string', max: 120 },
   organizationName: { type: 'string', max: 120 },
   company: { type: 'string', max: 120 },
-  referralCode: { type: 'string', min: 4, max: 30 }
+  referralCode: { type: 'string', min: 4, max: 30 },
+  accessLevel: { type: 'string', max: 50 }
 };
 
 const loginSchema = {
