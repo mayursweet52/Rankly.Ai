@@ -136,63 +136,54 @@ async function sendSystemEmail({ to, subject, html, text }) {
 }
 
 /**
- * Send OTP Verification Email with Professional HTML Template
+ * Send OTP Verification Email with Professional Branded & Promotional Template
  */
 async function sendOTPEmail(to, otp, type = 'email_verification') {
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = isReset ? `Rankly.ai: ${otp} is your password reset code` : `Rankly.ai: ${otp} is your verification code`;
+    const subject = isReset 
+        ? `🔐 Your rankly.ai Password Reset Code: ${otp}` 
+        : `🔐 Your rankly.ai Verification Code`;
 
     const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Verification Code</title>
-    </head>
-    <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f6f9fc; color: #333333;">
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; border: 1px solid #e6ebf1; padding: 32px;">
-            <tr>
-                <td style="text-align: left; padding-bottom: 20px;">
-                    <span style="font-size: 20px; font-weight: 700; color: #111827; letter-spacing: -0.5px;">Rankly.ai</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 16px; font-size: 15px; line-height: 24px; color: #374151;">
-                    Hello,
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 24px; font-size: 15px; line-height: 24px; color: #374151;">
-                    ${isReset ? 'Use the following one-time code to reset your Rankly.ai password:' : 'Use the following one-time code to verify your email address on Rankly.ai:'}
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 24px;">
-                    <div style="background-color: #f3f4f6; border-radius: 6px; padding: 16px; text-align: center; font-size: 32px; font-weight: 700; letter-spacing: 6px; color: #111827; font-family: monospace;">
-                        ${otp}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 24px; font-size: 13px; line-height: 20px; color: #6b7280;">
-                    This code is valid for <strong>10 minutes</strong>. If you did not request this verification code, please disregard this email.
-                </td>
-            </tr>
-            <tr>
-                <td style="border-top: 1px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #9ca3af; line-height: 18px;">
-                    Rankly.ai Security Team<br/>
-                    Automated security notification — do not reply directly.
-                </td>
-            </tr>
-        </table>
-    </body>
-    </html>
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        
+        <!-- Brand Header & Mini Promo -->
+        <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+          <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
+          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">🚀 Supercharge Your Workflow with Local AI & Automated Intelligence</p>
+        </div>
+        
+        <!-- OTP Content -->
+        <p style="font-size: 16px;">Hello,</p>
+        <p style="font-size: 16px;">${isReset ? 'Use the secure One-Time Password (OTP) below to reset your <b>rankly.ai</b> password:' : 'Use the secure One-Time Password (OTP) below to access your <b>rankly.ai</b> dashboard:'}</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #4f46e5; background: #e0e7ff; padding: 12px 24px; border-radius: 6px; display: inline-block;">
+            ${otp}
+          </span>
+        </div>
+        
+        <p style="font-size: 14px; color: #555;">This code is valid for 10 minutes. Never share your OTP with anyone.</p>
+        
+        <!-- Promotional Banner / Ad Section -->
+        <div style="margin-top: 35px; padding: 16px; background: #f8fafc; border-left: 4px solid #4f46e5; border-radius: 4px;">
+          <p style="font-size: 13px; color: #1e293b; margin: 0 0 6px; font-weight: bold;">💡 What's next on rankly.ai?</p>
+          <p style="font-size: 12px; color: #475569; margin: 0; line-height: 1.5;">
+            Explore advanced AI code debugging, real-time error hunting with local models, and seamless team management right from your dashboard.
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
+          &copy; 2026 rankly.ai. Built for next-gen developers.
+        </div>
+      </div>
+    </div>
     `;
 
-    const text = `Rankly.ai Verification Code\n\nHello,\n\nYour one-time verification code is: ${otp}\n\nThis code is valid for 10 minutes.\nIf you did not request this code, you can safely ignore this email.\n\nRankly.ai Security Team`;
+    const text = `rankly.ai Verification Code\n\nHello,\n\nYour one-time verification code is: ${otp}\n\nThis code is valid for 10 minutes. Never share your OTP with anyone.\n\nWhat's next on rankly.ai?\nExplore advanced AI code debugging, real-time error hunting with local models, and seamless team management right from your dashboard.\n\n© 2026 rankly.ai. Built for next-gen developers.`;
 
     const res = await sendSystemEmail({
         to: cleanRecipient,

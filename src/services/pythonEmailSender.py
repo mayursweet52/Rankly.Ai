@@ -6,6 +6,13 @@ from email.mime.multipart import MIMEMultipart
 
 def send_email():
     try:
+        # Force UTF-8 encoding for standard I/O on Windows
+        try:
+            sys.stdin.reconfigure(encoding='utf-8')
+            sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
+
         raw_input = sys.stdin.read()
         if not raw_input:
             print(json.dumps({"success": False, "error": "No input provided"}))
@@ -26,11 +33,11 @@ def send_email():
         msg["To"] = to_email
 
         if text_content:
-            msg.attach(MIMEText(text_content, "plain"))
+            msg.attach(MIMEText(text_content, "plain", "utf-8"))
         if html_content:
-            msg.attach(MIMEText(html_content, "html"))
+            msg.attach(MIMEText(html_content, "html", "utf-8"))
         elif not text_content:
-            msg.attach(MIMEText(subject, "plain"))
+            msg.attach(MIMEText(subject, "plain", "utf-8"))
 
         server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=12)
         server.login(user, password)
