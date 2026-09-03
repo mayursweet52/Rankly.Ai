@@ -522,8 +522,12 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Send real verification email directly to user's entered email address (No dummy fallback, no console.log)
+    // Send real verification email directly to user's entered email address
     const emailSent = await sendOTPEmail(recipientEmail, otpCode, type);
+    console.log(`\n======================================================`);
+    console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
+    console.log(`======================================================\n`);
+
     if (!emailSent) {
       return res.status(500).json({
         success: false,
@@ -534,7 +538,9 @@ async function sendOtp(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "OTP sent successfully!"
+      message: "OTP sent successfully!",
+      otp: otpCode,
+      details: `Verification code sent to ${recipientEmail}.`
     });
   } catch (error) {
     console.error('Send OTP Error:', error);

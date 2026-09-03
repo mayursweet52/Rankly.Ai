@@ -6765,8 +6765,8 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    if (otpInput && data.otp) otpInput.value = data.otp;
+                    showToast(data.otp ? `🔑 OTP Code: ${data.otp} (Sent to ${value})` : `Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
