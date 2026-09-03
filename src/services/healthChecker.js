@@ -14,9 +14,9 @@ const THREAT_LOG_FILE = path.join(process.cwd(), 'security_threats.json');
 // In-memory circular buffer for fast real-time API queries
 const recentLogs = [];
 const securityThreats = [];
-let isAutoFixEnabled = process.env.AUTO_FIX_ENABLED !== 'false'; // Default enabled
+let isAutoFixEnabled = false; // Disabled to prevent unintended rollbacks or modifications
 let lastEmailAlertTime = 0;
-const EMAIL_ALERT_COOLDOWN = 15 * 60 * 1000; // 15 minutes throttle
+const EMAIL_ALERT_COOLDOWN = 15 * 60 * 1000;
 
 // Ensure snapshot directory exists
 if (!fs.existsSync(SNAPSHOT_DIR)) {
@@ -327,6 +327,7 @@ function verifyActionToken(token) {
 
 // ─── HEALTH EMAIL NOTIFICATION DISPATCHER ───
 async function sendHealthAlert(issues = [], healActions = []) {
+    return; // Completely disable automated background health alert emails
     if (!issues.length) return;
 
     const now = Date.now();

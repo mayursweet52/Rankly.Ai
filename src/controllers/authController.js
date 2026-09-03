@@ -508,6 +508,16 @@ async function getMe(req, res) {
       theme: 'light'
     };
 
+    if (!user.isEmailVerified) {
+      return res.status(403).json({
+        success: false,
+        requiresEmailVerification: true,
+        user: responseUser,
+        error: 'Email is not verified. Please verify your email via the link sent to your Gmail inbox.',
+        message: 'Email is not verified. Please verify your email via the link sent to your Gmail inbox.'
+      });
+    }
+
     return res.json({
       success: true,
       user: responseUser
