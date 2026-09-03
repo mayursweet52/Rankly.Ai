@@ -4412,7 +4412,7 @@
                                             <div id="candOtpContainer" class="hidden mt-2 p-2.5 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800/60">
                                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Enter 6-Digit OTP</label>
                                                 <div class="flex gap-2">
-                                                    <input type="text" id="slideRegOtpInput" name="security-one-time-code" autocomplete="one-time-code" data-lpignore="true" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter OTP" value="" />
+                                                    <input type="text" id="slideRegOtpInput" name="candidate_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter 6-digit OTP" value="" />
                                                     <button type="button" onclick="handleVerifyCandidateOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
                                                         Verify OTP
                                                     </button>
@@ -4824,7 +4824,7 @@
                                         <div id="orgOtpContainer" class="hidden mt-2 pt-2 border-t border-[var(--border-color)]">
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
                                             <div class="flex gap-2 mb-2">
-                                                <input id="orgOtpInput" name="org-security-one-time-code" autocomplete="one-time-code" data-lpignore="true" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter OTP" type="text" value="" />
+                                                <input id="orgOtpInput" name="org_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter 6-digit OTP" type="text" value="" />
                                                 <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
                                                     Verify OTP
                                                 </button>
@@ -5083,7 +5083,7 @@
                     </div>
                     <div id="emailOtpRow" style="display:none; margin-top:8px;">
                         <div class="otp-row">
-                            <input type="text" id="signupEmailOtp" class="form-input" placeholder="Enter 6-digit OTP from Gmail" maxlength="6" />
+                            <input type="text" id="signupEmailOtp" name="signup_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="form-input" placeholder="Enter 6-digit OTP from Gmail" maxlength="6" value="" />
                             <button type="button" id="emailVerifyBtn" onclick="verifyOTP('email')" class="btn-primary" style="padding:8px 16px; font-weight: 600;">Verify</button>
                         </div>
                     </div>
@@ -5185,7 +5185,7 @@
                     </div>
                     <div id="empEmailOtpRow" style="display:none; margin-top:8px;">
                         <div class="otp-row">
-                            <input type="text" id="empEmailOtp" class="form-input bg-white" placeholder="Enter 6-digit OTP from email" maxlength="6" />
+                            <input type="text" id="empEmailOtp" name="emp_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="form-input bg-white" placeholder="Enter 6-digit OTP from email" maxlength="6" value="" />
                             <button type="button" id="empEmailVerifyBtn" onclick="verifyEmpOTP('email')" class="btn-primary" style="padding:8px 16px; font-weight: 600;">Verify</button>
                         </div>
                     </div>
