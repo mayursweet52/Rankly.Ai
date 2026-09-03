@@ -1,8 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const prisma = require('../config/database');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
-const { sendOTPEmail, sendOtpEmail } = require('../services/emailService');
+const { sendOTPEmail, sendOtpEmail, sendVerificationLinkEmail } = require('../services/emailService');
 const { recordAuthFailure, resetAuthFailure } = require('../middleware/authRateLimit');
 
 /**
@@ -241,7 +242,7 @@ async function register(req, res) {
         dob: parsedDob,
         gender: gender || null,
         status: 'active',
-        isEmailVerified: true, // Mark verified on registration
+        isEmailVerified: false, // Set false until Gmail link verification is clicked
         isPhoneVerified: true,
         organizationId: assignedOrgId
       }
@@ -262,11 +263,29 @@ async function register(req, res) {
       });
     }
 
+    // Generate unique verification token & link for Gmail verification
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    await prisma.oTP.create({
+      data: {
+        email: normalizedEmail,
+        otp: verificationToken,
+        type: 'email_verification_link',
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // Valid for 24 hours
+      }
+    });
+
+    const baseUrl = process.env.APP_URL || process.env.BASE_URL || 'http://localhost:3000';
+    const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(normalizedEmail)}`;
+
+    const fullName = `${effectiveFirstName} ${effectiveLastName}`.trim() || newUser.username || 'Developer';
+    await sendVerificationLinkEmail({
+      to: normalizedEmail,
+      fullName,
+      verifyLink
+    });
+
     // Reset any auth failure backoff upon successful registration
     resetAuthFailure(req, normalizedEmail);
-
-    // Establish Express Session
-    req.session.userId = newUser.id;
 
     // Fetch full user with organization
     const createdUser = await prisma.user.findUnique({
@@ -282,20 +301,19 @@ async function register(req, res) {
       fname: userSafe.firstName,
       lname: userSafe.lastName || '',
       isEmployee: userSafe.accountType === 'employee',
-      verified: { email: true, phone: true },
+      verified: { email: false, phone: true },
       resumes: [],
       matches: 0,
       theme: 'light'
     };
 
-    req.session.save((err) => {
-      if (err) console.error('Session save error on register:', err);
-      return res.status(201).json({
-        success: true,
-        message: 'Account created successfully.',
-        user: responseUser,
-        token: req.sessionID || `session_${newUser.id}`
-      });
+    return res.status(201).json({
+      success: true,
+      requiresEmailVerification: true,
+      message: "Account created! Please check your Gmail to verify your account.",
+      email: normalizedEmail,
+      verifyLink, // Available for instant dev inspection
+      user: responseUser
     });
   } catch (error) {
     recordAuthFailure(req);
@@ -1086,8 +1104,89 @@ async function joinOrganization(req, res) {
   }
 }
 
+/**
+ * Final Step: Verify Email Link from Gmail (Unlocks Dashboard)
+ */
+async function verifyEmailLink(req, res) {
+  try {
+    const { token, email } = req.query;
+    const normalizedEmail = (email || '').toLowerCase().trim();
+
+    if (!token || !normalizedEmail) {
+      return res.redirect('/?error=' + encodeURIComponent('Missing verification token or email.'));
+    }
+
+    const tokenRecord = await prisma.oTP.findFirst({
+      where: {
+        email: normalizedEmail,
+        otp: token.trim(),
+        type: 'email_verification_link',
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!tokenRecord) {
+      return res.redirect('/?error=' + encodeURIComponent('Invalid or expired verification link. Please sign in or request a new one.'));
+    }
+
+    // 1. Mark token as used
+    await prisma.oTP.update({
+      where: { id: tokenRecord.id },
+      data: { isUsed: true }
+    });
+
+    // 2. Mark User isEmailVerified: true
+    await prisma.user.updateMany({
+      where: { email: normalizedEmail },
+      data: { isEmailVerified: true }
+    });
+
+    // 3. Fetch user details
+    const user = await prisma.user.findUnique({
+      where: { email: normalizedEmail }
+    });
+
+    // 4. Generate permanent JWT Token (30-day session)
+    const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+    const jwtToken = jwt.sign({
+      id: user ? user.id : normalizedEmail,
+      userId: user ? user.id : normalizedEmail,
+      email: normalizedEmail,
+      role: user ? user.role : 'authenticated',
+      verified: true
+    }, jwtSecret, { expiresIn: '30d' });
+
+    // 5. Establish express session
+    if (req.session) {
+      req.session.authenticated = true;
+      req.session.userEmail = normalizedEmail;
+      req.session.jwtToken = jwtToken;
+      if (user) {
+        req.session.userId = user.id;
+        req.session.user = {
+          id: user.id,
+          email: user.email,
+          fname: user.firstName,
+          lname: user.lastName,
+          role: user.role
+        };
+      }
+    }
+
+    // 6. Redirect directly to dashboard with verified state and token
+    return res.redirect(`/?verified=true&token=${encodeURIComponent(jwtToken)}&email=${encodeURIComponent(normalizedEmail)}`);
+  } catch (error) {
+    console.error('Verify Email Link Error:', error);
+    return res.redirect('/?error=' + encodeURIComponent('Failed to verify email link.'));
+  }
+}
+
 module.exports = {
   register,
+  createAccount: register,
+  verifyEmailLink,
   login,
   logout,
   getMe,

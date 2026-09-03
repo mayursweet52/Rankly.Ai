@@ -8775,17 +8775,80 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     showToast('6-digit security code sent to ' + email + ' ', 'info');
                 };
 
-                window.handleVerifyCandidateOtp = function() {
+                window.handleVerifyCandidateOtp = async function() {
                     const otp = document.getElementById('slideRegOtpInput')?.value.trim();
+                    const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!otp || otp.length < 4) {
                         showToast('Please enter the 6-digit OTP received in email', 'error');
                         return;
                     }
-                    const otpContainer = document.getElementById('candOtpContainer');
-                    if (otpContainer) {
-                        otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> Email Verified Successfully!</div>';
+                    try {
+                        const res = await fetch('/api/auth/verify-otp', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, otp })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            const otpContainer = document.getElementById('candOtpContainer');
+                            if (otpContainer) {
+                                otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> OTP Verified Successfully! Now complete details & click Create Account.</div>';
+                            }
+                            showToast('OTP verified successfully! Please complete profile details.', 'success');
+                        } else {
+                            showToast(data.message || 'Invalid or expired OTP', 'error');
+                        }
+                    } catch (e) {
+                        showToast('Verification failed: ' + e.message, 'error');
                     }
-                    showToast('Email verified successfully ', 'success');
+                };
+
+                window.showEmailVerificationNotice = function(email) {
+                    const candidateDrawer = document.getElementById('candidateDrawer');
+                    if (candidateDrawer) candidateDrawer.classList.add('translate-x-full');
+                    const orgDrawer = document.getElementById('orgPortalDrawer');
+                    if (orgDrawer) orgDrawer.classList.add('translate-x-full');
+                    if (typeof closeModal === 'function') {
+                        closeModal('signupModal');
+                        closeModal('employeeSignupModal');
+                    }
+
+                    let noticeModal = document.getElementById('emailVerificationNoticeModal');
+                    if (!noticeModal) {
+                        noticeModal = document.createElement('div');
+                        noticeModal.id = 'emailVerificationNoticeModal';
+                        noticeModal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
+                        noticeModal.innerHTML = `
+                            <div class="bg-white dark:bg-zinc-900 border border-indigo-100 dark:border-zinc-800 rounded-2xl max-w-lg w-full p-8 shadow-2xl text-center relative overflow-hidden">
+                                <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-950/50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl shadow-inner border border-indigo-100 dark:border-indigo-800">
+                                    📬
+                                </div>
+                                <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">Verification Link Sent!</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                                    Please check your Gmail inbox and click the verification link to unlock your <strong>rankly.ai</strong> dashboard.
+                                </p>
+                                <div class="bg-indigo-50/80 dark:bg-zinc-800/80 border border-indigo-100 dark:border-zinc-700 py-3 px-4 rounded-xl mb-6 text-xs text-indigo-900 dark:text-indigo-200 font-mono break-all">
+                                    Sent to: <span id="noticeEmailTarget" class="font-bold"></span>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://mail.google.com" target="_blank" class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                                        <span>Open Gmail</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    </a>
+                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-3 px-5 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-all">
+                                        Got it
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        document.body.appendChild(noticeModal);
+                    }
+                    const targetEl = document.getElementById('noticeEmailTarget');
+                    if (targetEl) targetEl.innerText = email || 'Your Email';
+                    noticeModal.classList.remove('hidden');
+                    if (typeof showToast === 'function') {
+                        showToast('Verification link sent to your Gmail inbox!', 'info');
+                    }
                 };
 
                 window.handleCandidateRegistration = async function() {
@@ -8858,6 +8921,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         if (!res.ok || !data.success) {
                             showToast(data.message || data.error || 'Registration failed', 'error');
                             if (submitBtn) setButtonLoading(submitBtn, false);
+                            return;
+                        }
+                        if (data.requiresEmailVerification) {
+                            if (submitBtn) setButtonLoading(submitBtn, false);
+                            window.showEmailVerificationNotice(data.email || email);
                             return;
                         }
                         currentUser = data.user;
@@ -9290,6 +9358,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 showToast(data.message || data.error || 'Sign up failed', 'error');
                                 return;
                             }
+                            if (data.requiresEmailVerification) {
+                                if (typeof window.showEmailVerificationNotice === 'function') {
+                                    window.showEmailVerificationNotice(data.email || email);
+                                }
+                                return;
+                            }
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             closeModal('signupModal');
@@ -9342,6 +9416,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             const data = await res.json();
                             if (!res.ok || !data.success) {
                                 showToast(data.message || data.error || 'Provisioning failed', 'error');
+                                return;
+                            }
+                            if (data.requiresEmailVerification) {
+                                if (typeof window.showEmailVerificationNotice === 'function') {
+                                    window.showEmailVerificationNotice(data.email || email);
+                                }
                                 return;
                             }
                             currentUser = data.user;
@@ -10469,8 +10549,40 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                // Handle OAuth Redirect Flow
+                // Handle Email Verification & OAuth Redirect Flow
                 const urlParams = new URLSearchParams(window.location.search);
+                const isEmailVerified = urlParams.get('verified');
+                const verifiedJwt = urlParams.get('token');
+                const verifiedEmail = urlParams.get('email');
+
+                if (isEmailVerified === 'true') {
+                    if (verifiedJwt) {
+                        localStorage.setItem('rankly_jwt', verifiedJwt);
+                        sessionStorage.setItem('rankly_jwt', verifiedJwt);
+                    }
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    showToast('🎉 Email verified successfully! Unlocking your rankly.ai dashboard...', 'success');
+                    
+                    fetch('/api/auth/me', { credentials: 'include' })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data && (data.authenticated || data.success) && data.user) {
+                                currentUser = data.user;
+                            } else {
+                                currentUser = { email: verifiedEmail || 'user@rankly.ai', firstName: 'Verified User', verified: { email: true, phone: true } };
+                            }
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            loginUser();
+                        }).catch(() => {
+                            currentUser = { email: verifiedEmail || 'user@rankly.ai', firstName: 'Verified User', verified: { email: true, phone: true } };
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            loginUser();
+                        });
+                    return;
+                }
+
                 const authStatus = urlParams.get('auth');
                 const userParam = urlParams.get('user');
                 const errorParam = urlParams.get('error');

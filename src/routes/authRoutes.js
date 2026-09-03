@@ -20,6 +20,8 @@ const {
 // Public Local Auth Endpoints (Protected by Rate Limiting + Strict Schema Validation)
 // -----------------------------------------------------------------------------
 router.post('/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
+router.post('/create-account', authLimiter, authBackoffLimiter, authController.register);
+router.get('/verify-email', authController.verifyEmailLink);
 router.post('/candidate/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
 router.post('/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 router.post('/candidate/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);

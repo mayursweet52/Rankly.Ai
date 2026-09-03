@@ -144,6 +144,12 @@ app.use('/health', healthRoutes);
 app.use('/auth', authRoutes);
 app.use('/api/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
 app.use(['/verify-otp', '/api/verify-otp'], (req, res) => res.redirect(307, '/api/auth/verify-otp'));
+app.use(['/create-account', '/api/create-account'], (req, res) => res.redirect(307, '/api/auth/create-account'));
+app.get('/verify-email', (req, res, next) => {
+  const authController = require('./src/controllers/authController');
+  return authController.verifyEmailLink(req, res, next);
+});
+app.get('/dashboard.html', (req, res) => res.redirect('/' + (req._parsedUrl.search || '')));
 // 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Using NVIDIA Nemotron & Multi-Tier AI)
 const { Ollama } = require('ollama');
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434' });

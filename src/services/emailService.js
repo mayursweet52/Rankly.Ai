@@ -256,9 +256,67 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
     return res.success;
 }
 
+/**
+ * Send Account Creation Final Verification Link Email (Industry Standard SaaS Flow)
+ */
+async function sendVerificationLinkEmail({ to, fullName, verifyLink }) {
+    if (!to) return false;
+    const cleanRecipient = (to || '').toString().toLowerCase().trim();
+    const displayName = fullName || 'Developer';
+    const subject = '✨ Final Step: Verify your rankly.ai Account';
+
+    const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        
+        <!-- Brand Header & Mini Promo -->
+        <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+          <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
+          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">🚀 Supercharge Your Workflow with Local AI & Automated Intelligence</p>
+        </div>
+
+        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">Almost Done, ${displayName}!</h2>
+        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">Your rankly.ai account has been created successfully. Click the button below to verify your email and unlock your full dashboard:</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${verifyLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">Verify Email & Open Dashboard</a>
+        </div>
+
+        <p style="font-size: 13px; color: #64748b; text-align: center; line-height: 1.6;">
+          Or copy and paste this link into your browser:<br/>
+          <a href="${verifyLink}" style="color: #4f46e5; word-break: break-all;">${verifyLink}</a>
+        </p>
+
+        <!-- Promotional Banner / Ad Section -->
+        <div style="margin-top: 35px; padding: 16px; background: #f8fafc; border-left: 4px solid #4f46e5; border-radius: 4px;">
+          <p style="font-size: 13px; color: #1e293b; margin: 0 0 6px; font-weight: bold;">💡 What's next on rankly.ai?</p>
+          <p style="font-size: 12px; color: #475569; margin: 0; line-height: 1.5;">
+            Explore advanced AI code debugging, real-time error hunting with local models, and seamless team management right from your dashboard.
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
+          &copy; 2026 rankly.ai. Built for next-gen developers.
+        </div>
+      </div>
+    </div>
+    `;
+
+    const text = `Almost Done, ${displayName}!\n\nYour rankly.ai account has been created successfully. Click the link below to verify your email and unlock your dashboard:\n\n${verifyLink}\n\n© 2026 rankly.ai`;
+
+    const res = await sendSystemEmail({
+        to: cleanRecipient,
+        subject,
+        html,
+        text
+    });
+    return res.success;
+}
+
 module.exports = {
     sendSystemEmail,
     sendOTPEmail,
+    sendVerificationLinkEmail,
     sendInvitationEmail,
     sendCandidateStatusNotification
 };
