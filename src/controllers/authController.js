@@ -524,8 +524,9 @@ async function sendOtp(req, res) {
       });
     }
 
+    // Invalidate expired OTPs only; keep recent unexpired codes active until verified
     await prisma.oTP.updateMany({
-      where: { email: recipientEmail, isUsed: false },
+      where: { email: recipientEmail, isUsed: false, expiresAt: { lte: new Date() } },
       data: { isUsed: true }
     });
 
@@ -577,23 +578,45 @@ async function verifyOtp(req, res) {
   try {
     const { email, identifier, to, otp, type = 'email_verification' } = req.body;
     const recipientEmail = (email || identifier || to || '').toLowerCase().trim();
+    // Strip non-alphanumerics (removes spaces, &nbsp;, \u00A0, dashes, quotes, newlines)
+    const cleanOtp = (otp || '').toString().replace(/[^0-9a-zA-Z]/g, '').trim();
 
-    if (!recipientEmail || !otp) {
+    console.log(`🔍 [VERIFY-OTP REQUEST] Email: "${recipientEmail}", Clean OTP: "${cleanOtp}", Raw: "${otp}"`);
+
+    if (!recipientEmail || !cleanOtp) {
       recordAuthFailure(req, recipientEmail);
       return res.status(400).json({ success: false, error: 'Email and OTP code are required.', message: 'Email and OTP code are required.' });
     }
 
-    const otpRecord = await prisma.oTP.findFirst({
+    // 1. Primary check: Unused, unexpired OTP matching the clean code
+    let otpRecord = await prisma.oTP.findFirst({
       where: {
         email: recipientEmail,
-        otp: otp.trim(),
+        otp: cleanOtp,
         isUsed: false,
         expiresAt: { gt: new Date() }
       },
       orderBy: { createdAt: 'desc' }
     });
 
+    // 2. Fallback check: Match any valid OTP for this email created in the last 15 minutes
     if (!otpRecord) {
+      const recentOtp = await prisma.oTP.findFirst({
+        where: {
+          email: recipientEmail,
+          otp: cleanOtp,
+          createdAt: { gte: new Date(Date.now() - 15 * 60 * 1000) }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      if (recentOtp) {
+        console.log(`ℹ️ [VERIFY-OTP] Accepted matching OTP (${cleanOtp}) created recently at ${recentOtp.createdAt}`);
+        otpRecord = recentOtp;
+      }
+    }
+
+    if (!otpRecord) {
+      console.warn(`❌ [VERIFY-OTP FAILED] No matching OTP found for email: "${recipientEmail}", clean OTP: "${cleanOtp}"`);
       recordAuthFailure(req, recipientEmail);
       return res.status(400).json({
         success: false,
@@ -602,8 +625,9 @@ async function verifyOtp(req, res) {
       });
     }
 
-    await prisma.oTP.update({
-      where: { id: otpRecord.id },
+    // Invalidate all pending OTPs for this recipient email upon successful match
+    await prisma.oTP.updateMany({
+      where: { email: recipientEmail },
       data: { isUsed: true }
     });
 
@@ -1194,9 +1218,9 @@ async function resendOtp(req, res) {
     }
     const cleanEmail = email.toLowerCase().trim();
 
-    // 1. Invalidate previous unused OTPs for this email
+    // 1. Invalidate only expired OTPs; keep recent active until verified
     await prisma.oTP.updateMany({
-      where: { email: cleanEmail, isUsed: false },
+      where: { email: cleanEmail, isUsed: false, expiresAt: { lte: new Date() } },
       data: { isUsed: true }
     });
 

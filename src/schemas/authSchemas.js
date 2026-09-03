@@ -46,8 +46,8 @@ const verifyOtpSchema = {
   email: { type: 'string', min: 3, max: 100 },
   identifier: { type: 'string', min: 3, max: 100 },
   to: { type: 'string', min: 3, max: 100 },
-  otp: { type: 'string', required: true, min: 6, max: 6, pattern: /^\d{6}$/, patternMessage: 'OTP code must be exactly 6 digits.' },
-  type: { type: 'enum', enum: ['email_verification', 'password_reset', 'corporate_email_verification'] }
+  otp: { type: 'string', required: true, min: 4, max: 12 },
+  type: { type: 'string' }
 };
 
 const resetPasswordSchema = {

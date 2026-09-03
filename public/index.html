@@ -6766,7 +6766,7 @@
                 const sendBtn = document.getElementById('emailOtpBtn');
 
                 if (!input) return;
-                const entered = input.value.trim();
+                const entered = (input.value || '').replace(/\D/g, '').trim();
                 if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
 
                 if (emailInput) {
@@ -6864,7 +6864,7 @@
                 const sendBtn = document.getElementById('empEmailOtpBtn');
 
                 if (!input) return;
-                const entered = input.value.trim();
+                const entered = (input.value || '').replace(/\D/g, '').trim();
                 if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
 
                 if (emailInput) {
@@ -8818,7 +8818,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 window.handleVerifyCandidateOtp = async function() {
                     const otpInput = document.getElementById('slideRegOtpInput');
-                    const otp = otpInput?.value.trim();
+                    const otp = (otpInput?.value || '').replace(/\D/g, '').trim();
                     const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!email) {
                         showToast('Please enter your email address first', 'error');
@@ -9255,7 +9255,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 window.handleVerifyOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
-                    const otp = document.getElementById('orgOtpInput')?.value.trim();
+                    const otp = (document.getElementById('orgOtpInput')?.value || '').replace(/\D/g, '').trim();
                     if (!email) { showToast('Please enter corporate email first', 'error'); return; }
                     if (!otp || otp.length < 4) { showToast('Please enter valid 6-digit OTP', 'error'); return; }
 
