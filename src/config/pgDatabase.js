@@ -3,6 +3,7 @@
  * Specification v1.0 Database Adapter (Supabase / Cloud PostgreSQL)
  */
 
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const hasPgUrl = process.env.DATABASE_URL && (
@@ -19,9 +20,9 @@ const poolConfig = hasPgUrl
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME || 'antigravity',
+      database: process.env.DB_NAME || 'postgres',
       port: parseInt(process.env.DB_PORT, 10) || 5432,
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+      ssl: (process.env.DB_SSL === 'true' || (process.env.DB_HOST && process.env.DB_HOST.includes('supabase'))) ? { rejectUnauthorized: false } : false
     };
 
 const pool = new Pool(poolConfig);
