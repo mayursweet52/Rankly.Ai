@@ -38,7 +38,7 @@ router.post('/employees', async (req, res) => {
     ];
 
     const result = await db.query(queryText, values);
-    res.json(result.rows[0]);
+    res.status(201).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message || err.toString() });
   }
