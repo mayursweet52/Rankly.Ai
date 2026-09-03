@@ -105,8 +105,11 @@ async function optionalAuth(req, res, next) {
   next();
 }
 
+const verifyToken = require('./verifyToken');
+
 module.exports = {
   isAuthenticated,
   requireRole,
-  optionalAuth
+  optionalAuth,
+  verifyToken
 };
