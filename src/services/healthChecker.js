@@ -338,7 +338,7 @@ async function sendHealthAlert(issues = [], healActions = []) {
 
     try {
         const { sendSystemEmail } = require('./emailService');
-        const baseUrl = (process.env.APP_URL || process.env.BASE_URL || 'https://rankly-ai-production.up.railway.app').replace(/\/+$/, '');
+        const baseUrl = (process.env.APP_URL || process.env.BASE_URL || 'http://localhost:3000').replace(/\/+$/, '');
         const approveToken = generateActionToken('approve_fix', { issueCount: issues.length });
         const rejectToken = generateActionToken('reject_fix', { issueCount: issues.length });
 

@@ -258,7 +258,7 @@ async function inviteTeamMember(req, res) {
       include: { organization: true }
     });
 
-    const appUrl = process.env.BASE_URL || process.env.APP_URL || 'https://rankly-ai-production.up.railway.app';
+    const appUrl = process.env.BASE_URL || process.env.APP_URL || 'http://localhost:3000';
     const inviteUrl = `${appUrl}/?invite=${token}`;
 
     await sendInvitationEmail(normalizedEmail, invitation.organization.name, role, inviteUrl);

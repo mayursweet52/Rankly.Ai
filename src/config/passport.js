@@ -22,11 +22,9 @@ passport.deserializeUser(async (id, done) => {
 // -----------------------------------------------------------------------------
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-const isProduction = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const baseUrl = isProduction ? 'https://rankly-ai-production.up.railway.app' : 'http://localhost:3000';
+const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
-// ─── RAILWAY PRODUCTION GOOGLE CALLBACK ──────────────────────────────
-const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/google/callback';
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || `${baseUrl}/auth/google/callback`;
 
 if (googleClientId && googleClientSecret) {
   passport.use(
@@ -83,7 +81,7 @@ if (googleClientId && googleClientSecret) {
 // -----------------------------------------------------------------------------
 const fbAppId = process.env.FACEBOOK_APP_ID || '';
 const fbAppSecret = process.env.FACEBOOK_APP_SECRET || '';
-const fbCallbackUrl = process.env.FACEBOOK_CALLBACK_URL || 'https://rankly-ai-production.up.railway.app/auth/facebook/callback';
+const fbCallbackUrl = process.env.FACEBOOK_CALLBACK_URL || `${baseUrl}/auth/facebook/callback`;
 
 if (fbAppId && fbAppSecret) {
   passport.use(
