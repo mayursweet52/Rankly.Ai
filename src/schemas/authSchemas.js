@@ -41,7 +41,7 @@ const sendOtpSchema = {
   workEmail: { type: 'string', min: 3, max: 100 },
   corporateEmail: { type: 'string', min: 3, max: 100 },
   isEmployee: { type: 'boolean' },
-  type: { type: 'enum', enum: ['email_verification', 'password_reset', 'corporate_email_verification'] }
+  type: { type: 'enum', enum: ['email_verification', 'password_reset', 'corporate_email_verification', 'corporate_verification'] }
 };
 
 const verifyOtpSchema = {
