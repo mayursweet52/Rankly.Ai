@@ -4412,7 +4412,7 @@
                                             <div id="candOtpContainer" class="hidden mt-2 p-2.5 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800/60">
                                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Enter 6-Digit OTP</label>
                                                 <div class="flex gap-2">
-                                                    <input type="text" id="slideRegOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" />
+                                                    <input type="text" id="slideRegOtpInput" name="security-one-time-code" autocomplete="one-time-code" data-lpignore="true" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter OTP" value="" />
                                                     <button type="button" onclick="handleVerifyCandidateOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
                                                         Verify OTP
                                                     </button>
@@ -4824,7 +4824,7 @@
                                         <div id="orgOtpContainer" class="hidden mt-2 pt-2 border-t border-[var(--border-color)]">
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
                                             <div class="flex gap-2 mb-2">
-                                                <input id="orgOtpInput" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="••••••" type="text" />
+                                                <input id="orgOtpInput" name="org-security-one-time-code" autocomplete="one-time-code" data-lpignore="true" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter OTP" type="text" value="" />
                                                 <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
                                                     Verify OTP
                                                 </button>
@@ -8779,6 +8779,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const otpContainer = document.getElementById('candOtpContainer');
                     if (otpContainer) {
                         otpContainer.classList.remove('hidden');
+                    }
+                    const otpInput = document.getElementById('slideRegOtpInput');
+                    if (otpInput) {
+                        otpInput.value = '';
                     }
 
                     try {
