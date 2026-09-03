@@ -31,7 +31,10 @@ const loginSchema = {
   identifier: { type: 'string', min: 1, max: 100 },
   email: { type: 'string', min: 1, max: 100 },
   username: { type: 'string', min: 1, max: 100 },
-  password: { type: 'string', required: true, min: 1, max: 128 }
+  password: { type: 'string', required: true, min: 1, max: 128 },
+  role: { type: 'string', max: 50 },
+  isEmployee: { type: 'boolean' },
+  rememberMe: { type: 'boolean' }
 };
 
 const sendOtpSchema = {
