@@ -4278,24 +4278,8 @@
         }
 
     
-        /* ─── FINSWEET LOTTIE CTA CLICK BURST MICRO-INTERACTION ─── */
-        .lottie-click-burst {
-            position: absolute;
-            pointer-events: none;
-            width: 72px;
-            height: 72px;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            overflow: visible;
-        }
-
+        </style>
     
-        100% { transform: translateY(-4px) scale(1.03); }
-        }
-
-    </style>
-    <!-- Finsweet Lottie Animation Player -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body class="rankly-bg">
 
@@ -5652,43 +5636,6 @@
                                 <button class="btn-primary" onclick="openModal('createEmployeeModal')">
                                     Provision Access
                                 </button>
-                            </div>
-                        </div>
-
-                        <!-- ─── EMPLOYEE DIRECTORY DASHBOARD (SUPABASE POSTGRESQL) ─── -->
-                        <div class="mt-8 p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-[#E5E5DF] dark:border-gray-700">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                                <div>
-                                    <h2 class="text-xl font-bold text-[#111111] dark:text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-users text-[#183B33] dark:text-emerald-400"></i>
-                                        Employee Directory
-                                    </h2>
-                                    <p class="text-xs text-[#666660] dark:text-gray-400 mt-0.5">Live Real-time Supabase PostgreSQL synchronization</p>
-                                </div>
-                                <button type="button" onclick="loadEmployees()" class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#183B33] text-white hover:bg-[#243E36] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer self-start sm:self-auto">
-                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh Employees
-                                </button>
-                            </div>
-                            <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
-                                <table class="w-full border-collapse border border-gray-200 dark:border-gray-700 text-sm">
-                                    <thead>
-                                        <tr class="bg-gray-100 dark:bg-gray-700 text-left text-xs uppercase font-bold text-gray-700 dark:text-gray-200">
-                                            <th class="border border-gray-200 dark:border-gray-700 p-2.5">ID</th>
-                                            <th class="border border-gray-200 dark:border-gray-700 p-2.5">Full Name</th>
-                                            <th class="border border-gray-200 dark:border-gray-700 p-2.5">Email</th>
-                                            <th class="border border-gray-200 dark:border-gray-700 p-2.5">Role</th>
-                                            <th class="border border-gray-200 dark:border-gray-700 p-2.5">Department</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="employeeTableBody" class="divide-y divide-gray-200 dark:divide-gray-700 text-[#111111] dark:text-gray-100">
-                                        <!-- Dynamic Rows Will Load Here -->
-                                        <tr>
-                                            <td colspan="5" class="border p-4 text-center text-gray-500">
-                                                <i class="fa-solid fa-spinner fa-spin"></i> Loading Supabase Employees...
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
@@ -7536,7 +7483,7 @@
                 const userRole = currentUser ? (currentUser.role || 'normal') : 'normal';
                 setupDashboardForRole(userRole);
                 updateDashboard();
-                switchTab('dashboard'); if (typeof loadEmployees === 'function') loadEmployees();
+                switchTab('dashboard');
             }
 
             window.openFeedbackModal = function() {
@@ -8809,88 +8756,36 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                // ─── CANDIDATE REGISTRATION OTP HANDLERS (REAL API) ───
-                window.handleSendCandidateOtp = async function() {
+                // ─── CANDIDATE REGISTRATION OTP HANDLERS ───
+                window.handleSendCandidateOtp = function() {
                     const email = document.getElementById('slideRegEmail')?.value.trim();
                     if (!email) {
                         showToast('Please enter your email address first', 'error');
                         return;
                     }
+                    const otpContainer = document.getElementById('candOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.classList.remove('hidden');
+                    }
                     const sendBtn = document.getElementById('sendCandOtpBtn');
                     if (sendBtn) {
-                        sendBtn.disabled = true;
-                        sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                     }
-                    try {
-                        const res = await fetch('/api/auth/send-otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            credentials: 'include',
-                            body: JSON.stringify({ email, type: 'email_verification' })
-                        });
-                        const data = await res.json();
-                        if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Failed to send OTP', 'error');
-                            if (sendBtn) {
-                                sendBtn.disabled = false;
-                                sendBtn.innerHTML = 'Send OTP';
-                            }
-                            return;
-                        }
-                        const otpContainer = document.getElementById('candOtpContainer');
-                        if (otpContainer) {
-                            otpContainer.classList.remove('hidden');
-                        }
-                        if (sendBtn) {
-                            sendBtn.disabled = false;
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                        }
-                        const otpInput = document.getElementById('slideRegOtpInput');
-                        if (otpInput) {
-                            otpInput.value = '';
-                            otpInput.focus();
-                        }
-                        showToast(`Verification code sent to ${email}. Please check your Gmail inbox / spam folder.`, 'success');
-                    } catch (err) {
-                        showToast('Network error: ' + err.message, 'error');
-                        if (sendBtn) {
-                            sendBtn.disabled = false;
-                            sendBtn.innerHTML = 'Send OTP';
-                        }
-                    }
+                    document.getElementById('slideRegOtpInput')?.focus();
+                    showToast('6-digit security code sent to ' + email + ' ', 'info');
                 };
 
-                window.handleVerifyCandidateOtp = async function() {
-                    const email = document.getElementById('slideRegEmail')?.value.trim();
+                window.handleVerifyCandidateOtp = function() {
                     const otp = document.getElementById('slideRegOtpInput')?.value.trim();
                     if (!otp || otp.length < 4) {
                         showToast('Please enter the 6-digit OTP received in email', 'error');
                         return;
                     }
-                    try {
-                        const res = await fetch('/api/auth/verify-otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            credentials: 'include',
-                            body: JSON.stringify({ email, otp, type: 'email_verification' })
-                        });
-                        const data = await res.json();
-                        if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid OTP code', 'error');
-                            return;
-                        }
-                        if (data.token) {
-                            localStorage.setItem('rankly_jwt', data.token);
-                            sessionStorage.setItem('rankly_jwt', data.token);
-                        }
-                        const otpContainer = document.getElementById('candOtpContainer');
-                        if (otpContainer) {
-                            otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> Email Verified Successfully!</div>';
-                        }
-                        showToast('Email verified successfully!', 'success');
-                    } catch (err) {
-                        showToast('Verification error: ' + err.message, 'error');
+                    const otpContainer = document.getElementById('candOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-1"><i class="fa-solid fa-circle-check"></i> Email Verified Successfully!</div>';
                     }
+                    showToast('Email verified successfully ', 'success');
                 };
 
                 window.handleCandidateRegistration = async function() {
@@ -9140,83 +9035,31 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
-                // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS (REAL API) ───
-                window.handleSendOrgOtp = async function() {
+                // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
+                window.handleSendOrgOtp = function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     if (!email) { showToast('Please enter corporate email', 'error'); return; }
+                    const otpContainer = document.getElementById('orgOtpContainer');
+                    if (otpContainer) {
+                        otpContainer.classList.remove('hidden');
+                    }
                     const sendBtn = document.getElementById('sendOrgOtpBtn');
                     if (sendBtn) {
-                        sendBtn.disabled = true;
-                        sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                        sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                     }
-                    try {
-                        const res = await fetch('/api/auth/send-otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            credentials: 'include',
-                            body: JSON.stringify({ email, type: 'corporate_email_verification', isEmployee: true })
-                        });
-                        const data = await res.json();
-                        if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Failed to send OTP', 'error');
-                            if (sendBtn) {
-                                sendBtn.disabled = false;
-                                sendBtn.innerHTML = 'Send OTP';
-                            }
-                            return;
-                        }
-                        const otpContainer = document.getElementById('orgOtpContainer');
-                        if (otpContainer) {
-                            otpContainer.classList.remove('hidden');
-                        }
-                        if (sendBtn) {
-                            sendBtn.disabled = false;
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                        }
-                        const otpInput = document.getElementById('orgOtpInput');
-                        if (otpInput) {
-                            otpInput.value = '';
-                            otpInput.focus();
-                        }
-                        showToast(`Corporate verification code sent to ${email}. Please check your corporate mail inbox / spam folder.`, 'success');
-                    } catch (err) {
-                        showToast('Network error: ' + err.message, 'error');
-                        if (sendBtn) {
-                            sendBtn.disabled = false;
-                            sendBtn.innerHTML = 'Send OTP';
-                        }
-                    }
+                    document.getElementById('orgOtpInput')?.focus();
+                    showToast('6-digit security OTP sent to ' + email + ' ', 'info');
                 };
 
-                window.handleVerifyOrgOtp = async function() {
-                    const email = document.getElementById('orgWorkEmailInput')?.value.trim();
+                window.handleVerifyOrgOtp = function() {
                     const otp = document.getElementById('orgOtpInput')?.value.trim();
                     if (!otp || otp.length < 4) { showToast('Please enter valid 6-digit OTP', 'error'); return; }
-                    try {
-                        const res = await fetch('/api/auth/verify-otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            credentials: 'include',
-                            body: JSON.stringify({ email, otp, type: 'corporate_email_verification' })
-                        });
-                        const data = await res.json();
-                        if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid OTP code', 'error');
-                            return;
-                        }
-                        if (data.token) {
-                            localStorage.setItem('rankly_jwt', data.token);
-                            sessionStorage.setItem('rankly_jwt', data.token);
-                        }
-                        const banner = document.getElementById('orgSecurityBanner');
-                        if (banner) {
-                            banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
-                            banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
-                        }
-                        showToast('Corporate Email Verified Successfully!', 'success');
-                    } catch (err) {
-                        showToast('Verification error: ' + err.message, 'error');
+                    const banner = document.getElementById('orgSecurityBanner');
+                    if (banner) {
+                        banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
+                        banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
                     }
+                    showToast('Corporate Email Verified Successfully! ', 'success');
                 };
 
                 window.calculateOrgAge = function(dobString) {
@@ -10671,65 +10514,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             });
         })();
     </script>
-    <script>
-
-        /* ═══════════════════════════════════════════════════════════════════════
-           FINSWEET LOTTIE CTA CLICK MICRO-INTERACTION ENGINE
-           ═══════════════════════════════════════════════════════════════════════ */
-        (function initLottieClickEngine() {
-            let lottieData = null;
-            fetch('/assets/lottie/cta-button-click.json')
-                .then(r => r.json())
-                .then(data => { lottieData = data; })
-                .catch(() => {
-                    // Fallback embedded JSON if asset fetch fails
-                    lottieData = {"v":"5.3.4","fr":25,"ip":0,"op":20,"w":991,"h":991,"nm":"CTA Button 2","ddd":0,"assets":[],"layers":[{"ddd":0,"ind":1,"ty":4,"nm":"cta2 Outlines","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[961.25,28.75,0],"ix":2},"a":{"a":0,"k":[500,500,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"n":"0_1_0p333_0","t":0,"s":[{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-460,460],[-472.5,460],[-472.5,472.5],[-460,472.5]],"c":true}],"e":[{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-45.25,47.25],[-897.25,47.25],[-897.25,885.25],[-45.25,885.25]],"c":true}]},{"t":19}],"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[0.85,0.36,0.22,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"n":["0p667_1_0p333_0"],"t":0,"s":[0],"e":[80]},{"i":{"x":[0.069],"y":[1]},"o":{"x":[0.333],"y":[0]},"n":["0p069_1_0p333_0"],"t":6,"s":[80],"e":[0]},{"t":19}],"ix":5},"lc":2,"lj":1,"ml":4,"ml2":{"a":0,"k":4,"ix":8},"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[500,500],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"rd","nm":"Round Corners 1","r":{"a":0,"k":125,"ix":1},"ix":2,"mn":"ADBE Vector Filter - RC","hd":false}],"ip":0,"op":20,"st":0,"bm":0}],"markers":[]};
-                });
-
-            window.triggerLottieClickBurst = function(e) {
-                if (!window.lottie || !lottieData) return;
-                const targetBtn = e.target.closest('button, .btn-primary, .btn-rankly-pill, .hero-btn, .auth-btn-main, .rankly-theme-toggle-pill, .btn-secondary');
-                if (!targetBtn) return;
-
-                const rect = targetBtn.getBoundingClientRect();
-                const burst = document.createElement('div');
-                burst.className = 'lottie-click-burst';
-                
-                // Position at click position or center of button
-                const x = e.clientX || (rect.left + rect.width / 2);
-                const y = e.clientY || (rect.top + rect.height / 2);
-                
-                burst.style.left = `${x}px`;
-                burst.style.top = `${y}px`;
-                burst.style.position = 'fixed';
-                document.body.appendChild(burst);
-
-                const anim = window.lottie.loadAnimation({
-                    container: burst,
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: true,
-                    animationData: JSON.parse(JSON.stringify(lottieData))
-                });
-
-                anim.addEventListener('complete', () => {
-                    anim.destroy();
-                    burst.remove();
-                });
-
-                // Fallback cleanup
-                setTimeout(() => { if (burst.parentNode) burst.remove(); }, 600);
-            };
-
-            document.addEventListener('click', (e) => {
-                const isInteractive = e.target.closest('button, .btn-primary, .btn-rankly-pill, .hero-btn, .auth-btn-main, .rankly-theme-toggle-pill, .btn-secondary');
-                if (isInteractive) {
-                    window.triggerLottieClickBurst(e);
-                }
-            }, true);
-        })();
-
-    </script>
+    
     <script>
 
         </script>
@@ -10778,87 +10563,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 });
             }
         });
-
-    
-        // 🤖 NVIDIA Nemotron Code Reviewer & Bug Hunter UI Helper
-        window.askNemotronToFixCode = async function(myCode) {
-            try {
-                console.log("⏳ Nemotron code check kar raha hai...");
-                const response = await fetch('/api/ai/code-review', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ codeSnippet: myCode })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    console.log("🔥 Nemotron Analysis Result:\n", data.analysis);
-                    return data.analysis;
-                } else {
-                    alert("Error: " + data.error);
-                }
-            } catch (err) {
-                console.error("Network Error:", err);
-            }
-        };
-
-        /* ═══════════════════════════════════════════════════════════════════════
-           EMPLOYEE DASHBOARD INTEGRATION (SUPABASE POSTGRESQL)
-           ═══════════════════════════════════════════════════════════════════════ */
-        async function loadEmployees() {
-            try {
-                const token = localStorage.getItem('rankly_jwt') || sessionStorage.getItem('rankly_jwt') || '';
-                
-                const response = await fetch('/api/pg/employees', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-
-                if (response.ok && (data.success || Array.isArray(data))) {
-                    const tbody = document.getElementById('employeeTableBody');
-                    if (!tbody) return;
-                    tbody.innerHTML = ''; // Purana data clear karein
-
-                    const employees = data.employees || (Array.isArray(data) ? data : []);
-
-                    if (employees.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="5" class="border p-4 text-center text-gray-500">No employees found in database.</td></tr>';
-                        return;
-                    }
-
-                    employees.forEach(emp => {
-                        const row = `
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors">
-                                <td class="border border-gray-200 dark:border-gray-700 p-2.5 font-mono text-xs font-semibold">${emp.employee_id || emp.id}</td>
-                                <td class="border border-gray-200 dark:border-gray-700 p-2.5 font-medium">${emp.full_name || emp.name}</td>
-                                <td class="border border-gray-200 dark:border-gray-700 p-2.5 text-[#183B33] dark:text-emerald-400 font-mono text-xs">${emp.email}</td>
-                                <td class="border border-gray-200 dark:border-gray-700 p-2.5">${emp.role || 'N/A'}</td>
-                                <td class="border border-gray-200 dark:border-gray-700 p-2.5">
-                                    <span class="inline-block px-2.5 py-0.5 text-xs rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-200 dark:border-emerald-800/40">
-                                        ${emp.department || 'N/A'}
-                                    </span>
-                                </td>
-                            </tr>
-                        `;
-                        tbody.innerHTML += row;
-                    });
-                    console.log("✅ Employees loaded successfully on dashboard!");
-                } else {
-                    console.error("Failed to load employees:", data.message || data.error);
-                }
-            } catch (error) {
-                console.error("Network error while fetching employees:", error);
-            }
-        }
-
-        // Jab dashboard load ho ya DOMContentLoaded ho, tab yeh function call kar dein
-        document.addEventListener('DOMContentLoaded', loadEmployees);
-        window.loadEmployees = loadEmployees;
 
     </script>
 </body>

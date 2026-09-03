@@ -4278,24 +4278,8 @@
         }
 
     
-        /* ─── FINSWEET LOTTIE CTA CLICK BURST MICRO-INTERACTION ─── */
-        .lottie-click-burst {
-            position: absolute;
-            pointer-events: none;
-            width: 72px;
-            height: 72px;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            overflow: visible;
-        }
-
+        </style>
     
-        100% { transform: translateY(-4px) scale(1.03); }
-        }
-
-    </style>
-    <!-- Finsweet Lottie Animation Player -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body class="rankly-bg">
 
@@ -10530,65 +10514,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             });
         })();
     </script>
-    <script>
-
-        /* ═══════════════════════════════════════════════════════════════════════
-           FINSWEET LOTTIE CTA CLICK MICRO-INTERACTION ENGINE
-           ═══════════════════════════════════════════════════════════════════════ */
-        (function initLottieClickEngine() {
-            let lottieData = null;
-            fetch('/assets/lottie/cta-button-click.json')
-                .then(r => r.json())
-                .then(data => { lottieData = data; })
-                .catch(() => {
-                    // Fallback embedded JSON if asset fetch fails
-                    lottieData = {"v":"5.3.4","fr":25,"ip":0,"op":20,"w":991,"h":991,"nm":"CTA Button 2","ddd":0,"assets":[],"layers":[{"ddd":0,"ind":1,"ty":4,"nm":"cta2 Outlines","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[961.25,28.75,0],"ix":2},"a":{"a":0,"k":[500,500,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"n":"0_1_0p333_0","t":0,"s":[{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-460,460],[-472.5,460],[-472.5,472.5],[-460,472.5]],"c":true}],"e":[{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-45.25,47.25],[-897.25,47.25],[-897.25,885.25],[-45.25,885.25]],"c":true}]},{"t":19}],"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[0.85,0.36,0.22,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"n":["0p667_1_0p333_0"],"t":0,"s":[0],"e":[80]},{"i":{"x":[0.069],"y":[1]},"o":{"x":[0.333],"y":[0]},"n":["0p069_1_0p333_0"],"t":6,"s":[80],"e":[0]},{"t":19}],"ix":5},"lc":2,"lj":1,"ml":4,"ml2":{"a":0,"k":4,"ix":8},"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[500,500],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"rd","nm":"Round Corners 1","r":{"a":0,"k":125,"ix":1},"ix":2,"mn":"ADBE Vector Filter - RC","hd":false}],"ip":0,"op":20,"st":0,"bm":0}],"markers":[]};
-                });
-
-            window.triggerLottieClickBurst = function(e) {
-                if (!window.lottie || !lottieData) return;
-                const targetBtn = e.target.closest('button, .btn-primary, .btn-rankly-pill, .hero-btn, .auth-btn-main, .rankly-theme-toggle-pill, .btn-secondary');
-                if (!targetBtn) return;
-
-                const rect = targetBtn.getBoundingClientRect();
-                const burst = document.createElement('div');
-                burst.className = 'lottie-click-burst';
-                
-                // Position at click position or center of button
-                const x = e.clientX || (rect.left + rect.width / 2);
-                const y = e.clientY || (rect.top + rect.height / 2);
-                
-                burst.style.left = `${x}px`;
-                burst.style.top = `${y}px`;
-                burst.style.position = 'fixed';
-                document.body.appendChild(burst);
-
-                const anim = window.lottie.loadAnimation({
-                    container: burst,
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: true,
-                    animationData: JSON.parse(JSON.stringify(lottieData))
-                });
-
-                anim.addEventListener('complete', () => {
-                    anim.destroy();
-                    burst.remove();
-                });
-
-                // Fallback cleanup
-                setTimeout(() => { if (burst.parentNode) burst.remove(); }, 600);
-            };
-
-            document.addEventListener('click', (e) => {
-                const isInteractive = e.target.closest('button, .btn-primary, .btn-rankly-pill, .hero-btn, .auth-btn-main, .rankly-theme-toggle-pill, .btn-secondary');
-                if (isInteractive) {
-                    window.triggerLottieClickBurst(e);
-                }
-            }, true);
-        })();
-
-    </script>
+    
     <script>
 
         </script>
