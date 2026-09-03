@@ -533,7 +533,8 @@ async function sendOtp(req, res) {
 
     return res.json({
       success: true,
-      message: `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
+      message: 'OTP sent successfully',
+      details: `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
     });
   } catch (error) {
     console.error('Send OTP Error:', error);

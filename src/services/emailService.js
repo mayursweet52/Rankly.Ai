@@ -31,45 +31,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
     const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
 
-    // 1. Tier 1: Official Google Apps Script REST Webhook (Port 443 HTTPS - Immune to Railway SMTP port blocks!)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
-    if (googleWebhookUrl) {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 12000);
-            const res = await fetch(googleWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                signal: controller.signal,
-                redirect: 'follow',
-                body: JSON.stringify({
-                    to: cleanRecipient,
-                    recipient: cleanRecipient,
-                    email: cleanRecipient,
-                    subject: subject,
-                    html: html,
-                    htmlBody: html,
-                    body: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
-                    text: text || (html ? html.replace(/<[^>]*>?/gm, '') : '')
-                })
-            });
-            clearTimeout(timeoutId);
-            const resText = await res.text();
-            let resData = null;
-            try { resData = JSON.parse(resText); } catch (e) {}
-
-            if ((resData && resData.success) || (res.ok && resText.includes('"success":true'))) {
-                console.log('✅ Real OTP email delivered via Google Webhook (Port 443 HTTPS) to:', cleanRecipient);
-                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
-            } else {
-                console.warn('⚠️ [Google Webhook Non-Success Response]:', resText);
-            }
-        } catch (gErr) {
-            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
-        }
-    }
-
-    // 2. Tier 2: Direct Nodemailer SMTP (Port 465 SSL via smtp.gmail.com)
+    // 1. Tier 1: Direct Nodemailer SMTP (Port 465 SSL via smtp.gmail.com - rankly.ai.com@gmail.com)
     try {
         const info = await Promise.race([
             transporter.sendMail({
@@ -80,7 +42,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
                 html: html
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 5000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 7000))
         ]);
         console.log('✅ Email delivered via Direct Gmail SMTP to:', cleanRecipient, 'MessageId:', info?.messageId);
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
@@ -88,7 +50,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
         console.warn('⚠️ [Direct SMTP Warning]:', smtpErr.message);
     }
 
-    // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
+    // 2. Tier 2: Resend REST API (Port 443 HTTPS Backup)
     const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
     if (resendApiKey) {
         try {
@@ -112,6 +74,42 @@ async function sendSystemEmail({ to, subject, html, text }) {
             }
         } catch (apiErr) {
             console.warn('[Resend API Error]:', apiErr.message);
+        }
+    }
+
+    // 3. Tier 3: Google Webhook Fallback (Port 443 HTTPS)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || '').trim();
+    if (googleWebhookUrl) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
+            const res = await fetch(googleWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                signal: controller.signal,
+                redirect: 'follow',
+                body: JSON.stringify({
+                    to: cleanRecipient,
+                    recipient: cleanRecipient,
+                    email: cleanRecipient,
+                    subject: subject,
+                    html: html,
+                    htmlBody: html,
+                    body: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
+                    text: text || (html ? html.replace(/<[^>]*>?/gm, '') : '')
+                })
+            });
+            clearTimeout(timeoutId);
+            const resText = await res.text();
+            let resData = null;
+            try { resData = JSON.parse(resText); } catch (e) {}
+
+            if ((resData && resData.success) || (res.ok && resText.includes('"success":true'))) {
+                console.log('✅ Email delivered via Google Webhook fallback to:', cleanRecipient);
+                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
+            }
+        } catch (gErr) {
+            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
         }
     }
 
