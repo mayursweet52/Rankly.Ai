@@ -71,6 +71,14 @@ app.use(cors({
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
+// Live Request Logger for terminal visibility
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/health') && !req.url.startsWith('/favicon')) {
+    console.log(`📡 [${req.method}] ${req.url} - IP: ${req.ip} - Body:`, JSON.stringify(req.body || {}));
+  }
+  next();
+});
+
 const passport = require('./src/config/passport');
 
 // Fix 1 & 2: Persistent SQLite Session Store with Cloud Proxy support
@@ -134,6 +142,8 @@ app.use('/health', healthRoutes);
 // Backward-Compatibility Aliases (Ensures all UI frontend calls seamlessly work)
 // -----------------------------------------------------------------------------
 app.use('/auth', authRoutes);
+app.use('/api/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
+app.use('/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
 app.use('/api/ai/chat', chatRoutes);
 app.use('/api/ai', resumeRoutes);
 app.use('/api/resume', resumeRoutes);
