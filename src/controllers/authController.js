@@ -285,6 +285,10 @@ async function register(req, res) {
       verifyLink
     });
 
+    console.log(`\n======================================================`);
+    console.log(`🔗 [LIVE VERIFY LINK]: >>> ${verifyLink} <<< (Sent to: ${normalizedEmail})`);
+    console.log(`======================================================\n`);
+
     // Reset any auth failure backoff upon successful registration
     resetAuthFailure(req, normalizedEmail);
 

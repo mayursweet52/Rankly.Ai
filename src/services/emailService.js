@@ -264,20 +264,19 @@ async function sendVerificationLinkEmail({ to, fullName, verifyLink, isResend = 
     const cleanRecipient = (to || '').toString().toLowerCase().trim();
     const displayName = fullName || 'Developer';
     const subject = customSubject || (isResend 
-        ? '🔄 Resend: Verify your rankly.ai account' 
-        : '✨ Final Step: Verify your rankly.ai Account');
+        ? 'Verify your rankly.ai account (Resend)' 
+        : 'Verify your rankly.ai account');
 
     const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
       <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
         
-        <!-- Brand Header & Mini Promo -->
         <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
           <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
-          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">🚀 Supercharge Your Workflow with Local AI & Automated Intelligence</p>
+          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">Supercharge Your Workflow with Automated Intelligence</p>
         </div>
 
-        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">${isResend ? '🔄 Verification Link Resent' : `Almost Done, ${displayName}!`}</h2>
+        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">${isResend ? 'Verification Link Resent' : `Almost Done, ${displayName}!`}</h2>
         <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">${isResend ? 'Here is your fresh rankly.ai email verification link. Click below to verify your account and unlock your full dashboard:' : 'Your rankly.ai account has been created successfully. Click the button below to verify your email and unlock your full dashboard:'}</p>
         
         <div style="text-align: center; margin: 30px 0;">
@@ -288,14 +287,6 @@ async function sendVerificationLinkEmail({ to, fullName, verifyLink, isResend = 
           Or copy and paste this link into your browser:<br/>
           <a href="${verifyLink}" style="color: #4f46e5; word-break: break-all;">${verifyLink}</a>
         </p>
-
-        <!-- Promotional Banner / Ad Section -->
-        <div style="margin-top: 35px; padding: 16px; background: #f8fafc; border-left: 4px solid #4f46e5; border-radius: 4px;">
-          <p style="font-size: 13px; color: #1e293b; margin: 0 0 6px; font-weight: bold;">💡 What's next on rankly.ai?</p>
-          <p style="font-size: 12px; color: #475569; margin: 0; line-height: 1.5;">
-            Explore advanced AI code debugging, real-time error hunting with local models, and seamless team management right from your dashboard.
-          </p>
-        </div>
 
         <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
           &copy; 2026 rankly.ai. Built for next-gen developers.
