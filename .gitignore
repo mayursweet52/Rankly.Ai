@@ -10,4 +10,5 @@ uploads/
 backups/
 health_logs.json
 security_threats.json
+cloudflared.exe
 

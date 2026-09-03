@@ -285,7 +285,13 @@ async function register(req, res) {
       }
     });
 
-    const baseUrl = process.env.APP_URL || process.env.BASE_URL || 'http://localhost:3000';
+    const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
+    const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+    const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
+    const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null) 
+      || dynamicBaseUrl 
+      || process.env.APP_URL 
+      || 'http://localhost:3000';
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(normalizedEmail)}`;
 
     const fullName = `${effectiveFirstName} ${effectiveLastName}`.trim() || newUser.username || 'Developer';
@@ -1311,7 +1317,13 @@ async function resendLink(req, res) {
     });
 
     // 3. Build verification link
-    const baseUrl = process.env.APP_URL || process.env.BASE_URL || 'http://localhost:3000';
+    const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
+    const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+    const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
+    const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null) 
+      || dynamicBaseUrl 
+      || process.env.APP_URL 
+      || 'http://localhost:3000';
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(cleanEmail)}`;
 
     // 4. Fetch user display name if available
