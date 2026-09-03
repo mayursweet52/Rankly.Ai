@@ -42,43 +42,16 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
                 html: html
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 7000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 4000))
         ]);
         console.log('✅ Email delivered via Direct Gmail SMTP to:', cleanRecipient, 'MessageId:', info?.messageId);
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
     } catch (smtpErr) {
-        console.warn('⚠️ [Direct SMTP Warning]:', smtpErr.message);
+        console.warn('⚠️ [Direct SMTP Notice]:', smtpErr.message);
     }
 
-    // 2. Tier 2: Resend REST API (Port 443 HTTPS Backup)
-    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
-    if (resendApiKey) {
-        try {
-            const res = await fetch('https://api.resend.com/emails', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${resendApiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
-                    to: [cleanRecipient],
-                    subject: subject,
-                    html: html
-                })
-            });
-            const resData = await res.json();
-            if (res.ok && resData.id) {
-                console.log('✅ Email delivered via Resend API (HTTPS 443) to:', cleanRecipient, 'ID:', resData.id);
-                return { success: true, method: 'resend', messageId: resData.id };
-            }
-        } catch (apiErr) {
-            console.warn('[Resend API Error]:', apiErr.message);
-        }
-    }
-
-    // 3. Tier 3: Google Webhook Fallback (Port 443 HTTPS)
-    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || '').trim();
+    // 2. Tier 2: Google Apps Script HTTPS Webhook (Port 443 HTTPS - Works on Railway and all Cloud hosts!)
+    const googleWebhookUrl = (process.env.GOOGLE_MAIL_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec').trim();
     if (googleWebhookUrl) {
         try {
             const controller = new AbortController();
@@ -105,11 +78,38 @@ async function sendSystemEmail({ to, subject, html, text }) {
             try { resData = JSON.parse(resText); } catch (e) {}
 
             if ((resData && resData.success) || (res.ok && resText.includes('"success":true'))) {
-                console.log('✅ Email delivered via Google Webhook fallback to:', cleanRecipient);
-                return { success: true, method: 'google_webhook', message: 'Delivered via Google Cloud HTTPS Webhook' };
+                console.log('✅ Email delivered via HTTPS Webhook (Port 443) to:', cleanRecipient);
+                return { success: true, method: 'google_webhook', message: 'Delivered via HTTPS Webhook' };
             }
         } catch (gErr) {
-            console.warn('[Google Webhook Dispatch Warning]:', gErr.message);
+            console.warn('[HTTPS Webhook Warning]:', gErr.message);
+        }
+    }
+
+    // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
+    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
+    if (resendApiKey) {
+        try {
+            const res = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${resendApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
+                    to: [cleanRecipient],
+                    subject: subject,
+                    html: html
+                })
+            });
+            const resData = await res.json();
+            if (res.ok && resData.id) {
+                console.log('✅ Email delivered via Resend API (HTTPS 443) to:', cleanRecipient, 'ID:', resData.id);
+                return { success: true, method: 'resend', messageId: resData.id };
+            }
+        } catch (apiErr) {
+            console.warn('[Resend API Warning]:', apiErr.message);
         }
     }
 
