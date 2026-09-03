@@ -8896,12 +8896,16 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 <div class="bg-indigo-50/80 dark:bg-zinc-800/80 border border-indigo-100 dark:border-zinc-700 py-3 px-4 rounded-xl mb-6 text-xs text-indigo-900 dark:text-indigo-200 font-mono break-all">
                                     Sent to: <span id="noticeEmailTarget" class="font-bold"></span>
                                 </div>
-                                <div class="flex flex-col sm:flex-row gap-3">
-                                    <a href="https://mail.google.com" target="_blank" class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                                <div class="flex flex-col sm:flex-row gap-2.5">
+                                    <a href="https://mail.google.com" target="_blank" class="flex-1 py-3 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-1.5">
                                         <span>Open Gmail</span>
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                                     </a>
-                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-3 px-5 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-all">
+                                    <button id="resendLinkBtn" onclick="handleResendVerificationLink()" class="py-3 px-3 rounded-xl border border-indigo-200 dark:border-zinc-700 bg-indigo-50/50 dark:bg-zinc-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                        <i class="fa-solid fa-rotate-right"></i>
+                                        <span>Resend Link</span>
+                                    </button>
+                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-3 px-3 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-200 font-semibold text-xs sm:text-sm transition-all">
                                         Got it
                                     </button>
                                 </div>
@@ -8914,6 +8918,38 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     noticeModal.classList.remove('hidden');
                     if (typeof showToast === 'function') {
                         showToast('Verification link sent to your Gmail inbox!', 'info');
+                    }
+                };
+
+                window.handleResendVerificationLink = async function() {
+                    const emailTarget = document.getElementById('noticeEmailTarget')?.innerText.trim();
+                    if (!emailTarget) return;
+                    const btn = document.getElementById('resendLinkBtn');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                    }
+                    try {
+                        const res = await fetch('/api/auth/resend-link', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: emailTarget })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            showToast('🔄 New verification link resent to your Gmail!', 'success');
+                        } else {
+                            showToast(data.message || data.error || 'Failed to resend link', 'error');
+                        }
+                    } catch (e) {
+                        showToast('Network error while resending link', 'error');
+                    } finally {
+                        setTimeout(() => {
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend Link';
+                            }
+                        }, 5000);
                     }
                 };
 

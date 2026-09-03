@@ -145,6 +145,8 @@ app.use('/auth', authRoutes);
 app.use('/api/send-otp', (req, res) => res.redirect(307, '/api/auth/send-otp'));
 app.use(['/verify-otp', '/api/verify-otp'], (req, res) => res.redirect(307, '/api/auth/verify-otp'));
 app.use(['/create-account', '/api/create-account'], (req, res) => res.redirect(307, '/api/auth/create-account'));
+app.use(['/resend-otp', '/api/resend-otp'], (req, res) => res.redirect(307, '/api/auth/resend-otp'));
+app.use(['/resend-link', '/api/resend-link'], (req, res) => res.redirect(307, '/api/auth/resend-link'));
 app.get('/verify-email', (req, res, next) => {
   const authController = require('./src/controllers/authController');
   return authController.verifyEmailLink(req, res, next);

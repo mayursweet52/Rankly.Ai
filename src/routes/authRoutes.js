@@ -21,6 +21,8 @@ const {
 // -----------------------------------------------------------------------------
 router.post('/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
 router.post('/create-account', authLimiter, authBackoffLimiter, authController.register);
+router.post('/resend-otp', authLimiter, authBackoffLimiter, authController.resendOtp);
+router.post('/resend-link', authLimiter, authBackoffLimiter, authController.resendLink);
 router.get('/verify-email', authController.verifyEmailLink);
 router.post('/candidate/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
 router.post('/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);

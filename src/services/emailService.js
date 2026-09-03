@@ -138,13 +138,13 @@ async function sendSystemEmail({ to, subject, html, text }) {
 /**
  * Send OTP Verification Email with Professional Branded & Promotional Template
  */
-async function sendOTPEmail(to, otp, type = 'email_verification') {
+async function sendOTPEmail(to, otp, type = 'email_verification', customSubject = null) {
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = isReset 
+    const subject = customSubject || (isReset 
         ? `🔐 Your rankly.ai Password Reset Code: ${otp}` 
-        : `🔐 Your rankly.ai Verification Code`;
+        : `🔐 Your rankly.ai Verification Code`);
 
     const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
@@ -259,11 +259,13 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
 /**
  * Send Account Creation Final Verification Link Email (Industry Standard SaaS Flow)
  */
-async function sendVerificationLinkEmail({ to, fullName, verifyLink }) {
+async function sendVerificationLinkEmail({ to, fullName, verifyLink, isResend = false, customSubject = null }) {
     if (!to) return false;
     const cleanRecipient = (to || '').toString().toLowerCase().trim();
     const displayName = fullName || 'Developer';
-    const subject = '✨ Final Step: Verify your rankly.ai Account';
+    const subject = customSubject || (isResend 
+        ? '🔄 Resend: Verify your rankly.ai account' 
+        : '✨ Final Step: Verify your rankly.ai Account');
 
     const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
@@ -275,11 +277,11 @@ async function sendVerificationLinkEmail({ to, fullName, verifyLink }) {
           <p style="color: #666; font-size: 14px; margin: 5px 0 0;">🚀 Supercharge Your Workflow with Local AI & Automated Intelligence</p>
         </div>
 
-        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">Almost Done, ${displayName}!</h2>
-        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">Your rankly.ai account has been created successfully. Click the button below to verify your email and unlock your full dashboard:</p>
+        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">${isResend ? '🔄 Verification Link Resent' : `Almost Done, ${displayName}!`}</h2>
+        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">${isResend ? 'Here is your fresh rankly.ai email verification link. Click below to verify your account and unlock your full dashboard:' : 'Your rankly.ai account has been created successfully. Click the button below to verify your email and unlock your full dashboard:'}</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${verifyLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">Verify Email & Open Dashboard</a>
+          <a href="${verifyLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">Verify Email Address</a>
         </div>
 
         <p style="font-size: 13px; color: #64748b; text-align: center; line-height: 1.6;">

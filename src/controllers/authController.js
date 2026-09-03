@@ -1183,10 +1183,122 @@ async function verifyEmailLink(req, res) {
   }
 }
 
+/**
+ * 🔄 1. Resend OTP Controller
+ */
+async function resendOtp(req, res) {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: "Email is required", message: "Email is required" });
+    }
+    const cleanEmail = email.toLowerCase().trim();
+
+    // 1. Invalidate previous unused OTPs for this email
+    await prisma.oTP.updateMany({
+      where: { email: cleanEmail, isUsed: false },
+      data: { isUsed: true }
+    });
+
+    // 2. Generate fresh 6-digit OTP (10 mins)
+    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    await prisma.oTP.create({
+      data: {
+        email: cleanEmail,
+        otp: newOtp,
+        type: 'email_verification',
+        expiresAt
+      }
+    });
+
+    // 3. Dispatch Email with user's resend subject
+    const subject = '🔄 Resend: Your rankly.ai OTP Code';
+    await sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject);
+
+    console.log(`\n======================================================`);
+    console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);
+    console.log(`======================================================\n`);
+
+    return res.json({ 
+      success: true, 
+      message: "OTP resent successfully!",
+      email: cleanEmail
+    });
+  } catch (error) {
+    console.error('Resend OTP Error:', error);
+    return res.status(500).json({ success: false, error: error.message, message: error.message });
+  }
+}
+
+/**
+ * 🔄 2. Resend Verification Link Controller
+ */
+async function resendLink(req, res) {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: "Email is required", message: "Email is required" });
+    }
+    const cleanEmail = email.toLowerCase().trim();
+
+    // 1. Invalidate previous unused verification links
+    await prisma.oTP.updateMany({
+      where: { email: cleanEmail, type: 'email_verification_link', isUsed: false },
+      data: { isUsed: true }
+    });
+
+    // 2. Generate 32-byte cryptographic token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    await prisma.oTP.create({
+      data: {
+        email: cleanEmail,
+        otp: verificationToken,
+        type: 'email_verification_link',
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+      }
+    });
+
+    // 3. Build verification link
+    const baseUrl = process.env.APP_URL || process.env.BASE_URL || 'http://localhost:3000';
+    const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(cleanEmail)}`;
+
+    // 4. Fetch user display name if available
+    const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    const fullName = existingUser ? `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() : 'Developer';
+
+    // 5. Dispatch Verification Link Email
+    await sendVerificationLinkEmail({
+      to: cleanEmail,
+      fullName,
+      verifyLink,
+      isResend: true,
+      customSubject: '🔄 Resend: Verify your rankly.ai account'
+    });
+
+    console.log(`\n======================================================`);
+    console.log(`🔄 [RESENT VERIFICATION LINK]: >>> ${verifyLink} <<< (Sent to: ${cleanEmail})`);
+    console.log(`======================================================\n`);
+
+    return res.json({ 
+      success: true, 
+      message: "Verification link resent successfully!",
+      email: cleanEmail,
+      verifyLink
+    });
+  } catch (error) {
+    console.error('Resend Link Error:', error);
+    return res.status(500).json({ success: false, error: error.message, message: error.message });
+  }
+}
+
 module.exports = {
   register,
   createAccount: register,
   verifyEmailLink,
+  resendOtp,
+  resendLink,
   login,
   logout,
   getMe,
