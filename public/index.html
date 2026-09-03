@@ -6765,8 +6765,8 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput && data.otp) otpInput.value = data.otp;
-                    showToast(data.otp ? `🔑 OTP Code: ${data.otp} (Sent to ${value})` : `Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    if (otpInput) otpInput.value = '';
+                    showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -8810,10 +8810,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         const otpInput = document.getElementById('slideRegOtpInput');
                         if (otpInput) {
-                            if (data.otp) otpInput.value = data.otp;
+                            otpInput.value = '';
                             otpInput.focus();
                         }
-                        showToast(data.otp ? `🔑 OTP Code: ${data.otp} (Sent to ${email})` : `Verification code sent to ${email}. Check inbox & spam.`, 'success');
+                        showToast(`Verification code sent to ${email}. Please check your Gmail inbox / spam folder.`, 'success');
                     } catch (err) {
                         showToast('Network error: ' + err.message, 'error');
                         if (sendBtn) {
@@ -9134,10 +9134,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         const otpInput = document.getElementById('orgOtpInput');
                         if (otpInput) {
-                            if (data.otp) otpInput.value = data.otp;
+                            otpInput.value = '';
                             otpInput.focus();
                         }
-                        showToast(data.otp ? `🔑 OTP Code: ${data.otp} (Sent to ${email})` : `Corporate verification code sent to ${email}. Check inbox & spam.`, 'success');
+                        showToast(`Corporate verification code sent to ${email}. Please check your corporate mail inbox / spam folder.`, 'success');
                     } catch (err) {
                         showToast('Network error: ' + err.message, 'error');
                         if (sendBtn) {
