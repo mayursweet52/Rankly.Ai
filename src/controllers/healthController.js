@@ -154,7 +154,7 @@ async function getSecurityThreats(req, res) {
 async function sendTestEmail(req, res) {
     try {
         const { sendSystemEmail } = require('../services/emailService');
-        const targetEmail = req.body?.email || process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+        const targetEmail = req.body?.email || process.env.DEVELOPER_EMAIL || 'rankly.ai.com@gmail.com';
 
         const result = await sendSystemEmail({
             to: targetEmail,

@@ -172,7 +172,7 @@ app.post(['/api/feedback', '/api/user/feedback'], publicLimiter, validate({ body
     // ─── NOTIFICATION (Developer Email & n8n Webhook) ───
     try {
       const { sendSystemEmail } = require('./src/services/emailService');
-      const devEmail = process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+      const devEmail = process.env.DEVELOPER_EMAIL || 'rankly.ai.com@gmail.com';
       sendSystemEmail({
         to: devEmail,
         subject: `💬 [Rankly.ai Feedback] New ${category.toUpperCase()} Rating (${rating}⭐) from ${name || 'User'}`,
@@ -237,7 +237,7 @@ app.get('/api/feedback', async (req, res) => {
 // ─── EMAIL DIAGNOSTICS & DELIVERABILITY PROBE ───
 app.get('/api/test-email', async (req, res) => {
   const nodemailer = require('nodemailer');
-  const targetEmail = (req.query.to || 'mayursweet52@gmail.com').trim().toLowerCase();
+  const targetEmail = (req.query.to || process.env.DEVELOPER_EMAIL || 'rankly.ai.com@gmail.com').trim().toLowerCase();
   const diag = { target: targetEmail, smtp465: null, smtp587: null };
 
   const pass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '');

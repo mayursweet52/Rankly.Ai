@@ -362,7 +362,7 @@ async function sendHealthAlert(issues = [], healActions = []) {
             </div>
         ` : '';
 
-        const targetEmail = process.env.DEVELOPER_EMAIL || 'mayursweet52@gmail.com';
+        const targetEmail = process.env.DEVELOPER_EMAIL || 'rankly.ai.com@gmail.com';
         const res = await sendSystemEmail({
             to: targetEmail,
             subject: `⚠️ [Rankly.ai Health Alert] ${issues.length} System Issue(s) Detected & Managed`,

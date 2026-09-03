@@ -251,7 +251,7 @@
     },
     {
       "parameters": {
-        "sendTo": "mayursweet52@gmail.com",
+        "sendTo": "rankly.ai.com@gmail.com",
         "subject": "✅ [Rankly.ai] Automated Self-Healing Fix Verified",
         "message": "=System Self-Healing executed and verified 100% HEALTHY.\n\nTimestamp: {{ $now.toISO() }}",
         "options": {}
@@ -314,7 +314,7 @@
     },
     {
       "parameters": {
-        "sendTo": "mayursweet52@gmail.com",
+        "sendTo": "rankly.ai.com@gmail.com",
         "subject": "📊 Rankly.ai Daily Executive Analytics Report - {{ $json.date }}",
         "message": "=Rankly.ai Daily Performance & Recruitment Summary:\n\n👥 Total Users: {{ $json.summary.totalUsers }}\n📋 Total Candidates Screened: {{ $json.summary.totalCandidates }}\n📈 Total Evaluations: {{ $json.summary.totalEvaluations }}\n💬 Total User Feedback: {{ $json.summary.totalFeedbacks }}\n🎯 Average Match Score: {{ $json.summary.averageMatchScore }}%\n\nGenerated automatically by Rankly.ai n8n Automation Engine.",
         "options": {}
@@ -340,7 +340,7 @@
     },
     {
       "parameters": {
-        "sendTo": "mayursweet52@gmail.com",
+        "sendTo": "rankly.ai.com@gmail.com",
         "subject": "💬 [User Feedback] {{ $json.body.rating }} Stars from {{ $json.body.name }}",
         "message": "=New User Feedback:\n\nName: {{ $json.body.name }}\nEmail: {{ $json.body.email }}\nRating: {{ $json.body.rating }} / 5\nCategory: {{ $json.body.category }}\nMessage: {{ $json.body.message }}",
         "options": {}

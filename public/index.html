@@ -10463,7 +10463,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const icon = document.getElementById('testEmailIcon');
                     if (btn) btn.disabled = true;
                     if (icon) icon.className = 'fas fa-spinner fa-spin text-[#183B33]';
-                    showToast('Sending test health alert email to mayursweet52@gmail.com...', 'info');
+                    showToast('Sending test health alert email...', 'info');
 
                     try {
                         const res = await fetch('/api/health/test-email', {
