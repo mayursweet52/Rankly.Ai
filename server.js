@@ -41,7 +41,7 @@ const { serveCachedHtml, apiCacheMiddleware, invalidateFragmentCache } = require
 
 const app = express();
 const server = http.createServer(app);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 // Security 1: Disable fingerprinting header
 app.disable('x-powered-by');
