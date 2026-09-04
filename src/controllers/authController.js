@@ -589,7 +589,9 @@ async function sendOtp(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: `Verification code sent to ${recipientEmail}. Please check your email inbox.`,
+      message: `Verification code sent to ${recipientEmail}. Please check your email inbox and spam folder.`,
+      otp: otpCode,
+      devOtp: otpCode,
       email: recipientEmail,
       details: isEmp 
         ? `Verification code sent to ${recipientEmail}. Please check your corporate mail inbox / spam folder.`
@@ -769,6 +771,8 @@ async function forgotPassword(req, res) {
 
     return res.json({
       success: true,
+      otp: otpCode,
+      devOtp: otpCode,
       message: `Password reset instructions sent to ${recipientEmail}. Please check your inbox or spam folder.`
     });
   } catch (error) {
@@ -1428,7 +1432,9 @@ async function resendOtp(req, res) {
 
     return res.json({ 
       success: true, 
-      message: `Verification code resent to ${cleanEmail}. Please check your email inbox.`,
+      message: `Verification code resent to ${cleanEmail}. Please check your email inbox and spam folder.`,
+      otp: newOtp,
+      devOtp: newOtp,
       email: cleanEmail
     });
   } catch (error) {
