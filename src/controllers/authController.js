@@ -1289,40 +1289,9 @@ async function verifyEmailLink(req, res) {
       data: { isEmailVerified: true }
     });
 
-    // 3. Fetch user details
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail }
-    });
-
-    // 4. Generate permanent JWT Token (30-day session)
-    const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
-    const jwtToken = jwt.sign({
-      id: user ? user.id : normalizedEmail,
-      userId: user ? user.id : normalizedEmail,
-      email: normalizedEmail,
-      role: user ? user.role : 'authenticated',
-      verified: true
-    }, jwtSecret, { expiresIn: '30d' });
-
-    // 5. Establish express session
-    if (req.session) {
-      req.session.authenticated = true;
-      req.session.userEmail = normalizedEmail;
-      req.session.jwtToken = jwtToken;
-      if (user) {
-        req.session.userId = user.id;
-        req.session.user = {
-          id: user.id,
-          email: user.email,
-          fname: user.firstName,
-          lname: user.lastName,
-          role: user.role
-        };
-      }
-    }
-
-    // 6. Redirect directly to dashboard with verified state and token
-    return res.redirect(`/?verified=true&token=${encodeURIComponent(jwtToken)}&email=${encodeURIComponent(normalizedEmail)}`);
+    // 3. Security Hardening: Do NOT automatically log in or establish a session on the verification device.
+    // Redirect to login view with verified=success flag so user is prompted to log in.
+    return res.redirect(`/?verified=success&email=${encodeURIComponent(normalizedEmail)}`);
   } catch (error) {
     console.error('Verify Email Link Error:', error);
     return res.redirect('/?error=' + encodeURIComponent('Failed to verify email link.'));
