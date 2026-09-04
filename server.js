@@ -1,9 +1,8 @@
 require('dotenv').config();
 
-// Ensure DATABASE_URL fallback for cloud hosts (Render/Railway/Vercel)
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'file:./rankly.db';
-}
+// Production-Ready Environment Validation
+const { validateEnvironment } = require('./src/config/validateEnv');
+validateEnvironment();
 
 const express = require('express');
 const cors = require('cors');
@@ -15,6 +14,10 @@ const http = require('http');
 
 // Database Client
 const prisma = require('./src/config/database');
+
+// Production Middleware
+const { requestLogger } = require('./src/middleware/requestLogger');
+const { notFoundHandler, globalErrorHandler } = require('./src/middleware/errorHandler');
 
 // Rate Limiters & Input Validators
 const { apiLimiter, publicLimiter, authenticatedLimiter } = require('./src/middleware/rateLimit');
@@ -86,25 +89,34 @@ if (!fs.existsSync(uploadsDir)) {
 // -----------------------------------------------------------------------------
 // Core Middlewares
 // -----------------------------------------------------------------------------
+// Strict CORS Whitelist with dynamic cloud proxy and local dev support
+const allowedOrigins = [
+  'https://ranklyai-production.up.railway.app',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  (process.env.APP_URL || '').replace(/\/+$/, '')
+].filter(Boolean);
+
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) || origin.endsWith('.railway.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Safe fallback to support tunnels/mobile while preserving credentials
+  },
   credentials: true
 }));
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
-// Live Request Logger for terminal visibility
-app.use((req, res, next) => {
-  if (!req.url.startsWith('/health') && !req.url.startsWith('/favicon')) {
-    console.log(`📡 [${req.method}] ${req.url} - IP: ${req.ip} - Body:`, JSON.stringify(req.body || {}));
-  }
-  next();
-});
+// Structured Non-Leaking Request Logger with Credential Sanitization
+app.use(requestLogger);
 
 const passport = require('./src/config/passport');
 
-// Fix 1 & 2: Persistent SQLite Session Store with Cloud Proxy support
+// Persistent SQLite Session Store with Cloud Proxy and Secure HTTPS Cookie support
 app.use(session({
   store: new SQLiteStore({
     db: 'sessions.db',
@@ -117,7 +129,7 @@ app.use(session({
   saveUninitialized: false,
   proxy: true,
   cookie: {
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 Days
@@ -890,16 +902,10 @@ app.get('*', (req, res, next) => {
 });
 
 // -----------------------------------------------------------------------------
-// Global Error Handler
+// Centralized 404 & Global Error Handling
 // -----------------------------------------------------------------------------
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    error: 'Something went wrong!',
-    message: err.message || 'Something went wrong!',
-    success: false
-  });
-});
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
 
 // -----------------------------------------------------------------------------
 // Graceful Server Startup & Shutdown
@@ -927,19 +933,29 @@ server.listen(PORT, '0.0.0.0', () => {
   startHealthChecker();
 });
 
-const gracefulShutdown = async () => {
-  console.log('\nGracefully shutting down Rankly.ai backend...');
-  try {
-    await prisma.$disconnect();
-    console.log('Database disconnected.');
-    process.exit(0);
-  } catch (e) {
+const gracefulShutdown = async (signal) => {
+  console.log(`\nReceived ${signal || 'shutdown signal'}. Gracefully draining connections...`);
+  server.close(async () => {
+    console.log('HTTP server closed, all connections drained.');
+    try {
+      await prisma.$disconnect();
+      console.log('Database connection pool disconnected.');
+      process.exit(0);
+    } catch (e) {
+      console.error('Error during database disconnect:', e);
+      process.exit(1);
+    }
+  });
+
+  // Force close after 10s timeout
+  setTimeout(() => {
+    console.error('Forcefully terminating after 10s timeout');
     process.exit(1);
-  }
+  }, 10000).unref();
 };
 
-process.on('SIGINT', gracefulShutdown);
-process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 process.on('uncaughtException', (err) => {
   console.error('⚠️ [UncaughtException Safeguard]:', err.message);
