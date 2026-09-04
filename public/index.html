@@ -2212,6 +2212,94 @@
         }
         .otp-row .form-input { flex: 1; }
 
+        /* ─── Executive Calendar & DatePicker Modern UI ─── */
+        .rankly-cal-popover {
+            position: fixed;
+            z-index: 100005;
+            width: 320px;
+            background: var(--bg-card, #ffffff);
+            border: 1px solid var(--border-color, #E5E5DF);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            user-select: none;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rankly-cal-popover.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.96) translateY(-4px);
+            pointer-events: none;
+        }
+        .rankly-cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary, #111111);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+        .rankly-cal-day-cell:hover:not(.empty):not(.disabled) {
+            background-color: var(--bg-input, #F3F3EF);
+            color: #183B33;
+            transform: scale(1.08);
+        }
+        .dark-theme .rankly-cal-day-cell:hover:not(.empty):not(.disabled),
+        #loginPage.dark-mode .rankly-cal-day-cell:hover:not(.empty):not(.disabled) {
+            color: #81E4DA;
+        }
+        .rankly-cal-day-cell.selected {
+            background: #183B33 !important;
+            color: #FFFFFF !important;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(24, 59, 51, 0.35);
+        }
+        .dark-theme .rankly-cal-day-cell.selected,
+        #loginPage.dark-mode .rankly-cal-day-cell.selected {
+            background: #5B998C !important;
+            color: #0E1017 !important;
+            box-shadow: 0 4px 12px rgba(91, 153, 140, 0.4);
+        }
+        .rankly-cal-day-cell.today {
+            border-color: #D95D39;
+            color: #D95D39;
+            font-weight: 700;
+        }
+        .rankly-cal-day-cell.empty,
+        .rankly-cal-day-cell.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        /* Custom styled date inputs */
+        input[type="date"] {
+            position: relative;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 2px;
+            opacity: 0.75;
+            filter: invert(0.25);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        .dark-theme input[type="date"]::-webkit-calendar-picker-indicator,
+        #loginPage.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.85);
+        }
+
         #toast-container {
             position: fixed;
             top: 24px;
@@ -4869,13 +4957,20 @@
                                 <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
                                     <!-- Corporate Email & OTP Verification Box -->
                                     <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3 mb-3">
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
-                                        <div class="flex gap-2 mb-2">
-                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
+                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1 flex items-center justify-between">
+                                            <span>Corporate Email Address *</span>
+                                            <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">Workmail Only</span>
+                                        </label>
+                                        <div class="flex gap-2 mb-1">
+                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="name@yourcompany.com" />
                                             <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
                                         </div>
+                                        <p class="text-[10px] text-[var(--text-muted)] mb-2 flex items-center gap-1">
+                                            <i class="fa-solid fa-circle-info text-emerald-600 dark:text-emerald-400"></i>
+                                            <span>Company workspaces require business domains (e.g. @company.com). Free emails (@gmail.com, etc.) are restricted.</span>
+                                        </p>
 
                                         <!-- Dynamic Enterprise OTP Verification Box (Hidden until Send OTP clicked) -->
                                         <div id="orgOtpContainer" class="hidden mt-2 pt-2 border-t border-[var(--border-color)]">
@@ -5743,6 +5838,164 @@
         </div>
     </div>
 
+    <!-- ─── RANKLY EXECUTIVE CALENDAR & DATEPICKER POPOVER ─── -->
+    <div id="ranklyExecutiveDatePicker" class="rankly-cal-popover hidden select-none">
+        <!-- Header: Month, Year Controls and Jumpers -->
+        <div class="flex items-center justify-between gap-1 mb-2.5 pb-2 border-b border-[var(--border-color)]">
+            <button type="button" onclick="ranklyCalendarPrevMonth()" class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-[var(--bg-input)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer" title="Previous Month">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            
+            <div class="flex items-center gap-1 font-bold">
+                <select id="ranklyCalMonthSelect" onchange="ranklyCalendarOnSelectChange()" class="bg-[var(--bg-input)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none cursor-pointer">
+                    <!-- Populated dynamically via JS -->
+                </select>
+                <select id="ranklyCalYearSelect" onchange="ranklyCalendarOnSelectChange()" class="bg-[var(--bg-input)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none cursor-pointer">
+                    <!-- Populated dynamically via JS -->
+                </select>
+            </div>
+            
+            <button type="button" onclick="ranklyCalendarNextMonth()" class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-[var(--bg-input)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer" title="Next Month">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+
+        <!-- Quick DOB & Age Preset Chips -->
+        <div class="flex items-center gap-1 mb-2.5 overflow-x-auto pb-1 scrollbar-none text-[10px]">
+            <button type="button" onclick="ranklyCalendarSelectPreset(18)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                18 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(21)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                21 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(25)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                25 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(30)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                30 yrs ago
+            </button>
+        </div>
+
+        <!-- Weekday Headers -->
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">
+            <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        </div>
+
+        <!-- Days Grid -->
+        <div id="ranklyCalDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs mb-2.5">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Live Age Indicator Pill -->
+        <div id="ranklyCalAgeBadge" class="p-1.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] text-center text-[11px] font-semibold text-[var(--text-primary)] mb-2 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-cake-candles text-amber-500 text-xs"></i>
+            <span id="ranklyCalAgeText">Pick Date of Birth</span>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-between pt-2 border-t border-[var(--border-color)] text-xs">
+            <button type="button" onclick="ranklyCalendarSetToday()" class="text-[11px] font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-colors cursor-pointer">
+                Today
+            </button>
+            <div class="flex gap-1.5">
+                <button type="button" onclick="closeRanklyCalendar()" class="px-2.5 py-1 rounded-lg border border-[var(--border-color)] hover:bg-[var(--bg-input)] text-[var(--text-muted)] font-medium text-xs transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="ranklyCalendarApply()" class="px-3 py-1 rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
+                    Apply Date
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── RANKLY EXECUTIVE INTERVIEW SCHEDULING CALENDAR MODAL ─── -->
+    <div id="interviewCalendarModal" class="modal-overlay" onclick="if(event.target===this) closeModal('interviewCalendarModal')" style="display:none;">
+        <div class="modal-box" style="max-width: 600px;">
+            <div class="flex justify-between items-center pb-3 mb-3 border-b border-[var(--border-color)]">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base border border-emerald-500/20">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-[var(--text-primary)] m-0">Executive Interview Calendar</h3>
+                        <p class="text-xs text-[var(--text-muted)] m-0">Schedule technical & behavioral evaluation sessions.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('interviewCalendarModal')" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] text-lg" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Candidate Context Badge -->
+            <div id="scheduleCandidateInfo" class="p-2.5 mb-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-tie text-emerald-600"></i>
+                    <span>Candidate: <strong id="scheduleCandName" class="text-[var(--text-primary)]">Selected Candidate</strong></span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 text-[10px]">Interview Stage</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <!-- Date Selection -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interview Date *</label>
+                    <input type="date" id="scheduleDateInput" class="form-input" required />
+                </div>
+                <!-- Time Slot Selection -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Select Time Slot *</label>
+                    <select id="scheduleTimeSelect" class="form-input">
+                        <option value="10:00 AM">10:00 AM - 10:45 AM (Morning)</option>
+                        <option value="11:30 AM">11:30 AM - 12:15 PM (Pre-Lunch)</option>
+                        <option value="02:00 PM" selected>02:00 PM - 02:45 PM (Afternoon)</option>
+                        <option value="04:00 PM">04:00 PM - 04:45 PM (Late Afternoon)</option>
+                        <option value="05:30 PM">05:30 PM - 06:15 PM (Evening)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <!-- Meeting Platform -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Meeting Platform</label>
+                    <select id="schedulePlatformSelect" class="form-input">
+                        <option value="Google Meet">📹 Google Meet (Direct Link)</option>
+                        <option value="Zoom">🎥 Zoom Video Conference</option>
+                        <option value="Microsoft Teams">💼 Microsoft Teams</option>
+                        <option value="In-Person Office">🏢 On-Site Office Round</option>
+                    </select>
+                </div>
+                <!-- Interview Round Type -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Evaluation Round</label>
+                    <select id="scheduleRoundSelect" class="form-input">
+                        <option value="Technical Screening">💻 Round 1: Technical & Code Screening</option>
+                        <option value="System Architecture">🏛️ Round 2: System Design & Scalability</option>
+                        <option value="Hiring Manager Discussion" selected>🤝 Round 3: Hiring Manager Review</option>
+                        <option value="Executive HR Fit">🌟 Round 4: Executive Culture & HR</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Meeting Notes -->
+            <div class="mb-4">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interviewer Notes & Focus Areas</label>
+                <textarea id="scheduleNotesInput" class="form-input h-16 text-xs resize-none" placeholder="e.g. Focus on candidate's experience in full-stack architecture, React 19, and Node.js microservices."></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-2 pt-3 border-t border-[var(--border-color)]">
+                <button type="button" onclick="closeModal('interviewCalendarModal')" class="px-4 py-2 text-xs font-semibold rounded-lg border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmInterviewSchedule()" class="px-5 py-2 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Confirm & Schedule</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ─── DASHBOARD WORKSPACE (Rankly.ai Branded) ─── -->
     <div class="page" id="dashboardPage" style="display:none;">
         <div class="dash-layout">
@@ -6369,13 +6622,19 @@
                     </div>
 
                     <div class="tab-content" id="tab-pipeline" style="display:none;">
-                        <div class="flex justify-between items-end mb-8">
+                        <div class="flex flex-wrap justify-between items-end gap-4 mb-8">
                             <div class="max-w-xs flex-1">
                                 <label class="form-label">Add Candidate to Kanban</label>
                                 <div class="flex gap-2">
                                     <input class="form-input" id="candidateName" placeholder="Candidate Full Name" type="text"/>
                                     <button class="btn-primary whitespace-nowrap" onclick="addCandidateToPipeline()">Add</button>
                                 </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="openInterviewScheduleModal()" class="px-4 py-2.5 text-xs font-bold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] text-[var(--text-primary)] transition-all shadow-xs flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-regular fa-calendar-days text-emerald-600 dark:text-emerald-400 text-sm"></i>
+                                    <span>Schedule Interview</span>
+                                </button>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="pipelineStages">
@@ -6841,7 +7100,15 @@
             let empOtpStore = { email: null, phone: null };
             let empOtpVerified = { email: false, phone: false };
             let pipeline = getStoredData('rankly_pipeline', []);
+            window.pipeline = pipeline;
             let allResumes = getStoredData('rankly_allResumes', []);
+
+            window.escapeHtml = function(str) {
+                return String(str || '').replace(/[&<>"']/g, function(m) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+                });
+            };
+            const escapeHtml = window.escapeHtml;
 
             window.togglePassword = function(inputId, btn) {
                 const input = document.getElementById(inputId);
@@ -7073,10 +7340,23 @@
                     return false;
                 }
 
-                // Check if candidate signup is strictly Gmail
-                if (!isCorporate) {
-                    if (domain !== 'gmail.com') {
-                        showToast('Only Gmail addresses are allowed. Please use @gmail.com.', 'error');
+                // Personal email domains not allowed for corporate/company registration
+                const personalDomains = [
+                    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
+                    'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+                    'icloud.com', 'me.com', 'mac.com',
+                    'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
+                    'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
+                ];
+
+                if (isCorporate) {
+                    if (personalDomains.includes(domain)) {
+                        showToast(`❌ Corporate/Company registration requires a valid company work email (e.g. name@company.com). Free personal email providers (@${domain}) are not allowed.`, 'error');
+                        return false;
+                    }
+                } else {
+                    if (domain !== 'gmail.com' && domain !== 'googlemail.com') {
+                        showToast('Only Gmail addresses are allowed for individual candidate registration. Please use @gmail.com.', 'error');
                         return false;
                     }
                 }
@@ -8017,11 +8297,18 @@
                     }
                     el.innerHTML = items.map(c => `
                         <div class="pipeline-card">
-                            <div>
-                                <p class="font-bold text-sm text-[#111111]">${c.name}</p>
-                                <span class="font-mono text-xs text-[#666660]">${c.score}% Match</span>
+                            <div class="flex-1 min-w-0 pr-2">
+                                <p class="font-bold text-sm text-[var(--text-primary)] truncate">${escapeHtml(c.name)}</p>
+                                <span class="font-mono text-xs text-[var(--text-muted)]">${c.score || 85}% Match</span>
+                                ${c.scheduledDate ? `
+                                    <div class="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
+                                        <i class="fa-regular fa-calendar-check text-[11px] text-emerald-600 dark:text-emerald-400"></i>
+                                        <span class="truncate">${c.scheduledDate} ${c.scheduledTime ? '• ' + c.scheduledTime : ''}</span>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div class="actions flex gap-1">
+                            <div class="actions flex items-center gap-1">
+                                <button onclick="openInterviewScheduleModal('${c.id}', '${escapeHtml(c.name)}')" aria-label="Schedule Interview" title="Schedule / Reschedule Interview" class="hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"><i class="fa-regular fa-calendar-plus text-xs"></i></button>
                                 ${stage !== 'hired' ? `<button onclick="advanceStage('${c.id}')" aria-label="Advance candidate stage" title="Move to next stage"><i class="fas fa-chevron-right text-xs"></i></button>` : ''}
                                 <button onclick="removeCandidate('${c.id}')" aria-label="Remove candidate" title="Remove"><i class="fas fa-trash-can text-xs text-red-500"></i></button>
                             </div>
@@ -8049,6 +8336,7 @@
 
             window.removeCandidate = function(id) {
                 pipeline = pipeline.filter(c => c.id !== id);
+                window.pipeline = pipeline;
                 setStoredData('rankly_pipeline', pipeline);
                 renderPipeline();
                 renderAnalytics();
@@ -8066,6 +8354,7 @@
                     score: 85,
                     stage: 'screening'
                 });
+                window.pipeline = pipeline;
                 setStoredData('rankly_pipeline', pipeline);
                 input.value = '';
                 renderPipeline();
@@ -10090,6 +10379,21 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 window.handleSendOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     if (!email) { showToast('Please enter corporate email', 'error'); return; }
+
+                    const domain = (email.split('@')[1] || '').toLowerCase();
+                    const personalEmailDomains = [
+                        'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
+                        'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+                        'icloud.com', 'me.com', 'mac.com',
+                        'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
+                        'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
+                    ];
+                    if (personalEmailDomains.includes(domain)) {
+                        showToast('❌ Corporate work email required (e.g. name@company.com). Free providers (@' + domain + ') are not accepted for company workspaces.', 'error');
+                        document.getElementById('orgWorkEmailInput')?.focus();
+                        return;
+                    }
+
                     const sendBtn = document.getElementById('sendOrgOtpBtn');
                     if (sendBtn) {
                         sendBtn.disabled = true;
@@ -10104,11 +10408,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const res = await fetch('/api/auth/send-otp', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email, type: 'corporate_email_verification' })
+                            body: JSON.stringify({ email, isEmployee: true, type: 'corporate_email_verification' })
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('✅ Corporate OTP sent to ' + email + '! Check your Gmail.', 'success');
+                            showToast('✅ Corporate OTP sent to ' + email + '! Check your corporate inbox.', 'success');
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
@@ -10207,6 +10511,20 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                     if (!orgName || !email || !firstName || !password) {
                         showToast('Please fill all required fields', 'error');
+                        return;
+                    }
+
+                    const domain = (email.split('@')[1] || '').toLowerCase();
+                    const personalEmailDomains = [
+                        'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
+                        'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+                        'icloud.com', 'me.com', 'mac.com',
+                        'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
+                        'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
+                    ];
+                    if (personalEmailDomains.includes(domain)) {
+                        showToast('❌ Corporate work email required (e.g. name@company.com). Free providers (@' + domain + ') are not accepted for company workspaces.', 'error');
+                        document.getElementById('orgWorkEmailInput')?.focus();
                         return;
                     }
 
@@ -12227,6 +12545,331 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 printWin.print();
             }
         };
+
+        // ─────────────────────────────────────────────────────────────
+        // ─── RANKLY EXECUTIVE CALENDAR & MODERN DATEPICKER ENGINE ───
+        // ─────────────────────────────────────────────────────────────
+        let ranklyCalCurrentDate = new Date();
+        let ranklyCalSelectedDate = null;
+        let ranklyCalTargetInput = null;
+
+        const ranklyMonthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        window.initRanklyCalendar = function() {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (!popover) return;
+
+            // Populate Months dropdown
+            const monthSelect = document.getElementById('ranklyCalMonthSelect');
+            if (monthSelect && monthSelect.options.length === 0) {
+                ranklyMonthNames.forEach((name, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = name;
+                    monthSelect.appendChild(opt);
+                });
+            }
+
+            // Populate Years dropdown (1950 to current year + 2)
+            const yearSelect = document.getElementById('ranklyCalYearSelect');
+            if (yearSelect && yearSelect.options.length === 0) {
+                const curYear = new Date().getFullYear();
+                for (let y = curYear + 2; y >= 1950; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    yearSelect.appendChild(opt);
+                }
+            }
+
+            // Bind handlers to date inputs across registration & portals
+            const selector = 'input[type="date"], #orgDob, #slideRegDob, #signupDob, #empDob, #scheduleDateInput';
+            const bindInputs = () => {
+                document.querySelectorAll(selector).forEach(input => {
+                    if (input.dataset.ranklyCalBound) return;
+                    input.dataset.ranklyCalBound = 'true';
+                    input.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.openRanklyCalendar(input);
+                    });
+                    input.addEventListener('focus', () => {
+                        window.openRanklyCalendar(input);
+                    });
+                });
+            };
+
+            bindInputs();
+            // Rebind dynamically if views switch
+            document.addEventListener('click', () => setTimeout(bindInputs, 200));
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                const cal = document.getElementById('ranklyExecutiveDatePicker');
+                if (!cal || cal.classList.contains('hidden')) return;
+                if (!cal.contains(e.target) && ranklyCalTargetInput !== e.target && !ranklyCalTargetInput?.contains(e.target)) {
+                    window.closeRanklyCalendar();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    window.closeRanklyCalendar();
+                }
+            });
+        };
+
+        window.openRanklyCalendar = function(inputEl) {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (!popover || !inputEl) return;
+            ranklyCalTargetInput = inputEl;
+
+            // Position popover relative to input
+            const rect = inputEl.getBoundingClientRect();
+            const popWidth = 320;
+            const popHeight = 360;
+
+            let top = rect.bottom + window.scrollY + 6;
+            let left = rect.left + window.scrollX;
+
+            // Flip above if not enough vertical space below
+            if (rect.bottom + popHeight > window.innerHeight && rect.top > popHeight) {
+                top = rect.top + window.scrollY - popHeight - 6;
+            }
+            // Constrain horizontally within viewport
+            if (left + popWidth > window.innerWidth) {
+                left = window.innerWidth - popWidth - 16;
+            }
+            if (left < 10) left = 10;
+
+            popover.style.top = `${top}px`;
+            popover.style.left = `${left}px`;
+            popover.classList.remove('hidden');
+
+            // Parse initial date from input or default smartly
+            if (inputEl.value) {
+                const parsed = new Date(inputEl.value);
+                if (!isNaN(parsed.getTime())) {
+                    ranklyCalSelectedDate = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+                    ranklyCalCurrentDate = new Date(ranklyCalSelectedDate);
+                }
+            } else {
+                // If this is a DOB input, default year to 22 years ago for instant convenience
+                const isDob = inputEl.id && inputEl.id.toLowerCase().includes('dob');
+                const defaultYear = isDob ? (new Date().getFullYear() - 22) : new Date().getFullYear();
+                ranklyCalSelectedDate = new Date(defaultYear, 0, 15);
+                ranklyCalCurrentDate = new Date(defaultYear, 0, 1);
+            }
+
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.closeRanklyCalendar = function() {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (popover) {
+                popover.classList.add('hidden');
+            }
+        };
+
+        window.renderRanklyCalendarGrid = function() {
+            const monthSelect = document.getElementById('ranklyCalMonthSelect');
+            const yearSelect = document.getElementById('ranklyCalYearSelect');
+            const daysGrid = document.getElementById('ranklyCalDaysGrid');
+            const ageBadgeText = document.getElementById('ranklyCalAgeText');
+
+            const year = ranklyCalCurrentDate.getFullYear();
+            const month = ranklyCalCurrentDate.getMonth();
+
+            if (monthSelect) monthSelect.value = month;
+            if (yearSelect) yearSelect.value = year;
+
+            if (!daysGrid) return;
+            daysGrid.innerHTML = '';
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            // Render empty padding cells
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'rankly-cal-day-cell empty';
+                daysGrid.appendChild(emptyCell);
+            }
+
+            // Render day cells
+            for (let d = 1; d <= daysInMonth; d++) {
+                const cell = document.createElement('div');
+                cell.className = 'rankly-cal-day-cell';
+                cell.textContent = d;
+
+                const thisDate = new Date(year, month, d);
+                const isToday = thisDate.toDateString() === today.toDateString();
+                const isSelected = ranklyCalSelectedDate && thisDate.toDateString() === ranklyCalSelectedDate.toDateString();
+
+                if (isToday) cell.classList.add('today');
+                if (isSelected) cell.classList.add('selected');
+
+                cell.onclick = (e) => {
+                    e.stopPropagation();
+                    ranklyCalSelectedDate = new Date(year, month, d);
+                    window.renderRanklyCalendarGrid();
+                    window.ranklyCalendarApply();
+                };
+
+                daysGrid.appendChild(cell);
+            }
+
+            // Update live age indicator badge
+            if (ranklyCalSelectedDate && ageBadgeText) {
+                let age = today.getFullYear() - ranklyCalSelectedDate.getFullYear();
+                const m = today.getMonth() - ranklyCalSelectedDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < ranklyCalSelectedDate.getDate())) {
+                    age--;
+                }
+                const formatted = ranklyCalSelectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                if (age >= 18) {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-emerald-600 dark:text-emerald-400 font-bold">${age} yrs (Eligible 18+)</span>`;
+                } else if (age >= 15) {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-indigo-600 dark:text-indigo-400 font-bold">${age} yrs (Candidate 15+)</span>`;
+                } else {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-amber-600 font-bold">${age} yrs old</span>`;
+                }
+            } else if (ageBadgeText) {
+                ageBadgeText.textContent = 'Pick Date of Birth';
+            }
+        };
+
+        window.ranklyCalendarPrevMonth = function() {
+            ranklyCalCurrentDate.setMonth(ranklyCalCurrentDate.getMonth() - 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarNextMonth = function() {
+            ranklyCalCurrentDate.setMonth(ranklyCalCurrentDate.getMonth() + 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarOnSelectChange = function() {
+            const m = parseInt(document.getElementById('ranklyCalMonthSelect').value, 10);
+            const y = parseInt(document.getElementById('ranklyCalYearSelect').value, 10);
+            ranklyCalCurrentDate = new Date(y, m, 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarSelectPreset = function(yearsAgo) {
+            const now = new Date();
+            const targetYear = now.getFullYear() - yearsAgo;
+            ranklyCalSelectedDate = new Date(targetYear, now.getMonth(), now.getDate());
+            ranklyCalCurrentDate = new Date(targetYear, now.getMonth(), 1);
+            window.renderRanklyCalendarGrid();
+            window.ranklyCalendarApply();
+        };
+
+        window.ranklyCalendarSetToday = function() {
+            const now = new Date();
+            ranklyCalSelectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            ranklyCalCurrentDate = new Date(now.getFullYear(), now.getMonth(), 1);
+            window.renderRanklyCalendarGrid();
+            window.ranklyCalendarApply();
+        };
+
+        window.ranklyCalendarApply = function() {
+            if (!ranklyCalTargetInput || !ranklyCalSelectedDate) return;
+            const y = ranklyCalSelectedDate.getFullYear();
+            const m = String(ranklyCalSelectedDate.getMonth() + 1).padStart(2, '0');
+            const d = String(ranklyCalSelectedDate.getDate()).padStart(2, '0');
+            const dateVal = `${y}-${m}-${d}`;
+
+            ranklyCalTargetInput.value = dateVal;
+
+            // Trigger change & input events so any age calculation functions trigger
+            ranklyCalTargetInput.dispatchEvent(new Event('change', { bubbles: true }));
+            ranklyCalTargetInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            // Explicitly call candidate / org age helpers
+            if (ranklyCalTargetInput.id === 'orgDob' && typeof window.calculateOrgAge === 'function') {
+                window.calculateOrgAge(dateVal);
+            }
+            if (ranklyCalTargetInput.id === 'slideRegDob' && typeof window.calculateCandidateAge === 'function') {
+                window.calculateCandidateAge(dateVal);
+            }
+
+            window.closeRanklyCalendar();
+        };
+
+        // ─────────────────────────────────────────────────────────────
+        // ─── EXECUTIVE INTERVIEW SCHEDULING CALENDAR CONTROLLER ───
+        // ─────────────────────────────────────────────────────────────
+        let activeSchedulingCandidateId = null;
+
+        window.openInterviewScheduleModal = function(candId = null, candName = null) {
+            activeSchedulingCandidateId = candId;
+            const modal = document.getElementById('interviewCalendarModal');
+            if (!modal) return;
+
+            const nameEl = document.getElementById('scheduleCandName');
+            if (candName && nameEl) {
+                nameEl.textContent = candName;
+            } else if (!candId) {
+                const interviewCand = (window.pipeline || []).find(c => c.stage === 'interview') || (window.pipeline || [])[0];
+                if (interviewCand && nameEl) {
+                    nameEl.textContent = interviewCand.name;
+                    activeSchedulingCandidateId = interviewCand.id;
+                } else if (nameEl) {
+                    nameEl.textContent = 'Selected Candidate';
+                }
+            }
+
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const y = tomorrow.getFullYear();
+            const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const d = String(tomorrow.getDate()).padStart(2, '0');
+            const dateInput = document.getElementById('scheduleDateInput');
+            if (dateInput) dateInput.value = `${y}-${m}-${d}`;
+
+            modal.style.display = 'flex';
+        };
+
+        window.confirmInterviewSchedule = function() {
+            const date = document.getElementById('scheduleDateInput')?.value;
+            const time = document.getElementById('scheduleTimeSelect')?.value || '02:00 PM';
+            const platform = document.getElementById('schedulePlatformSelect')?.value || 'Google Meet';
+            const round = document.getElementById('scheduleRoundSelect')?.value || 'Technical Round';
+
+            if (!date) {
+                showToast('Please select an interview date', 'error');
+                return;
+            }
+
+            if (activeSchedulingCandidateId && window.pipeline) {
+                const cand = window.pipeline.find(c => c.id === activeSchedulingCandidateId);
+                if (cand) {
+                    cand.stage = 'interview';
+                    cand.scheduledDate = date;
+                    cand.scheduledTime = time;
+                    cand.scheduledPlatform = platform;
+                    cand.scheduledRound = round;
+                    if (window.setStoredData) window.setStoredData('rankly_pipeline', window.pipeline);
+                    if (window.renderPipeline) window.renderPipeline();
+                    if (window.renderAnalytics) window.renderAnalytics();
+                }
+            }
+
+            closeModal('interviewCalendarModal');
+            showToast(`📅 Interview booked for ${date} at ${time} via ${platform}!`, 'success');
+        };
+
+        // Initialize Calendar when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => window.initRanklyCalendar());
+        } else {
+            window.initRanklyCalendar();
+        }
 
         // Dual-Portal Path & Error Handler on Load
         (function checkDualPortalPath() {

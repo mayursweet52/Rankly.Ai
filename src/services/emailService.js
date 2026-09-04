@@ -6,7 +6,9 @@ const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
 const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
 
 const transporter = nodemailer.createTransport({
-    pool: false,
+    pool: true,
+    maxConnections: 5,
+    maxMessages: 100,
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: smtpPort,
     secure: isSecure,
@@ -18,6 +20,13 @@ const transporter = nodemailer.createTransport({
     greetingTimeout: 8000,
     socketTimeout: 8000,
     tls: { rejectUnauthorized: false }
+});
+
+// Pre-warm the pooled connection in background
+transporter.verify().then(() => {
+    console.log('⚡ [SMTP Pool] Gmail connection pool warmed and ready.');
+}).catch(err => {
+    console.warn('⚠️ [SMTP Pool Warmup Notice]:', err.message);
 });
 
 function sendViaPythonSmtp({ to, subject, html, text }) {
@@ -75,16 +84,7 @@ async function sendSystemEmail({ to, subject, html, text }) {
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
     const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
 
-    // 1. Tier 1: Dedicated Python SSL SMTP (Guaranteed 100% Delivery on Windows / Linux)
-    try {
-        const pyRes = await sendViaPythonSmtp({ to: cleanRecipient, subject, html, text });
-        console.log("✅ E-mail Successfully Bhej Diya Gaya (Python SSL):", pyRes.message);
-        return { success: true, method: 'python-smtp', messageId: 'OK' };
-    } catch (pyErr) {
-        console.warn("⚠️ Python SSL attempt failed, trying Nodemailer:", pyErr.message);
-    }
-
-    // 1. Tier 1: Direct Nodemailer SMTP (Port 465 SSL via smtp.gmail.com - rankly.ai.com@gmail.com)
+    // 1. Tier 1: Fast Native Pooled Nodemailer SMTP (High-speed persistent connection)
     try {
         const info = await Promise.race([
             transporter.sendMail({
@@ -95,12 +95,21 @@ async function sendSystemEmail({ to, subject, html, text }) {
                 text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
                 html: html
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 12000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 7000))
         ]);
-        console.log("✅ E-mail Successfully Bhej Diya Gaya:", info?.response || info?.messageId || 'OK');
+        console.log("✅ E-mail Successfully Bhej Diya Gaya (Nodemailer Pool):", info?.response || info?.messageId || 'OK');
         return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
     } catch (smtpErr) {
-        console.error("❌ E-mail Bhejne Mein Error Aaya:", smtpErr);
+        console.warn("⚠️ Nodemailer Pool attempt failed, trying Python SSL backup:", smtpErr.message);
+    }
+
+    // 2. Tier 2: Dedicated Python SSL SMTP (Fallback)
+    try {
+        const pyRes = await sendViaPythonSmtp({ to: cleanRecipient, subject, html, text });
+        console.log("✅ E-mail Successfully Bhej Diya Gaya (Python SSL Backup):", pyRes.message);
+        return { success: true, method: 'python-smtp', messageId: 'OK' };
+    } catch (pyErr) {
+        console.warn("⚠️ Python SSL attempt failed, trying Resend API:", pyErr.message);
     }
 
 

@@ -1,4 +1,4 @@
-# ─── 1. BASE IMAGE ───
+﻿# ─── 1. BASE IMAGE ───
 FROM node:20-slim
 
 # ─── 2. SYSTEM DEPENDENCIES (OpenSSL for Prisma, Python for SSL mailer) ───
@@ -25,8 +25,11 @@ COPY . .
 
 # ─── 6. ENVIRONMENT & PORT ───
 ENV NODE_ENV=production
+ENV PORT=3000
 EXPOSE 3000
 
-# ─── 7. HEALTHCHECK & START COMMAND ───
-CMD ["sh", "-c", "npx prisma db push --skip-generate && node server.js"]
+# Create persistence directories
+RUN mkdir -p /app/data /app/uploads /app/backups
 
+# ─── 7. HEALTHCHECK & START COMMAND ───
+CMD ["sh", "-c", "npx prisma db push && node server.js"]

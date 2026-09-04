@@ -61,10 +61,27 @@ function validateEmailAddress(email, isEmployee = false) {
     return { valid: false, message: '❌ This email domain is not accepted. Please provide a real email address.' };
   }
 
-  // Candidate signup: Strict Gmail validation
-  if (!isEmployee) {
-    if (domain !== 'gmail.com') {
-      return { valid: false, message: '⚠️ Only Gmail addresses are allowed. Please use @gmail.com.' };
+  // Personal free email providers that are NOT allowed for company/corporate registration
+  const personalEmailDomains = [
+    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
+    'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+    'icloud.com', 'me.com', 'mac.com',
+    'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
+    'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
+  ];
+
+  if (isEmployee) {
+    // Company / Organization registration: Must be a corporate work email (e.g. name@company.com)
+    if (personalEmailDomains.includes(domain)) {
+      return { 
+        valid: false, 
+        message: `❌ Company registration requires a valid corporate work email (e.g. name@company.com). Free personal email providers like @${domain} are not allowed.` 
+      };
+    }
+  } else {
+    // Individual candidate registration: Strict Gmail validation
+    if (domain !== 'gmail.com' && domain !== 'googlemail.com') {
+      return { valid: false, message: '⚠️ Only Gmail addresses are allowed for individual candidate registration. Please use @gmail.com.' };
     }
   }
 
@@ -518,7 +535,7 @@ async function sendOtp(req, res) {
     console.log("👉 OTP bhejne ki koshish is email par ho rahi hai:", email);
     const recipientEmail = (email || identifier || to || workEmail || corporateEmail || '').toLowerCase().trim();
 
-    const isEmp = isEmployee === true || isEmployee === 'true' || type === 'corporate_email_verification';
+    const isEmp = isEmployee === true || isEmployee === 'true' || type === 'corporate_email_verification' || !!workEmail || !!corporateEmail || !!req.body.orgName || !!req.body.organizationName;
     const emailValidation = validateEmailAddress(recipientEmail, isEmp);
     if (!emailValidation.valid) {
       return res.status(400).json({ success: false, error: emailValidation.message, message: emailValidation.message });
@@ -565,8 +582,11 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Send real verification email directly to user's entered email address
-    const emailSent = await sendOTPEmail(recipientEmail, otpCode, type);
+    // Send real verification email in background (non-blocking for instant sub-second response)
+    sendOTPEmail(recipientEmail, otpCode, type).catch(err => {
+      console.error('⚠️ [Background OTP Email Error]:', err.message);
+    });
+
     console.log(`\n======================================================`);
     console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
     console.log(`======================================================\n`);
@@ -574,7 +594,9 @@ async function sendOtp(req, res) {
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully!",
-      details: `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
+      details: isEmp 
+        ? `Verification code sent to ${recipientEmail}. Please check your corporate mail inbox / spam folder.`
+        : `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
     });
   } catch (error) {
     console.error('Send OTP Error:', error);
@@ -743,8 +765,10 @@ async function forgotPassword(req, res) {
       }
     });
 
-    // Send real verification / reset code email
-    await sendOTPEmail(recipientEmail, otpCode, 'password_reset');
+    // Send real verification / reset code email in background
+    sendOTPEmail(recipientEmail, otpCode, 'password_reset').catch(err => {
+      console.error('⚠️ [Background Forgot Password OTP Email Error]:', err.message);
+    });
 
     return res.json({
       success: true,
@@ -1391,9 +1415,11 @@ async function resendOtp(req, res) {
       }
     });
 
-    // 3. Dispatch Email with user's resend subject
+    // 3. Dispatch Email with user's resend subject in background
     const subject = `Your rankly.ai OTP is: ${newOtp}`;
-    await sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject);
+    sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject).catch(err => {
+      console.error('⚠️ [Background Resend OTP Email Error]:', err.message);
+    });
 
     console.log(`\n======================================================`);
     console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);

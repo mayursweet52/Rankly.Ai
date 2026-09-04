@@ -2,6 +2,7 @@
 npm-debug.log
 .git
 .gitignore
+.vscode
 scratch
 *.log
 error-log.txt
@@ -10,3 +11,5 @@ error-log.txt
 health_logs.json
 security_threats.json
 cloudflared.exe
+*.docx
+*.pdf
