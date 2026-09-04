@@ -29,7 +29,8 @@ def send_email():
 
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
-        msg["From"] = f"Rankly.ai <{user}>"
+        msg["From"] = f"Rankly.ai Security <{user}>"
+        msg["Reply-To"] = user
         msg["To"] = to_email
 
         if text_content:

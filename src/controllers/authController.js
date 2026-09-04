@@ -574,14 +574,18 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Send real verification email in background (non-blocking for instant sub-second response)
-    sendOTPEmail(recipientEmail, otpCode, type).catch(err => {
-      console.error('⚠️ [Background OTP Email Error]:', err.message);
-    });
-
-    console.log(`\n======================================================`);
-    console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
-    console.log(`======================================================\n`);
+    // Send real verification email with await (parallel race resolves in ~3.4s)
+    try {
+      await Promise.race([
+        sendOTPEmail(recipientEmail, otpCode, type),
+        new Promise(resolve => setTimeout(() => resolve(true), 4000))
+      ]);
+      console.log(`\n======================================================`);
+      console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
+      console.log(`======================================================\n`);
+    } catch (emailErr) {
+      console.warn('⚠️ [OTP Email Dispatch Warning]:', emailErr.message);
+    }
 
     return res.status(200).json({
       success: true,
@@ -1408,15 +1412,19 @@ async function resendOtp(req, res) {
       }
     });
 
-    // 3. Dispatch Email with user's resend subject in background
-    const subject = `Your rankly.ai OTP is: ${newOtp}`;
-    sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject).catch(err => {
-      console.error('⚠️ [Background Resend OTP Email Error]:', err.message);
-    });
-
-    console.log(`\n======================================================`);
-    console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);
-    console.log(`======================================================\n`);
+    // 3. Dispatch Email with user's resend subject
+    const subject = `Your Rankly.ai verification code is ${newOtp}`;
+    try {
+      await Promise.race([
+        sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject),
+        new Promise(resolve => setTimeout(() => resolve(true), 4000))
+      ]);
+      console.log(`\n======================================================`);
+      console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);
+      console.log(`======================================================\n`);
+    } catch (emailErr) {
+      console.warn('⚠️ [Background Resend OTP Email Error]:', emailErr.message);
+    }
 
     return res.json({ 
       success: true, 

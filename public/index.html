@@ -7421,7 +7421,7 @@
                         otpInput.value = '';
                         otpInput.focus();
                     }
-                    showToast(`Verification code sent to ${value}. Please check your email inbox.`, 'success');
+                    showToast(`Verification code sent to ${value}. Please check your inbox and spam folder.`, 'success');
                     startOtpCountdown('emailOtpBtn', 'Send OTP');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -7522,7 +7522,7 @@
                         otpInput.value = '';
                         otpInput.focus();
                     }
-                    showToast(`Verification code sent to ${value}. Please check your email inbox.`, 'success');
+                    showToast(`Verification code sent to ${value}. Please check your inbox and spam folder.`, 'success');
                     startOtpCountdown('empEmailOtpBtn', 'Send OTP');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -9883,7 +9883,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 otpInput.value = '';
                                 otpInput.focus();
                             }
-                            showToast(`Verification code sent to ${email}. Please check your email inbox.`, 'success');
+                            showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
                             startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
@@ -10364,7 +10364,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 otpInput.value = '';
                                 otpInput.focus();
                             }
-                            showToast('Verification code sent to ' + email + '! Please check your inbox.', 'success');
+                            showToast('Verification code sent to ' + email + '! Please check your inbox and spam folder.', 'success');
                             startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP', 'error');

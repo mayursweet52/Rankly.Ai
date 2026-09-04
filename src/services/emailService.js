@@ -1,3 +1,7 @@
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
 const nodemailer = require('nodemailer');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -5,28 +9,20 @@ const path = require('path');
 const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 465;
 const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
 
+// High-speed direct IPv4 SMTP transport (no connection pooling to prevent dead socket stalls)
 const transporter = nodemailer.createTransport({
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100,
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: smtpPort,
     secure: isSecure,
+    family: 4, // Prevents 5-second Windows IPv6 DNS timeout
     auth: {
         user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
         pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
     },
-    connectionTimeout: 8000,
-    greetingTimeout: 8000,
-    socketTimeout: 8000,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
     tls: { rejectUnauthorized: false }
-});
-
-// Pre-warm the pooled connection in background
-transporter.verify().then(() => {
-    console.log('⚡ [SMTP Pool] Gmail connection pool warmed and ready.');
-}).catch(err => {
-    console.warn('⚠️ [SMTP Pool Warmup Notice]:', err.message);
 });
 
 function sendViaPythonSmtp({ to, subject, html, text }) {
@@ -82,42 +78,56 @@ async function sendSystemEmail({ to, subject, html, text, headers }) {
     if (!to) return { success: false, message: 'Recipient is required' };
     const cleanRecipient = to.toString().toLowerCase().trim();
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-    const fromAddress = process.env.SMTP_FROM || `"Rankly.ai" <${senderUser}>`;
+    const fromAddress = `"Rankly.ai Security" <${senderUser}>`;
 
-    const mailHeaders = headers || {
-        'X-Priority': '1',
-        'X-MSMail-Priority': 'High',
-        'Importance': 'high'
+    const mailHeaders = headers || {};
+
+    const cleanText = text || (html ? html.replace(/<[^>]*>?/gm, '') : '');
+
+    // Worker 1: Fast Node direct IPv4 SMTP
+    const sendViaNodeWorker = () => {
+        return transporter.sendMail({
+            from: fromAddress,
+            replyTo: senderUser,
+            to: cleanRecipient,
+            subject: subject,
+            text: cleanText,
+            html: html,
+            headers: mailHeaders
+        }).then(info => ({
+            success: true,
+            method: 'nodemailer-smtp',
+            messageId: info?.messageId || 'OK',
+            response: info?.response
+        }));
     };
 
-    // 1. Tier 1: Fast Native Pooled Nodemailer SMTP (High-speed persistent connection)
-    try {
-        const info = await Promise.race([
-            transporter.sendMail({
-                from: fromAddress,
-                replyTo: senderUser,
-                to: cleanRecipient,
-                subject: subject,
-                text: text || (html ? html.replace(/<[^>]*>?/gm, '') : ''),
-                html: html,
-                priority: 'high',
-                headers: mailHeaders
-            }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP Connection timeout')), 5000))
-        ]);
-        console.log("✅ E-mail Successfully Bhej Diya Gaya (Nodemailer Pool):", info?.response || info?.messageId || 'OK');
-        return { success: true, method: 'smtp', messageId: info?.messageId || 'OK' };
-    } catch (smtpErr) {
-        console.warn("⚠️ Nodemailer Pool attempt failed, trying Python SSL backup:", smtpErr.message);
-    }
+    // Worker 2: Fast Python SSL SMTP
+    const sendViaPythonWorker = () => {
+        return sendViaPythonSmtp({
+            to: cleanRecipient,
+            subject,
+            html,
+            text: cleanText
+        });
+    };
 
-    // 2. Tier 2: Dedicated Python SSL SMTP (Fallback)
+    // Race both simultaneously: whichever connects and sends first wins immediately (sub-3.5s)
     try {
-        const pyRes = await sendViaPythonSmtp({ to: cleanRecipient, subject, html, text });
-        console.log("✅ E-mail Successfully Bhej Diya Gaya (Python SSL Backup):", pyRes.message);
-        return { success: true, method: 'python-smtp', messageId: 'OK' };
-    } catch (pyErr) {
-        console.warn("⚠️ Python SSL attempt failed, trying Resend API:", pyErr.message);
+        const winner = await Promise.any([
+            sendViaNodeWorker(),
+            sendViaPythonWorker()
+        ]);
+        console.log(`✅ [ULTRA-FAST DISPATCH]: Email delivered cleanly to ${cleanRecipient} via ${winner.method}!`);
+        return { success: true, method: winner.method, messageId: winner.messageId || 'OK' };
+    } catch (parallelErr) {
+        console.warn("⚠️ Parallel dispatch attempt failed, retrying via Python SSL directly:", parallelErr.message);
+        try {
+            const fallbackRes = await sendViaPythonWorker();
+            return { success: true, method: 'python-fallback', messageId: 'OK' };
+        } catch (pyErr) {
+            console.warn("⚠️ Python fallback failed, trying Resend API:", pyErr.message);
+        }
     }
 
 
@@ -159,7 +169,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = customSubject || `${otp} is your Rankly.ai verification code`;
+    const subject = customSubject || `Your Rankly.ai verification code is ${otp}`;
 
     const html = `
     <!DOCTYPE html>
@@ -216,12 +226,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
         to: cleanRecipient,
         subject,
         html,
-        text,
-        headers: {
-            'X-Priority': '1',
-            'X-MSMail-Priority': 'High',
-            'Importance': 'high'
-        }
+        text
     });
 
     return res.success;
