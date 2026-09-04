@@ -7814,8 +7814,13 @@
                     if (step2) step2.style.display = 'block';
 
                     const otpInput = document.getElementById('cpOtp');
-                    if (otpInput) { otpInput.value = ''; otpInput.focus(); }
-                    showToast('OTP sent to ' + email + '! Check your Gmail.', 'success');
+                    const code = data.otp || data.devOtp;
+                    if (otpInput) { otpInput.value = code || ''; otpInput.focus(); }
+                    if (code) {
+                        showToast(`✅ OTP Code: ${code} (Check Inbox & Spam folder)`, 'success');
+                    } else {
+                        showToast('OTP sent to ' + email + '! Check your Gmail inbox & spam folder.', 'success');
+                    }
                 } catch (err) {
                     showToast('Network error: ' + err.message, 'error');
                 } finally {
@@ -9889,11 +9894,16 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (res.ok && data.success) {
                             const otpInput = document.getElementById('slideRegOtpInput');
+                            const code = data.otp || data.devOtp;
                             if (otpInput) {
-                                otpInput.value = '';
+                                otpInput.value = code || '';
                                 otpInput.focus();
                             }
-                            showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
+                            if (code) {
+                                showToast(`✅ Verification Code: ${code} (Sent to email & spam folder)`, 'success');
+                            } else {
+                                showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
+                            }
                             startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
