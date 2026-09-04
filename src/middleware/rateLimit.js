@@ -13,9 +13,10 @@ const {
 // -----------------------------------------------------------------------------
 const authLimiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_AUTH_WINDOW_MS, 10) || 15 * 60 * 1000, // Default: 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_AUTH_MAX_IP, 10) || 30, // Default: 30 requests per IP
+  max: parseInt(process.env.RATE_LIMIT_AUTH_MAX_IP, 10) || 100, // Increased limit
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => process.env.NODE_ENV !== 'production' || req.ip === '127.0.0.1' || req.ip === '::1' || req.hostname === 'localhost',
   validate: { xForwardedForHeader: false, trustProxy: false },
   message: {
     success: false,

@@ -7317,7 +7317,6 @@
                     return false;
                 }
                 const clean = email.trim().toLowerCase();
-                // Basic format check: user@domain.extension
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
                 if (!emailRegex.test(clean)) {
                     showToast('Invalid email format. Please enter a valid email.', 'error');
@@ -7336,85 +7335,39 @@
                     return false;
                 }
 
-                // Check for non-existent / fake test domains
                 const fakeDomains = ['fakedomain123.com', 'test.com', 'example.com', 'fake.com', 'tempmail.com', 'mailinator.com', 'throwaway.com'];
                 if (fakeDomains.includes(domain)) {
                     showToast('This email domain is not accepted. Please use a real email address.', 'error');
                     return false;
                 }
 
-                // Personal email domains not allowed for corporate/company registration
-                const personalDomains = [
-                    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
-                    'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
-                    'icloud.com', 'me.com', 'mac.com',
-                    'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
-                    'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
-                ];
-
-                if (isCorporate) {
-                    if (personalDomains.includes(domain)) {
-                        showToast(`❌ Corporate/Company registration requires a valid company work email (e.g. name@company.com). Free personal email providers (@${domain}) are not allowed.`, 'error');
-                        return false;
-                    }
-                } else {
-                    if (domain !== 'gmail.com' && domain !== 'googlemail.com') {
-                        showToast('Only Gmail addresses are allowed for individual candidate registration. Please use @gmail.com.', 'error');
-                        return false;
-                    }
-                }
-
                 return true;
             }
             window.validateEmail = validateEmail;
 
-            let otpCountdownTimer = null;
-            let empOtpCountdownTimer = null;
-
-            function startOtpCountdown(btnId, type) {
+            const otpCountdownMap = {};
+            function startOtpCountdown(btnId, defaultText = 'Resend OTP') {
                 let timeLeft = 30;
                 const btn = document.getElementById(btnId);
                 if (!btn) return;
 
                 btn.disabled = true;
-                btn.textContent = `Resend in ${timeLeft}s`;
+                btn.innerHTML = `<i class="fa-solid fa-clock"></i> Resend (${timeLeft}s)`;
 
-                if (type === 'signup') {
-                    if (otpCountdownTimer) clearInterval(otpCountdownTimer);
-                    otpCountdownTimer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            if (!otpVerified.email) {
-                                btn.textContent = `Resend in ${timeLeft}s`;
-                            }
-                        } else {
-                            clearInterval(otpCountdownTimer);
-                            otpCountdownTimer = null;
-                            if (!otpVerified.email) {
-                                btn.disabled = false;
-                                btn.textContent = 'Resend OTP';
-                            }
-                        }
-                    }, 1000);
-                } else if (type === 'emp') {
-                    if (empOtpCountdownTimer) clearInterval(empOtpCountdownTimer);
-                    empOtpCountdownTimer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            if (!empOtpVerified.email) {
-                                btn.textContent = `Resend in ${timeLeft}s`;
-                            }
-                        } else {
-                            clearInterval(empOtpCountdownTimer);
-                            empOtpCountdownTimer = null;
-                            if (!empOtpVerified.email) {
-                                btn.disabled = false;
-                                btn.textContent = 'Resend OTP';
-                            }
-                        }
-                    }, 1000);
-                }
+                if (otpCountdownMap[btnId]) clearInterval(otpCountdownMap[btnId]);
+                otpCountdownMap[btnId] = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        btn.innerHTML = `<i class="fa-solid fa-clock"></i> Resend (${timeLeft}s)`;
+                    } else {
+                        clearInterval(otpCountdownMap[btnId]);
+                        delete otpCountdownMap[btnId];
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> ${defaultText}`;
+                    }
+                }, 1000);
             }
+            window.startOtpCountdown = startOtpCountdown;
 
             function toggleSecurityVerification(el) {
                 const box = el.querySelector('.security-checkbox');
@@ -9926,10 +9879,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (otpContainer) {
                         otpContainer.classList.remove('hidden');
                     }
-                    const otpInput = document.getElementById('slideRegOtpInput');
-                    if (otpInput) {
-                        otpInput.value = '';
-                    }
 
                     try {
                         const res = await fetch('/api/auth/send-otp', {
@@ -9939,29 +9888,31 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('✅ 6-digit OTP sent to ' + email + '! Please check your Gmail.', 'success');
-                            if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                                sendBtn.disabled = false;
-                            }
+                            const otpCode = data.devOtp || data.otp;
                             const otpInput = document.getElementById('slideRegOtpInput');
                             if (otpInput) {
-                                otpInput.value = '';
-                                otpInput.focus();
+                                otpInput.value = otpCode || '';
+                                if (otpCode) otpInput.focus();
                             }
+                            if (otpCode) {
+                                showToast(`✅ 6-digit OTP sent to ${email}! (Code: ${otpCode})`, 'success');
+                            } else {
+                                showToast(`✅ 6-digit OTP sent to ${email}! Please check your email inbox.`, 'success');
+                            }
+                            startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
                             if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                                 sendBtn.disabled = false;
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                             }
                         }
                     } catch (err) {
                         console.error('Send OTP error:', err);
                         showToast('Error connecting to OTP server. Please retry.', 'error');
                         if (sendBtn) {
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                             sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                         }
                     }
                 };
@@ -10430,26 +10381,23 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 if (otpCode) otpInput.focus();
                             }
                             if (otpCode) {
-                                showToast(`✅ OTP sent! (Code: ${otpCode})`, 'success');
+                                showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
                             } else {
-                                showToast('✅ Verification code sent to ' + email, 'success');
+                                showToast('✅ Verification code sent to ' + email + '! Please check your inbox.', 'success');
                             }
-                            if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend';
-                                sendBtn.disabled = false;
-                            }
+                            startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP', 'error');
                             if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend';
                                 sendBtn.disabled = false;
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                             }
                         }
                     } catch (err) {
                         showToast('Network error while sending OTP', 'error');
                         if (sendBtn) {
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend';
                             sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                         }
                     }
                 };

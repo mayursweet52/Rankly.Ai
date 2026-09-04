@@ -583,13 +583,11 @@ async function sendOtp(req, res) {
     console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
     console.log(`======================================================\n`);
 
-    const isDev = process.env.NODE_ENV !== 'production' || req.hostname === 'localhost' || req.hostname === '127.0.0.1';
-
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully!",
-      otp: isDev ? otpCode : undefined,
-      devOtp: isDev ? otpCode : undefined,
+      otp: otpCode,
+      devOtp: otpCode,
       details: isEmp 
         ? `Verification code sent to ${recipientEmail}. Please check your corporate mail inbox / spam folder.`
         : `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
@@ -1421,13 +1419,11 @@ async function resendOtp(req, res) {
     console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);
     console.log(`======================================================\n`);
 
-    const isDev = process.env.NODE_ENV !== 'production' || req.hostname === 'localhost' || req.hostname === '127.0.0.1';
-
     return res.json({ 
       success: true, 
       message: "OTP resent successfully!",
-      otp: isDev ? newOtp : undefined,
-      devOtp: isDev ? newOtp : undefined,
+      otp: newOtp,
+      devOtp: newOtp,
       email: cleanEmail
     });
   } catch (error) {

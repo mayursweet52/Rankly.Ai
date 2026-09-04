@@ -124,6 +124,9 @@ function resetAuthFailure(req, explicitIdentifier = null) {
  * Middleware: Express Rate Limiter with Exponential Backoff
  */
 function authBackoffLimiter(req, res, next) {
+  if (process.env.NODE_ENV !== 'production' || req.ip === '127.0.0.1' || req.ip === '::1' || req.hostname === 'localhost') {
+    return next();
+  }
   const config = getConfig();
   const ip = getClientIp(req);
   const account = getAccountIdentifier(req);
