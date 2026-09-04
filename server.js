@@ -70,7 +70,8 @@ app.use(compression({
       contentType.includes('application/zip') ||
       contentType.includes('application/pdf')
     )) {
-      return false; // Skip already compressed payloads
+      // Skip already compressed payloads
+      return false;
     }
     return compression.filter(req, res);
   }
