@@ -130,6 +130,22 @@ async function register(req, res) {
     // Strict Email Validation
     const emailValidation = validateEmailAddress(normalizedEmail, isEmp);
     if (!emailValidation.valid) return failAuth(res, req, emailValidation.message, normalizedEmail);
+
+    // Corporate / Organization Workspace Registration requires verified workmail OTP
+    if (isEmp) {
+      const verifiedOtp = await prisma.oTP.findFirst({
+        where: {
+          email: normalizedEmail,
+          isUsed: true,
+          createdAt: { gte: new Date(Date.now() - 30 * 60 * 1000) }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      if (!verifiedOtp) {
+        return failAuth(res, req, '❌ Corporate work email verification required. Please verify the 6-digit OTP sent to your work email before creating workspace.', normalizedEmail);
+      }
+    }
+
     if (!effectiveFirstName) return failAuth(res, req, 'First name is required.', normalizedEmail);
     if (!effectivePassword) return failAuth(res, req, 'Password is required.', normalizedEmail);
     if (effectivePassword.length < 6) return failAuth(res, req, 'Password must be at least 6 characters long.', normalizedEmail);

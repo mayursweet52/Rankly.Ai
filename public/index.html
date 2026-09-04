@@ -4983,86 +4983,123 @@
                                             </div>
                                         </div>
 
-                                        <div id="orgSecurityBanner" class="mt-1.5 p-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                                            <i class="fa-solid fa-shield-halved text-amber-500 text-xs"></i>
-                                            <span>Security verification required to unlock profile fields.</span>
+                                        <div id="orgSecurityBanner" class="mt-2 p-2 rounded-lg border border-amber-500/20 bg-amber-500/10 flex items-center gap-2 text-[11px] text-amber-800 dark:text-amber-200">
+                                            <i class="fa-solid fa-shield-halved text-amber-600 dark:text-amber-400 text-xs"></i>
+                                            <span>Corporate email &amp; OTP verification required to unlock workspace creation.</span>
                                         </div>
                                     </div>
 
-                                    <!-- 2-Column Responsive Grid for Organization Profile Fields -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-3">
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
-                                            <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
+                                    <!-- LOCKED STATE CARD (Visible until OTP Verified) -->
+                                    <div id="orgLockedStateCard" class="mt-2 p-5 rounded-2xl border border-dashed border-[var(--border-color)] bg-[var(--bg-card)] text-center transition-all shadow-xs mb-3">
+                                        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg mb-2.5 border border-amber-500/20">
+                                            <i class="fa-solid fa-lock"></i>
                                         </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
-                                            <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
-                                            <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
-                                            <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
-                                            <select id="orgRole" class="login-select">
-                                                <option value="admin">Administrator / Lead</option>
-                                                <option value="hr" selected>HR / Recruiter</option>
-                                                <option value="hiring_manager">Hiring Manager</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
-                                            <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
-                                            <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
-                                        </div>
-
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
-                                            <div class="login-phone-wrapper">
-                                                <span class="login-phone-prefix">+91</span>
-                                                <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
-                                            </div>
-                                        </div>
-
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
-                                            <div class="password-toggle w-full">
-                                                <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
-                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
-                                            </div>
+                                        <h4 class="text-xs font-bold text-[var(--text-primary)] mb-1 uppercase tracking-wider">Workspace Setup Form Locked</h4>
+                                        <p class="text-[11px] text-[var(--text-muted)] max-w-xs mx-auto mb-3 leading-relaxed">
+                                            Please enter your official company work email above, click <strong>Send OTP</strong>, and enter your 6-digit verification code. Once verified, the organization and admin profile fields will instantly unlock!
+                                        </p>
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-[10px] font-bold border border-amber-500/20">
+                                            <i class="fa-solid fa-key text-[10px]"></i> OTP Verification Required
                                         </div>
                                     </div>
 
-                                    <!-- Submit Button & Switcher -->
-                                    <div class="flex items-center gap-2.5 pb-2">
-                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
+                                    <!-- UNLOCKED PROFILE FIELDS (Hidden until corporate email OTP is verified) -->
+                                    <div id="orgProfileUnlockedFields" class="hidden transition-all duration-300">
+                                        <div class="p-2.5 mb-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-200">
+                                            <div class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 text-sm"></i>
+                                                <span>Workmail Verified: <strong id="verifiedOrgEmailBadge" class="font-bold"></strong></span>
+                                            </div>
+                                            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">Unlocked</span>
+                                        </div>
+
+                                        <!-- 2-Column Responsive Grid for Organization Profile Fields -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-3">
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
+                                                <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
+                                                <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
+                                                <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
+                                                <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
+                                                <select id="orgRole" class="login-select">
+                                                    <option value="admin">Administrator / Lead</option>
+                                                    <option value="hr" selected>HR / Recruiter</option>
+                                                    <option value="hiring_manager">Hiring Manager</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
+                                                <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
+                                                <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
+                                            </div>
+
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
+                                                <div class="login-phone-wrapper">
+                                                    <span class="login-phone-prefix">+91</span>
+                                                    <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
+                                                </div>
+                                            </div>
+
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
+                                                <div class="password-toggle w-full">
+                                                    <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
+                                                    <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button & Switcher -->
+                                        <div class="flex items-center gap-2.5 pb-2">
+                                            <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
+                                                <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                                                    <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                </svg>
+                                                <span>Back to Sign In</span>
+                                            </button>
+                                            <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                                <span>REGISTER WORKSPACE</span>
+                                                <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Switcher when form is locked -->
+                                    <div id="orgLockedBackBtn" class="flex items-center justify-center pt-2">
+                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
                                             <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
                                                 <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                                 <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                                 <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                             </svg>
                                             <span>Back to Sign In</span>
-                                        </button>
-                                        <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                            <span>REGISTER WORKSPACE</span>
-                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            </svg>
                                         </button>
                                     </div>
                                 </form>
@@ -10438,6 +10475,52 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
+                window.orgEmailVerified = false;
+                window.verifiedOrgEmail = null;
+
+                window.resetOrgEmailVerification = function() {
+                    window.orgEmailVerified = false;
+                    window.verifiedOrgEmail = null;
+
+                    const unlockedFields = document.getElementById('orgProfileUnlockedFields');
+                    if (unlockedFields) unlockedFields.classList.add('hidden');
+
+                    const lockedCard = document.getElementById('orgLockedStateCard');
+                    if (lockedCard) lockedCard.classList.remove('hidden');
+
+                    const lockedBackBtn = document.getElementById('orgLockedBackBtn');
+                    if (lockedBackBtn) lockedBackBtn.classList.remove('hidden');
+
+                    const workEmailInput = document.getElementById('orgWorkEmailInput');
+                    if (workEmailInput) {
+                        workEmailInput.readOnly = false;
+                        workEmailInput.classList.remove('opacity-80', 'bg-gray-100', 'dark:bg-gray-800');
+                        workEmailInput.focus();
+                        workEmailInput.select();
+                    }
+
+                    const verifyBtn = document.getElementById('verifyOrgOtpBtn');
+                    if (verifyBtn) {
+                        verifyBtn.disabled = false;
+                        verifyBtn.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer';
+                        verifyBtn.innerText = 'Verify OTP';
+                    }
+
+                    const sendBtn = document.getElementById('sendOrgOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.disabled = false;
+                        sendBtn.innerText = 'Send OTP';
+                    }
+
+                    const banner = document.getElementById('orgSecurityBanner');
+                    if (banner) {
+                        banner.className = 'mt-2 p-2 rounded-lg border border-amber-500/20 bg-amber-500/10 flex items-center gap-2 text-[11px] text-amber-800 dark:text-amber-200';
+                        banner.innerHTML = '<i class="fa-solid fa-shield-halved text-amber-600 dark:text-amber-400 text-xs"></i><span>Corporate email &amp; OTP verification required to unlock workspace creation.</span>';
+                    }
+
+                    showToast('Workmail field unlocked. Please enter email and verify OTP.', 'info');
+                };
+
                 window.handleVerifyOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     const otp = (document.getElementById('orgOtpInput')?.value || '').replace(/\D/g, '').trim();
@@ -10458,12 +10541,50 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
+                            window.orgEmailVerified = true;
+                            window.verifiedOrgEmail = email;
+
                             const banner = document.getElementById('orgSecurityBanner');
                             if (banner) {
-                                banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
-                                banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
+                                banner.className = 'mt-2 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-200';
+                                banner.innerHTML = `
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 text-sm"></i>
+                                        <span>Corporate Email <strong>${escapeHtml(email)}</strong> verified!</span>
+                                    </div>
+                                    <button type="button" onclick="resetOrgEmailVerification()" class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 hover:underline cursor-pointer">Change Email</button>
+                                `;
                             }
-                            showToast('✅ Corporate Email Verified Successfully!', 'success');
+
+                            // Update Badge & Reveal Unlocked Fields
+                            const badge = document.getElementById('verifiedOrgEmailBadge');
+                            if (badge) badge.textContent = email;
+
+                            const lockedCard = document.getElementById('orgLockedStateCard');
+                            if (lockedCard) lockedCard.classList.add('hidden');
+
+                            const lockedBackBtn = document.getElementById('orgLockedBackBtn');
+                            if (lockedBackBtn) lockedBackBtn.classList.add('hidden');
+
+                            const unlockedFields = document.getElementById('orgProfileUnlockedFields');
+                            if (unlockedFields) unlockedFields.classList.remove('hidden');
+
+                            const workEmailInput = document.getElementById('orgWorkEmailInput');
+                            if (workEmailInput) {
+                                workEmailInput.readOnly = true;
+                                workEmailInput.classList.add('opacity-80', 'bg-gray-100', 'dark:bg-gray-800');
+                            }
+
+                            if (verifyBtn) {
+                                verifyBtn.disabled = true;
+                                verifyBtn.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white whitespace-nowrap shadow-xs cursor-default';
+                                verifyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verified';
+                            }
+
+                            showToast('🎉 Corporate email verified! Workspace registration form is now unlocked.', 'success');
+                            setTimeout(() => {
+                                document.getElementById('orgNameInput')?.focus();
+                            }, 150);
                         } else {
                             showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
                             if (verifyBtn) {
@@ -10508,6 +10629,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const phone = document.getElementById('orgPhone')?.value.trim();
                     const role = document.getElementById('orgRole')?.value || 'HR / Recruiter';
                     const password = document.getElementById('orgAdminPasswordInput')?.value.trim();
+
+                    // Security Gate: Ensure corporate workmail was verified via OTP
+                    if (!window.orgEmailVerified || window.verifiedOrgEmail !== email) {
+                        showToast('❌ Corporate work email OTP verification is required before workspace registration.', 'error');
+                        document.getElementById('orgWorkEmailInput')?.focus();
+                        return;
+                    }
 
                     if (!orgName || !email || !firstName || !password) {
                         showToast('Please fill all required fields', 'error');
