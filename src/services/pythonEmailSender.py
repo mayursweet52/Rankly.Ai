@@ -40,10 +40,18 @@ def send_email():
         elif not text_content:
             msg.attach(MIMEText(subject, "plain", "utf-8"))
 
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=12)
-        server.login(user, password)
-        server.sendmail(user, [to_email], msg.as_string())
-        server.quit()
+        try:
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=6)
+            server.login(user, password)
+            server.sendmail(user, [to_email], msg.as_string())
+            server.quit()
+        except Exception:
+            # Fallback to Port 587 STARTTLS (Universally open on cloud/VPS/Docker)
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=6)
+            server.starttls()
+            server.login(user, password)
+            server.sendmail(user, [to_email], msg.as_string())
+            server.quit()
 
         print(json.dumps({"success": True, "message": f"Email delivered cleanly to {to_email}"}))
         sys.exit(0)

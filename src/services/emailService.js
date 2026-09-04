@@ -28,14 +28,26 @@ const transporter = nodemailer.createTransport({
 function sendViaPythonSmtp({ to, subject, html, text }) {
     return new Promise((resolve, reject) => {
         const scriptPath = path.join(__dirname, 'pythonEmailSender.py');
-        const py = spawn('python', [scriptPath]);
+        const pyCmd = process.platform === 'win32' ? 'python' : 'python3';
+        let py;
+        try {
+            py = spawn(pyCmd, [scriptPath]);
+        } catch (spawnErr) {
+            return reject(spawnErr);
+        }
+
         let stdoutData = '';
         let stderrData = '';
 
         const timer = setTimeout(() => {
-            py.kill();
-            reject(new Error('Python SMTP timeout after 10s'));
-        }, 10000);
+            try { py.kill(); } catch (e) {}
+            reject(new Error('Python SMTP timeout after 7s'));
+        }, 7000);
+
+        py.on('error', err => {
+            clearTimeout(timer);
+            reject(err);
+        });
 
         py.stdout.on('data', d => { stdoutData += d.toString(); });
         py.stderr.on('data', d => { stderrData += d.toString(); });
@@ -72,21 +84,26 @@ function sendViaPythonSmtp({ to, subject, html, text }) {
 }
 
 /**
- * Universal Multi-Tier System Email Sender (Resilient to cloud SMTP timeouts)
+ * Universal Multi-Tier System Email Sender (Resilient to cloud SMTP timeouts & port blocks)
  */
 async function sendSystemEmail({ to, subject, html, text, headers }) {
     if (!to) return { success: false, message: 'Recipient is required' };
     const cleanRecipient = to.toString().toLowerCase().trim();
     const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+    const senderPass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim();
     const fromAddress = `"Rankly.ai Security" <${senderUser}>`;
 
     const mailHeaders = headers || {};
-
     const cleanText = text || (html ? html.replace(/<[^>]*>?/gm, '') : '');
 
-    // Worker 1: Fast Node direct IPv4 SMTP
-    const sendViaNodeWorker = () => {
-        return transporter.sendMail({
+    // Worker 1: Native Node Port 465 SSL
+    const sendViaNodeSSL = () => {
+        const t = nodemailer.createTransport({
+            service: 'gmail',
+            auth: { user: senderUser, pass: senderPass },
+            tls: { rejectUnauthorized: false }
+        });
+        return t.sendMail({
             from: fromAddress,
             replyTo: senderUser,
             to: cleanRecipient,
@@ -96,13 +113,36 @@ async function sendSystemEmail({ to, subject, html, text, headers }) {
             headers: mailHeaders
         }).then(info => ({
             success: true,
-            method: 'nodemailer-smtp',
-            messageId: info?.messageId || 'OK',
-            response: info?.response
+            method: 'nodemailer-ssl-465',
+            messageId: info?.messageId || 'OK'
         }));
     };
 
-    // Worker 2: Fast Python SSL SMTP
+    // Worker 2: Native Node Port 587 STARTTLS (Universally open on Cloud/VPS/Docker firewalls)
+    const sendViaNodeSTARTTLS = () => {
+        const t = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: { user: senderUser, pass: senderPass },
+            tls: { rejectUnauthorized: false }
+        });
+        return t.sendMail({
+            from: fromAddress,
+            replyTo: senderUser,
+            to: cleanRecipient,
+            subject: subject,
+            text: cleanText,
+            html: html,
+            headers: mailHeaders
+        }).then(info => ({
+            success: true,
+            method: 'nodemailer-starttls-587',
+            messageId: info?.messageId || 'OK'
+        }));
+    };
+
+    // Worker 3: Fast Python SSL/STARTTLS Worker
     const sendViaPythonWorker = () => {
         return sendViaPythonSmtp({
             to: cleanRecipient,
@@ -112,21 +152,22 @@ async function sendSystemEmail({ to, subject, html, text, headers }) {
         });
     };
 
-    // Race both simultaneously: whichever connects and sends first wins immediately (sub-3.5s)
+    // Race all active routes concurrently: whichever is open and reaches Google first wins immediately
     try {
         const winner = await Promise.any([
-            sendViaNodeWorker(),
+            sendViaNodeSSL(),
+            sendViaNodeSTARTTLS(),
             sendViaPythonWorker()
         ]);
         console.log(`✅ [ULTRA-FAST DISPATCH]: Email delivered cleanly to ${cleanRecipient} via ${winner.method}!`);
         return { success: true, method: winner.method, messageId: winner.messageId || 'OK' };
     } catch (parallelErr) {
-        console.warn("⚠️ Parallel dispatch attempt failed, retrying via Python SSL directly:", parallelErr.message);
+        console.warn("⚠️ Parallel dispatch failed, trying direct STARTTLS retry:", parallelErr.message);
         try {
-            const fallbackRes = await sendViaPythonWorker();
-            return { success: true, method: 'python-fallback', messageId: 'OK' };
-        } catch (pyErr) {
-            console.warn("⚠️ Python fallback failed, trying Resend API:", pyErr.message);
+            const fallbackRes = await sendViaNodeSTARTTLS();
+            return fallbackRes;
+        } catch (starttlsErr) {
+            console.warn("⚠️ Direct STARTTLS retry failed, trying Resend API:", starttlsErr.message);
         }
     }
 

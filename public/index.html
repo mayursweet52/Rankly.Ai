@@ -4547,7 +4547,7 @@
                                         <div>
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address *</label>
                                             <div class="flex gap-2">
-                                                <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="alex@gmail.com" required />
+                                                <input type="email" id="slideRegEmail" name="candidate_signup_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" placeholder="alex@gmail.com" required />
                                                 <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-[#183B33] hover:text-[#183B33] whitespace-nowrap transition-all cursor-pointer">
                                                     Send OTP
                                                 </button>
@@ -4752,7 +4752,7 @@
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Registered Account Email *</label>
                                                 <div class="relative w-full">
-                                                    <input type="email" id="inlineResetEmail" class="login-input pr-9" placeholder="alex@gmail.com" required />
+                                                    <input type="email" id="inlineResetEmail" name="inline_reset_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input pr-9" placeholder="alex@gmail.com" required />
                                                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#888880] pointer-events-none"><i class="fa-regular fa-envelope"></i></span>
                                                 </div>
                                             </div>
@@ -4954,12 +4954,12 @@
                                     <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Register Workspace</h3>
                                     <p class="text-[11px] text-[var(--text-muted)]">Verify your email to setup your organization workspace.</p>
                                 </div>
-                                <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
+                                <form id="orgForm" class="w-full" autocomplete="off" onsubmit="event.preventDefault(); handleOrgRegistration();">
                                     <!-- Email & OTP Verification -->
                                     <div class="mb-3">
                                         <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Email *</label>
                                         <div class="flex gap-2 mb-1">
-                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="name@company.com" />
+                                            <input id="orgWorkEmailInput" name="org_workspace_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" required type="email" placeholder="name@company.com" />
                                             <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
@@ -5110,7 +5110,7 @@
                     <div id="fpResetStep1">
                         <div class="mb-3">
                             <label class="form-label font-bold text-[var(--text-primary)]">Registered Account Email Address *</label>
-                            <input type="email" id="fpResetEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <input type="email" id="fpResetEmail" name="fp_reset_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="yourname@gmail.com" />
                             <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send a 6-digit verification code to this Gmail address.</span>
                         </div>
                         <button type="button" onclick="handleSendResetOtp()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Verification Code</button>
@@ -5162,12 +5162,12 @@
 
             <!-- OPTION 2: CHANGE PASSWORD (EMAIL -> OTP + CURRENT PASSWORD -> DIRECTLY UNLOCK NEW PASSWORD FIELDS) -->
             <div id="modalChangeSection" class="hidden">
-                <form id="changePasswordForm" onsubmit="event.preventDefault();">
+                <form id="changePasswordForm" autocomplete="off" onsubmit="event.preventDefault();">
                     <!-- Change Step 1: Email & Send OTP -->
                     <div id="cpStep1">
                         <div class="mb-3">
                             <label class="form-label font-bold text-[var(--text-primary)]">Your Account Email Address *</label>
-                            <input type="email" id="cpEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <input type="email" id="cpEmail" name="cp_account_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="yourname@gmail.com" />
                             <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send an OTP code to verify your authorization to change password.</span>
                         </div>
                         <button type="button" onclick="handleSendChangeOtp()" class="btn-primary w-full mt-2" id="cpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send OTP Code</button>
@@ -5311,7 +5311,7 @@
                 <div class="mb-4">
                     <label class="form-label">Email Address *</label>
                     <div class="otp-row">
-                        <input type="email" id="signupEmail" class="form-input" required placeholder="example123@gmail.com" />
+                        <input type="email" id="signupEmail" name="cand_modal_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="example123@gmail.com" />
                         <button type="button" onclick="sendOTP('email')" class="btn-secondary whitespace-nowrap" id="emailOtpBtn">Send OTP</button>
                     </div>
                     <div id="emailOtpRow" style="display:none; margin-top:8px;">
@@ -5408,12 +5408,12 @@
             <h3>Register Organization</h3>
             <p class="text-sm text-[#666660] mb-4">Provision enterprise recruitment workspace (Admin, HR, Hiring Manager, Employee).</p>
             
-            <form id="employeeSignupForm" novalidate>
+            <form id="employeeSignupForm" autocomplete="off" novalidate>
                 <!-- Corporate Email with OTP (Step 1: Verify first) -->
                 <div class="mb-4 p-3.5 bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl">
                     <label class="form-label font-bold text-[#111111]">Corporate Email (Verify to unlock workspace) *</label>
                     <div class="otp-row">
-                        <input type="email" id="empEmail" class="form-input bg-white" required placeholder="you@company.com" />
+                        <input type="email" id="empEmail" name="emp_modal_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input bg-white" required placeholder="you@company.com" />
                         <button type="button" onclick="sendEmpOTP('email')" class="btn-secondary whitespace-nowrap" id="empEmailOtpBtn">Send OTP</button>
                     </div>
                     <div id="empEmailOtpRow" style="display:none; margin-top:8px;">
