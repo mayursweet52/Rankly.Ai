@@ -275,7 +275,7 @@ Be precise, technical, and direct.`;
     console.error("❌ Nemotron AI Error:", error);
     return res.status(500).json({ 
       success: false, 
-      error: "Nemotron se connect nahi ho paya.",
+      error: "Unable to connect to the Nemotron AI engine. Please verify the AI service configuration.",
       details: error.message 
     });
   }

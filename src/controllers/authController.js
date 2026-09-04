@@ -536,11 +536,9 @@ async function sendOtp(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: `Verification code sent to ${recipientEmail}. Please check your email inbox and spam folder.`,
+      message: `A 6-digit verification code has been sent to ${recipientEmail}. Please check your inbox or spam folder.`,
       email: recipientEmail,
-      details: isEmp 
-        ? `Verification code sent to ${recipientEmail}. Please check your corporate mail inbox / spam folder.`
-        : `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
+      details: `A 6-digit verification code has been sent to ${recipientEmail}. Please check your inbox or spam folder.`
     });
   } catch (error) {
     console.error('Send OTP Error:', error);

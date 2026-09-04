@@ -310,47 +310,62 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
     if (!to) return false;
     const cleanRecipient = to.toString().toLowerCase().trim();
     const isReset = type === 'password_reset';
-    const subject = customSubject || `Your Rankly.ai verification code is ${otp}`;
+    const subject = customSubject || (isReset 
+        ? `Password Reset Code: ${otp} — Rankly.ai` 
+        : `Your Rankly.ai Verification Code: ${otp}`);
 
     const html = `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Verification Code</title>
+      <title>${isReset ? 'Password Reset Verification' : 'Verification Code'}</title>
     </head>
-    <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
       <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
         <tr>
-          <td align="center" style="padding: 30px 15px;">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+          <td align="center" style="padding: 36px 16px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);">
               <tr>
-                <td style="padding: 24px 30px; text-align: left; border-bottom: 1px solid #f1f5f9;">
-                  <span style="font-size: 20px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
+                <td style="padding: 28px 32px 20px; text-align: left; border-bottom: 1px solid #f1f5f9;">
+                  <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
                 </td>
               </tr>
               <tr>
-                <td style="padding: 30px 30px 24px;">
-                  <h2 style="margin: 0 0 12px; font-size: 17px; font-weight: 700; color: #0f172a;">${isReset ? 'Password Reset Verification' : 'Your Verification Code'}</h2>
+                <td style="padding: 32px 32px 24px;">
+                  <h2 style="margin: 0 0 12px; font-size: 19px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px;">
+                    ${isReset ? 'Password Reset Request' : 'Verify Your Identity'}
+                  </h2>
                   <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #475569;">
-                    Use the 6-digit code below to complete your verification on Rankly.ai. This code is valid for <strong>10 minutes</strong>.
+                    ${isReset 
+                      ? 'We received a request to reset your password. Please use the 6-digit verification code below to proceed:' 
+                      : 'Thank you for choosing Rankly.ai. Please use the following 6-digit verification code to complete your verification:'}
                   </p>
                   
-                  <div style="background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; padding: 18px; text-align: center; margin-bottom: 24px;">
-                    <span style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 32px; font-weight: 800; letter-spacing: 8px; color: #183B33; display: inline-block;">
+                  <div style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #cbd5e1; padding: 22px; text-align: center; margin-bottom: 24px;">
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; margin-bottom: 8px;">
+                      Verification Code
+                    </div>
+                    <span style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 34px; font-weight: 800; letter-spacing: 8px; color: #183B33; display: inline-block;">
                       ${otp}
                     </span>
                   </div>
                   
-                  <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #64748b;">
-                    If you did not request this verification code, you can safely ignore this email. Never share this code with anyone.
+                  <div style="background-color: #f1f5f9; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
+                    <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #475569;">
+                      ⏱️ This code will expire in <strong>10 minutes</strong>. For your security, never share this code with anyone.
+                    </p>
+                  </div>
+                  
+                  <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #94a3b8;">
+                    If you did not make this request, you can safely disregard this message.
                   </p>
                 </td>
               </tr>
               <tr>
-                <td style="padding: 18px 30px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center; font-size: 12px; color: #94a3b8;">
-                  &copy; 2026 Rankly.ai Inc. All rights reserved.
+                <td style="padding: 20px 32px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center; font-size: 12px; color: #94a3b8;">
+                  &copy; 2026 Rankly.ai Inc. Enterprise Recruitment Intelligence.
                 </td>
               </tr>
             </table>
@@ -361,7 +376,7 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
     </html>
     `;
 
-    const text = `Rankly.ai Verification Code\n\nYour 6-digit verification code is: ${otp}\n\nThis code is valid for 10 minutes. Never share this code with anyone.\n\n© 2026 Rankly.ai Inc.`;
+    const text = `Rankly.ai Verification\n\nYour 6-digit verification code is: ${otp}\n\nThis code will expire in 10 minutes. For your security, never share this code with anyone.\n\n© 2026 Rankly.ai Inc.`;
 
     const res = await sendSystemEmail({
         to: cleanRecipient,
@@ -379,20 +394,20 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
  */
 async function sendInvitationEmail(toEmail, organizationName, role, inviteUrl) {
     const cleanRecipient = (toEmail || '').toString().toLowerCase().trim();
-    const subject = `🚀 You're invited to join ${organizationName} on Rankly.ai`;
+    const subject = `You're invited to join ${organizationName} on Rankly.ai`;
 
     const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-      <h2 style="color: #4f46e5; margin: 0 0 16px 0;">Rankly.ai Team Invitation</h2>
+      <h2 style="color: #183B33; margin: 0 0 16px 0;">Rankly.ai Team Invitation</h2>
       <p style="color: #334155; font-size: 15px;">
         You have been invited to join <strong>${organizationName}</strong> as a <strong>${role.toUpperCase()}</strong> on Rankly.ai.
       </p>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${inviteUrl}" style="background-color: #4f46e5; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;">
+        <a href="${inviteUrl}" style="background-color: #183B33; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;">
           Accept Invitation & Join Team
         </a>
       </div>
-      <p style="color: #64748b; font-size: 13px;">Or copy and paste this link in your browser: <br/><a href="${inviteUrl}" style="color: #4f46e5;">${inviteUrl}</a></p>
+      <p style="color: #64748b; font-size: 13px;">Or copy and paste this URL into your browser: <br/><a href="${inviteUrl}" style="color: #2563eb;">${inviteUrl}</a></p>
     </div>
     `;
 
@@ -418,16 +433,16 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
 
     const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-      <h2 style="color: #4f46e5; margin: 0 0 16px 0;">Application Update</h2>
+      <h2 style="color: #183B33; margin: 0 0 16px 0;">Application Status Update</h2>
       <p style="color: #334155; font-size: 15px;">Hello ${candidateName},</p>
       <p style="color: #334155; font-size: 15px;">
-        Your application status for <strong>${targetRole}</strong> has moved to: 
-        <span style="display: inline-block; background-color: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
+        Your application status for the position of <strong>${targetRole}</strong> has been updated to: 
+        <span style="display: inline-block; background-color: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
           ${stageLabels[stage] || stage}
         </span>
       </p>
-      ${customMessage ? `<div style="background-color: #f8fafc; border-left: 4px solid #4f46e5; padding: 12px; margin: 20px 0; color: #475569;">${customMessage}</div>` : ''}
-      <p style="color: #64748b; font-size: 13px; margin-top: 24px;">Thank you for your interest in joining our team!</p>
+      ${customMessage ? `<div style="background-color: #f8fafc; border-left: 4px solid #183B33; padding: 12px; margin: 20px 0; color: #475569;">${customMessage}</div>` : ''}
+      <p style="color: #64748b; font-size: 13px; margin-top: 24px;">Thank you for your interest in joining our organization.</p>
     </div>
     `;
 
@@ -441,40 +456,53 @@ async function sendCandidateStatusNotification(toEmail, candidateName, targetRol
 async function sendVerificationLinkEmail({ to, fullName, verifyLink, isResend = false, customSubject = null }) {
     if (!to) return false;
     const cleanRecipient = (to || '').toString().toLowerCase().trim();
-    const displayName = fullName || 'Developer';
+    const displayName = fullName || 'User';
     const subject = customSubject || (isResend 
-        ? 'Verify your rankly.ai account (Resend)' 
-        : 'Verify your rankly.ai account');
+        ? 'Verify your email address (Resend) — Rankly.ai' 
+        : 'Verify your email address — Rankly.ai');
 
     const html = `
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
-      <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px 16px; background-color: #f8fafc; color: #334155;">
+      <div style="max-width: 540px; margin: auto; background: #ffffff; padding: 36px 32px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
         
-        <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
-          <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
-          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">Supercharge Your Workflow with Automated Intelligence</p>
+        <div style="text-align: left; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
+          <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
         </div>
 
-        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">${isResend ? 'Verification Link Resent' : `Almost Done, ${displayName}!`}</h2>
-        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">${isResend ? 'Here is your fresh rankly.ai email verification link. Click below to verify your account and unlock your full dashboard:' : 'Your rankly.ai account has been created successfully. Click the button below to verify your email and unlock your full dashboard:'}</p>
+        <h2 style="color: #0f172a; margin: 0 0 14px 0; font-size: 20px; font-weight: 800;">
+          ${isResend ? 'Verification Link Resent' : `Welcome to Rankly.ai, ${displayName}!`}
+        </h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0;">
+          ${isResend 
+            ? 'Here is your new verification link. Please click the button below to verify your email address:' 
+            : 'Thank you for registering with Rankly.ai. To complete your account setup and ensure the security of your profile, please verify your email address by clicking the button below:'}
+        </p>
         
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${verifyLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">Verify Email Address</a>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${verifyLink}" style="background-color: #183B33; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(24, 59, 51, 0.25);">
+            Verify Email Address
+          </a>
         </div>
 
-        <p style="font-size: 13px; color: #64748b; text-align: center; line-height: 1.6;">
-          Or copy and paste this link into your browser:<br/>
-          <a href="${verifyLink}" style="color: #4f46e5; word-break: break-all;">${verifyLink}</a>
+        <div style="background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; padding: 14px 16px; margin: 24px 0;">
+          <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.5;">
+            🔒 <strong>Note:</strong> Once your email is verified, you will be directed to sign in with your credentials.
+          </p>
+        </div>
+
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.6; margin: 0;">
+          If the button above does not work, copy and paste this URL into your browser:<br/>
+          <a href="${verifyLink}" style="color: #2563eb; word-break: break-all;">${verifyLink}</a>
         </p>
 
-        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
-          &copy; 2026 rankly.ai. Built for next-gen developers.
+        <div style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 16px; text-align: center;">
+          &copy; 2026 Rankly.ai Inc. All rights reserved.
         </div>
       </div>
     </div>
     `;
 
-    const text = `Almost Done, ${displayName}!\n\nYour rankly.ai account has been created successfully. Click the link below to verify your email and unlock your dashboard:\n\n${verifyLink}\n\n© 2026 rankly.ai`;
+    const text = `Welcome to Rankly.ai, ${displayName}!\n\nPlease verify your email address by visiting the following link:\n\n${verifyLink}\n\nOnce verified, please sign in with your credentials.\n\n© 2026 Rankly.ai Inc.`;
 
     const res = await sendSystemEmail({
         to: cleanRecipient,
@@ -492,46 +520,47 @@ async function sendPasswordResetLinkEmail({ to, fullName, resetLink }) {
     if (!to) return false;
     const cleanRecipient = (to || '').toString().toLowerCase().trim();
     const displayName = fullName || 'User';
-    const subject = '🔐 Reset your rankly.ai password';
+    const subject = 'Reset Your Rankly.ai Password';
 
     const html = `
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
-      <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px 16px; background-color: #f8fafc; color: #334155;">
+      <div style="max-width: 540px; margin: auto; background: #ffffff; padding: 36px 32px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
         
-        <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
-          <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
-          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">Next-Gen AI Recruitment & Candidate Evaluation</p>
+        <div style="text-align: left; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
+          <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
         </div>
 
-        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">Password Reset Request</h2>
-        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">
+        <h2 style="color: #0f172a; margin: 0 0 14px 0; font-size: 20px; font-weight: 800;">Password Reset Request</h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0;">
           Hello ${displayName},<br/>
-          Your identity has been verified via OTP. Click the secure button below to set your new account password:
+          Your identity has been confirmed via verification code. Please click the button below to set a new password for your Rankly.ai account:
         </p>
         
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${resetLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${resetLink}" style="background-color: #183B33; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(24, 59, 51, 0.25);">
             Set New Password
           </a>
         </div>
 
-        <p style="font-size: 13px; color: #64748b; text-align: center; line-height: 1.6;">
-          Or copy and paste this link into your mobile or desktop browser:<br/>
-          <a href="${resetLink}" style="color: #4f46e5; word-break: break-all;">${resetLink}</a>
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.6; margin: 0;">
+          Or copy and paste this link into your browser:<br/>
+          <a href="${resetLink}" style="color: #2563eb; word-break: break-all;">${resetLink}</a>
         </p>
 
-        <p style="font-size: 12px; color: #94a3b8; text-align: center; margin-top: 20px;">
-          ⏳ This reset link is valid for 1 hour. If you did not request this, please ignore this email.
-        </p>
+        <div style="background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; padding: 12px 16px; margin-top: 24px;">
+          <p style="font-size: 12px; color: #64748b; margin: 0; line-height: 1.5;">
+            ⏳ This password reset link will expire in <strong>1 hour</strong>. If you did not request this, you can safely ignore this email.
+          </p>
+        </div>
 
-        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
-          &copy; 2026 rankly.ai. All rights reserved.
+        <div style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 16px; text-align: center;">
+          &copy; 2026 Rankly.ai Inc. All rights reserved.
         </div>
       </div>
     </div>
     `;
 
-    const text = `Hello ${displayName},\n\nYour identity has been verified via OTP. Click the link below to set your new password:\n\n${resetLink}\n\nThis link is valid for 1 hour.\n\n© 2026 rankly.ai`;
+    const text = `Hello ${displayName},\n\nYour identity has been verified via OTP. Please visit the following link to set your new password:\n\n${resetLink}\n\nThis link will expire in 1 hour.\n\n© 2026 Rankly.ai Inc.`;
 
     const res = await sendSystemEmail({
         to: cleanRecipient,

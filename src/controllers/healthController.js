@@ -212,7 +212,7 @@ async function handleApproveFix(req, res) {
                 <div style="background: #1e293b; border: 1px solid #ef4444; border-radius: 16px; padding: 36px; max-width: 480px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
                     <div style="font-size: 54px; margin-bottom: 12px;">⚠️</div>
                     <h2 style="color: #f87171; margin: 0 0 12px 0;">Approval Token Expired or Invalid</h2>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">Yeh link expire ho chuka hai (24 hours limit) ya invalid signature hai. Please dashboard se check run karein.</p>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">This action link has expired (24-hour validity limit) or contains an invalid signature. Please execute a diagnostic check directly from your dashboard.</p>
                     <a href="/dashboard" style="display: inline-block; margin-top: 20px; background: #3b82f6; color: #ffffff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Open Dashboard</a>
                 </div>
             </body>
@@ -232,7 +232,7 @@ async function handleApproveFix(req, res) {
                     <div style="font-size: 54px; margin-bottom: 12px;">✅</div>
                     <h2 style="color: #34d399; margin: 0 0 12px 0;">Auto-Fix Successfully Approved!</h2>
                     <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
-                        Aapka authorization verify ho gaya hai. Autonomous Self-Healing Engine ne targeted fix execute kar diya hai.
+                        Your authorization has been confirmed. The Autonomous Self-Healing Engine has successfully executed the targeted remediation.
                     </p>
                     <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; margin: 20px 0; text-align: left; font-size: 13px; font-family: monospace; color: #94a3b8;">
                         <div>🟢 <strong>System Status:</strong> ${result.status}</div>
@@ -266,7 +266,7 @@ async function handleRejectFix(req, res) {
                 <div style="background: #1e293b; border: 1px solid #ef4444; border-radius: 16px; padding: 36px; max-width: 480px; text-align: center;">
                     <div style="font-size: 54px; margin-bottom: 12px;">⚠️</div>
                     <h2 style="color: #f87171; margin: 0 0 12px 0;">Token Expired or Invalid</h2>
-                    <p style="color: #94a3b8; font-size: 14px;">Link expire ho chuki hai.</p>
+                    <p style="color: #94a3b8; font-size: 14px;">This authorization token has expired or is invalid.</p>
                 </div>
             </body>
             </html>
@@ -288,7 +288,7 @@ async function handleRejectFix(req, res) {
                 <div style="font-size: 54px; margin-bottom: 12px;">🛡️</div>
                 <h2 style="color: #94a3b8; margin: 0 0 12px 0;">Anomaly Dismissed & Logged</h2>
                 <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
-                    Aapne is fix ko dismiss kar diya hai. Telemetry audit log mein yeh decision safely record kar li gayi hai.
+                    You have dismissed this remediation. This decision has been safely recorded in the telemetry audit trail.
                 </p>
                 <div style="margin-top: 24px;">
                     <a href="/dashboard" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Return to Dashboard</a>

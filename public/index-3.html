@@ -9682,9 +9682,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-xs border" style="background: rgba(24, 59, 51, 0.08); border-color: rgba(24, 59, 51, 0.18); color: #183B33;">
                                     <i class="fa-regular fa-envelope-open text-[#183B33] dark:text-[#81E4DA]"></i>
                                 </div>
-                                <h3 class="text-xl font-extrabold text-[var(--text-primary)] mb-1.5 tracking-tight">Verification Link Sent!</h3>
+                                <h3 class="text-xl font-extrabold text-[var(--text-primary)] mb-1.5 tracking-tight">Verification Link Sent</h3>
                                 <p class="text-xs text-[var(--text-muted)] mb-4 leading-relaxed">
-                                    Please check your Gmail inbox and click the verification link to activate your account and unlock your <strong class="text-[#183B33] dark:text-[#81E4DA]">Rankly.ai</strong> dashboard.
+                                    We have sent a verification link to your email address. Please click the link to confirm your account, then sign in with your credentials.
                                 </p>
                                 <div class="py-2.5 px-3.5 rounded-xl mb-5 text-xs font-mono break-all border flex items-center justify-center gap-2" style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);">
                                     <i class="fa-solid fa-paper-plane text-[11px] text-[#D95D39]"></i>
@@ -9693,7 +9693,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 </div>
                                 <div class="flex flex-col sm:flex-row gap-2.5">
                                     <a href="https://mail.google.com" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-white shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer" style="background: #183B33;">
-                                        <span>Open Gmail</span>
+                                        <span>Open Webmail</span>
                                         <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
                                     </a>
                                     <button id="resendLinkBtn" onclick="handleResendVerificationLink()" class="py-2.5 px-3.5 rounded-xl border font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[var(--bg-input)]" style="background: var(--card-bg); border-color: var(--border-color); color: var(--text-primary);">
@@ -10024,7 +10024,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('✅ Corporate OTP sent to ' + email + '! Check your Gmail.', 'success');
+                            showToast('Corporate verification code sent to ' + email + '. Please check your inbox or spam folder.', 'success');
                             if (sendBtn) {
                                 sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                                 sendBtn.disabled = false;
