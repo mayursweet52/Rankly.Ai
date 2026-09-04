@@ -28,4 +28,5 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # ─── 7. HEALTHCHECK & START COMMAND ───
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "npx prisma db push --skip-generate && node server.js"]
+
