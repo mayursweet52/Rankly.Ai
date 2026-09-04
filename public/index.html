@@ -8,24 +8,26 @@
     <meta name="keywords" content="AI recruitment, ATS resume parser, candidate screening, automated interview, talent intelligence, hiring software, candidate ranking, Rankly AI" />
     <meta name="author" content="Rankly.ai Team" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://rankly-ai-production.up.railway.app/" />
+    <link rel="canonical" href="http://localhost:3000/" />
 
     <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Rankly.ai" />
     <meta property="og:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
     <meta property="og:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
-    <meta property="og:url" content="https://rankly-ai-production.up.railway.app/" />
-    <meta property="og:image" content="https://rankly-ai-production.up.railway.app/assets/backgrounds/login-art.png" />
+    <meta property="og:url" content="http://localhost:3000/" />
+    <meta property="og:image" content="http://localhost:3000/assets/backgrounds/login-art.png" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@RanklyAI" />
     <meta name="twitter:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
     <meta name="twitter:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
-    <meta name="twitter:image" content="https://rankly-ai-production.up.railway.app/assets/backgrounds/login-art.png" />
+    <meta name="twitter:image" content="http://localhost:3000/assets/backgrounds/login-art.png" />
 
     <title>Rankly.ai — Enterprise AI Recruitment Platform</title>
+    <!-- Google Identity Services Client SDK (Popup & One-Tap Auth) -->
+    <script src="https://accounts.google.com/gsi/client" async defer onload="if(window.initGoogleGSI) window.initGoogleGSI();"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -2593,6 +2595,42 @@
                 padding: 44px 40px !important;
             }
         }
+        /* ─── HRMS DOCUMENT CATEGORY PILLS ─── */
+        .doc-cat-pill {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border: 1px solid #E5E5DF;
+            background: #FFFFFF;
+            color: #666660;
+        }
+        .doc-cat-pill:hover {
+            border-color: #D95D39;
+            color: #D95D39;
+        }
+        .doc-cat-pill.active {
+            background: #D95D39;
+            border-color: #D95D39;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .doc-cat-pill {
+            background: #18181B;
+            border-color: #27272A;
+            color: #A1A1AA;
+        }
+        body.dark-theme .doc-cat-pill:hover {
+            border-color: #EA580C;
+            color: #EA580C;
+        }
+        body.dark-theme .doc-cat-pill.active {
+            background: #EA580C;
+            border-color: #EA580C;
+            color: #FFFFFF !important;
+        }
 
         /* ─── RANKLY LUXURY HIGH-VISIBILITY THEME TOGGLE PILL ─── */
         /* ─── ICONLY PRO LUXURY GEOMETRIC THEME TOGGLE PILL WITH MICRO-ANIMATION ─── */
@@ -4587,7 +4625,7 @@
                                             </button>
                                         </div>
 
-                                        <div class="mt-3 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
+                                        <div class="mt-4 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
                                             <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400">Don't have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign Up</strong></button>
                                             <!-- Switch to Company Full Card 3D Flip -->
                                             <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all cursor-pointer ml-auto inline-flex items-center gap-1.5 group">
@@ -5543,6 +5581,168 @@
         </div>
     </div>
 
+    <!-- ─── HRMS ADD EMPLOYEE MODAL ─── -->
+    <div id="addEmployeeModal" class="modal-overlay" onclick="if(event.target===this) closeModal('addEmployeeModal')">
+        <div class="modal-box" style="max-width:540px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-amber-500"></i> Add New Employee
+                </h3>
+                <button type="button" onclick="closeModal('addEmployeeModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[#666660] dark:text-zinc-400 mb-5">
+                Register an internal workforce member into the HRMS database and organigram.
+            </p>
+            <form id="addEmployeeForm" onsubmit="saveEmployeeRecord(event)">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Employee Code *</label>
+                        <input type="text" id="newEmpCode" class="form-input" required placeholder="EMP-001" />
+                    </div>
+                    <div>
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" id="newEmpFullName" class="form-input" required placeholder="Jane Doe" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Work Email *</label>
+                        <input type="email" id="newEmpWorkEmail" class="form-input" required placeholder="jane.doe@company.com" />
+                    </div>
+                    <div>
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" id="newEmpPhone" class="form-input" placeholder="+1-555-0199" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Department *</label>
+                        <select id="newEmpDepartment" class="form-input" required>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Product">Product</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Finance">Finance</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Designation *</label>
+                        <input type="text" id="newEmpDesignation" class="form-input" required placeholder="Senior Engineer" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="form-label">Employment Type</label>
+                        <select id="newEmpType" class="form-input">
+                            <option value="full_time">Full Time</option>
+                            <option value="part_time">Part Time</option>
+                            <option value="contract">Contract</option>
+                            <option value="intern">Intern</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Status</label>
+                        <select id="newEmpStatus" class="form-input">
+                            <option value="active">Active</option>
+                            <option value="probation">Probation</option>
+                            <option value="notice_period">Notice Period</option>
+                            <option value="on_leave">On Leave</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions flex justify-end gap-2 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addEmployeeModal')">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveEmployeeBtn">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── HRMS PUBLISH COMPANY DOCUMENT MODAL ─── -->
+    <div id="publishDocModal" class="modal-overlay" onclick="if(event.target===this) closeModal('publishDocModal')">
+        <div class="modal-box" style="max-width:560px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="flex items-center gap-2">
+                    <i class="fa-solid fa-file-circle-plus text-amber-500"></i> Publish Company Document
+                </h3>
+                <button type="button" onclick="closeModal('publishDocModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[#666660] dark:text-zinc-400 mb-5">
+                Upload or author an official corporate policy, handbook, NDA, or compliance standard.
+            </p>
+            <form id="publishDocForm" onsubmit="publishCompanyDocument(event)">
+                <div class="mb-3">
+                    <label class="form-label">Document Title *</label>
+                    <input type="text" id="docTitle" class="form-input" required placeholder="e.g. Remote Work & Travel Policy 2026" />
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Category *</label>
+                        <select id="docCategory" class="form-input" required>
+                            <option value="policy">Policy</option>
+                            <option value="handbook">Handbook</option>
+                            <option value="nda">NDA</option>
+                            <option value="compliance">Compliance</option>
+                            <option value="contract">Contract</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">File Attachment Name</label>
+                        <input type="text" id="docFileName" class="form-input" placeholder="e.g. Remote_Work_2026.pdf" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Summary / Description</label>
+                    <input type="text" id="docDescription" class="form-input" placeholder="Brief summary of what this document covers..." />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Document Text & Guidelines</label>
+                    <textarea id="docContent" rows="4" class="form-input" placeholder="Enter complete policy articles, standard guidelines, or terms..."></textarea>
+                </div>
+                <div class="modal-actions flex justify-end gap-2 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                    <button type="button" class="btn-secondary" onclick="closeModal('publishDocModal')">Cancel</button>
+                    <button type="submit" class="btn-primary" id="publishDocBtn">Publish Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── HRMS READ DOCUMENT MODAL ─── -->
+    <div id="readDocModal" class="modal-overlay" onclick="if(event.target===this) closeModal('readDocModal')">
+        <div class="modal-box" style="max-width:640px;">
+            <div class="flex justify-between items-start mb-4 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="readDocBadge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200">Policy</span>
+                        <span id="readDocDate" class="text-xs text-gray-400">2026-09-04</span>
+                    </div>
+                    <h3 id="readDocTitle" class="text-lg font-bold text-[#111111] dark:text-white">Document Title</h3>
+                </div>
+                <button type="button" onclick="closeModal('readDocModal')" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p id="readDocDescription" class="text-xs italic text-[#666660] dark:text-zinc-400 bg-[#FAFAF8] dark:bg-zinc-800/50 p-3 rounded-lg border border-[#E5E5DF] dark:border-zinc-800"></p>
+                <div id="readDocContent" class="text-xs text-[#222220] dark:text-zinc-300 leading-relaxed max-h-96 overflow-y-auto whitespace-pre-wrap p-4 bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 rounded-xl font-mono"></div>
+            </div>
+            <div class="modal-actions flex justify-between items-center pt-4 mt-4 border-t border-[#E5E5DF] dark:border-zinc-800">
+                <span id="readDocAuthor" class="text-[11px] text-gray-400 font-mono">Published by Admin</span>
+                <div class="flex gap-2">
+                    <button type="button" class="btn-secondary text-xs" onclick="closeModal('readDocModal')">Close</button>
+                    <button type="button" class="btn-primary text-xs" onclick="window.printDocumentText()">
+                        <i class="fa-solid fa-print mr-1"></i> Print / Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ─── DASHBOARD WORKSPACE (Rankly.ai Branded) ─── -->
     <div class="page" id="dashboardPage" style="display:none;">
         <div class="dash-layout">
@@ -5604,6 +5804,7 @@
                             </svg>
                         </button>
                         <h1 class="text-base font-bold text-[#111111] dark:text-white" id="dashPageTitle">Dashboard</h1>
+                        <span id="portalBadge" class="ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold border"></span>
                     </div>
 
                     <!-- ─── 1. GLOBAL NAVIGATION & FEATURE SEARCH BAR (NO CANDIDATES) ─── -->
@@ -5960,60 +6161,213 @@
                     </div>
 
                     <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
+                    <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
                     <div class="tab-content" id="tab-resume" style="display:none;">
-                        <div class="max-w-3xl mx-auto space-y-6">
-                            <div class="card border border-[#E2E8F0] shadow-sm">
-                                <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#E5E5DF]">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl bg-[#FAFAF8] text-[#111111] flex items-center justify-center border border-[#E5E5DF] shadow-sm">
-                                            <i class="fas fa-wand-magic-sparkles text-lg text-[#D95D39]"></i>
+                        <div class="max-w-6xl mx-auto space-y-6">
+                            
+                            <!-- Top Studio Banner Header -->
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-[#12141F] border border-[#E5E5DF] dark:border-white/10 shadow-xs">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-12 h-12 rounded-2xl bg-[#183B33]/5 dark:bg-[#81E4DA]/10 border border-[#183B33]/15 dark:border-[#81E4DA]/20 flex items-center justify-center text-[#D95D39] text-xl shadow-xs flex-shrink-0">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">AI Resume Optimizer & ATS Studio</h2>
+                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-[#5B998C]/15 text-[#183B33] dark:text-[#81E4DA] border border-[#5B998C]/30 flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ATS Calibration Engine
+                                            </span>
                                         </div>
-                                        <div>
-                                            <h3 class="card-title mb-0">AI Resume Optimizer & Builder</h3>
-                                            <p class="text-xs text-[#666660] font-mono mt-0.5">Tailor bullet points, technical keywords & ATS scores in real-time</p>
-                                        </div>
+                                        <p class="text-xs text-[#666660] dark:text-gray-400 mt-0.5">Calibrate executive bullet points, technical keyword density & real-time ATS match index</p>
                                     </div>
                                 </div>
-
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="form-label">YOUR NAME</label>
-                                        <input type="text" id="resumeName" class="form-input" placeholder="Full name (e.g. Alex Morgan)" />
-                                    </div>
-                                    <div>
-                                        <label class="form-label">PROFESSION</label>
-                                        <input type="text" id="resumeProfession" class="form-input" placeholder="e.g. Software Engineer" />
-                                    </div>
-                                    <div>
-                                        <label class="form-label">KEY SKILLS (COMMA SEPARATED)</label>
-                                        <input type="text" id="resumeSkills" class="form-input" placeholder="Python, React, AWS, TypeScript, Docker" />
-                                    </div>
-                                    <div>
-                                        <label class="form-label">EXISTING EXPERIENCE / HIGHLIGHTS (OPTIONAL)</label>
-                                        <textarea id="resumeExperience" rows="3" class="form-input" placeholder="Built microservices serving 2M users; reduced latency by 35%..."></textarea>
-                                    </div>
-
-                                    <div class="pt-3">
-                                        <button onclick="generateResumeSuggestion()" class="btn-ai-generate">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                                                <path d="M5 3v4"/>
-                                                <path d="M19 17v4"/>
-                                                <path d="M3 5h4"/>
-                                                <path d="M17 19h4"/>
-                                            </svg>
-                                            <span>Get AI Suggestions</span>
-                                        </button>
-                                    </div>
+                                <!-- Quick Action Presets -->
+                                <div class="flex items-center gap-2 flex-shrink-0">
+                                    <button type="button" onclick="loadSampleResumeProfile('fullstack')" class="px-3.5 py-2 text-xs font-semibold rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-gray-200 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                                        <i class="fa-solid fa-bolt text-[#D95D39] text-[11px]"></i> Load Demo Profile
+                                    </button>
+                                    <button type="button" onclick="resetResumeOptimizerForm()" class="p-2 text-xs font-semibold rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-gray-800 text-[#666660] dark:text-gray-400 hover:text-red-500 transition-all cursor-pointer shadow-2xs" title="Clear Form" aria-label="Reset form">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Suggestions Output Display -->
-                            <div id="resumeSuggestions"></div>
+                            <!-- 2-Column Responsive Split Studio -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                
+                                <!-- Left Form Studio: lg:col-span-7 -->
+                                <div class="lg:col-span-7 space-y-6">
+                                    <div class="card p-6 border border-[#E5E5DF] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
+                                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-[#E5E5DF] dark:border-white/10">
+                                            <span class="text-xs font-bold text-[#111111] dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                                <i class="fa-solid fa-sliders text-[#183B33] dark:text-[#81E4DA]"></i> Profile Calibration Parameters
+                                            </span>
+                                            <span class="text-[11px] font-medium text-[#666660] dark:text-gray-400">Step 1 of 2</span>
+                                        </div>
+
+                                        <div class="space-y-4">
+                                            <!-- Candidate Name -->
+                                            <div>
+                                                <label class="block text-xs font-bold text-[#111111] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                                    <i class="fa-regular fa-user text-[#D95D39] text-[11px]"></i> YOUR FULL NAME
+                                                </label>
+                                                <input type="text" id="resumeName" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-[#161926] text-[#111111] dark:text-white placeholder-[#888880] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Full name (e.g. Alex Morgan)" />
+                                            </div>
+
+                                            <!-- Target Profession -->
+                                            <div>
+                                                <label class="block text-xs font-bold text-[#111111] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-briefcase text-[#5B998C] text-[11px]"></i> TARGET PROFESSION / JOB TITLE
+                                                </label>
+                                                <input type="text" id="resumeProfession" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-[#161926] text-[#111111] dark:text-white placeholder-[#888880] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="e.g. Senior Software Engineer / Lead Product Designer" />
+                                                
+                                                <!-- Quick Role Selection Chips -->
+                                                <div class="flex flex-wrap items-center gap-1.5 mt-2">
+                                                    <span class="text-[11px] text-[#666660] dark:text-gray-400 mr-1">Quick Select:</span>
+                                                    <button type="button" onclick="setQuickProfession('Senior Full-Stack Engineer')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#FAFAF8] dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-medium">Full-Stack Engineer</button>
+                                                    <button type="button" onclick="setQuickProfession('Lead UI/UX Product Designer')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#FAFAF8] dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-medium">UI/UX Designer</button>
+                                                    <button type="button" onclick="setQuickProfession('AI/ML Solutions Architect')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#FAFAF8] dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-medium">AI/ML Architect</button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Key Technical Skills -->
+                                            <div>
+                                                <label class="block text-xs font-bold text-[#111111] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                                                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-code text-[#D95D39] text-[11px]"></i> KEY TECHNICAL & DOMAIN SKILLS</span>
+                                                    <span class="text-[10px] text-[#666660] dark:text-gray-400 font-normal lowercase">(comma separated)</span>
+                                                </label>
+                                                <input type="text" id="resumeSkills" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-[#161926] text-[#111111] dark:text-white placeholder-[#888880] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Python, React, AWS, TypeScript, Docker, PostgreSQL" />
+                                                
+                                                <!-- Quick Skill Add Tags -->
+                                                <div class="mt-2.5 p-3 rounded-xl bg-[#FAFAF8] dark:bg-[#161926]/60 border border-[#E5E5DF] dark:border-white/5">
+                                                    <div class="text-[10px] font-bold text-[#666660] dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-wand-magic-sparkles text-[#5B998C]"></i> Click to Quick-Add Verified High-Demand Keywords:
+                                                    </div>
+                                                    <div class="flex flex-wrap gap-1.5" id="quickSkillPills">
+                                                        <button type="button" onclick="addSkillChip('React')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ React</button>
+                                                        <button type="button" onclick="addSkillChip('Python')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ Python</button>
+                                                        <button type="button" onclick="addSkillChip('TypeScript')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ TypeScript</button>
+                                                        <button type="button" onclick="addSkillChip('AWS Cloud')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ AWS Cloud</button>
+                                                        <button type="button" onclick="addSkillChip('Docker')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ Docker</button>
+                                                        <button type="button" onclick="addSkillChip('Microservices')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ Microservices</button>
+                                                        <button type="button" onclick="addSkillChip('PostgreSQL')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ PostgreSQL</button>
+                                                        <button type="button" onclick="addSkillChip('Figma Design Systems')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-white/10 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-medium shadow-2xs">+ Figma Design</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Existing Experience -->
+                                            <div>
+                                                <label class="block text-xs font-bold text-[#111111] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                                                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-file-lines text-[#5B998C] text-[11px]"></i> EXISTING EXPERIENCE & IMPACT (OPTIONAL)</span>
+                                                    <span class="text-[10px] text-[#666660] dark:text-gray-400 font-mono" id="resumeCharCount">0 chars</span>
+                                                </label>
+                                                <textarea id="resumeExperience" oninput="updateAtsLiveMeter()" rows="3" class="form-input w-full p-3.5 rounded-xl border border-[#E5E5DF] dark:border-white/10 bg-[#FAFAF8] dark:bg-[#161926] text-[#111111] dark:text-white placeholder-[#888880] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Built microservices serving 2M users; reduced latency by 35%; spearheaded migration to Kubernetes..."></textarea>
+                                                <p class="text-[11px] text-[#666660] dark:text-gray-400 mt-1.5 flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-circle-info text-[#5B998C] text-[11px]"></i>
+                                                    <span>Formulation Hint: <em>"Accomplished [X] as measured by [Y] by executing [Z]"</em> (+25% ATS Score)</span>
+                                                </p>
+                                            </div>
+
+                                            <!-- CTA Submit Button -->
+                                            <div class="pt-3">
+                                                <button type="button" id="genResumeBtn" onclick="generateResumeSuggestion()" class="w-full py-3.5 px-6 rounded-xl bg-[#183B33] hover:bg-[#243E36] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group cursor-pointer">
+                                                    <i class="fa-solid fa-wand-magic-sparkles text-[#81E4DA] group-hover:rotate-12 transition-transform"></i>
+                                                    <span>Generate ATS-Optimized Blueprint</span>
+                                                    <i class="fa-solid fa-arrow-right text-xs opacity-70 group-hover:translate-x-1 transition-transform"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Output Suggestions Display -->
+                                    <div id="resumeSuggestions"></div>
+                                </div>
+
+                                <!-- Right Telemetry & Live Preview Sidebar: lg:col-span-5 -->
+                                <div class="lg:col-span-5 space-y-6">
+                                    
+                                    <!-- Live ATS Readiness Score Card -->
+                                    <div class="card p-6 border border-[#E5E5DF] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
+                                        <div class="flex items-center justify-between pb-3.5 border-b border-[#E5E5DF] dark:border-white/10">
+                                            <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center gap-2">
+                                                <i class="fa-solid fa-gauge-high text-[#D95D39]"></i> Live ATS Readiness
+                                            </span>
+                                            <span id="atsLivePill" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">Calibrating</span>
+                                        </div>
+
+                                        <!-- Dial / Score Progress Box -->
+                                        <div class="flex items-center gap-4 py-4">
+                                            <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl bg-[#FAFAF8] dark:bg-[#161926] border border-[#E5E5DF] dark:border-white/10 shadow-inner">
+                                                <div class="text-center">
+                                                    <span id="atsScoreValue" class="text-2xl font-extrabold text-[#183B33] dark:text-[#81E4DA] font-mono leading-none">65</span>
+                                                    <span class="block text-[10px] font-bold text-[#666660] dark:text-gray-400 uppercase mt-0.5">/ 100</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 space-y-1">
+                                                <h4 id="atsStatusHeading" class="text-sm font-bold text-[#111111] dark:text-white">Profile In Progress</h4>
+                                                <p id="atsStatusDesc" class="text-xs text-[#666660] dark:text-gray-400 leading-relaxed">Add specific role & 4+ key technical keywords to achieve 90+ Top Tier ATS ranking.</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Dynamic Telemetry Checklist -->
+                                        <div class="space-y-2.5 pt-3 border-t border-[#E5E5DF] dark:border-white/10 text-xs">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[#666660] dark:text-gray-400 flex items-center gap-1.5">
+                                                    <i id="chkNameIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Candidate Identity
+                                                </span>
+                                                <span id="chkNameVal" class="font-bold font-mono text-[#111111] dark:text-white">Required</span>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[#666660] dark:text-gray-400 flex items-center gap-1.5">
+                                                    <i id="chkProfIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Target Role Specificity
+                                                </span>
+                                                <span id="chkProfVal" class="font-bold font-mono text-[#111111] dark:text-white">Required</span>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[#666660] dark:text-gray-400 flex items-center gap-1.5">
+                                                    <i id="chkSkillsIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Technical Keyword Density
+                                                </span>
+                                                <span id="chkSkillsVal" class="font-bold font-mono text-[#111111] dark:text-white">0 Keywords</span>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[#666660] dark:text-gray-400 flex items-center gap-1.5">
+                                                    <i id="chkExpIcon" class="fa-solid fa-circle-check text-emerald-500"></i> Quantifiable Metrics
+                                                </span>
+                                                <span id="chkExpVal" class="font-bold font-mono text-[#111111] dark:text-white">Optional</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ATS Intelligence Best Practices -->
+                                    <div class="card p-6 border border-[#E5E5DF] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
+                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white mb-3.5 flex items-center gap-2">
+                                            <i class="fa-solid fa-shield-check text-[#5B998C]"></i> Enterprise ATS Parser Rules
+                                        </h3>
+                                        <div class="space-y-3 text-xs">
+                                            <div class="p-3 rounded-xl bg-[#FAFAF8] dark:bg-[#161926] border border-[#E5E5DF] dark:border-white/5 flex gap-2.5">
+                                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                                <div>
+                                                    <strong class="text-[#111111] dark:text-white block">Standard Parser Headers</strong>
+                                                    <span class="text-[#666660] dark:text-gray-400">Taleo, Greenhouse & Workday parse standardized headings 100% cleanly without graphic confusion.</span>
+                                                </div>
+                                            </div>
+                                            <div class="p-3 rounded-xl bg-[#FAFAF8] dark:bg-[#161926] border border-[#E5E5DF] dark:border-white/5 flex gap-2.5">
+                                                <i class="fa-solid fa-bolt text-[#D95D39] mt-0.5"></i>
+                                                <div>
+                                                    <strong class="text-[#111111] dark:text-white block">Action Verbs & Impact</strong>
+                                                    <span class="text-[#666660] dark:text-gray-400">Lead bullet points with decisive action verbs (e.g. *Architected, Spearheaded, Accelerated*).</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
-                    <!-- ─── TAB 4: PIPELINE (Kanban) ─── -->
                     <div class="tab-content" id="tab-pipeline" style="display:none;">
                         <div class="flex justify-between items-end mb-8">
                             <div class="max-w-xs flex-1">
@@ -7451,11 +7805,13 @@
             function getTabIcon(tabId) {
                 switch (tabId) {
                     case 'dashboard': return 'fa-solid fa-table-columns';
+                    case 'employees': return 'fa-solid fa-users-gear';
+                    case 'documents': return 'fa-solid fa-folder-open';
                     case 'chatbot': return 'fa-solid fa-robot';
                     case 'screening': return 'fa-solid fa-file-invoice';
                     case 'pipeline': return 'fa-solid fa-users';
                     case 'analytics': return 'fa-solid fa-chart-line';
-                    case 'resume': return 'fa-solid fa-file-lines';
+                    case 'resume': return 'fa-solid fa-wand-magic-sparkles text-[#D95D39]';
                     case 'settings': return 'fa-solid fa-gear';
                     case 'feedback': return 'fa-solid fa-comment-dots';
                     case 'health': return 'fa-solid fa-heart-pulse text-emerald-500';
@@ -7496,13 +7852,19 @@
                 const isAdmin = ['admin', 'administrator'].includes(r);
                 const isHr = ['hr', 'human_resources'].includes(r);
                 const isHM = ['hiring', 'hiring_manager', 'hm'].includes(r);
-                const isEnterprise = isAdmin || isHr || isHM || ['employee'].includes(r);
+                const isEnterprise = isAdmin || isHr || isHM || ['employee'].includes(r) || (window.currentUser && window.currentUser.accountType === 'employee');
+
+                const portalBadge = document.getElementById('portalBadge');
 
                 if (isEnterprise) {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1 text-amber-500"></i> Internal HRMS Portal (Protected Zone)';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30';
+                    }
                     currentTabsList = [
-                        { id: 'dashboard', label: 'Dashboard', target: 'dashboard' },
-                        { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
-                        { id: 'screening', label: 'Screening Matrix', target: 'screening' },
+                        { id: 'dashboard', label: 'HRMS Overview', target: 'dashboard' },
+                        { id: 'employees', label: 'Employee Directory', target: 'employees' },
+                        { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
                         { id: 'health', label: 'System Health', target: 'health' },
@@ -7510,12 +7872,14 @@
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
                 } else {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-user-astronaut mr-1 text-emerald-500"></i> Candidate Portal (Applicant Zone)';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+                    }
                     currentTabsList = [
-                        { id: 'dashboard', label: 'Dashboard', target: 'dashboard' },
-                        { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
+                        { id: 'resume', label: 'AI Resume Builder & CV Optimizer', target: 'resume' },
+                        { id: 'chatbot', label: 'Career AI Coach', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
-                        { id: 'resume', label: 'Resume Builder', target: 'resume' },
-                        { id: 'health', label: 'System Health', target: 'health' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
@@ -7544,6 +7908,15 @@
             window.setupDashboardForRole = setupDashboardForRole;
 
             function switchTab(tabId) {
+                const userRole = (window.currentUser ? (window.currentUser.role || 'normal') : 'normal').toLowerCase();
+                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (window.currentUser && window.currentUser.accountType === 'employee');
+                
+                const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health'];
+                if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
+                    showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
+                    tabId = 'resume';
+                }
+
                 const matched = currentTabsList.find(t => t.id === tabId || t.target === tabId) || { id: tabId, target: tabId, label: tabId.toUpperCase() };
                 const actualTarget = matched.target || matched.id;
 
@@ -7569,8 +7942,17 @@
                 const targetEl = document.getElementById(`tab-${actualTarget}`);
                 if (targetEl) targetEl.style.display = 'block';
 
+                if (actualTarget === 'employees' && typeof window.loadEmployeesDirectory === 'function') {
+                    window.loadEmployeesDirectory();
+                }
+                if (actualTarget === 'documents' && typeof window.loadCompanyDocuments === 'function') {
+                    window.loadCompanyDocuments();
+                }
                 if (actualTarget === 'screening' && typeof window.loadEvaluationsHistory === 'function') {
                     window.loadEvaluationsHistory();
+                }
+                if (actualTarget === 'resume' && typeof window.updateAtsLiveMeter === 'function') {
+                    window.updateAtsLiveMeter();
                 }
                 if (actualTarget === 'health' && typeof window.loadHealthTelemetry === 'function') {
                     window.loadHealthTelemetry();
@@ -7726,7 +8108,15 @@
                 const userRole = currentUser ? (currentUser.role || 'normal') : 'normal';
                 setupDashboardForRole(userRole);
                 updateDashboard();
-                switchTab('dashboard');
+
+                const isEnterprise = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes((userRole || '').toLowerCase()) || (currentUser && currentUser.accountType === 'employee');
+                if (isEnterprise) {
+                    try { window.history.replaceState({}, '', '/hrms/dashboard'); } catch(e){}
+                    switchTab('dashboard');
+                } else {
+                    try { window.history.replaceState({}, '', '/candidate/dashboard'); } catch(e){}
+                    switchTab('resume');
+                }
             }
 
             window.openFeedbackModal = function() {
@@ -8000,6 +8390,48 @@
                 }
             };
 
+            // ─── UNIVERSAL MULTI-TIER GOOGLE AUTH ENGINE (GSI Popup + Relay Bridge + OAuth) ───
+            const GOOGLE_CLIENT_ID = '297396891792-cia4kjguid6dpbe4vmmpmt16nomh50uh.apps.googleusercontent.com';
+
+            window.handleGoogleCredentialResponse = async function(response) {
+                try {
+                    showToast('🔐 Verifying Google credentials...', 'info');
+                    const res = await fetch('/api/auth/google/credential', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ credential: response.credential })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.user) {
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        showToast('✅ Google login successful!', 'success');
+                        setTimeout(() => {
+                            window.location.href = data.redirectUrl || '/candidate/dashboard';
+                        }, 250);
+                    } else {
+                        showToast(data.error || 'Google login failed.', 'error');
+                    }
+                } catch (err) {
+                    console.error('Google Credential Error:', err);
+                    showToast('Error connecting to authentication service.', 'error');
+                }
+            };
+
+            window.initGoogleGSI = function() {
+                if (window.google && window.google.accounts && window.google.accounts.id) {
+                    try {
+                        window.google.accounts.id.initialize({
+                            client_id: GOOGLE_CLIENT_ID,
+                            callback: window.handleGoogleCredentialResponse,
+                            auto_select: false,
+                            cancel_on_tap_outside: true
+                        });
+                    } catch (e) {
+                        console.warn('GSI Init Warning:', e);
+                    }
+                }
+            };
+
             window.oauthLogin = function(provider, event) {
                 let btn = null;
                 if (event && event.currentTarget) {
@@ -8012,11 +8444,56 @@
                 if (btn) {
                     setButtonLoading(btn, true, 'CONNECTING TO GOOGLE...');
                 }
+
+                // Tier 1: Try Google Identity Services Popup / Prompt (Zero redirect_uri_mismatch!)
+                if (provider === 'Google' && window.google && window.google.accounts && window.google.accounts.id) {
+                    try {
+                        window.initGoogleGSI();
+                        window.google.accounts.id.prompt((notification) => {
+                            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                                // Fallback to standard OAuth redirect
+                                showToast('Opening Google sign-in window...', 'info');
+                                setTimeout(() => {
+                                    window.location.href = '/auth/google';
+                                }, 200);
+                            }
+                        });
+                        return;
+                    } catch (gsiErr) {
+                        console.warn('GSI prompt error, falling back to OAuth redirect:', gsiErr);
+                    }
+                }
+
+                // Tier 2 Fallback: Standard OAuth redirect via smart resolver
                 showToast('Initiating Google authentication...', 'info');
                 setTimeout(() => {
                     window.location.href = '/auth/google';
                 }, 250);
             };
+
+            window.quickLocalDemoLogin = async function(role) {
+                try {
+                    showToast('⚡ Connecting via instant local demo login...', 'info');
+                    const res = await fetch('/api/auth/quick-demo-login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ role })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.user) {
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        showToast(data.message || 'Login successful!', 'success');
+                        setTimeout(() => {
+                            window.location.href = data.redirectUrl || (role === 'hrms' ? '/hrms/dashboard' : '/candidate/dashboard');
+                        }, 250);
+                    } else {
+                        showToast(data.error || 'Quick login failed. Please try email login.', 'error');
+                    }
+                } catch (err) {
+                    showToast('Network error during quick demo login.', 'error');
+                }
+            };
+
 
 
             // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
@@ -8553,6 +9030,145 @@
                         </div>
                     `;
                     showToast('Chat session reset.', 'info');
+                }
+            };
+
+            // ─── RESUME OPTIMIZER STUDIO HELPER FUNCTIONS ───
+            window.setQuickProfession = function(prof) {
+                const input = document.getElementById('resumeProfession');
+                if (input) {
+                    input.value = prof;
+                    window.updateAtsLiveMeter();
+                }
+            };
+
+            window.addSkillChip = function(skill) {
+                const input = document.getElementById('resumeSkills');
+                if (!input) return;
+                const cur = input.value.trim();
+                const skills = cur ? cur.split(',').map(s => s.trim().toLowerCase()) : [];
+                if (!skills.includes(skill.toLowerCase())) {
+                    input.value = cur ? (cur + ', ' + skill) : skill;
+                    window.updateAtsLiveMeter();
+                    if (typeof showToast === 'function') showToast('Added keyword: ' + skill, 'info');
+                }
+            };
+
+            window.loadSampleResumeProfile = function(type) {
+                const nameEl = document.getElementById('resumeName');
+                const profEl = document.getElementById('resumeProfession');
+                const skillsEl = document.getElementById('resumeSkills');
+                const expEl = document.getElementById('resumeExperience');
+
+                if (nameEl) nameEl.value = 'Alex Morgan';
+                if (profEl) profEl.value = 'Senior Full-Stack Engineer';
+                if (skillsEl) skillsEl.value = 'React, Node.js, TypeScript, Python, AWS, Docker, PostgreSQL, Microservices, CI/CD';
+                if (expEl) expEl.value = 'Architected microservices architecture serving 2.5M active users with 99.99% SLA; reduced API latency by 42% and automated deployment pipelines across AWS ECS.';
+
+                window.updateAtsLiveMeter();
+                if (typeof showToast === 'function') showToast('Loaded Demo Profile: Senior Full-Stack Engineer', 'success');
+            };
+
+            window.resetResumeOptimizerForm = function() {
+                const ids = ['resumeName', 'resumeProfession', 'resumeSkills', 'resumeExperience'];
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                const out = document.getElementById('resumeSuggestions');
+                if (out) out.innerHTML = '';
+                window.updateAtsLiveMeter();
+                if (typeof showToast === 'function') showToast('Form cleared', 'info');
+            };
+
+            window.updateAtsLiveMeter = function() {
+                const name = document.getElementById('resumeName')?.value.trim() || '';
+                const prof = document.getElementById('resumeProfession')?.value.trim() || '';
+                const skillsRaw = document.getElementById('resumeSkills')?.value.trim() || '';
+                const exp = document.getElementById('resumeExperience')?.value.trim() || '';
+
+                const charCountEl = document.getElementById('resumeCharCount');
+                if (charCountEl) charCountEl.textContent = exp.length + ' chars';
+
+                const skillsCount = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean).length : 0;
+
+                let score = 40;
+                if (name.length > 2) score += 15;
+                if (prof.length > 3) score += 20;
+                score += Math.min(25, skillsCount * 4);
+                if (exp.length > 30) score += 10;
+                if (exp.length > 80) score += 5;
+                if (score > 100) score = 100;
+
+                const scoreEl = document.getElementById('atsScoreValue');
+                if (scoreEl) scoreEl.textContent = score;
+
+                const pill = document.getElementById('atsLivePill');
+                const heading = document.getElementById('atsStatusHeading');
+                const desc = document.getElementById('atsStatusDesc');
+
+                if (score >= 90) {
+                    if (pill) {
+                        pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+                        pill.textContent = 'Top Tier ATS (90+)';
+                    }
+                    if (heading) heading.textContent = 'Executive ATS Ready';
+                    if (desc) desc.textContent = 'High keyword density and role calibration. Guaranteed top candidate screening match.';
+                } else if (score >= 70) {
+                    if (pill) {
+                        pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20';
+                        pill.textContent = 'Strong Match';
+                    }
+                    if (heading) heading.textContent = 'Well Calibrated';
+                    if (desc) desc.textContent = 'Add 2 more technical skills or quantified metrics in experience to reach 95+.';
+                } else {
+                    if (pill) {
+                        pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
+                        pill.textContent = 'In Progress';
+                    }
+                    if (heading) heading.textContent = 'Profile In Progress';
+                    if (desc) desc.textContent = 'Fill target role & 4+ key technical keywords to calibrate ATS readiness.';
+                }
+
+                // Checkpoints
+                const chkNameIcon = document.getElementById('chkNameIcon');
+                const chkNameVal = document.getElementById('chkNameVal');
+                if (name.length > 2) {
+                    if (chkNameIcon) chkNameIcon.className = 'fa-solid fa-circle-check text-emerald-500';
+                    if (chkNameVal) { chkNameVal.textContent = 'Ready'; chkNameVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                } else {
+                    if (chkNameIcon) chkNameIcon.className = 'fa-solid fa-circle-dot text-amber-500';
+                    if (chkNameVal) { chkNameVal.textContent = 'Required'; chkNameVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
+                }
+
+                const chkProfIcon = document.getElementById('chkProfIcon');
+                const chkProfVal = document.getElementById('chkProfVal');
+                if (prof.length > 3) {
+                    if (chkProfIcon) chkProfIcon.className = 'fa-solid fa-circle-check text-emerald-500';
+                    if (chkProfVal) { chkProfVal.textContent = 'Calibrated'; chkProfVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                } else {
+                    if (chkProfIcon) chkProfIcon.className = 'fa-solid fa-circle-dot text-amber-500';
+                    if (chkProfVal) { chkProfVal.textContent = 'Required'; chkProfVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
+                }
+
+                const chkSkillsIcon = document.getElementById('chkSkillsIcon');
+                const chkSkillsVal = document.getElementById('chkSkillsVal');
+                if (skillsCount >= 4) {
+                    if (chkSkillsIcon) chkSkillsIcon.className = 'fa-solid fa-circle-check text-emerald-500';
+                    if (chkSkillsVal) { chkSkillsVal.textContent = skillsCount + ' Keywords (Optimal)'; chkSkillsVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                } else {
+                    if (chkSkillsIcon) chkSkillsIcon.className = 'fa-solid fa-circle-dot text-amber-500';
+                    if (chkSkillsVal) { chkSkillsVal.textContent = skillsCount + ' Keywords'; chkSkillsVal.className = 'font-bold font-mono text-amber-600 dark:text-amber-400'; }
+                }
+
+                const chkExpIcon = document.getElementById('chkExpIcon');
+                const chkExpVal = document.getElementById('chkExpVal');
+                if (exp.length > 30) {
+                    if (chkExpIcon) chkExpIcon.className = 'fa-solid fa-circle-check text-emerald-500';
+                    if (chkExpVal) { chkExpVal.textContent = 'Provided'; chkExpVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                } else {
+                    if (chkExpIcon) chkExpIcon.className = 'fa-solid fa-circle-dot text-gray-400';
+                    if (chkExpVal) { chkExpVal.textContent = 'Optional'; chkExpVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
                 }
             };
 
@@ -11147,6 +11763,512 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 });
             }
         });
+
+        // ─── INTERNAL HRMS WORKFORCE & EMPLOYEE DIRECTORY CONTROLLER ───
+        let hrmsEmployeesList = [];
+
+        async function loadEmployeesDirectory() {
+            const tbody = document.getElementById('employeesTableBody');
+            const emptyEl = document.getElementById('employeesEmptyState');
+            if (!tbody) return;
+
+            tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-gray-400 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading workforce roster...</td></tr>';
+
+            try {
+                const res = await fetch('/api/employees', { credentials: 'include' });
+                if (res.status === 403 || res.status === 401) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-red-500 font-bold">🔒 Access Restricted: Internal HRMS authorization required.</td></tr>';
+                    return;
+                }
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.data)) {
+                    hrmsEmployeesList = data.data;
+                    renderEmployeesTable(hrmsEmployeesList);
+                    updateEmployeeMetrics(hrmsEmployeesList);
+                } else {
+                    hrmsEmployeesList = [];
+                    renderEmployeesTable([]);
+                    updateEmployeeMetrics([]);
+                }
+            } catch (err) {
+                console.error('Error fetching employees:', err);
+                tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-red-500 font-mono">Failed to load employee records: ' + err.message + '</td></tr>';
+            }
+        }
+        window.loadEmployeesDirectory = loadEmployeesDirectory;
+
+        function updateEmployeeMetrics(list) {
+            const totalEl = document.getElementById('empStatTotal');
+            const activeEl = document.getElementById('empStatActive');
+            const probationEl = document.getElementById('empStatProbation');
+            const deptsEl = document.getElementById('empStatDepts');
+
+            if (totalEl) totalEl.textContent = list.length;
+            if (activeEl) activeEl.textContent = list.filter(e => (e.employment_details?.status || 'active').toLowerCase() === 'active').length;
+            if (probationEl) probationEl.textContent = list.filter(e => {
+                const st = (e.employment_details?.status || '').toLowerCase();
+                return st === 'probation' || st === 'on_leave';
+            }).length;
+            
+            const uniqueDepts = new Set(list.map(e => e.employment_details?.department).filter(Boolean));
+            if (deptsEl) deptsEl.textContent = uniqueDepts.size || 0;
+        }
+
+        function renderEmployeesTable(list) {
+            const tbody = document.getElementById('employeesTableBody');
+            const emptyEl = document.getElementById('employeesEmptyState');
+            if (!tbody) return;
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyEl) emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyEl) emptyEl.classList.add('hidden');
+
+            tbody.innerHTML = list.map(emp => {
+                const empId = emp.employee_id || emp.id || 'N/A';
+                const name = emp.full_name || 'Staff Member';
+                const email = emp.email || emp.contact_details?.work_email || '—';
+                const dept = emp.employment_details?.department || 'General';
+                const designation = emp.employment_details?.designation || 'Specialist';
+                const type = (emp.employment_details?.employment_type || 'full_time').replace('_', ' ');
+                const status = (emp.employment_details?.status || 'active').toLowerCase();
+
+                let statusClass = 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60';
+                if (status === 'probation') statusClass = 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border-amber-200 dark:border-amber-800/60';
+                if (status === 'on_leave') statusClass = 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-800/60';
+                if (status === 'terminated') statusClass = 'bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400 border-red-200 dark:border-red-800/60';
+
+                const initial = (name[0] || 'E').toUpperCase();
+
+                return '<tr class="hover:bg-[#FAFAF8] dark:hover:bg-zinc-800/40 transition-colors">' +
+                    '<td class="py-3 px-4 flex items-center gap-2.5">' +
+                        '<div class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 font-bold flex items-center justify-center text-xs flex-shrink-0">' +
+                            initial +
+                        '</div>' +
+                        '<div class="overflow-hidden">' +
+                            '<p class="font-bold text-xs text-[#111111] dark:text-white truncate">' + name + '</p>' +
+                            '<p class="text-[11px] text-gray-500 dark:text-zinc-400 truncate">' + email + '</p>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 font-mono text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">' + empId + '</td>' +
+                    '<td class="py-3 px-4">' +
+                        '<span class="font-medium text-xs text-zinc-800 dark:text-zinc-200">' + dept + '</span>' +
+                        '<span class="text-[10px] text-gray-400 block">' + designation + '</span>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 capitalize text-zinc-600 dark:text-zinc-400 text-xs">' + type + '</td>' +
+                    '<td class="py-3 px-4">' +
+                        '<span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ' + statusClass + '">' + status + '</span>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 text-right">' +
+                        '<div class="inline-flex items-center gap-1.5">' +
+                            '<button onclick="deleteEmployeeRecord(\'' + empId + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1" title="Delete record">' +
+                                '<i class="fa-solid fa-trash-can text-xs"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        window.filterEmployeesTable = function() {
+            const search = (document.getElementById('searchEmployeeInput')?.value || '').toLowerCase().trim();
+            const dept = document.getElementById('filterEmployeeDept')?.value || 'all';
+            const status = document.getElementById('filterEmployeeStatus')?.value || 'all';
+
+            const filtered = hrmsEmployeesList.filter(emp => {
+                const name = (emp.full_name || '').toLowerCase();
+                const id = (emp.employee_id || emp.id || '').toLowerCase();
+                const email = (emp.email || emp.contact_details?.work_email || '').toLowerCase();
+                const empDept = (emp.employment_details?.department || '').toLowerCase();
+                const empStatus = (emp.employment_details?.status || 'active').toLowerCase();
+
+                const matchesSearch = !search || name.includes(search) || id.includes(search) || email.includes(search);
+                const matchesDept = dept === 'all' || empDept.toLowerCase() === dept.toLowerCase();
+                const matchesStatus = status === 'all' || empStatus === status.toLowerCase();
+
+                return matchesSearch && matchesDept && matchesStatus;
+            });
+
+            renderEmployeesTable(filtered);
+        };
+
+        window.saveEmployeeRecord = async function(e) {
+            if (e) e.preventDefault();
+            const code = document.getElementById('newEmpCode')?.value?.trim();
+            const name = document.getElementById('newEmpFullName')?.value?.trim();
+            const email = document.getElementById('newEmpWorkEmail')?.value?.trim();
+            const phone = document.getElementById('newEmpPhone')?.value?.trim();
+            const dept = document.getElementById('newEmpDepartment')?.value;
+            const desig = document.getElementById('newEmpDesignation')?.value?.trim();
+            const type = document.getElementById('newEmpType')?.value || 'full_time';
+            const status = document.getElementById('newEmpStatus')?.value || 'active';
+
+            if (!code || !name || !email) {
+                showToast('Please enter Employee Code, Full Name, and Work Email.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('saveEmployeeBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+            }
+
+            try {
+                const payload = {
+                    employee_id: code,
+                    full_name: name,
+                    email: email,
+                    phone: phone || undefined,
+                    employment_details: {
+                        department: dept,
+                        designation: desig,
+                        employment_type: type,
+                        status: status,
+                        date_of_joining: new Date().toISOString().split('T')[0]
+                    }
+                };
+
+                const res = await fetch('/api/employees', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    showToast(data.error || data.message || 'Failed to save employee record.', 'error');
+                    return;
+                }
+
+                showToast('Employee ' + code + ' recorded successfully.', 'success');
+                closeModal('addEmployeeModal');
+                document.getElementById('addEmployeeForm')?.reset();
+                loadEmployeesDirectory();
+            } catch (err) {
+                showToast('Save failed: ' + err.message, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Save Employee';
+                }
+            }
+        };
+
+        // Prompt 04 Optimization: Optimistic UI update with graceful rollback
+        window.deleteEmployeeRecord = async function(id) {
+            if (!confirm('Are you sure you want to delete employee ' + id + ' from the roster?')) return;
+
+            // 1. Snapshot state for potential rollback
+            const backupRoster = [...hrmsEmployeesList];
+
+            // 2. Optimistically update local data & UI immediately (0ms reaction)
+            hrmsEmployeesList = hrmsEmployeesList.filter(e => (e.employee_id || e.id) !== id);
+            renderEmployeesRoster(hrmsEmployeesList);
+            showToast('Employee removed from directory.', 'info');
+
+            // 3. Reconcile with server in the background
+            try {
+                const res = await fetch('/api/employees/' + encodeURIComponent(id), {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    // Roll back state on server failure
+                    hrmsEmployeesList = backupRoster;
+                    renderEmployeesRoster(hrmsEmployeesList);
+                    showToast('Failed to delete on server: ' + (data.error || data.message || 'Error') + '. Record restored.', 'error');
+                    return;
+                }
+                showToast('Employee record permanently deleted.', 'success');
+            } catch (err) {
+                // Roll back state on network error
+                hrmsEmployeesList = backupRoster;
+                renderEmployeesRoster(hrmsEmployeesList);
+                showToast('Network error: ' + err.message + '. Record restored.', 'error');
+            }
+        };
+
+        // ─── INTERNAL HRMS COMPANY DOCUMENTS & POLICIES CONTROLLER ───
+        let hrmsDocumentsList = [];
+        let activeDocCategory = 'all';
+
+        async function loadCompanyDocuments(category) {
+            if (category) activeDocCategory = category;
+            const grid = document.getElementById('documentsGrid');
+            const emptyEl = document.getElementById('documentsEmptyState');
+            if (!grid) return;
+
+            grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-gray-400 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading company documents...</div>';
+
+            try {
+                const catParam = activeDocCategory !== 'all' ? '?category=' + encodeURIComponent(activeDocCategory) : '';
+                const res = await fetch('/api/documents' + catParam, { credentials: 'include' });
+                if (res.status === 403 || res.status === 401) {
+                    grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-red-500 font-bold">🔒 Access Restricted: Internal HRMS authorization required to view company policies.</div>';
+                    return;
+                }
+
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.data)) {
+                    hrmsDocumentsList = data.data;
+                    renderDocumentsGrid(hrmsDocumentsList);
+                } else {
+                    hrmsDocumentsList = [];
+                    renderDocumentsGrid([]);
+                }
+            } catch (err) {
+                console.error('Error fetching documents:', err);
+                grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-red-500 font-mono">Failed to load company documents: ' + err.message + '</div>';
+            }
+        }
+        window.loadCompanyDocuments = loadCompanyDocuments;
+
+        window.setDocCategoryFilter = function(category) {
+            activeDocCategory = category;
+            document.querySelectorAll('#docCategoryTabs .doc-cat-pill').forEach(pill => {
+                if (pill.dataset.cat === category) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadCompanyDocuments(category);
+        };
+
+        function renderDocumentsGrid(list) {
+            const grid = document.getElementById('documentsGrid');
+            const emptyEl = document.getElementById('documentsEmptyState');
+            if (!grid) return;
+
+            if (!list || list.length === 0) {
+                grid.innerHTML = '';
+                if (emptyEl) emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyEl) emptyEl.classList.add('hidden');
+
+            grid.innerHTML = list.map(doc => {
+                const cat = (doc.category || 'policy').toLowerCase();
+                let catIcon = 'fa-solid fa-scale-balanced text-amber-500';
+                let catBadgeClass = 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/60';
+                if (cat === 'handbook') {
+                    catIcon = 'fa-solid fa-book-bookmark text-blue-500';
+                    catBadgeClass = 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/60';
+                } else if (cat === 'nda') {
+                    catIcon = 'fa-solid fa-file-signature text-purple-500';
+                    catBadgeClass = 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/60';
+                } else if (cat === 'compliance') {
+                    catIcon = 'fa-solid fa-shield-halved text-emerald-500';
+                    catBadgeClass = 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60';
+                }
+
+                const dateStr = doc.createdAt ? new Date(doc.createdAt).toISOString().split('T')[0] : '2026-09-04';
+                const author = doc.uploadedBy ? (doc.uploadedBy.name || doc.uploadedBy.email || 'HR Dept') : 'HR Dept';
+                const size = doc.fileSize || '380 KB';
+
+                return '<div class="card p-5 flex flex-col justify-between hover:border-amber-500/40 transition-all border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs group">' +
+                    '<div>' +
+                        '<div class="flex justify-between items-start mb-3">' +
+                            '<div class="w-9 h-9 rounded-xl bg-[#FAFAF8] dark:bg-zinc-800 flex items-center justify-center border border-[#E5E5DF] dark:border-zinc-700/60 shadow-2xs">' +
+                                '<i class="' + catIcon + ' text-sm"></i>' +
+                            '</div>' +
+                            '<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ' + catBadgeClass + '">' +
+                                cat +
+                            '</span>' +
+                        '</div>' +
+                        '<h4 class="font-bold text-sm text-[#111111] dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-2 mb-1.5">' +
+                            doc.title +
+                        '</h4>' +
+                        '<p class="text-xs text-[#666660] dark:text-zinc-400 line-clamp-2 mb-4 leading-relaxed">' +
+                            (doc.description || doc.content || 'Official internal documentation for employees and contractors.') +
+                        '</p>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="flex items-center justify-between text-[11px] text-gray-400 pb-3 border-t border-[#E5E5DF] dark:border-zinc-800/60 pt-3">' +
+                            '<span><i class="fa-regular fa-calendar mr-1"></i> ' + dateStr + '</span>' +
+                            '<span><i class="fa-solid fa-file-pdf mr-1 text-red-400"></i> ' + size + '</span>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between gap-2 pt-1">' +
+                            '<button onclick="readDocument(\'' + doc.id + '\')" class="btn-secondary text-xs flex-1 py-1.5 text-center justify-center">' +
+                                '<i class="fa-regular fa-eye mr-1"></i> View' +
+                            '</button>' +
+                            '<button onclick="downloadDocPrompt(\'' + doc.title.replace(/'/g, "\\'") + '\', \'' + (doc.fileName || '') + '\')" class="btn-secondary text-xs px-2.5 py-1.5" title="Download Document">' +
+                                '<i class="fa-solid fa-download"></i>' +
+                            '</button>' +
+                            '<button onclick="deleteDocumentRecord(\'' + doc.id + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5" title="Remove Document">' +
+                                '<i class="fa-solid fa-trash-can text-xs"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        window.filterDocumentsGrid = function() {
+            const q = (document.getElementById('searchDocInput')?.value || '').toLowerCase().trim();
+            const filtered = hrmsDocumentsList.filter(doc => {
+                const title = (doc.title || '').toLowerCase();
+                const desc = (doc.description || '').toLowerCase();
+                const content = (doc.content || '').toLowerCase();
+                return !q || title.includes(q) || desc.includes(q) || content.includes(q);
+            });
+            renderDocumentsGrid(filtered);
+        };
+
+        window.publishCompanyDocument = async function(e) {
+            if (e) e.preventDefault();
+            const title = document.getElementById('docTitle')?.value?.trim();
+            const category = document.getElementById('docCategory')?.value || 'policy';
+            const fileName = document.getElementById('docFileName')?.value?.trim();
+            const desc = document.getElementById('docDescription')?.value?.trim();
+            const content = document.getElementById('docContent')?.value?.trim();
+
+            if (!title) {
+                showToast('Document Title is required.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('publishDocBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Publishing...';
+            }
+
+            try {
+                const payload = {
+                    title,
+                    category,
+                    fileName: fileName || (title.replace(/\s+/g, '_') + '.pdf'),
+                    description: desc || null,
+                    content: content || null
+                };
+
+                const res = await fetch('/api/documents', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    showToast(data.error || data.message || 'Failed to publish document.', 'error');
+                    return;
+                }
+
+                showToast('Document published successfully.', 'success');
+                closeModal('publishDocModal');
+                document.getElementById('publishDocForm')?.reset();
+                loadCompanyDocuments(activeDocCategory);
+            } catch (err) {
+                showToast('Publish failed: ' + err.message, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Publish Document';
+                }
+            }
+        };
+
+        window.readDocument = function(id) {
+            const doc = hrmsDocumentsList.find(d => d.id === id);
+            if (!doc) {
+                showToast('Document details not found.', 'error');
+                return;
+            }
+
+            const titleEl = document.getElementById('readDocTitle');
+            const badgeEl = document.getElementById('readDocBadge');
+            const dateEl = document.getElementById('readDocDate');
+            const descEl = document.getElementById('readDocDescription');
+            const contentEl = document.getElementById('readDocContent');
+            const authorEl = document.getElementById('readDocAuthor');
+
+            if (titleEl) titleEl.textContent = doc.title;
+            if (badgeEl) badgeEl.textContent = (doc.category || 'policy').toUpperCase();
+            if (dateEl) dateEl.textContent = doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : '2026-09-04';
+            if (descEl) descEl.textContent = doc.description || 'Corporate HRMS standard reference document.';
+            if (contentEl) contentEl.textContent = doc.content || 'Detailed policy clauses and specifications are archived in official corporate files.';
+            if (authorEl) authorEl.textContent = 'Uploaded by: ' + (doc.uploadedBy?.name || doc.uploadedBy?.email || 'HR Administration') + ' (' + (doc.fileName || 'PDF Document') + ')';
+
+            openModal('readDocModal');
+        };
+
+        // Prompt 04 Optimization: Optimistic UI update with graceful rollback
+        window.deleteDocumentRecord = async function(id) {
+            if (!confirm('Are you sure you want to permanently delete this company document?')) return;
+
+            // 1. Snapshot state for potential rollback
+            const backupDocs = [...hrmsDocumentsList];
+
+            // 2. Optimistically update local data & UI immediately (0ms reaction)
+            hrmsDocumentsList = hrmsDocumentsList.filter(d => d.id !== id);
+            renderCompanyDocuments(hrmsDocumentsList);
+            showToast('Document removed from directory.', 'info');
+
+            // 3. Reconcile with server in the background
+            try {
+                const res = await fetch('/api/documents/' + encodeURIComponent(id), {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    // Roll back state on server failure
+                    hrmsDocumentsList = backupDocs;
+                    renderCompanyDocuments(hrmsDocumentsList);
+                    showToast('Server error: ' + (data.error || data.message || 'Error') + '. Document restored.', 'error');
+                    return;
+                }
+                showToast('Document permanently deleted.', 'success');
+            } catch (err) {
+                // Roll back state on network error
+                hrmsDocumentsList = backupDocs;
+                renderCompanyDocuments(hrmsDocumentsList);
+                showToast('Network error: ' + err.message + '. Document restored.', 'error');
+            }
+        };
+
+        window.downloadDocPrompt = function(title, fileName) {
+            showToast('📄 Downloading ' + (fileName || title) + '...', 'success');
+        };
+
+        window.printDocumentText = function() {
+            const title = document.getElementById('readDocTitle')?.textContent || 'Company Document';
+            const text = document.getElementById('readDocContent')?.textContent || '';
+            const printWin = window.open('', '_blank');
+            if (printWin) {
+                printWin.document.write('<html><head><title>' + title + '</title><style>body{font-family:sans-serif;padding:40px;line-height:1.6;}h1{border-bottom:2px solid #333;padding-bottom:10px;}</style></head><body><h1>' + title + '</h1><pre style="white-space:pre-wrap;font-family:inherit;">' + text + '</pre></body></html>');
+                printWin.document.close();
+                printWin.print();
+            }
+        };
+
+        // Dual-Portal Path & Error Handler on Load
+        (function checkDualPortalPath() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const portalError = urlParams.get('error');
+                if (portalError) {
+                    window.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(() => {
+                            if (window.showToast) {
+                                showToast(decodeURIComponent(portalError), 'error');
+                            }
+                        }, 400);
+                    });
+                }
+            } catch (e) {
+                console.warn('Dual portal URL check error:', e);
+            }
+        })();
 
         // Auto-detect Password Reset Link clicked from Gmail (?action=reset-password&token=...&email=...)
         (function checkPasswordResetUrl() {
