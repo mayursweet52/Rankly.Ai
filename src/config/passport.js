@@ -24,8 +24,8 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
-// Auto-detect dynamic callback (relative path allows dynamic resolution per request)
-const googleCallbackUrl = '/auth/google/callback';
+// Auto-detect dynamic callback (env override or relative path per request)
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback';
 
 if (googleClientId && googleClientSecret) {
   passport.use(
