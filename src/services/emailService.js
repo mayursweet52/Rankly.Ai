@@ -306,10 +306,68 @@ async function sendVerificationLinkEmail({ to, fullName, verifyLink, isResend = 
     return res.success;
 }
 
+/**
+ * Send Password Reset Link Email (Triggered after OTP verification)
+ */
+async function sendPasswordResetLinkEmail({ to, fullName, resetLink }) {
+    if (!to) return false;
+    const cleanRecipient = (to || '').toString().toLowerCase().trim();
+    const displayName = fullName || 'User';
+    const subject = '🔐 Reset your rankly.ai password';
+
+    const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f7; color: #333;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        
+        <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+          <h1 style="color: #4f46e5; margin: 0; font-size: 26px; font-weight: 800;">rankly.ai</h1>
+          <p style="color: #666; font-size: 14px; margin: 5px 0 0;">Next-Gen AI Recruitment & Candidate Evaluation</p>
+        </div>
+
+        <h2 style="color: #4f46e5; text-align: center; margin-top: 10px;">Password Reset Request</h2>
+        <p style="font-size: 15px; line-height: 24px; color: #475569; text-align: center;">
+          Hello ${displayName},<br/>
+          Your identity has been verified via OTP. Click the secure button below to set your new account password:
+        </p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${resetLink}" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">
+            Set New Password
+          </a>
+        </div>
+
+        <p style="font-size: 13px; color: #64748b; text-align: center; line-height: 1.6;">
+          Or copy and paste this link into your mobile or desktop browser:<br/>
+          <a href="${resetLink}" style="color: #4f46e5; word-break: break-all;">${resetLink}</a>
+        </p>
+
+        <p style="font-size: 12px; color: #94a3b8; text-align: center; margin-top: 20px;">
+          ⏳ This reset link is valid for 1 hour. If you did not request this, please ignore this email.
+        </p>
+
+        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px;">
+          &copy; 2026 rankly.ai. All rights reserved.
+        </div>
+      </div>
+    </div>
+    `;
+
+    const text = `Hello ${displayName},\n\nYour identity has been verified via OTP. Click the link below to set your new password:\n\n${resetLink}\n\nThis link is valid for 1 hour.\n\n© 2026 rankly.ai`;
+
+    const res = await sendSystemEmail({
+        to: cleanRecipient,
+        subject,
+        html,
+        text
+    });
+    return res.success;
+}
+
 module.exports = {
     sendSystemEmail,
     sendOTPEmail,
     sendVerificationLinkEmail,
+    sendPasswordResetLinkEmail,
     sendInvitationEmail,
     sendCandidateStatusNotification
 };

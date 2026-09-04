@@ -189,6 +189,24 @@ async function connectDatabase() {
       );
     `);
 
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "CompanyDocument" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "title" TEXT NOT NULL,
+        "category" TEXT NOT NULL DEFAULT 'policy',
+        "description" TEXT,
+        "fileUrl" TEXT,
+        "fileName" TEXT,
+        "fileSize" TEXT,
+        "content" TEXT,
+        "uploadedById" TEXT NOT NULL,
+        "organizationId" TEXT,
+        "isRestricted" BOOLEAN NOT NULL DEFAULT false,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
     console.log('✅ SQLite Schema Tables (User, OTP, Evaluation, Candidate, Feedback, etc.) initialized & verified.');
   } catch (error) {
     console.error('❌ Failed to connect/initialize SQLite database:', error.message);

@@ -83,6 +83,31 @@ function requireRole(allowedRoles = []) {
 }
 
 /**
+ * Middleware for strict HRMS Role-Based Access Control
+ * Enforces that only internal HRs, Admins, Hiring Managers, or Employees can enter
+ * Candidates / Normal Users are strictly denied access with 403 Forbidden
+ */
+function requireHRMS(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: 'Authentication required. Please sign in to Internal HRMS.' });
+  }
+
+  const role = (req.user.role || '').toLowerCase();
+  const isEmployeeType = req.user.accountType === 'employee';
+  const allowed = ['admin', 'administrator', 'hr', 'human_resources', 'hiring_manager', 'hm', 'employee'];
+
+  if (allowed.includes(role) || isEmployeeType || role === 'admin') {
+    return next();
+  }
+
+  return res.status(403).json({
+    success: false,
+    error: 'Access denied: Internal HRMS Portal is strictly restricted to company HR and Admin personnel.',
+    message: 'Access denied: Internal HRMS Portal is strictly restricted to company HR and Admin personnel.'
+  });
+}
+
+/**
  * Optional Authentication Middleware
  * Attaches user to req.user if session exists, but doesn't block if guest
  */
@@ -110,6 +135,8 @@ const verifyToken = require('./verifyToken');
 module.exports = {
   isAuthenticated,
   requireRole,
+  requireHRMS,
   optionalAuth,
   verifyToken
 };
+

@@ -207,53 +207,58 @@ async function batchUploadHandler(req, res) {
 
         const evaluation = await screenResume(resumeText, targetRole, '', file.originalname);
 
-        const savedEval = await prisma.evaluation.create({
-          data: {
-            userId,
-            organizationId,
-            candidateName: extracted.name,
-            candidateEmail: extracted.email,
-            candidatePhone: extracted.phone,
-            targetRole,
-            resumeFileName: file.originalname,
-            resumeFilePath: file.path,
-            matchScore: evaluation.matchScore || 0,
-            skillsScore: evaluation.scoreBreakdown?.skills || 0,
-            experienceScore: evaluation.scoreBreakdown?.experience || 0,
-            toolsScore: evaluation.scoreBreakdown?.tools || 0,
-            educationScore: evaluation.scoreBreakdown?.education || 0,
-            fitVerdict: evaluation.fitVerdict || 'Potential Fit',
-            summary: evaluation.summary || '',
-            matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
-            missingSkills: JSON.stringify(evaluation.missingSkills || []),
-            recommendations: JSON.stringify(evaluation.recommendations || []),
-            pipelineStage: 'ai_screened',
-            status: 'screened'
-          }
-        });
+        // Prompt 02 Optimization: Batch database writes inside a single transaction
+        const [savedEval, candidate] = await prisma.$transaction(async (tx) => {
+          const ev = await tx.evaluation.create({
+            data: {
+              userId,
+              organizationId,
+              candidateName: extracted.name,
+              candidateEmail: extracted.email,
+              candidatePhone: extracted.phone,
+              targetRole,
+              resumeFileName: file.originalname,
+              resumeFilePath: file.path,
+              matchScore: evaluation.matchScore || 0,
+              skillsScore: evaluation.scoreBreakdown?.skills || 0,
+              experienceScore: evaluation.scoreBreakdown?.experience || 0,
+              toolsScore: evaluation.scoreBreakdown?.tools || 0,
+              educationScore: evaluation.scoreBreakdown?.education || 0,
+              fitVerdict: evaluation.fitVerdict || 'Potential Fit',
+              summary: evaluation.summary || '',
+              matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
+              missingSkills: JSON.stringify(evaluation.missingSkills || []),
+              recommendations: JSON.stringify(evaluation.recommendations || []),
+              pipelineStage: 'ai_screened',
+              status: 'screened'
+            }
+          });
 
-        const candidate = await prisma.candidate.create({
-          data: {
-            name: extracted.name,
-            email: extracted.email,
-            phone: extracted.phone,
-            targetRole,
-            stage: 'ai_screened',
-            score: evaluation.matchScore || 0,
-            skillsScore: evaluation.scoreBreakdown?.skills || 0,
-            experienceScore: evaluation.scoreBreakdown?.experience || 0,
-            toolsScore: evaluation.scoreBreakdown?.tools || 0,
-            educationScore: evaluation.scoreBreakdown?.education || 0,
-            fitVerdict: evaluation.fitVerdict,
-            summary: evaluation.summary,
-            matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
-            missingSkills: JSON.stringify(evaluation.missingSkills || []),
-            recommendations: JSON.stringify(evaluation.recommendations || []),
-            organizationId,
-            userId,
-            evaluationId: savedEval.id,
-            resumeUrl: `/uploads/${file.filename}`
-          }
+          const cd = await tx.candidate.create({
+            data: {
+              name: extracted.name,
+              email: extracted.email,
+              phone: extracted.phone,
+              targetRole,
+              stage: 'ai_screened',
+              score: evaluation.matchScore || 0,
+              skillsScore: evaluation.scoreBreakdown?.skills || 0,
+              experienceScore: evaluation.scoreBreakdown?.experience || 0,
+              toolsScore: evaluation.scoreBreakdown?.tools || 0,
+              educationScore: evaluation.scoreBreakdown?.education || 0,
+              fitVerdict: evaluation.fitVerdict,
+              summary: evaluation.summary,
+              matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
+              missingSkills: JSON.stringify(evaluation.missingSkills || []),
+              recommendations: JSON.stringify(evaluation.recommendations || []),
+              organizationId,
+              userId,
+              evaluationId: ev.id,
+              resumeUrl: `/uploads/${file.filename}`
+            }
+          });
+
+          return [ev, cd];
         });
 
         results.push({

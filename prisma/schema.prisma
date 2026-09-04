@@ -47,6 +47,7 @@ model User {
   createdReferrals ReferralCode[] @relation("CreatedReferrals")
   administeredOrgs Organization[] @relation("AdminOrgs")
   employeeProfile  Employee?
+  companyDocuments CompanyDocument[]
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -68,6 +69,7 @@ model Organization {
   invitations TeamInvitation[]
   departments Department[]
   employees   Employee[]
+  companyDocuments CompanyDocument[]
 
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -521,5 +523,23 @@ model RecommendedTraining {
   updatedAt        DateTime @updatedAt
 }
 
-
-
+// ---------------------------------------------------------
+// Company Document Model (Internal HRMS Policies, Handbooks & NDAs)
+// ---------------------------------------------------------
+model CompanyDocument {
+  id             String        @id @default(uuid())
+  title          String
+  category       String        @default("policy") // "policy" | "handbook" | "contract" | "nda" | "compliance"
+  description    String?
+  fileUrl        String?
+  fileName       String?
+  fileSize       String?
+  content        String?       // Document body / rich text / guidelines
+  uploadedById   String
+  uploadedBy     User          @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  isRestricted   Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}

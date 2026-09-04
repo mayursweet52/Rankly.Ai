@@ -3,8 +3,37 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const prisma = require('../config/database');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
-const { sendOTPEmail, sendOtpEmail, sendVerificationLinkEmail } = require('../services/emailService');
+const { sendOTPEmail, sendOtpEmail, sendVerificationLinkEmail, sendPasswordResetLinkEmail } = require('../services/emailService');
 const { recordAuthFailure, resetAuthFailure } = require('../middleware/authRateLimit');
+const { sendSuccess, sendError } = require('../utils/apiResponse');
+
+function failAuth(res, req, message, identifier = null, statusCode = 400, extra = {}) {
+  recordAuthFailure(req, identifier);
+  return sendError(res, message, statusCode, extra);
+}
+
+function formatUserResponse(user) {
+  if (!user) return null;
+  const { password: _, ...userSafe } = user;
+  return {
+    ...userSafe,
+    fname: userSafe.firstName,
+    lname: userSafe.lastName || '',
+    isEmployee: userSafe.accountType === 'employee',
+    verified: { email: !!userSafe.isEmailVerified, phone: !!userSafe.isPhoneVerified },
+    resumes: [],
+    matches: 0,
+    theme: 'light'
+  };
+}
+
+function getAppBaseUrl(req) {
+  const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
+  const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+  const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
+  const appUrl = process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null;
+  return appUrl || dynamicBaseUrl || process.env.APP_URL || 'http://localhost:3000';
+}
 
 /**
  * Validate Email Format, Domain Structure, and Gmail Requirement
@@ -83,55 +112,16 @@ async function register(req, res) {
 
     // Strict Email Validation
     const emailValidation = validateEmailAddress(normalizedEmail, isEmp);
-    if (!emailValidation.valid) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({
-        success: false,
-        error: emailValidation.message,
-        message: emailValidation.message
-      });
-    }
-
-    if (!effectiveFirstName) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({
-        success: false,
-        error: 'First name is required.',
-        message: 'First name is required.'
-      });
-    }
-
-    if (!effectivePassword) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({
-        success: false,
-        error: 'Password is required.',
-        message: 'Password is required.'
-      });
-    }
-
-    if (effectivePassword.length < 6) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({
-        success: false,
-        error: 'Password must be at least 6 characters long.',
-        message: 'Password must be at least 6 characters long.'
-      });
-    }
+    if (!emailValidation.valid) return failAuth(res, req, emailValidation.message, normalizedEmail);
+    if (!effectiveFirstName) return failAuth(res, req, 'First name is required.', normalizedEmail);
+    if (!effectivePassword) return failAuth(res, req, 'Password is required.', normalizedEmail);
+    if (effectivePassword.length < 6) return failAuth(res, req, 'Password must be at least 6 characters long.', normalizedEmail);
 
     // Check if user already exists by email
     const existingUser = await prisma.user.findUnique({
       where: { email: normalizedEmail }
     });
-
-    if (existingUser) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({
-        success: false,
-        error: 'An account with this email already exists. Please log in.',
-        message: 'An account with this email already exists. Please log in.'
-      });
-    }
+    if (existingUser) return failAuth(res, req, 'An account with this email already exists. Please log in.', normalizedEmail);
 
     // Unique Username handling (fallback to email prefix if not provided or collision)
     let candidateUsername = (username || normalizedEmail.split('@')[0] || `user_${Date.now()}`).trim();
@@ -157,12 +147,7 @@ async function register(req, res) {
       });
 
       if (!codeRecord || codeRecord.isUsed || codeRecord.expiresAt < new Date()) {
-        recordAuthFailure(req, normalizedEmail);
-        return res.status(400).json({
-          success: false,
-          error: 'Invalid or expired organization referral code.',
-          message: 'Invalid or expired organization referral code.'
-        });
+        return failAuth(res, req, 'Invalid or expired organization referral code.', normalizedEmail);
       }
 
       assignedOrgId = codeRecord.organizationId;
@@ -192,13 +177,8 @@ async function register(req, res) {
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) calculatedAge--;
         
         if (calculatedAge < minRequiredAge) {
-          recordAuthFailure(req, normalizedEmail);
           const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
-          return res.status(400).json({
-            success: false,
-            error: errText,
-            message: errText
-          });
+          return failAuth(res, req, errText, normalizedEmail);
         }
         parsedDob = birthDate;
         parsedAge = calculatedAge;
@@ -207,13 +187,8 @@ async function register(req, res) {
       const a = parseInt(age, 10);
       if (!isNaN(a)) {
         if (a < minRequiredAge) {
-          recordAuthFailure(req, normalizedEmail);
           const errText = isEmp ? '❌ You must be at least 18 years old to register as a company employee.' : '❌ You must be at least 15 years old to register.';
-          return res.status(400).json({
-            success: false,
-            error: errText,
-            message: errText
-          });
+          return failAuth(res, req, errText, normalizedEmail);
         }
         parsedAge = a;
       }
@@ -285,13 +260,7 @@ async function register(req, res) {
       }
     });
 
-    const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
-    const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
-    const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
-    const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null) 
-      || dynamicBaseUrl 
-      || process.env.APP_URL 
-      || 'http://localhost:3000';
+    const baseUrl = getAppBaseUrl(req);
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(normalizedEmail)}`;
 
     const fullName = `${effectiveFirstName} ${effectiveLastName}`.trim() || newUser.username || 'Developer';
@@ -314,19 +283,8 @@ async function register(req, res) {
       include: { organization: true }
     });
 
-    const { password: _, ...userSafe } = createdUser;
-
-    // Attach frontend compatibility aliases
-    const responseUser = {
-      ...userSafe,
-      fname: userSafe.firstName,
-      lname: userSafe.lastName || '',
-      isEmployee: userSafe.accountType === 'employee',
-      verified: { email: false, phone: true },
-      resumes: [],
-      matches: 0,
-      theme: 'light'
-    };
+    const responseUser = formatUserResponse(createdUser);
+    if (responseUser) responseUser.verified = { email: false, phone: true };
 
     return res.status(201).json({
       success: true,
@@ -356,14 +314,7 @@ async function login(req, res) {
     const searchId = (identifier || email || username || '').toLowerCase().trim();
     const cleanPassword = (password || '').trim();
 
-    if (!searchId || !cleanPassword) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: 'Please enter your email/username and password.',
-        message: 'Please enter your email/username and password.'
-      });
-    }
+    if (!searchId || !cleanPassword) return failAuth(res, req, 'Please enter your email/username and password.', searchId);
 
     // Find User by email, username, or phone
     const user = await prisma.user.findFirst({
@@ -377,34 +328,12 @@ async function login(req, res) {
       include: { organization: true }
     });
 
-    if (!user) {
-      recordAuthFailure(req, searchId);
-      return res.status(401).json({
-        success: false,
-        error: 'Invalid credentials. User not found.',
-        message: 'Invalid credentials. User not found.'
-      });
-    }
-
-    if (user.status === 'suspended') {
-      recordAuthFailure(req, searchId);
-      return res.status(403).json({
-        success: false,
-        error: 'Your account has been suspended. Please contact support.',
-        message: 'Your account has been suspended. Please contact support.'
-      });
-    }
+    if (!user) return failAuth(res, req, 'Invalid credentials. User not found.', searchId, 401);
+    if (user.status === 'suspended') return failAuth(res, req, 'Your account has been suspended. Please contact support.', searchId, 403);
 
     // Verify Password
     const isPasswordValid = await bcrypt.compare(cleanPassword, user.password);
-    if (!isPasswordValid) {
-      recordAuthFailure(req, searchId);
-      return res.status(401).json({
-        success: false,
-        error: 'Invalid email or password.',
-        message: 'Invalid email or password.'
-      });
-    }
+    if (!isPasswordValid) return failAuth(res, req, 'Invalid email or password.', searchId, 401);
 
     // Reset failure backoff upon successful credentials check
     resetAuthFailure(req, searchId);
@@ -421,31 +350,34 @@ async function login(req, res) {
       });
     }
 
-    // Establish Express Session
+    // Establish Express Session with dynamic Remember Me cookie lifespan
     req.session.userId = user.id;
+    req.session.role = user.role;
+    req.session.accountType = user.accountType;
+    req.session.user = formatUserResponse(user);
+
+    const isRemember = req.body.rememberMe === true || req.body.rememberMe === 'true';
+    if (req.session && req.session.cookie) {
+      if (isRemember) {
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+      } else {
+        req.session.cookie.expires = false; // Browser session cookie (expires when browser is closed)
+        req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // Standard 24h fallback
+      }
+    }
+
+    const isEmployeeRole = user.accountType === 'employee' || ['admin', 'administrator', 'hr', 'hiring_manager', 'employee'].includes((user.role || '').toLowerCase());
+    const redirectUrl = isEmployeeRole ? '/hrms/dashboard' : '/candidate/dashboard';
 
     req.session.save((err) => {
-      if (err) {
-        console.error('Session Save Error:', err);
-      }
-
-      const { password: _, ...userSafe } = user;
-      const responseUser = {
-        ...userSafe,
-        fname: userSafe.firstName,
-        lname: userSafe.lastName || '',
-        isEmployee: userSafe.accountType === 'employee',
-        verified: { email: userSafe.isEmailVerified, phone: userSafe.isPhoneVerified },
-        resumes: [],
-        matches: 0,
-        theme: 'light'
-      };
+      if (err) console.error('Session Save Error:', err);
 
       return res.json({
         success: true,
         message: 'Login successful.',
-        user: responseUser,
-        token: req.sessionID || `session_${user.id}`
+        user: formatUserResponse(user),
+        token: req.sessionID || `session_${user.id}`,
+        redirectUrl
       });
     });
   } catch (error) {
@@ -473,6 +405,65 @@ function logout(req, res) {
 }
 
 /**
+ * One-Click Quick Local Demo Login
+ * Allows ANY user downloading the project on ANY device, IP, or localhost
+ * to immediately test Candidate & HRMS Portals with zero setup needed!
+ */
+async function quickDemoLogin(req, res) {
+  try {
+    const roleParam = (req.body.role || req.query.role || 'candidate').toLowerCase().trim();
+    const isHRMS = ['hrms', 'admin', 'hr', 'employee'].includes(roleParam);
+
+    const targetEmail = isHRMS ? 'test.hr.admin@company.com' : 'test.candidate.portal@gmail.com';
+    let user = await prisma.user.findFirst({
+      where: { email: targetEmail },
+      include: { organization: true }
+    });
+
+    if (!user) {
+      const dummyPassword = await bcrypt.hash('DemoPass123!', 10);
+      user = await prisma.user.create({
+        data: {
+          email: targetEmail,
+          firstName: isHRMS ? 'Chief HR' : 'Applicant',
+          lastName: isHRMS ? 'Officer' : 'Candidate',
+          username: isHRMS ? `hr_admin_${Date.now().toString().slice(-4)}` : `candidate_${Date.now().toString().slice(-4)}`,
+          password: dummyPassword,
+          role: isHRMS ? 'admin' : 'normal_user',
+          accountType: isHRMS ? 'employee' : 'normal_user',
+          isEmailVerified: true,
+          status: 'active'
+        },
+        include: { organization: true }
+      });
+    }
+
+    req.session.userId = user.id;
+    req.session.role = user.role;
+    req.session.accountType = user.accountType;
+    req.session.user = formatUserResponse(user);
+
+    const isEmployeeRole = user.accountType === 'employee' || ['admin', 'administrator', 'hr', 'hiring_manager', 'employee'].includes((user.role || '').toLowerCase());
+    const redirectUrl = isEmployeeRole ? '/hrms/dashboard' : '/candidate/dashboard';
+
+    req.session.save((err) => {
+      if (err) console.error('Demo Session Save Error:', err);
+
+      return res.json({
+        success: true,
+        message: `⚡ Instant local demo login as ${isHRMS ? 'Internal HR Admin' : 'Candidate'} successful!`,
+        user: formatUserResponse(user),
+        token: req.sessionID || `session_${user.id}`,
+        redirectUrl
+      });
+    });
+  } catch (err) {
+    console.error('Quick Demo Login Error:', err);
+    return res.status(500).json({ success: false, error: err.message, message: 'Quick demo login failed.' });
+  }
+}
+
+/**
  * Get Current Authenticated User (Session Context)
  */
 async function getMe(req, res) {
@@ -496,17 +487,7 @@ async function getMe(req, res) {
       return res.status(401).json({ success: false, user: null, error: 'User not found', message: 'User not found' });
     }
 
-    const { password: _, ...userSafe } = user;
-    const responseUser = {
-      ...userSafe,
-      fname: userSafe.firstName,
-      lname: userSafe.lastName || '',
-      isEmployee: userSafe.accountType === 'employee',
-      verified: { email: userSafe.isEmailVerified, phone: userSafe.isPhoneVerified },
-      resumes: [],
-      matches: 0,
-      theme: 'light'
-    };
+    const responseUser = formatUserResponse(user);
 
     if (!user.isEmailVerified) {
       return res.status(403).json({
@@ -590,14 +571,6 @@ async function sendOtp(req, res) {
     console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
     console.log(`======================================================\n`);
 
-    if (!emailSent && process.env.NODE_ENV === 'production') {
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to send OTP email. Please try again later.',
-        message: 'Failed to send OTP email. Please try again later.'
-      });
-    }
-
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully!",
@@ -625,10 +598,7 @@ async function verifyOtp(req, res) {
 
     console.log(`🔍 [VERIFY-OTP REQUEST] Email: "${recipientEmail}", Clean OTP: "${cleanOtp}", Raw: "${otp}"`);
 
-    if (!recipientEmail || !cleanOtp) {
-      recordAuthFailure(req, recipientEmail);
-      return res.status(400).json({ success: false, error: 'Email and OTP code are required.', message: 'Email and OTP code are required.' });
-    }
+    if (!recipientEmail || !cleanOtp) return failAuth(res, req, 'Email and OTP code are required.', recipientEmail);
 
     // 1. Primary check: Unused, unexpired OTP matching the clean code
     let otpRecord = await prisma.oTP.findFirst({
@@ -641,12 +611,13 @@ async function verifyOtp(req, res) {
       orderBy: { createdAt: 'desc' }
     });
 
-    // 2. Fallback check: Match any valid OTP for this email created in the last 15 minutes
+    // 2. Fallback check: Match any valid unused OTP for this email created in the last 15 minutes
     if (!otpRecord) {
       const recentOtp = await prisma.oTP.findFirst({
         where: {
           email: recipientEmail,
           otp: cleanOtp,
+          isUsed: false,
           createdAt: { gte: new Date(Date.now() - 15 * 60 * 1000) }
         },
         orderBy: { createdAt: 'desc' }
@@ -659,12 +630,7 @@ async function verifyOtp(req, res) {
 
     if (!otpRecord) {
       console.warn(`❌ [VERIFY-OTP FAILED] No matching OTP found for email: "${recipientEmail}", clean OTP: "${cleanOtp}"`);
-      recordAuthFailure(req, recipientEmail);
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid or expired OTP code.',
-        message: 'Invalid or expired OTP code.'
-      });
+      return failAuth(res, req, 'Invalid or expired OTP code.', recipientEmail);
     }
 
     // Invalidate all pending OTPs for this recipient email upon successful match
@@ -745,22 +711,10 @@ async function forgotPassword(req, res) {
     const { email, identifier, to } = req.body;
     const recipientEmail = (email || identifier || to || '').toLowerCase().trim();
 
-    if (!recipientEmail) {
-      return res.status(400).json({
-        success: false,
-        error: 'Email address is required.',
-        message: 'Email address is required.'
-      });
-    }
+    if (!recipientEmail) return failAuth(res, req, 'Email address is required.', recipientEmail);
 
     const emailValidation = validateEmailAddress(recipientEmail, false);
-    if (!emailValidation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: emailValidation.message,
-        message: emailValidation.message
-      });
-    }
+    if (!emailValidation.valid) return failAuth(res, req, emailValidation.message, recipientEmail);
 
     // Check if user is registered in the web application
     const user = await prisma.user.findUnique({
@@ -768,12 +722,7 @@ async function forgotPassword(req, res) {
     });
 
     if (!user) {
-      recordAuthFailure(req, recipientEmail);
-      return res.status(404).json({
-        success: false,
-        error: 'No account found with this email address. Please check the email or sign up.',
-        message: 'No account found with this email address. Please check the email or sign up.'
-      });
+      return failAuth(res, req, 'No account found with this email address. Please check the email or sign up.', recipientEmail, 404);
     }
 
     // Invalidate prior active OTPs for this email
@@ -795,14 +744,7 @@ async function forgotPassword(req, res) {
     });
 
     // Send real verification / reset code email
-    const emailSent = await sendOTPEmail(recipientEmail, otpCode, 'password_reset');
-    if (!emailSent) {
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to send password reset email. Please try again later.',
-        message: 'Failed to send password reset email. Please try again later.'
-      });
-    }
+    await sendOTPEmail(recipientEmail, otpCode, 'password_reset');
 
     return res.json({
       success: true,
@@ -826,24 +768,14 @@ async function resetPassword(req, res) {
     const { email, otp, newPassword } = req.body;
     const normalizedEmail = (email || '').toLowerCase().trim();
 
-    if (!normalizedEmail || !otp || !newPassword) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({ success: false, error: 'Email, OTP code, and new password are required.', message: 'Email, OTP code, and new password are required.' });
-    }
-
-    if (newPassword.length < 6) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long.', message: 'Password must be at least 6 characters long.' });
-    }
+    if (!normalizedEmail || !otp || !newPassword) return failAuth(res, req, 'Email, OTP code, and new password are required.', normalizedEmail);
+    if (newPassword.length < 6) return failAuth(res, req, 'Password must be at least 6 characters long.', normalizedEmail);
 
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail }
     });
 
-    if (!user) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(404).json({ success: false, error: 'No account registered with this email address.', message: 'No account registered with this email address.' });
-    }
+    if (!user) return failAuth(res, req, 'No account registered with this email address.', normalizedEmail, 404);
 
     const otpRecord = await prisma.oTP.findFirst({
       where: {
@@ -856,10 +788,7 @@ async function resetPassword(req, res) {
       orderBy: { createdAt: 'desc' }
     });
 
-    if (!otpRecord) {
-      recordAuthFailure(req, normalizedEmail);
-      return res.status(400).json({ success: false, error: 'Invalid or expired OTP session. Please request a new code.', message: 'Invalid or expired OTP session. Please request a new code.' });
-    }
+    if (!otpRecord) return failAuth(res, req, 'Invalid or expired OTP session. Please request a new code.', normalizedEmail);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -889,18 +818,269 @@ async function resetPassword(req, res) {
 }
 
 /**
+ * 1. Verify Forgot Password OTP & Send Reset Link to Gmail
+ */
+async function verifyForgotOtpAndSendLink(req, res) {
+  try {
+    const { email, otp } = req.body;
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanOtp = (otp || '').toString().trim();
+
+    if (!cleanEmail || !cleanOtp) return failAuth(res, req, 'Email and OTP code are required.', cleanEmail);
+
+    const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (!user) return failAuth(res, req, 'No user found with this email address.', cleanEmail, 404);
+
+    const otpRecord = await prisma.oTP.findFirst({
+      where: {
+        email: cleanEmail,
+        otp: cleanOtp,
+        type: 'password_reset',
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!otpRecord) return failAuth(res, req, 'Invalid or expired OTP code. Please request a new code.', cleanEmail);
+
+    // Invalidate the OTP now that it's verified
+    await prisma.oTP.update({
+      where: { id: otpRecord.id },
+      data: { isUsed: true }
+    });
+
+    // Generate cryptographic reset token (valid for 1 hour)
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    await prisma.oTP.create({
+      data: {
+        email: cleanEmail,
+        otp: resetToken,
+        type: 'password_reset_link',
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000)
+      }
+    });
+
+    // Build dynamic reset link using current host / Cloudflare tunnel
+    const baseUrl = getAppBaseUrl(req);
+    const resetLink = `${baseUrl}/reset-password?token=${resetToken}&email=${encodeURIComponent(cleanEmail)}`;
+
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username || 'User';
+    await sendPasswordResetLinkEmail({
+      to: cleanEmail,
+      fullName,
+      resetLink
+    });
+
+    console.log(`\n======================================================`);
+    console.log(`🔗 [PASSWORD RESET LINK SENT]: >>> ${resetLink} <<< (Sent to: ${cleanEmail})`);
+    console.log(`======================================================\n`);
+
+    return res.json({
+      success: true,
+      message: `Identity verified! A secure Password Reset Link has been sent to ${cleanEmail}. Please check your Gmail.`,
+      email: cleanEmail
+    });
+  } catch (err) {
+    console.error('Verify Forgot OTP Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to process request: ' + err.message, message: 'Failed to process request.' });
+  }
+}
+
+/**
+ * 2. Reset Password using verified link token
+ */
+async function resetPasswordWithToken(req, res) {
+  try {
+    const { email, token, newPassword } = req.body;
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanToken = (token || '').toString().trim();
+
+    if (!cleanEmail || !cleanToken || !newPassword) {
+      return res.status(400).json({ success: false, error: 'Email, reset token, and new password are required.', message: 'Email, reset token, and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long.', message: 'Password must be at least 6 characters long.' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User account not found.', message: 'User account not found.' });
+    }
+
+    const tokenRecord = await prisma.oTP.findFirst({
+      where: {
+        email: cleanEmail,
+        otp: cleanToken,
+        type: 'password_reset_link',
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!tokenRecord) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired password reset link. Please request a new one.', message: 'Invalid or expired password reset link. Please request a new one.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword }
+    });
+
+    await prisma.oTP.update({
+      where: { id: tokenRecord.id },
+      data: { isUsed: true }
+    });
+
+    return res.json({
+      success: true,
+      message: 'Password has been reset successfully! You can now sign in with your new password.'
+    });
+  } catch (err) {
+    console.error('Reset Password With Token Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to reset password: ' + err.message, message: 'Failed to reset password.' });
+  }
+}
+
+/**
+ * 3. Verify OTP & Current Password for Change Password flow
+ */
+async function verifyChangePasswordCredentials(req, res) {
+  try {
+    const { email, otp, currentPassword } = req.body;
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanOtp = (otp || '').toString().trim();
+
+    if (!cleanEmail || !cleanOtp || !currentPassword) {
+      return res.status(400).json({ success: false, error: 'Email, OTP code, and Current Password are required.', message: 'Email, OTP code, and Current Password are required.' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'No account found with this email address.', message: 'No account found with this email address.' });
+    }
+
+    // 1. Verify Current Password
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ success: false, error: 'Current password is incorrect. Please enter your valid old password.', message: 'Current password is incorrect. Please enter your valid old password.' });
+    }
+
+    // 2. Verify OTP
+    const otpRecord = await prisma.oTP.findFirst({
+      where: {
+        email: cleanEmail,
+        otp: cleanOtp,
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!otpRecord) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired OTP code. Please request a new code.', message: 'Invalid or expired OTP code. Please request a new code.' });
+    }
+
+    // Mark OTP as used
+    await prisma.oTP.update({
+      where: { id: otpRecord.id },
+      data: { isUsed: true }
+    });
+
+    // Generate change token (valid for 15 minutes)
+    const changeToken = crypto.randomBytes(32).toString('hex');
+    await prisma.oTP.create({
+      data: {
+        email: cleanEmail,
+        otp: changeToken,
+        type: 'change_password_token',
+        expiresAt: new Date(Date.now() + 15 * 60 * 1000)
+      }
+    });
+
+    return res.json({
+      success: true,
+      changeToken,
+      message: 'Current password and OTP verified! Please enter your new password below.'
+    });
+  } catch (err) {
+    console.error('Verify Change Password Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to verify credentials: ' + err.message, message: 'Failed to verify credentials.' });
+  }
+}
+
+/**
+ * 4. Submit New Password with verified change token
+ */
+async function submitChangePassword(req, res) {
+  try {
+    const { email, changeToken, newPassword } = req.body;
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanToken = (changeToken || '').toString().trim();
+
+    if (!cleanEmail || !cleanToken || !newPassword) {
+      return res.status(400).json({ success: false, error: 'Email, verification token, and new password are required.', message: 'Email, verification token, and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, error: 'New password must be at least 6 characters long.', message: 'New password must be at least 6 characters long.' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User account not found.', message: 'User account not found.' });
+    }
+
+    const tokenRecord = await prisma.oTP.findFirst({
+      where: {
+        email: cleanEmail,
+        otp: cleanToken,
+        type: 'change_password_token',
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!tokenRecord) {
+      return res.status(400).json({ success: false, error: 'Session expired or invalid. Please verify current password and OTP again.', message: 'Session expired or invalid. Please verify current password and OTP again.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword }
+    });
+
+    await prisma.oTP.update({
+      where: { id: tokenRecord.id },
+      data: { isUsed: true }
+    });
+
+    return res.json({
+      success: true,
+      message: 'Password changed successfully! You can now log in with your new password.'
+    });
+  } catch (err) {
+    console.error('Submit Change Password Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to update password: ' + err.message, message: 'Failed to update password.' });
+  }
+}
+
+/**
  * Verify Referral Code (Company Portal Validation Helper)
  */
 async function verifyCompanyReferral(req, res) {
   try {
     const { referralCode } = req.body;
-    if (!referralCode || !referralCode.trim()) {
-      return res.status(400).json({
-        success: false,
-        error: 'Referral code is required.',
-        message: 'Referral code is required.'
-      });
-    }
+    if (!referralCode || !referralCode.trim()) return failAuth(res, req, 'Referral code is required.');
 
     const cleanCode = referralCode.toUpperCase().trim();
     const referralRecord = await prisma.referralCode.findUnique({
@@ -908,23 +1088,8 @@ async function verifyCompanyReferral(req, res) {
       include: { organization: true }
     });
 
-    if (!referralRecord) {
-      recordAuthFailure(req);
-      return res.status(400).json({
-        success: false,
-        error: '❌ Invalid referral code. Password reset attempt denied.',
-        message: '❌ Invalid referral code. Password reset attempt denied.'
-      });
-    }
-
-    if (referralRecord.expiresAt < new Date()) {
-      recordAuthFailure(req);
-      return res.status(400).json({
-        success: false,
-        error: '❌ Referral code has expired. Password reset attempt denied.',
-        message: '❌ Referral code has expired. Password reset attempt denied.'
-      });
-    }
+    if (!referralRecord) return failAuth(res, req, '❌ Invalid referral code. Password reset attempt denied.');
+    if (referralRecord.expiresAt < new Date()) return failAuth(res, req, '❌ Referral code has expired. Password reset attempt denied.');
 
     return res.json({
       success: true,
@@ -954,41 +1119,10 @@ async function companyResetPassword(req, res) {
     const cleanReferral = (referralCode || '').toUpperCase().trim();
     const cleanNewPassword = (newPassword || '').trim();
 
-    if (!searchId) {
-      recordAuthFailure(req);
-      return res.status(400).json({
-        success: false,
-        error: 'Corporate email or work username is required.',
-        message: 'Corporate email or work username is required.'
-      });
-    }
-
-    if (!cleanReferral) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: 'Referral code is required to initiate Company Portal password reset.',
-        message: 'Referral code is required to initiate Company Portal password reset.'
-      });
-    }
-
-    if (!cleanNewPassword) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: 'New password is required.',
-        message: 'New password is required.'
-      });
-    }
-
-    if (cleanNewPassword.length < 6) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: 'Password must be at least 6 characters long.',
-        message: 'Password must be at least 6 characters long.'
-      });
-    }
+    if (!searchId) return failAuth(res, req, 'Corporate email or work username is required.');
+    if (!cleanReferral) return failAuth(res, req, 'Referral code is required to initiate Company Portal password reset.', searchId);
+    if (!cleanNewPassword) return failAuth(res, req, 'New password is required.', searchId);
+    if (cleanNewPassword.length < 6) return failAuth(res, req, 'Password must be at least 6 characters long.', searchId);
 
     // 1. Verify Referral Code in Database
     const referralRecord = await prisma.referralCode.findUnique({
@@ -996,23 +1130,8 @@ async function companyResetPassword(req, res) {
       include: { organization: true }
     });
 
-    if (!referralRecord) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: '❌ Invalid referral code. Password reset attempt denied.',
-        message: '❌ Invalid referral code. Password reset attempt denied.'
-      });
-    }
-
-    if (referralRecord.expiresAt < new Date()) {
-      recordAuthFailure(req, searchId);
-      return res.status(400).json({
-        success: false,
-        error: '❌ Referral code has expired. Password reset attempt denied.',
-        message: '❌ Referral code has expired. Password reset attempt denied.'
-      });
-    }
+    if (!referralRecord) return failAuth(res, req, '❌ Invalid referral code. Password reset attempt denied.', searchId);
+    if (referralRecord.expiresAt < new Date()) return failAuth(res, req, '❌ Referral code has expired. Password reset attempt denied.', searchId);
 
     // 2. Find Organization User
     const user = await prisma.user.findFirst({
@@ -1025,14 +1144,7 @@ async function companyResetPassword(req, res) {
       include: { organization: true }
     });
 
-    if (!user) {
-      recordAuthFailure(req, searchId);
-      return res.status(404).json({
-        success: false,
-        error: '❌ No organization account found with this corporate email/username.',
-        message: '❌ No organization account found with this corporate email/username.'
-      });
-    }
+    if (!user) return failAuth(res, req, '❌ No organization account found with this corporate email/username.', searchId, 404);
 
     // 3. Hash New Password and Update User Record
     const salt = await bcrypt.genSalt(10);
@@ -1327,13 +1439,7 @@ async function resendLink(req, res) {
     });
 
     // 3. Build verification link
-    const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
-    const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
-    const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
-    const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null) 
-      || dynamicBaseUrl 
-      || process.env.APP_URL 
-      || 'http://localhost:3000';
+    const baseUrl = getAppBaseUrl(req);
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(cleanEmail)}`;
 
     // 4. Fetch user display name if available
@@ -1381,7 +1487,12 @@ module.exports = {
   companyResetPassword,
   companyForgotPassword: companyResetPassword,
   verifyCompanyReferral,
+  verifyForgotOtpAndSendLink,
+  resetPasswordWithToken,
+  verifyChangePasswordCredentials,
+  submitChangePassword,
   createOrganization,
-  joinOrganization
+  joinOrganization,
+  quickDemoLogin
 };
 

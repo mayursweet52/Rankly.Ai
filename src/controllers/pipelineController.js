@@ -1,6 +1,20 @@
 const prisma = require('../config/database');
 const { sendCandidateStatusNotification } = require('../services/emailService');
 
+function safeJsonParse(str, fallback = []) {
+  if (!str) return fallback;
+  try { return JSON.parse(str); } catch { return fallback; }
+}
+
+function formatCandidate(c) {
+  return {
+    ...c,
+    matchedSkills: safeJsonParse(c.matchedSkills, []),
+    missingSkills: safeJsonParse(c.missingSkills, []),
+    recommendations: safeJsonParse(c.recommendations, [])
+  };
+}
+
 /**
  * Get All Pipeline Candidates (Kanban Board)
  */
@@ -36,16 +50,9 @@ async function getCandidates(req, res) {
       orderBy: [{ score: 'desc' }, { createdAt: 'desc' }]
     });
 
-    const parsedCandidates = candidates.map(c => ({
-      ...c,
-      matchedSkills: JSON.parse(c.matchedSkills || '[]'),
-      missingSkills: JSON.parse(c.missingSkills || '[]'),
-      recommendations: JSON.parse(c.recommendations || '[]')
-    }));
-
     return res.json({
       success: true,
-      candidates: parsedCandidates
+      candidates: candidates.map(formatCandidate)
     });
   } catch (error) {
     console.error('Get Candidates Error:', error);
@@ -119,14 +126,7 @@ async function getCandidateById(req, res) {
       return res.status(404).json({ success: false, message: 'Candidate not found.' });
     }
 
-    const parsed = {
-      ...candidate,
-      matchedSkills: JSON.parse(candidate.matchedSkills || '[]'),
-      missingSkills: JSON.parse(candidate.missingSkills || '[]'),
-      recommendations: JSON.parse(candidate.recommendations || '[]')
-    };
-
-    return res.json({ success: true, candidate: parsed });
+    return res.json({ success: true, candidate: formatCandidate(candidate) });
   } catch (error) {
     console.error('Get Candidate By ID Error:', error);
     return res.status(500).json({ success: false, message: 'Failed to retrieve candidate.' });

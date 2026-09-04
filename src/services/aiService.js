@@ -1,5 +1,10 @@
 const axios = require('axios');
 const { evaluateResumeRuleBased, safeJsonParse } = require('../utils/helpers');
+const { getCircuitBreaker } = require('../utils/circuitBreaker');
+
+// Prompt 03 Optimization: Circuit breakers for external AI services
+const groqBreaker = getCircuitBreaker('groq_ai', { failureThreshold: 2, timeout: 6000, resetTimeout: 20000 });
+const openRouterBreaker = getCircuitBreaker('openrouter_ai', { failureThreshold: 2, timeout: 8000, resetTimeout: 20000 });
 
 /**
  * Universal Multi-Provider AI Inference Engine
@@ -9,32 +14,38 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
   const errors = [];
 
   // =========================================================================
-  // 1. Tier 1: Groq Cloud (Ultra-Low Latency Qwen 3.8 / GPT-OSS)
+  // 1. Tier 1: Groq Cloud (Ultra-Low Latency Qwen 3.8 / GPT-OSS) with Circuit Breaker
   // =========================================================================
   if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim().startsWith('gsk_')) {
     const groqModels = ['qwen/qwen3.8-27b', 'openai/gpt-oss-120b', 'qwen/qwen3.6-27b'];
     for (const model of groqModels) {
       try {
-        const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-          model,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: prompt }
-          ],
-          temperature: 0.2,
-          response_format: isJson ? { type: 'json_object' } : undefined
-        }, {
-          headers: {
-            'Authorization': `Bearer ${process.env.GROQ_API_KEY.trim()}`,
-            'Content-Type': 'application/json'
-          },
-          timeout: 8000
+        const content = await groqBreaker.execute(async () => {
+          const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+            model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: prompt }
+            ],
+            temperature: 0.2,
+            response_format: isJson ? { type: 'json_object' } : undefined
+          }, {
+            headers: {
+              'Authorization': `Bearer ${process.env.GROQ_API_KEY.trim()}`,
+              'Content-Type': 'application/json'
+            },
+            timeout: 6000
+          });
+          return res.data.choices[0].message.content;
         });
 
-        const content = res.data.choices[0].message.content;
-        return isJson ? safeJsonParse(content) : content;
+        if (content) {
+          return isJson ? safeJsonParse(content) : content;
+        }
       } catch (err) {
         errors.push(`Groq (${model}): ${err.response?.data?.error?.message || err.message}`);
+        // If circuit breaker is open, immediately stop trying other Groq models and cascade to Tier 2
+        if (groqBreaker.state === 'OPEN') break;
       }
     }
   }

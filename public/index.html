@@ -8471,29 +8471,6 @@
                 }, 250);
             };
 
-            window.quickLocalDemoLogin = async function(role) {
-                try {
-                    showToast('⚡ Connecting via instant local demo login...', 'info');
-                    const res = await fetch('/api/auth/quick-demo-login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ role })
-                    });
-                    const data = await res.json();
-                    if (data.success && data.user) {
-                        localStorage.setItem('user', JSON.stringify(data.user));
-                        showToast(data.message || 'Login successful!', 'success');
-                        setTimeout(() => {
-                            window.location.href = data.redirectUrl || (role === 'hrms' ? '/hrms/dashboard' : '/candidate/dashboard');
-                        }, 250);
-                    } else {
-                        showToast(data.error || 'Quick login failed. Please try email login.', 'error');
-                    }
-                } catch (err) {
-                    showToast('Network error during quick demo login.', 'error');
-                }
-            };
-
 
 
             // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
@@ -10132,14 +10109,14 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (res.ok && data.success) {
                             showToast('✅ Corporate OTP sent to ' + email + '! Check your Gmail.', 'success');
-                            if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                                sendBtn.disabled = false;
-                            }
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
                                 otpInput.focus();
+                            }
+                            if (sendBtn) {
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+                                sendBtn.disabled = false;
                             }
                         } else {
                             showToast(data.message || data.error || 'Failed to send corporate OTP', 'error');

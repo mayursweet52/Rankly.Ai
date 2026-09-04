@@ -6,22 +6,22 @@
 const express = require('express');
 const router = express.Router();
 const employeeController = require('../controllers/employeeController');
-const { optionalAuth } = require('../middleware/auth');
+const { isAuthenticated, requireHRMS, requireRole } = require('../middleware/auth');
 const { publicLimiter } = require('../middleware/rateLimit');
 
-// GET all employees formatted in Anti-Gravity schema
-router.get('/', optionalAuth, publicLimiter, employeeController.listEmployees);
+// GET all employees formatted in Anti-Gravity schema (Internal HRMS only)
+router.get('/', isAuthenticated, requireHRMS, publicLimiter, employeeController.listEmployees);
 
-// POST create or upsert employee from Anti-Gravity JSON
-router.post('/', optionalAuth, publicLimiter, employeeController.createOrUpdateEmployee);
+// POST create or upsert employee (Internal HR / Admin only)
+router.post('/', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.createOrUpdateEmployee);
 
-// GET single employee by ID or employeeCode
-router.get('/:id', optionalAuth, publicLimiter, employeeController.getEmployee);
+// GET single employee by ID or employeeCode (Internal HRMS only)
+router.get('/:id', isAuthenticated, requireHRMS, publicLimiter, employeeController.getEmployee);
 
-// PUT update employee by ID
-router.put('/:id', optionalAuth, publicLimiter, employeeController.createOrUpdateEmployee);
+// PUT update employee by ID (Internal HR / Admin only)
+router.put('/:id', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.createOrUpdateEmployee);
 
-// DELETE employee by ID
-router.delete('/:id', optionalAuth, publicLimiter, employeeController.deleteEmployee);
+// DELETE employee by ID (Internal HR / Admin only)
+router.delete('/:id', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.deleteEmployee);
 
 module.exports = router;

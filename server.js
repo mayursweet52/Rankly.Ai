@@ -31,11 +31,13 @@ const analyticsRoutes = require('./src/routes/analyticsRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
 const healthRoutes = require('./src/routes/healthRoutes');
 const employeeRoutes = require('./src/routes/employeeRoutes');
+const documentRoutes = require('./src/routes/documentRoutes');
 const aiAgentRoutes = require('./src/routes/aiAgentRoutes');
 const skillMarketplaceRoutes = require('./src/routes/skillMarketplaceRoutes');
 const pgEmployeeRoutes = require('./src/routes/pgEmployeeRoutes');
 const jwtEmployeeRoutes = require('./src/routes/jwtEmployeeRoutes');
 const { startHealthChecker } = require('./src/services/healthChecker');
+const { serveCachedHtml, apiCacheMiddleware, invalidateFragmentCache } = require('./src/utils/cacheManager');
 
 const app = express();
 const server = http.createServer(app);
@@ -53,6 +55,26 @@ app.use(helmet({
 
 // Fix 3: Enable Reverse Proxy Trust for Render/Heroku load balancers
 app.set('trust proxy', 1);
+
+// Prompt 01 Optimization: Enable HTTP Response Compression in Transit (Gzip / Deflate / Brotli)
+const compression = require('compression');
+app.use(compression({
+  threshold: 1024, // Only compress responses larger than 1 KB
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    const contentType = res.getHeader('Content-Type') || '';
+    if (typeof contentType === 'string' && (
+      contentType.includes('image/') ||
+      contentType.includes('audio/') ||
+      contentType.includes('video/') ||
+      contentType.includes('application/zip') ||
+      contentType.includes('application/pdf')
+    )) {
+      return false; // Skip already compressed payloads
+    }
+    return compression.filter(req, res);
+  }
+}));
 
 // Ensure upload directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -131,6 +153,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/documents', documentRoutes);
 app.use('/api/agents', aiAgentRoutes);
 app.use('/api/skills', skillMarketplaceRoutes);
 app.use('/api/pg', pgEmployeeRoutes);
@@ -150,6 +173,11 @@ app.use(['/resend-link', '/api/resend-link'], (req, res) => res.redirect(307, '/
 app.get('/verify-email', (req, res, next) => {
   const authController = require('./src/controllers/authController');
   return authController.verifyEmailLink(req, res, next);
+});
+app.get('/reset-password', (req, res) => {
+  const token = req.query.token || '';
+  const email = req.query.email || '';
+  return res.redirect(`/?action=reset-password&token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`);
 });
 app.get('/dashboard.html', (req, res) => res.redirect('/' + (req._parsedUrl.search || '')));
 // 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Using NVIDIA Nemotron & Multi-Tier AI)
@@ -503,13 +531,8 @@ app.get('/api/ai/status', async (req, res) => {
   });
 });
 
-// Simple keep-alive endpoint for cron-job
-app.get('/ping', (req, res) => {
-  res.send('ok');
-});
-app.get('/api/ping', (req, res) => {
-  res.send('ok');
-});
+// Simple keep-alive endpoint for cron-job / uptime monitoring
+app.get(['/ping', '/api/ping'], (req, res) => res.send('ok'));
 
 // ─── n8n-BASED SELF-HEALING SYSTEM ENDPOINTS ───
 // 1. Health Check
@@ -646,6 +669,9 @@ app.post(['/api/pipeline/update', '/api/candidates/update-stage'], async (req, r
       }).catch(() => {});
     }
 
+    // Invalidate analytics caches on status updates
+    invalidateFragmentCache('analytics');
+
     return res.json({
       success: true,
       message: `Candidate ${candidate.name} status updated to "${finalStage}".`,
@@ -657,8 +683,8 @@ app.post(['/api/pipeline/update', '/api/candidates/update-stage'], async (req, r
   }
 });
 
-// 7. Daily Analytics Report Data (For n8n cron scheduled report)
-app.get(['/api/analytics/summary', '/api/analytics/daily-summary'], async (req, res) => {
+// 7. Daily Analytics Report Data (For n8n cron scheduled report with 15s cache)
+app.get(['/api/analytics/summary', '/api/analytics/daily-summary'], apiCacheMiddleware(15000), async (req, res) => {
   try {
     const [totalUsers, totalCandidates, totalEvaluations, totalFeedbacks, recentCandidates] = await Promise.all([
       prisma.user.count(),
@@ -694,65 +720,101 @@ app.get(['/api/analytics/summary', '/api/analytics/daily-summary'], async (req, 
   }
 });
 
-// Explicit Web Page Routes
-app.get('/dashboard', (req, res) => {
-  const user = req.session?.user || (req.isAuthenticated && req.isAuthenticated() ? req.user : null);
-  if (!user) {
-    return res.redirect('/login');
+// Explicit Web Page & SPA Fallback Routes
+const MAIN_INDEX_FILE = path.join(__dirname, 'public', 'index.html');
+
+// Smart Routing for Dual-Portal Architecture
+app.get('/dashboard', async (req, res) => {
+  const sessionUser = req.session?.user || (req.isAuthenticated && req.isAuthenticated() ? req.user : null);
+  const userId = req.session?.userId;
+  if (!sessionUser && !userId) return res.redirect('/login');
+
+  let role = sessionUser?.role || req.session?.role;
+  let accountType = sessionUser?.accountType || req.session?.accountType;
+
+  if ((!role || !accountType) && userId) {
+    try {
+      const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { role: true, accountType: true } });
+      if (dbUser) {
+        role = dbUser.role;
+        accountType = dbUser.accountType;
+      }
+    } catch (e) {
+      console.error('Smart routing user lookup error:', e);
+    }
   }
-  const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
-  if (fs.existsSync(cleanIndexPath)) {
-    return res.sendFile(cleanIndexPath);
+
+  const isEmployeeRole = accountType === 'employee' || ['admin', 'administrator', 'hr', 'hiring_manager', 'employee'].includes((role || '').toLowerCase());
+  
+  if (isEmployeeRole) {
+    return res.redirect('/hrms/dashboard');
+  } else {
+    return res.redirect('/candidate/dashboard');
   }
-  return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Candidate Portal (Public / Applicant Zone)
+app.get(['/candidate/dashboard', '/candidate'], (req, res) => {
+  return serveCachedHtml(MAIN_INDEX_FILE, req, res);
+});
+
+// Internal HRMS Portal (Protected / Admin & HR Zone)
+app.get(['/hrms/dashboard', '/hrms'], async (req, res) => {
+  const sessionUser = req.session?.user || (req.isAuthenticated && req.isAuthenticated() ? req.user : null);
+  const userId = req.session?.userId;
+
+  if (!sessionUser && !userId) {
+    return res.redirect('/login?redirect=/hrms/dashboard');
+  }
+
+  let role = sessionUser?.role || req.session?.role;
+  let accountType = sessionUser?.accountType || req.session?.accountType;
+
+  if ((!role || !accountType) && userId) {
+    try {
+      const dbUser = await prisma.user.findUnique({ where: { id: userId }, select: { role: true, accountType: true } });
+      if (dbUser) {
+        role = dbUser.role;
+        accountType = dbUser.accountType;
+      }
+    } catch (e) {
+      console.error('HRMS portal user lookup error:', e);
+    }
+  }
+
+  const isEmployeeRole = accountType === 'employee' || ['admin', 'administrator', 'hr', 'hiring_manager', 'employee'].includes((role || '').toLowerCase());
+
+  if (!isEmployeeRole) {
+    // Strictly block candidate access to HRMS
+    return res.redirect('/candidate/dashboard?error=' + encodeURIComponent('Access denied: Internal HRMS is restricted to company HR and Admin personnel.'));
+  }
+
+  return serveCachedHtml(MAIN_INDEX_FILE, req, res);
 });
 
 app.get(['/privacy', '/privacy-policy'], (req, res) => {
   const privacyPath = path.join(__dirname, 'public', 'privacy.html');
-  if (fs.existsSync(privacyPath)) {
-    return res.sendFile(privacyPath);
-  }
-  return res.redirect('/');
+  return serveCachedHtml(privacyPath, req, res);
 });
 
 app.get(['/terms', '/terms-of-service', '/terms-of-use'], (req, res) => {
   const termsPath = path.join(__dirname, 'public', 'terms.html');
-  if (fs.existsSync(termsPath)) {
-    return res.sendFile(termsPath);
-  }
-  return res.redirect('/');
+  return serveCachedHtml(termsPath, req, res);
 });
 
 app.get('/loading', (req, res) => {
   const loadingPath = path.join(__dirname, 'public', 'loading.html');
-  if (fs.existsSync(loadingPath)) {
-    return res.sendFile(loadingPath);
-  }
-  return res.redirect('/');
+  return serveCachedHtml(loadingPath, req, res);
 });
 
-app.get('/login', (req, res) => {
-  const cleanIndexPath = path.join(__dirname, 'public', 'index-3.html');
-  if (fs.existsSync(cleanIndexPath)) {
-    return res.sendFile(cleanIndexPath);
-  }
-  return res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.get('/login', (req, res) => serveCachedHtml(MAIN_INDEX_FILE, req, res));
 
 // SPA Fallback for Web UI
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
     return next();
   }
-  const indexPath = path.join(__dirname, 'public', 'index-3.html');
-  if (fs.existsSync(indexPath)) {
-    return res.sendFile(indexPath);
-  }
-  const defaultIndexPath = path.join(__dirname, 'public', 'index.html');
-  if (fs.existsSync(defaultIndexPath)) {
-    return res.sendFile(defaultIndexPath);
-  }
-  return res.send('<h1>Rankly.ai Backend API Running</h1><p>Frontend assets not found in /public directory.</p>');
+  return serveCachedHtml(MAIN_INDEX_FILE, req, res);
 });
 
 // -----------------------------------------------------------------------------
@@ -795,4 +857,13 @@ const gracefulShutdown = async () => {
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 
+process.on('uncaughtException', (err) => {
+  console.error('⚠️ [UncaughtException Safeguard]:', err.message);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('⚠️ [UnhandledRejection Safeguard]:', reason);
+});
+
 module.exports = { app, server };
+

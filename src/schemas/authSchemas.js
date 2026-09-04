@@ -79,12 +79,33 @@ const verifyReferralSchema = {
   email: { type: 'string', min: 1, max: 100 }
 };
 
+const resetPasswordWithTokenSchema = {
+  email: { type: 'email', required: true, max: 100 },
+  token: { type: 'string', required: true, min: 10, max: 128 },
+  newPassword: { type: 'string', required: true, min: 6, max: 128 }
+};
+
+const changePasswordVerifySchema = {
+  email: { type: 'email', required: true, max: 100 },
+  otp: { type: 'string', required: true, min: 6, max: 10 },
+  currentPassword: { type: 'string', required: true, min: 1, max: 128 }
+};
+
+const changePasswordSubmitSchema = {
+  email: { type: 'email', required: true, max: 100 },
+  changeToken: { type: 'string', required: true, min: 10, max: 128 },
+  newPassword: { type: 'string', required: true, min: 6, max: 128 }
+};
+
 module.exports = {
   registerSchema,
   loginSchema,
   sendOtpSchema,
   verifyOtpSchema,
   resetPasswordSchema,
+  resetPasswordWithTokenSchema,
+  changePasswordVerifySchema,
+  changePasswordSubmitSchema,
   companyForgotPasswordSchema,
   companyResetPasswordSchema,
   verifyReferralSchema
