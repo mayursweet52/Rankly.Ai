@@ -3,6 +3,28 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!-- Comprehensive SEO Meta Tags -->
+    <meta name="description" content="Rankly.ai is an enterprise AI recruitment intelligence and automated candidate screening platform. Accelerate talent acquisition with calibrated ATS resume parsing, AI mock interviews, and skill-gap evaluation." />
+    <meta name="keywords" content="AI recruitment, ATS resume parser, candidate screening, automated interview, talent intelligence, hiring software, candidate ranking, Rankly AI" />
+    <meta name="author" content="Rankly.ai Team" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://rankly-ai-production.up.railway.app/" />
+
+    <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rankly.ai" />
+    <meta property="og:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
+    <meta property="og:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
+    <meta property="og:url" content="https://rankly-ai-production.up.railway.app/" />
+    <meta property="og:image" content="https://rankly-ai-production.up.railway.app/assets/backgrounds/login-art.png" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@RanklyAI" />
+    <meta name="twitter:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
+    <meta name="twitter:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
+    <meta name="twitter:image" content="https://rankly-ai-production.up.railway.app/assets/backgrounds/login-art.png" />
+
     <title>Rankly.ai — Enterprise AI Recruitment Platform</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -705,6 +727,22 @@
         .btn-signout:active,
         .btn-secondary:active {
             transform: scale(0.97);
+        }
+
+        /* ─── RANKLY FULL BRAND LOGO (LIGHT & DARK DYNAMIC) ─── */
+        .rankly-brand-logo-light {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .rankly-brand-logo-dark {
+            display: none;
+            vertical-align: middle;
+        }
+        body.dark-theme .rankly-brand-logo-light {
+            display: none !important;
+        }
+        body.dark-theme .rankly-brand-logo-dark {
+            display: inline-block !important;
         }
 
         .btn-danger {
@@ -4288,31 +4326,12 @@
     <div id="loginPage" class="page active">
         <!-- Top Navigation Header -->
         <header class="w-full flex justify-between items-center z-10">
-            <div class="flex items-center gap-2.5">
-                <!-- Custom Gradient Emblem Logo for Rankly.ai -->
-                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                    <defs>
-                        <linearGradient id="rankly-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#B588F7"/>
-                            <stop offset="100%" stop-color="#8E65DF"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#FFA14A"/>
-                            <stop offset="100%" stop-color="#F06A4A"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#81E4DA"/>
-                            <stop offset="100%" stop-color="#45A89E"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="32" height="32" rx="8" fill="#111111" />
-                    <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-g1)"/>
-                    <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-                    <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-g2)"/>
-                    <circle cx="24" cy="8" r="3" fill="url(#rankly-g3)" />
-                </svg>
-                <span class="font-extrabold text-xl tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span></span>
-            </div>
+            <a href="/" class="flex items-center select-none group" title="Rankly.ai">
+                <!-- Rankly.ai Brand Logo (Light Mode) -->
+                <img src="/assets/brand/rankly-full-logo-light.png" alt="Rankly.ai" class="rankly-brand-logo-light h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                <!-- Rankly.ai Brand Logo (Dark Mode) -->
+                <img src="/assets/brand/rankly-full-logo-dark.png" alt="Rankly.ai" class="rankly-brand-logo-dark h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+            </a>
             <div class="flex items-center gap-3">
                 <!-- Prominent High-Visibility Rankly Theme Pill Button -->
                 <button type="button" id="loginThemeToggleBtn" onclick="toggleAppTheme(null, event)" class="rankly-theme-toggle-pill group" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
@@ -4463,7 +4482,7 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input type="password" id="slideRegPassword" class="login-input" placeholder="Create password (min 6 chars)" required />
-                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
 
@@ -4472,7 +4491,7 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Confirm Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input type="password" id="slideRegConfirmPassword" class="login-input" placeholder="Re-enter password" required />
-                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                                <button type="button" class="toggle-eye" onclick="togglePassword('slideRegConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -4532,17 +4551,17 @@
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password</label>
                                                 <div class="password-toggle w-full">
                                                     <input type="password" id="loginPassword" class="login-input" placeholder="••••••••••••" required />
-                                                    <button type="button" class="toggle-eye" onclick="togglePassword('loginPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                                                    <button type="button" class="toggle-eye" onclick="togglePassword('loginPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="flex justify-between items-center w-full my-2.5 text-xs">
                                             <label class="flex items-center gap-1.5 cursor-pointer text-[#666660] dark:text-gray-400 select-none">
-                                                <input type="checkbox" id="rememberMe" checked class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
+                                                <input type="checkbox" id="rememberMe" class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
                                                 <span>Keep me signed in</span>
                                             </label>
-                                            <button type="button" onclick="toggleInlineForgotPassword(true)" class="forgot-link">Forgot password?</button>
+                                            <button type="button" onclick="openModal('forgotPasswordModal')" class="forgot-link">Forgot password?</button>
                                         </div>
 
                                         <button type="submit" id="loginBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group">
@@ -4690,14 +4709,14 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgLoginPassword" class="login-input" placeholder="••••••••••••" required type="password" />
-                                                <button class="toggle-eye" onclick="togglePassword('orgLoginPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                                <button class="toggle-eye" onclick="togglePassword('orgLoginPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="flex justify-between items-center w-full my-2.5 text-xs">
                                         <label class="flex items-center gap-1.5 cursor-pointer text-[var(--text-muted)] select-none">
-                                            <input type="checkbox" id="orgRememberMe" checked class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
+                                            <input type="checkbox" id="orgRememberMe" class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
                                             <span class="text-[11px]">Remember workspace session</span>
                                         </label>
                                         <button type="button" onclick="switchOrgPortalTab('forgot')" class="forgot-link text-[11px]">Reset Password?</button>
@@ -4772,7 +4791,7 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">New Master Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgForgotNewPassword" class="login-input" placeholder="•••••••••••• (Min 6 chars)" required type="password" />
-                                                <button class="toggle-eye" onclick="togglePassword('orgForgotNewPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                                <button class="toggle-eye" onclick="togglePassword('orgForgotNewPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
 
@@ -4780,7 +4799,7 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Confirm New Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgForgotConfirmPassword" class="login-input" placeholder="Confirm new password" required type="password" />
-                                                <button class="toggle-eye" onclick="togglePassword('orgForgotConfirmPassword', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                                <button class="toggle-eye" onclick="togglePassword('orgForgotConfirmPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -4889,7 +4908,7 @@
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
-                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button"><i class="fa-regular fa-eye"></i></button>
+                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -4927,129 +4946,207 @@
         </footer>
     </div>
 
-    <!-- ─── FORGOT PASSWORD MODAL (DUAL FLOW: CANDIDATE VS COMPANY PORTAL) ─── -->
+    <!-- ─── FORGOT & CHANGE PASSWORD MODAL (DUAL FLOW: RESET PASSWORD VIA LINK VS CHANGE PASSWORD VIA CURRENT PASSWORD) ─── -->
     <div id="forgotPasswordModal" class="modal-overlay" onclick="if(event.target===this) closeModal('forgotPasswordModal')">
-        <div class="modal-box" style="max-width:480px;">
+        <div class="modal-box" style="max-width:500px;">
             <div class="flex items-center justify-between mb-2">
-                <h3 class="text-lg font-bold text-[var(--text-primary)]">Reset Account Password</h3>
-                <button type="button" onclick="closeModal('forgotPasswordModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg">
+                <h3 class="text-lg font-bold text-[var(--text-primary)]">Password Security & Recovery</h3>
+                <button type="button" onclick="closeModal('forgotPasswordModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg" aria-label="Close forgot password dialog">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <p class="text-xs text-[var(--text-muted)] mb-3.5">Select your account workflow below to proceed with secure password recovery.</p>
+            <p class="text-xs text-[var(--text-muted)] mb-3.5">Choose whether to reset your forgotten password via email link or change it using your current password.</p>
 
-            <!-- Dual Workflow Tab Switcher -->
+            <!-- Dual Workflow Switcher: Reset Password (via Link) vs Change Password (via Current Password) -->
             <div class="flex p-1 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl mb-4 select-none">
-                <button type="button" id="modalTabCandidateBtn" onclick="switchForgotModalTab('candidate')" class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs">
-                    <i class="fa-regular fa-user mr-1.5"></i>Candidate / User
+                <button type="button" id="modalTabResetBtn" onclick="switchPasswordModalMode('reset')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-link"></i> Reset Password (Link)
                 </button>
-                <button type="button" id="modalTabCompanyBtn" onclick="switchForgotModalTab('company')" class="flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all">
-                    <i class="fa-solid fa-shield-halved mr-1.5"></i>Company Portal
+                <button type="button" id="modalTabChangeBtn" onclick="switchPasswordModalMode('change')" class="flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-key"></i> Change Password
                 </button>
             </div>
 
-            <!-- FLOW 1: CANDIDATE / NORMAL USER FLOW -->
-            <div id="modalCandidateSection">
+            <!-- OPTION 1: RESET PASSWORD (EMAIL -> OTP -> SEND RESET LINK -> GMAIL LINK CLICKS TO SET NEW PASSWORD) -->
+            <div id="modalResetSection">
                 <form id="forgotPasswordForm" onsubmit="event.preventDefault();">
                     <!-- Step 1: Email -->
-                    <div id="fpStep1">
+                    <div id="fpResetStep1">
                         <div class="mb-3">
                             <label class="form-label font-bold text-[var(--text-primary)]">Registered Account Email Address *</label>
-                            <input type="email" id="fpEmail" class="form-input" required placeholder="yourname@gmail.com" />
-                            <span class="block text-[11px] text-[var(--text-muted)] mt-1">If this email is registered in our database, a verification reset code will be delivered.</span>
+                            <input type="email" id="fpResetEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send a 6-digit verification code to this Gmail address.</span>
                         </div>
-                        <button type="button" onclick="sendForgotOTP()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Reset Code</button>
+                        <button type="button" onclick="handleSendResetOtp()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Verification Code</button>
                     </div>
 
-                    <!-- Step 2: OTP -->
-                    <div id="fpStep2" style="display:none;" class="mt-2">
+                    <!-- Step 2: OTP Entry -->
+                    <div id="fpResetStep2" style="display:none;" class="mt-2">
                         <div class="mb-3 p-3 bg-[#183B33]/10 dark:bg-[#5B998C]/15 border border-[#183B33]/20 dark:border-[#5B998C]/30 rounded-xl text-xs text-[#183B33] dark:text-[#81E4DA] flex items-center gap-2">
                             <i class="fa-solid fa-envelope-open-text text-[#183B33] dark:text-[#81E4DA] text-sm"></i>
-                            <span>Verification code sent to <strong id="fpTargetEmailText"></strong>.</span>
+                            <span>Verification code sent to <strong id="fpResetTargetEmailText"></strong>.</span>
                         </div>
                         <label class="form-label font-bold text-[var(--text-primary)]">Enter 6-Digit OTP *</label>
                         <div class="otp-row mb-3">
-                            <input type="text" id="fpOtp" class="form-input tracking-widest text-center font-mono font-bold" placeholder="123456" maxlength="6" />
-                            <button type="button" id="fpVerifyBtn" onclick="verifyForgotOTP()" class="btn-primary" style="padding:8px 16px; font-weight:600;">Verify</button>
+                            <input type="text" id="fpResetOtp" class="form-input tracking-widest text-center font-mono font-bold" placeholder="123456" maxlength="6" autocomplete="off" data-lpignore="true" />
+                            <button type="button" id="fpVerifyBtn" onclick="handleVerifyResetOtpAndSendLink()" class="btn-primary" style="padding:8px 16px; font-weight:600;">Verify & Send Link</button>
                         </div>
                         <div class="flex justify-between items-center text-xs mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
-                            <button type="button" id="fpResendBtn" onclick="sendForgotOTP()" class="text-[#183B33] dark:text-[#5B998C] font-semibold hover:underline">Resend OTP</button>
-                            <button type="button" onclick="resetFpToStep1()" class="text-gray-500 dark:text-gray-400 hover:underline">Change Email</button>
+                            <button type="button" id="fpResetResendBtn" onclick="handleSendResetOtp()" class="text-[#183B33] dark:text-[#5B998C] font-semibold hover:underline">Resend OTP</button>
+                            <button type="button" onclick="resetFpModalToStep1()" class="text-gray-500 dark:text-gray-400 hover:underline">Change Email</button>
                         </div>
                     </div>
 
-                    <!-- Step 3: New Password -->
-                    <div id="fpStep3" style="display:none;" class="mt-2">
-                        <div class="mb-3 p-2.5 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800/50 rounded-lg text-xs text-green-800 dark:text-green-300 font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-check-circle text-green-600 dark:text-green-400"></i>
-                            <span>Identity verified! Enter your new password below.</span>
+                    <!-- Step 3: Link Dispatched Screen -->
+                    <div id="fpResetStep3" style="display:none;" class="text-center py-4">
+                        <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-950/50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl border border-emerald-100 dark:border-emerald-800">
+                            📬
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label font-bold text-[var(--text-primary)]">New Password *</label>
-                            <div class="password-toggle">
-                                <input type="password" id="fpNewPassword" class="form-input" placeholder="Minimum 6 characters" required />
-                                <button type="button" class="toggle-eye" onclick="togglePassword('fpNewPassword', this)"><i class="fa-regular fa-eye"></i></button>
-                            </div>
+                        <h4 class="text-lg font-black text-gray-900 dark:text-white mb-2">Password Reset Link Sent!</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-4 leading-relaxed max-w-sm mx-auto">
+                            Your OTP has been verified. We have sent a secure Password Reset Link to:
+                        </p>
+                        <div class="bg-indigo-50/80 dark:bg-zinc-800/80 border border-indigo-100 dark:border-zinc-700 py-2.5 px-4 rounded-xl mb-5 text-xs text-indigo-900 dark:text-indigo-200 font-mono break-all inline-block max-w-full">
+                            <span id="fpResetFinalEmail" class="font-bold"></span>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
-                            <div class="password-toggle">
-                                <input type="password" id="fpConfirmPassword" class="form-input" placeholder="Confirm new password" required />
-                                <button type="button" class="toggle-eye" onclick="togglePassword('fpConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
-                            </div>
+                        <p class="text-xs text-amber-600 dark:text-amber-400 mb-5">
+                            👉 Open Gmail on your <strong>mobile phone or computer</strong> and click the link to set your new password.
+                        </p>
+                        <div class="flex gap-2 justify-center">
+                            <a href="https://mail.google.com" target="_blank" class="btn-primary py-2 px-4 text-xs font-bold flex items-center gap-1.5">
+                                <span>Open Gmail</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                            <button type="button" onclick="closeModal('forgotPasswordModal')" class="btn-secondary py-2 px-4 text-xs font-bold" aria-label="Close forgot password dialog">
+                                Done
+                            </button>
                         </div>
-                        <button type="button" onclick="resetPassword()" class="btn-primary w-full" id="fpResetSubmitBtn" style="padding: 10px 16px; font-weight:600;">Reset Password & Log In</button>
                     </div>
                 </form>
             </div>
 
-            <!-- FLOW 2: COMPANY PORTAL FLOW (REFERRAL CODE REQUIRED) -->
-            <div id="modalCompanySection" class="hidden">
-                <div class="mb-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2">
-                    <i class="fa-solid fa-shield-halved mt-0.5 text-amber-600 dark:text-amber-400"></i>
-                    <span><strong>Company Authorization:</strong> An authorized referral code is required to initiate an enterprise password reset. Incorrect codes will be denied.</span>
-                </div>
-
-                <form id="modalCompanyForgotForm" onsubmit="event.preventDefault(); handleModalCompanyPasswordReset();">
-                    <div class="mb-3">
-                        <label class="form-label font-bold text-[var(--text-primary)]">Corporate Email / Username *</label>
-                        <input type="text" id="modalCompanyEmail" class="form-input" required placeholder="admin@company.com or username" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label font-bold text-[var(--text-primary)]">Organization Referral Code *</label>
-                        <div class="relative w-full">
-                            <input type="text" id="modalCompanyReferralCode" class="form-input uppercase tracking-wider font-mono font-bold text-[#183B33] dark:text-emerald-400" required placeholder="e.g. RNK-XXXXXX" maxlength="30" oninput="this.value = this.value.toUpperCase();" />
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)]"><i class="fa-solid fa-key"></i></span>
+            <!-- OPTION 2: CHANGE PASSWORD (EMAIL -> OTP + CURRENT PASSWORD -> DIRECTLY UNLOCK NEW PASSWORD FIELDS) -->
+            <div id="modalChangeSection" class="hidden">
+                <form id="changePasswordForm" onsubmit="event.preventDefault();">
+                    <!-- Change Step 1: Email & Send OTP -->
+                    <div id="cpStep1">
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Your Account Email Address *</label>
+                            <input type="email" id="cpEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send an OTP code to verify your authorization to change password.</span>
                         </div>
-                        <span class="block text-[10px] text-[var(--text-muted)] mt-0.5">Enter the invitation / referral code assigned to your organization.</span>
+                        <button type="button" onclick="handleSendChangeOtp()" class="btn-primary w-full mt-2" id="cpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send OTP Code</button>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label font-bold text-[var(--text-primary)]">New Master Password *</label>
-                        <div class="password-toggle">
-                            <input type="password" id="modalCompanyNewPassword" class="form-input" required placeholder="•••••••••••• (Min 6 chars)" />
-                            <button type="button" class="toggle-eye" onclick="togglePassword('modalCompanyNewPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    <!-- Change Step 2: OTP + Current Password -->
+                    <div id="cpStep2" style="display:none;" class="mt-2">
+                        <div class="mb-3 p-3 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 rounded-xl text-xs text-indigo-900 dark:text-indigo-200 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                            <span>Verification code sent to <strong id="cpTargetEmailText"></strong>.</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Enter 6-Digit OTP *</label>
+                            <div class="otp-row">
+                                <input type="text" id="cpOtp" class="form-input tracking-widest text-center font-mono font-bold" placeholder="123456" maxlength="6" autocomplete="off" data-lpignore="true" />
+                                <button type="button" id="cpResendBtn" onclick="handleSendChangeOtp()" class="btn-secondary text-xs px-3 whitespace-nowrap">Resend OTP</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Current Password (पुरानी पासवर्ड) *</label>
+                            <div class="password-toggle">
+                                <input type="password" id="cpCurrentPassword" class="form-input" required placeholder="Enter current password" />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('cpCurrentPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+
+                        <button type="button" id="cpVerifyCredsBtn" onclick="handleVerifyChangeCredentials()" class="btn-primary w-full mt-2" style="padding: 10px 16px; font-weight:600;">
+                            Verify & Proceed to New Password
+                        </button>
+                        <div class="text-right text-xs mt-2">
+                            <button type="button" onclick="resetCpModalToStep1()" class="text-gray-500 hover:underline">Change Email</button>
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
-                        <div class="password-toggle">
-                            <input type="password" id="modalCompanyConfirmPassword" class="form-input" required placeholder="Confirm new password" />
-                            <button type="button" class="toggle-eye" onclick="togglePassword('modalCompanyConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    <!-- Change Step 3: Enter New Password Directly -->
+                    <div id="cpStep3" style="display:none;" class="mt-2">
+                        <div class="mb-3 p-2.5 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800/50 rounded-lg text-xs text-green-800 dark:text-green-300 font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-green-600 dark:text-green-400"></i>
+                            <span>Current password & OTP verified! Enter your new password below:</span>
                         </div>
-                    </div>
 
-                    <button type="submit" id="modalCompanySubmitBtn" class="btn-primary w-full" style="padding: 10px 16px; font-weight:600;">
-                        Verify Referral & Reset Password
-                    </button>
+                        <div class="mb-3">
+                            <label class="form-label font-bold text-[var(--text-primary)]">New Password *</label>
+                            <div class="password-toggle">
+                                <input type="password" id="cpNewPassword" class="form-input" placeholder="Minimum 6 characters" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('cpNewPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
+                            <div class="password-toggle">
+                                <input type="password" id="cpConfirmPassword" class="form-input" placeholder="Confirm new password" required />
+                                <button type="button" class="toggle-eye" onclick="togglePassword('cpConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="handleSubmitChangePassword()" class="btn-primary w-full" id="cpSubmitNewBtn" style="padding: 10px 16px; font-weight:600;">
+                            Update Password Now
+                        </button>
+                    </div>
                 </form>
             </div>
 
             <div class="modal-actions mt-4 pt-3 border-t border-[var(--border-color)]">
-                <button type="button" class="btn-secondary w-full" onclick="closeModal('forgotPasswordModal')">Cancel</button>
+                <button type="button" class="btn-secondary w-full" onclick="closeModal('forgotPasswordModal')" aria-label="Close forgot password dialog">Cancel</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ─── SET NEW PASSWORD MODAL (TRIGGERED WHEN USER CLICKS RESET LINK FROM GMAIL) ─── -->
+    <div id="resetPasswordFromLinkModal" class="modal-overlay hidden" onclick="if(event.target===this) closeModal('resetPasswordFromLinkModal')">
+        <div class="modal-box" style="max-width:480px; padding: 28px 24px;">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm shadow-xs border" style="background: rgba(24, 59, 51, 0.08); border-color: rgba(24, 59, 51, 0.18); color: #183B33;">
+                        <i class="fa-solid fa-key text-[#183B33] dark:text-[#81E4DA]"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-[var(--text-primary)]">Set Your New Password</h3>
+                </div>
+                <button type="button" onclick="closeModal('resetPasswordFromLinkModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg" aria-label="Close reset password dialog">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[var(--text-muted)] mb-4 leading-relaxed">Your identity has been verified via the secure email reset link. Create a strong new password for your account below.</p>
+
+            <form id="linkResetPasswordForm" onsubmit="event.preventDefault(); handleSaveNewPasswordFromLink();">
+                <div class="mb-3">
+                    <label class="form-label font-bold text-[var(--text-primary)]">Verified Account Email</label>
+                    <input type="email" id="linkResetEmail" class="form-input cursor-not-allowed font-mono text-xs" style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-muted);" readonly />
+                    <input type="hidden" id="linkResetToken" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label font-bold text-[var(--text-primary)]">New Password *</label>
+                    <div class="password-toggle">
+                        <input type="password" id="linkResetNewPassword" class="form-input" placeholder="Minimum 6 characters" required />
+                        <button type="button" class="toggle-eye" onclick="togglePassword('linkResetNewPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label font-bold text-[var(--text-primary)]">Confirm New Password *</label>
+                    <div class="password-toggle">
+                        <input type="password" id="linkResetConfirmPassword" class="form-input" placeholder="Confirm new password" required />
+                        <button type="button" class="toggle-eye" onclick="togglePassword('linkResetConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" id="linkResetSubmitBtn" class="btn-primary w-full" style="padding: 10px 16px; font-weight:600;">
+                    Save New Password & Sign In
+                </button>
+            </form>
         </div>
     </div>
 
@@ -5126,14 +5223,14 @@
                     <label class="form-label">Password *</label>
                     <div class="password-toggle">
                         <input type="password" id="signupPassword" class="form-input" required placeholder="Minimum 6 characters" />
-                        <button type="button" class="toggle-eye" onclick="togglePassword('signupPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                        <button type="button" class="toggle-eye" onclick="togglePassword('signupPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="form-label">Confirm Password *</label>
                     <div class="password-toggle">
                         <input type="password" id="signupConfirmPassword" class="form-input" required placeholder="Confirm password" />
-                        <button type="button" class="toggle-eye" onclick="togglePassword('signupConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                        <button type="button" class="toggle-eye" onclick="togglePassword('signupConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                     </div>
                 </div>
                 
@@ -5263,14 +5360,14 @@
                     <label class="form-label">Password *</label>
                     <div class="password-toggle">
                         <input type="password" id="empPassword" class="form-input emp-locked-field" disabled required placeholder="Minimum 6 characters" />
-                        <button type="button" class="toggle-eye" onclick="togglePassword('empPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                        <button type="button" class="toggle-eye" onclick="togglePassword('empPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="form-label">Confirm Password *</label>
                     <div class="password-toggle">
                         <input type="password" id="empConfirmPassword" class="form-input emp-locked-field" disabled required placeholder="Confirm password" />
-                        <button type="button" class="toggle-eye" onclick="togglePassword('empConfirmPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                        <button type="button" class="toggle-eye" onclick="togglePassword('empConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                     </div>
                 </div>
 
@@ -5406,11 +5503,11 @@
                 <div class="mb-3">
                     <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Rate Your Experience</label>
                     <div class="flex items-center gap-1.5 mt-1" id="starRatingContainer">
-                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(1)"><i class="fas fa-star"></i></button>
-                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(2)"><i class="fas fa-star"></i></button>
-                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(3)"><i class="fas fa-star"></i></button>
-                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(4)"><i class="fas fa-star"></i></button>
-                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(5)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(1)" aria-label="Rate 1 out of 5 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(2)" aria-label="Rate 2 out of 5 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(3)" aria-label="Rate 3 out of 5 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(4)" aria-label="Rate 4 out of 5 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 22px; color: #D95D39;" onclick="setFeedbackRating(5)" aria-label="Rate 5 out of 5 stars"><i class="fas fa-star"></i></button>
                         <span style="font-size: 12px; font-weight: 600; color: #666660; margin-left: 8px;" id="feedbackRatingLabel">5 / 5 - Excellent</span>
                     </div>
                     <input type="hidden" id="feedbackRating" value="5" />
@@ -5455,29 +5552,10 @@
             <!-- Sidebar with Rankly.ai Logo -->
             <aside class="dash-sidebar" id="dashSidebar">
                 <div class="dash-sidebar-header">
-                    <!-- Brand Vector Logo -->
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                        <defs>
-                            <linearGradient id="rankly-s1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#B588F7"/>
-                                <stop offset="100%" stop-color="#8E65DF"/>
-                            </linearGradient>
-                            <linearGradient id="rankly-s2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#FFA14A"/>
-                                <stop offset="100%" stop-color="#F06A4A"/>
-                            </linearGradient>
-                            <linearGradient id="rankly-s3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#81E4DA"/>
-                                <stop offset="100%" stop-color="#45A89E"/>
-                            </linearGradient>
-                        </defs>
-                        <rect width="32" height="32" rx="8" fill="#111111" />
-                        <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-s1)"/>
-                        <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-                        <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-s2)"/>
-                        <circle cx="24" cy="8" r="3" fill="url(#rankly-s3)" />
-                    </svg>
-                    <span class="font-extrabold text-base tracking-tight text-[#111111]">Rankly<span class="text-[#D95D39]">.ai</span> <span class="font-normal text-[#666660] text-xs">dashboard</span></span>
+                    <a href="/" class="flex items-center gap-2 select-none group" title="Rankly.ai">
+                        <img src="/assets/brand/rankly-full-logo-light.png" alt="Rankly.ai" class="rankly-brand-logo-light h-7 w-auto object-contain" />
+                        <img src="/assets/brand/rankly-full-logo-dark.png" alt="Rankly.ai" class="rankly-brand-logo-dark h-7 w-auto object-contain" />
+                    </a>
                 </div>
 
                 <div class="sidebar-section-title">Navigation</div>
@@ -5519,7 +5597,7 @@
                 <!-- Topbar with Active Page Title, Global Feature Search & Profile -->
                 <header class="dash-topbar">
                     <div class="flex items-center gap-4 flex-shrink-0">
-                        <button class="md:hidden text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white flex items-center justify-center p-1 rounded-lg transition-all" id="sidebarToggle" title="Toggle Sidebar">
+                        <button class="md:hidden text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white flex items-center justify-center p-1 rounded-lg transition-all" id="sidebarToggle" title="Toggle Sidebar" aria-label="Toggle navigation sidebar">
                             <svg id="sidebarToggleSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.2288 21 5.3431 21 4.1716 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.1716 4.17157C5.3431 3 7.2288 3 11 3Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path id="sidebarToggleInnerPanel" d="M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z" style="fill: var(--bg-card, #ffffff); transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);"/>
@@ -5566,7 +5644,7 @@
                             </span>
                             <span class="theme-text-label">Light Mode</span>
                         </button>
-                        <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile">
+                        <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile" aria-label="Open user profile settings">
                             <i class="fas fa-user-circle text-xl"></i>
                         </button>
                     </div>
@@ -5656,7 +5734,7 @@
                                         <i class="fas fa-volume-high text-[10px]" id="chatSoundIcon"></i>
                                         <span id="chatSoundLabel">Sound ON</span>
                                     </button>
-                                    <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat">
+                                    <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat" aria-label="Reset chat history">
                                         <i class="fas fa-rotate-left text-[10px]"></i>
                                     </button>
                                 </div>
@@ -5678,7 +5756,7 @@
                                     <span id="chatFileName" class="truncate font-bold">resume.pdf</span>
                                     <span class="text-[10px] opacity-70" id="chatFileSize"></span>
                                 </div>
-                                <button type="button" onclick="clearChatFile()" class="text-red-500 hover:text-red-700 ml-2 p-1 font-bold" title="Remove attachment">
+                                <button type="button" onclick="clearChatFile()" class="text-red-500 hover:text-red-700 ml-2 p-1 font-bold" title="Remove attachment" aria-label="Remove uploaded attachment">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
@@ -5759,12 +5837,12 @@
                                             autocomplete="off" 
                                             spellcheck="false" 
                                         />
-                                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#888880] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white transition-all text-xs" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document">
+                                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#888880] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white transition-all text-xs" onclick="document.getElementById('chatFileInput').click()" title="Attach Resume / Document" aria-label="Attach resume or document">
                                             <i class="fas fa-paperclip"></i>
                                         </button>
                                     </div>
 
-                                    <button type="submit" id="chatSendBtn" class="command-a-send-btn w-12 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm flex-shrink-0 cursor-pointer" title="Send message">
+                                    <button type="submit" id="chatSendBtn" class="command-a-send-btn w-12 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm flex-shrink-0 cursor-pointer" title="Send message" aria-label="Send message to AI assistant">
                                         <i class="fas fa-arrow-up text-sm"></i>
                                     </button>
                                 </form>
@@ -5863,7 +5941,7 @@
                                         onclick="clearCandidateSearch()" 
                                         class="sleek-search-clear-btn" 
                                         title="Clear search"
-                                    >
+                                     aria-label="Clear candidate search filter">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
@@ -6028,7 +6106,7 @@
                                     </div>
                                 </div>
                                 <div class="space-y-3">
-                                    <button class="btn-secondary w-full text-left justify-between border-[#E5E5DF] dark:border-gray-800 hover:border-[#183B33] dark:hover:border-[#5B998C] hover:bg-[#183B33]/5 dark:hover:bg-[#5B998C]/10 text-[#183B33] dark:text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="openModal('updateProfileModal')">
+                                    <button class="btn-secondary w-full text-left justify-between border-[#E5E5DF] dark:border-gray-800 hover:border-[#183B33] dark:hover:border-[#5B998C] hover:bg-[#183B33]/5 dark:hover:bg-[#5B998C]/10 text-[#183B33] dark:text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm group" onclick="openModal('updateProfileModal')" aria-label="Open user profile settings">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-lg bg-[#183B33]/10 dark:bg-[#5B998C]/20 text-[#183B33] dark:text-[#81E4DA] flex items-center justify-center group-hover:scale-105 transition-transform">
                                                 <i class="fas fa-user-pen text-sm"></i>
@@ -6235,11 +6313,11 @@
                                     <div>
                                         <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Rate Your Experience</label>
                                         <div class="flex items-center gap-2 mt-1.5 p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl" id="inPageStarRatingContainer">
-                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(1)"><i class="fas fa-star"></i></button>
-                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(2)"><i class="fas fa-star"></i></button>
-                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(3)"><i class="fas fa-star"></i></button>
-                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(4)"><i class="fas fa-star"></i></button>
-                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(5)"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(1)" aria-label="Rate 1 out of 5 stars"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(2)" aria-label="Rate 2 out of 5 stars"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(3)" aria-label="Rate 3 out of 5 stars"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(4)" aria-label="Rate 4 out of 5 stars"><i class="fas fa-star"></i></button>
+                                            <button type="button" class="star-btn" style="background:transparent; border:none; cursor:pointer; font-size: 26px; color: #D95D39;" onclick="setInPageFeedbackRating(5)" aria-label="Rate 5 out of 5 stars"><i class="fas fa-star"></i></button>
                                             <span style="font-size: 13px; font-weight: 600; color: #111111; margin-left: 10px;" id="inPageFeedbackRatingLabel">5 / 5 - Excellent</span>
                                         </div>
                                         <input type="hidden" id="inPageFeedbackRating" value="5" />
@@ -6971,110 +7049,301 @@
             }
             window.resetFpToStep1 = resetFpToStep1;
 
-            async function sendForgotOTP() {
-                const emailInput = document.getElementById('fpEmail');
+            // ─── DUAL PASSWORD MODAL CONTROLLERS (RESET LINK VS CHANGE PASSWORD) ───
+            let cpVerifiedToken = '';
+            let cpTargetEmail = '';
+
+            window.switchPasswordModalMode = function(mode) {
+                const resetSec = document.getElementById('modalResetSection');
+                const changeSec = document.getElementById('modalChangeSection');
+                const resetBtn = document.getElementById('modalTabResetBtn');
+                const changeBtn = document.getElementById('modalTabChangeBtn');
+
+                if (mode === 'change') {
+                    if (resetSec) resetSec.classList.add('hidden');
+                    if (changeSec) changeSec.classList.remove('hidden');
+                    if (changeBtn) changeBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs flex items-center justify-center gap-1.5';
+                    if (resetBtn) resetBtn.className = 'flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all flex items-center justify-center gap-1.5';
+                } else {
+                    if (changeSec) changeSec.classList.add('hidden');
+                    if (resetSec) resetSec.classList.remove('hidden');
+                    if (resetBtn) resetBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs flex items-center justify-center gap-1.5';
+                    if (changeBtn) changeBtn.className = 'flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all flex items-center justify-center gap-1.5';
+                }
+            };
+            window.switchForgotModalTab = window.switchPasswordModalMode;
+
+            // ─── OPTION 1: RESET PASSWORD FLOW (EMAIL -> OTP -> SEND RESET LINK TO GMAIL) ───
+            window.handleSendResetOtp = async function() {
+                const emailInput = document.getElementById('fpResetEmail');
                 const btn = document.getElementById('fpSendOtpBtn');
-                if (!emailInput) return;
-                const email = emailInput.value.trim();
+                const email = emailInput?.value.trim();
 
                 if (!email) {
                     showToast('Please enter your registered email address.', 'error');
+                    emailInput?.focus();
+                    return;
+                }
+                if (!email.includes('@') || !email.includes('.')) {
+                    showToast('Please enter a valid email address.', 'error');
                     return;
                 }
 
-                if (!validateEmail(email, true)) {
-                    return;
-                }
-
-                if (btn) { btn.disabled = true; btn.textContent = 'Sending Code...'; }
+                if (btn) setButtonLoading(btn, true, 'Sending Code...');
                 try {
                     const res = await fetch('/api/auth/send-otp', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify({ email, type: 'password_reset' })
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send password reset code.', 'error');
-                        if (btn) { btn.disabled = false; btn.textContent = 'Send Reset Code'; }
+                        showToast(data.message || data.error || 'Failed to send reset code.', 'error');
                         return;
                     }
 
                     fpTargetEmail = email;
-                    const emailTargetEl = document.getElementById('fpTargetEmailText');
+                    const emailTargetEl = document.getElementById('fpResetTargetEmailText');
                     if (emailTargetEl) emailTargetEl.textContent = email;
 
-                    const step1 = document.getElementById('fpStep1');
-                    const step2 = document.getElementById('fpStep2');
+                    const step1 = document.getElementById('fpResetStep1');
+                    const step2 = document.getElementById('fpResetStep2');
                     if (step1) step1.style.display = 'none';
                     if (step2) step2.style.display = 'block';
 
-                    const fpInput = document.getElementById('fpOtp');
-                    if (fpInput) fpInput.value = '';
-                    showToast(`Password reset code sent to ${email}. Please check your inbox / spam folder.`, 'success');
-                    startFpCountdown();
+                    const otpInput = document.getElementById('fpResetOtp');
+                    if (otpInput) { otpInput.value = ''; otpInput.focus(); }
+                    showToast('6-digit reset code sent to your Gmail inbox!', 'success');
                 } catch (err) {
-                    showToast('Server connection error: ' + err.message, 'error');
+                    showToast('Connection error: ' + err.message, 'error');
                 } finally {
-                    if (btn) { btn.disabled = false; btn.textContent = 'Send Reset Code'; }
+                    if (btn) setButtonLoading(btn, false);
                 }
-            }
-            window.sendForgotOTP = sendForgotOTP;
+            };
+            window.sendForgotOTP = window.handleSendResetOtp;
 
-            async function verifyForgotOTP() {
-                const otpInput = document.getElementById('fpOtp');
-                const verifyBtn = document.getElementById('fpVerifyBtn');
-                if (!otpInput) return;
-                const otp = otpInput.value.trim();
+            window.handleVerifyResetOtpAndSendLink = async function() {
+                const otpInput = document.getElementById('fpResetOtp');
+                const btn = document.getElementById('fpVerifyBtn');
+                const otp = otpInput?.value.trim();
 
                 if (!otp || otp.length < 6) {
                     showToast('Please enter the 6-digit verification code.', 'error');
                     return;
                 }
 
-                if (verifyBtn) { verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...'; }
+                if (btn) setButtonLoading(btn, true, 'Verifying...');
                 try {
-                    const res = await fetch('/api/auth/verify-otp', {
+                    const res = await fetch('/api/auth/forgot-password/verify-and-send-link', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
-                        body: JSON.stringify({ email: fpTargetEmail, otp, type: 'password_reset' })
+                        body: JSON.stringify({ email: fpTargetEmail, otp })
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Invalid or expired reset OTP code.', 'error');
-                        if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
+                        showToast(data.message || data.error || 'Invalid or expired OTP code.', 'error');
                         return;
                     }
 
-                    fpVerifiedOtp = otp;
-                    if (fpOtpCountdownTimer) {
-                        clearInterval(fpOtpCountdownTimer);
-                        fpOtpCountdownTimer = null;
-                    }
-
-                    const step2 = document.getElementById('fpStep2');
-                    const step3 = document.getElementById('fpStep3');
+                    const step2 = document.getElementById('fpResetStep2');
+                    const step3 = document.getElementById('fpResetStep3');
                     if (step2) step2.style.display = 'none';
                     if (step3) step3.style.display = 'block';
 
-                    showToast('Identity verified. Please set your new password.', 'success');
+                    const finalEmailEl = document.getElementById('fpResetFinalEmail');
+                    if (finalEmailEl) finalEmailEl.textContent = fpTargetEmail;
+
+                    showToast('Identity verified! Reset link sent to your Gmail.', 'success');
                 } catch (err) {
                     showToast('Verification failed: ' + err.message, 'error');
-                    if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
+                } finally {
+                    if (btn) setButtonLoading(btn, false);
                 }
-            }
-            window.verifyForgotOTP = verifyForgotOTP;
+            };
+            window.verifyForgotOTP = window.handleVerifyResetOtpAndSendLink;
 
-            async function resetPassword() {
-                const newPwdInput = document.getElementById('fpNewPassword');
-                const confirmPwdInput = document.getElementById('fpConfirmPassword');
-                const submitBtn = document.getElementById('fpResetSubmitBtn');
-                if (!newPwdInput || !confirmPwdInput) return;
+            window.resetFpModalToStep1 = function() {
+                const step1 = document.getElementById('fpResetStep1');
+                const step2 = document.getElementById('fpResetStep2');
+                const step3 = document.getElementById('fpResetStep3');
+                if (step1) step1.style.display = 'block';
+                if (step2) step2.style.display = 'none';
+                if (step3) step3.style.display = 'none';
+                const otpInput = document.getElementById('fpResetOtp');
+                if (otpInput) otpInput.value = '';
+            };
 
-                const newPassword = newPwdInput.value;
-                const confirmPassword = confirmPwdInput.value;
+            // ─── OPTION 2: CHANGE PASSWORD FLOW (EMAIL -> OTP + CURRENT PASSWORD -> ENTER NEW PASSWORD DIRECTLY) ───
+            window.handleSendChangeOtp = async function() {
+                const emailInput = document.getElementById('cpEmail');
+                const btn = document.getElementById('cpSendOtpBtn');
+                const email = emailInput?.value.trim();
+
+                if (!email) {
+                    showToast('Please enter your account email address.', 'error');
+                    emailInput?.focus();
+                    return;
+                }
+
+                if (btn) setButtonLoading(btn, true, 'Sending OTP...');
+                try {
+                    const res = await fetch('/api/auth/send-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, type: 'email_verification' })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        showToast(data.message || data.error || 'Failed to send OTP code.', 'error');
+                        return;
+                    }
+
+                    cpTargetEmail = email;
+                    const emailTargetEl = document.getElementById('cpTargetEmailText');
+                    if (emailTargetEl) emailTargetEl.textContent = email;
+
+                    const step1 = document.getElementById('cpStep1');
+                    const step2 = document.getElementById('cpStep2');
+                    if (step1) step1.style.display = 'none';
+                    if (step2) step2.style.display = 'block';
+
+                    const otpInput = document.getElementById('cpOtp');
+                    if (otpInput) { otpInput.value = ''; otpInput.focus(); }
+                    showToast('OTP sent to ' + email + '! Check your Gmail.', 'success');
+                } catch (err) {
+                    showToast('Network error: ' + err.message, 'error');
+                } finally {
+                    if (btn) setButtonLoading(btn, false);
+                }
+            };
+
+            window.handleVerifyChangeCredentials = async function() {
+                const otpInput = document.getElementById('cpOtp');
+                const currPwdInput = document.getElementById('cpCurrentPassword');
+                const btn = document.getElementById('cpVerifyCredsBtn');
+
+                const otp = otpInput?.value.trim();
+                const currentPassword = currPwdInput?.value;
+
+                if (!otp || otp.length < 6) {
+                    showToast('Please enter the 6-digit OTP code.', 'error');
+                    return;
+                }
+                if (!currentPassword) {
+                    showToast('Please enter your Current Password (पुरानी पासवर्ड).', 'error');
+                    currPwdInput?.focus();
+                    return;
+                }
+
+                if (btn) setButtonLoading(btn, true, 'Verifying Credentials...');
+                try {
+                    const res = await fetch('/api/auth/change-password/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: cpTargetEmail, otp, currentPassword })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        showToast(data.message || data.error || 'Current password or OTP is invalid.', 'error');
+                        return;
+                    }
+
+                    cpVerifiedToken = data.changeToken;
+                    const step2 = document.getElementById('cpStep2');
+                    const step3 = document.getElementById('cpStep3');
+                    if (step2) step2.style.display = 'none';
+                    if (step3) step3.style.display = 'block';
+
+                    showToast('Identity verified! You may now set your new password.', 'success');
+                } catch (err) {
+                    showToast('Verification failed: ' + err.message, 'error');
+                } finally {
+                    if (btn) setButtonLoading(btn, false);
+                }
+            };
+
+            window.handleSubmitChangePassword = async function() {
+                const newPwdInput = document.getElementById('cpNewPassword');
+                const confirmPwdInput = document.getElementById('cpConfirmPassword');
+                const btn = document.getElementById('cpSubmitNewBtn');
+
+                const newPassword = newPwdInput?.value;
+                const confirmPassword = confirmPwdInput?.value;
+
+                if (!newPassword || !confirmPassword) {
+                    showToast('Please enter and confirm your new password.', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showToast('New passwords do not match.', 'error');
+                    return;
+                }
+                if (newPassword.length < 6) {
+                    showToast('New password must be at least 6 characters long.', 'error');
+                    return;
+                }
+
+                if (btn) setButtonLoading(btn, true, 'Updating Password...');
+                try {
+                    const res = await fetch('/api/auth/change-password/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: cpTargetEmail,
+                            changeToken: cpVerifiedToken,
+                            newPassword
+                        })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        showToast(data.message || data.error || 'Failed to update password.', 'error');
+                        return;
+                    }
+
+                    showToast('🎉 Password updated successfully! Please sign in with your new password.', 'success');
+                    closeModal('forgotPasswordModal');
+                    resetCpModalToStep1();
+
+                    // Pre-fill email in login
+                    const loginEmail = document.getElementById('normalLoginEmail') || document.getElementById('normalLoginIdentifier');
+                    if (loginEmail) loginEmail.value = cpTargetEmail;
+                } catch (err) {
+                    showToast('Failed to update password: ' + err.message, 'error');
+                } finally {
+                    if (btn) setButtonLoading(btn, false);
+                }
+            };
+
+            window.resetCpModalToStep1 = function() {
+                const step1 = document.getElementById('cpStep1');
+                const step2 = document.getElementById('cpStep2');
+                const step3 = document.getElementById('cpStep3');
+                if (step1) step1.style.display = 'block';
+                if (step2) step2.style.display = 'none';
+                if (step3) step3.style.display = 'none';
+                const otpInput = document.getElementById('cpOtp');
+                const currPwdInput = document.getElementById('cpCurrentPassword');
+                const newPwdInput = document.getElementById('cpNewPassword');
+                const confirmPwdInput = document.getElementById('cpConfirmPassword');
+                if (otpInput) otpInput.value = '';
+                if (currPwdInput) currPwdInput.value = '';
+                if (newPwdInput) newPwdInput.value = '';
+                if (confirmPwdInput) confirmPwdInput.value = '';
+                cpVerifiedToken = '';
+            };
+
+            // ─── SAVE NEW PASSWORD FROM GMAIL LINK ───
+            window.handleSaveNewPasswordFromLink = async function() {
+                const emailInput = document.getElementById('linkResetEmail');
+                const tokenInput = document.getElementById('linkResetToken');
+                const newPwdInput = document.getElementById('linkResetNewPassword');
+                const confirmPwdInput = document.getElementById('linkResetConfirmPassword');
+                const btn = document.getElementById('linkResetSubmitBtn');
+
+                const email = emailInput?.value.trim();
+                const token = tokenInput?.value.trim();
+                const newPassword = newPwdInput?.value;
+                const confirmPassword = confirmPwdInput?.value;
 
                 if (!newPassword || !confirmPassword) {
                     showToast('Please fill both password fields.', 'error');
@@ -7089,62 +7358,29 @@
                     return;
                 }
 
-                if (submitBtn) {
-                    setButtonLoading(submitBtn, true, 'RESETTING PASSWORD...');
-                }
+                if (btn) setButtonLoading(btn, true, 'SAVING NEW PASSWORD...');
                 try {
-                    const res = await fetch('/api/auth/reset-password', {
+                    const res = await fetch('/api/auth/reset-password-with-token', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
-                        body: JSON.stringify({
-                            email: fpTargetEmail,
-                            otp: fpVerifiedOtp,
-                            newPassword
-                        })
+                        body: JSON.stringify({ email, token, newPassword })
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
                         showToast(data.message || data.error || 'Failed to reset password.', 'error');
-                        if (submitBtn) setButtonLoading(submitBtn, false);
                         return;
                     }
 
-                    showToast('Password reset successfully! You can now log in.', 'success');
-                    if (submitBtn) setButtonLoading(submitBtn, false);
-                    closeModal('forgotPasswordModal');
-                    resetFpToStep1();
+                    showToast('🎉 Password reset successfully! You can now log in.', 'success');
+                    closeModal('resetPasswordFromLinkModal');
 
-                    // Pre-fill email in login input
-                    const normalEmail = document.getElementById('normalLoginEmail');
-                    const compEmail = document.getElementById('companyLoginEmail');
-                    if (normalEmail) normalEmail.value = fpTargetEmail;
-                    if (compEmail) compEmail.value = fpTargetEmail;
+                    // Pre-fill login input
+                    const loginEmail = document.getElementById('normalLoginEmail') || document.getElementById('normalLoginIdentifier');
+                    if (loginEmail) loginEmail.value = email;
                 } catch (err) {
-                    showToast('Reset failed: ' + err.message, 'error');
-                    if (submitBtn) setButtonLoading(submitBtn, false);
-                }
-            }
-            window.resetPassword = resetPassword;
-
-            // ─── DUAL FORGOT PASSWORD MODAL TAB SWITCHER & COMPANY HANDLER ───
-            window.switchForgotModalTab = function(tab) {
-                const candSection = document.getElementById('modalCandidateSection');
-                const compSection = document.getElementById('modalCompanySection');
-                const candBtn = document.getElementById('modalTabCandidateBtn');
-                const compBtn = document.getElementById('modalTabCompanyBtn');
-                if (!candSection || !compSection) return;
-
-                if (tab === 'company') {
-                    candSection.classList.add('hidden');
-                    compSection.classList.remove('hidden');
-                    if (compBtn) compBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
-                    if (candBtn) candBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all';
-                } else {
-                    compSection.classList.add('hidden');
-                    candSection.classList.remove('hidden');
-                    if (candBtn) candBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-[#183B33] text-white shadow-xs';
-                    if (compBtn) compBtn.className = 'flex-1 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#5B998C] rounded-lg transition-all';
+                    showToast('Error resetting password: ' + err.message, 'error');
+                } finally {
+                    if (btn) setButtonLoading(btn, false);
                 }
             };
 
@@ -7404,8 +7640,8 @@
                                 <span class="font-mono text-xs text-[#666660]">${c.score}% Match</span>
                             </div>
                             <div class="actions flex gap-1">
-                                ${stage !== 'hired' ? `<button onclick="advanceStage('${c.id}')" title="Move to next stage"><i class="fas fa-chevron-right text-xs"></i></button>` : ''}
-                                <button onclick="removeCandidate('${c.id}')" title="Remove"><i class="fas fa-trash-can text-xs text-red-500"></i></button>
+                                ${stage !== 'hired' ? `<button onclick="advanceStage('${c.id}')" aria-label="Advance candidate stage" title="Move to next stage"><i class="fas fa-chevron-right text-xs"></i></button>` : ''}
+                                <button onclick="removeCandidate('${c.id}')" aria-label="Remove candidate" title="Remove"><i class="fas fa-trash-can text-xs text-red-500"></i></button>
                             </div>
                         </div>
                     `).join('');
@@ -8676,19 +8912,20 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         showToast(`Password reset code sent to ${email}. Please check your inbox.`, 'success');
                         
-                        // Switch modal directly to Candidate Flow Step 2
+                        // Switch modal directly to Reset Flow Step 2
                         openModal('forgotPasswordModal');
-                        switchForgotModalTab('candidate');
+                        if (window.switchPasswordModalMode) window.switchPasswordModalMode('reset');
                         fpTargetEmail = email;
-                        const targetText = document.getElementById('fpTargetEmailText');
+                        const targetText = document.getElementById('fpResetTargetEmailText') || document.getElementById('fpTargetEmailText');
                         if (targetText) targetText.textContent = email;
-                        const fpEmailInput = document.getElementById('fpEmail');
+                        const fpEmailInput = document.getElementById('fpResetEmail') || document.getElementById('fpEmail');
                         if (fpEmailInput) fpEmailInput.value = email;
-                        const step1 = document.getElementById('fpStep1');
-                        const step2 = document.getElementById('fpStep2');
+                        const step1 = document.getElementById('fpResetStep1') || document.getElementById('fpStep1');
+                        const step2 = document.getElementById('fpResetStep2') || document.getElementById('fpStep2');
                         if (step1) step1.style.display = 'none';
                         if (step2) step2.style.display = 'block';
-                        startFpCountdown();
+                        const otpInput = document.getElementById('fpResetOtp') || document.getElementById('fpOtp');
+                        if (otpInput) { otpInput.value = ''; otpInput.focus(); }
                         toggleInlineForgotPassword(false);
                     } catch (err) {
                         showToast('Server error: ' + err.message, 'error');
@@ -8707,8 +8944,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const submitBtn = document.getElementById('loginBtn') || slidingLoginForm.querySelector('button[type="submit"]');
                         const identifier = (document.getElementById('loginUsername') || document.getElementById('slideLoginEmail'))?.value.trim();
                         const password = (document.getElementById('loginPassword') || document.getElementById('slideLoginPassword'))?.value.trim();
-                        const role = document.getElementById('loginRole')?.value || 'candidate';
-                        const rememberMe = document.getElementById('rememberMe')?.checked ?? true;
+                        const rememberMe = document.getElementById('rememberMe')?.checked ?? false;
 
                         if (!identifier || !password) { showToast('Please enter credentials', 'error'); return; }
 
@@ -8734,6 +8970,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             if (rememberMe) {
                                 localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            } else {
+                                localStorage.removeItem('rankly_session');
                             }
                             showToast('Authentication successful', 'success');
                             loginUser();
@@ -8880,6 +9118,40 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
+                // ─── FORM RESET HELPERS (CLEAR ALL INPUTS UPON SUCCESSFUL REGISTRATION) ───
+                window.resetCandidateForm = function() {
+                    const regForm = document.getElementById('slidingRegisterForm');
+                    if (regForm) regForm.reset();
+                    ['slideRegFirstName', 'slideRegLastName', 'slideRegUsername', 'slideRegEmail', 'slideRegPhone', 'slideRegDob', 'slideRegAge', 'slideRegPassword', 'slideRegConfirmPassword'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                    });
+                    const profession = document.getElementById('slideRegProfession');
+                    if (profession) profession.selectedIndex = 0;
+                    const terms = document.getElementById('regTermsCheck');
+                    if (terms) terms.checked = false;
+                    const submitBtn = document.getElementById('slideRegSubmitBtn');
+                    if (submitBtn) setButtonLoading(submitBtn, false);
+                };
+
+                window.resetOrgForm = function() {
+                    const form = document.getElementById('orgForm');
+                    if (form) form.reset();
+                    ['orgNameInput', 'orgWorkEmailInput', 'orgFirstName', 'orgLastName', 'orgUsername', 'orgDob', 'orgAge', 'orgPhone', 'orgAdminPasswordInput', 'orgOtpInput'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                    });
+                    const logoPreview = document.getElementById('orgLogoPreview');
+                    if (logoPreview) logoPreview.remove();
+                    const banner = document.getElementById('orgSecurityBanner');
+                    if (banner) {
+                        banner.className = 'mt-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 flex items-center gap-1.5 text-[11px] text-amber-700 dark:text-amber-300';
+                        banner.innerHTML = '<i class="fa-solid fa-shield-halved text-amber-500"></i><span>Enter corporate work email to verify and unlock company profile.</span>';
+                    }
+                    const submitBtn = document.getElementById('registerOrgSubmitBtn');
+                    if (submitBtn) setButtonLoading(submitBtn, false);
+                };
+
                 window.showEmailVerificationNotice = function(email) {
                     const candidateDrawer = document.getElementById('candidateDrawer');
                     if (candidateDrawer) candidateDrawer.classList.add('translate-x-full');
@@ -8894,30 +9166,33 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (!noticeModal) {
                         noticeModal = document.createElement('div');
                         noticeModal.id = 'emailVerificationNoticeModal';
-                        noticeModal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
+                        noticeModal.className = 'modal-overlay z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
+                        noticeModal.onclick = function(e) { if (e.target === noticeModal) noticeModal.classList.add('hidden'); };
                         noticeModal.innerHTML = `
-                            <div class="bg-white dark:bg-zinc-900 border border-indigo-100 dark:border-zinc-800 rounded-2xl max-w-lg w-full p-8 shadow-2xl text-center relative overflow-hidden">
-                                <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-950/50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl shadow-inner border border-indigo-100 dark:border-indigo-800">
-                                    📬
+                            <div class="modal-box text-center relative overflow-hidden shadow-2xl" style="max-width: 480px; padding: 28px 24px;">
+                                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-xs border" style="background: rgba(24, 59, 51, 0.08); border-color: rgba(24, 59, 51, 0.18); color: #183B33;">
+                                    <i class="fa-regular fa-envelope-open text-[#183B33] dark:text-[#81E4DA]"></i>
                                 </div>
-                                <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">Verification Link Sent!</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                                    Please check your Gmail inbox and click the verification link to unlock your <strong>rankly.ai</strong> dashboard.
+                                <h3 class="text-xl font-extrabold text-[var(--text-primary)] mb-1.5 tracking-tight">Verification Link Sent!</h3>
+                                <p class="text-xs text-[var(--text-muted)] mb-4 leading-relaxed">
+                                    Please check your Gmail inbox and click the verification link to activate your account and unlock your <strong class="text-[#183B33] dark:text-[#81E4DA]">Rankly.ai</strong> dashboard.
                                 </p>
-                                <div class="bg-indigo-50/80 dark:bg-zinc-800/80 border border-indigo-100 dark:border-zinc-700 py-3 px-4 rounded-xl mb-6 text-xs text-indigo-900 dark:text-indigo-200 font-mono break-all">
-                                    Sent to: <span id="noticeEmailTarget" class="font-bold"></span>
+                                <div class="py-2.5 px-3.5 rounded-xl mb-5 text-xs font-mono break-all border flex items-center justify-center gap-2" style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);">
+                                    <i class="fa-solid fa-paper-plane text-[11px] text-[#D95D39]"></i>
+                                    <span class="text-[var(--text-muted)]">Sent to:</span>
+                                    <span id="noticeEmailTarget" class="font-bold text-[#183B33] dark:text-[#81E4DA]"></span>
                                 </div>
                                 <div class="flex flex-col sm:flex-row gap-2.5">
-                                    <a href="https://mail.google.com" target="_blank" class="flex-1 py-3 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-1.5">
+                                    <a href="https://mail.google.com" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-white shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer" style="background: #183B33;">
                                         <span>Open Gmail</span>
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
                                     </a>
-                                    <button id="resendLinkBtn" onclick="handleResendVerificationLink()" class="py-3 px-3 rounded-xl border border-indigo-200 dark:border-zinc-700 bg-indigo-50/50 dark:bg-zinc-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                                        <i class="fa-solid fa-rotate-right"></i>
+                                    <button id="resendLinkBtn" onclick="handleResendVerificationLink()" class="py-2.5 px-3.5 rounded-xl border font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[var(--bg-input)]" style="background: var(--card-bg); border-color: var(--border-color); color: var(--text-primary);">
+                                        <i class="fa-solid fa-rotate-right text-xs"></i>
                                         <span>Resend Link</span>
                                     </button>
-                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-3 px-3 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-200 font-semibold text-xs sm:text-sm transition-all">
-                                        Got it
+                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-2.5 px-3.5 rounded-xl border font-semibold text-xs sm:text-sm transition-all cursor-pointer hover:text-[var(--text-primary)]" style="background: transparent; border-color: var(--border-color); color: var(--text-muted);">
+                                        Dismiss
                                     </button>
                                 </div>
                             </div>
@@ -9038,9 +9313,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         if (data.requiresEmailVerification) {
                             if (submitBtn) setButtonLoading(submitBtn, false);
+                            if (typeof window.resetCandidateForm === 'function') window.resetCandidateForm();
                             window.showEmailVerificationNotice(data.email || email);
                             return;
                         }
+                        if (typeof window.resetCandidateForm === 'function') window.resetCandidateForm();
                         currentUser = data.user;
                         sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                         localStorage.setItem('rankly_session', JSON.stringify(currentUser));
@@ -9381,9 +9658,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         if (data.requiresEmailVerification) {
                             if (submitBtn) setButtonLoading(submitBtn, false);
+                            if (typeof window.resetOrgForm === 'function') window.resetOrgForm();
                             window.showEmailVerificationNotice(data.email || email);
                             return;
                         }
+                        if (typeof window.resetOrgForm === 'function') window.resetOrgForm();
                         currentUser = data.user;
                         sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                         localStorage.setItem('rankly_session', JSON.stringify(currentUser));
@@ -9531,11 +9810,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 return;
                             }
                             if (data.requiresEmailVerification) {
+                                sForm.reset();
                                 if (typeof window.showEmailVerificationNotice === 'function') {
                                     window.showEmailVerificationNotice(data.email || email);
                                 }
                                 return;
                             }
+                            sForm.reset();
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             closeModal('signupModal');
@@ -9590,6 +9871,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 showToast(data.message || data.error || 'Provisioning failed', 'error');
                                 return;
                             }
+                            empSignupForm.reset();
+                            if (empOtpVerified) { empOtpVerified.email = false; empOtpVerified.phone = false; }
                             if (data.requiresEmailVerification) {
                                 if (typeof window.showEmailVerificationNotice === 'function') {
                                     window.showEmailVerificationNotice(data.email || email);
@@ -10865,6 +11148,34 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             }
         });
 
+        // Auto-detect Password Reset Link clicked from Gmail (?action=reset-password&token=...&email=...)
+        (function checkPasswordResetUrl() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const action = urlParams.get('action');
+                const resetToken = urlParams.get('token');
+                const resetEmail = urlParams.get('email');
+
+                if (action === 'reset-password' && resetToken) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    window.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(() => {
+                            const linkModal = document.getElementById('resetPasswordFromLinkModal');
+                            const emailInput = document.getElementById('linkResetEmail');
+                            const tokenInput = document.getElementById('linkResetToken');
+                            if (emailInput && resetEmail) emailInput.value = decodeURIComponent(resetEmail);
+                            if (tokenInput) tokenInput.value = resetToken;
+                            if (linkModal) linkModal.classList.remove('hidden');
+                            if (window.showToast) {
+                                showToast('🔗 Reset link verified! Please enter your new password below.', 'success');
+                            }
+                        }, 250);
+                    });
+                }
+            } catch (e) {
+                console.warn('Reset URL check error:', e);
+            }
+        })();
     </script>
 </body>
 </html>

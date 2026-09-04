@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="description" content="Rankly.ai Terms of Service — Review the terms governing enterprise recruitment tools, candidate evaluation models, and platform access." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://rankly-ai-production.up.railway.app/terms" />
     <title>Terms of Service — Rankly.ai</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
@@ -58,6 +61,21 @@
 
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        .rankly-brand-logo-light {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .rankly-brand-logo-dark {
+            display: none;
+            vertical-align: middle;
+        }
+        body.dark-theme .rankly-brand-logo-light {
+            display: none !important;
+        }
+        body.dark-theme .rankly-brand-logo-dark {
+            display: inline-block !important;
         }
 
         .rankly-card {
@@ -141,31 +159,9 @@
     <header class="w-full border-b sticky top-0 z-50 backdrop-blur-md" style="background: rgba(var(--bg-color), 0.85); border-color: var(--border-color);">
         <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
             <!-- Rankly Brand Logo -->
-            <a href="/" class="flex items-center gap-3 group">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-                    <defs>
-                        <linearGradient id="rankly-g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#B588F7"/>
-                            <stop offset="100%" stop-color="#8E65DF"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#FFA14A"/>
-                            <stop offset="100%" stop-color="#F06A4A"/>
-                        </linearGradient>
-                        <linearGradient id="rankly-g3" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#81E4DA"/>
-                            <stop offset="100%" stop-color="#45A89E"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="32" height="32" rx="8" fill="#111111" />
-                    <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rankly-g1)"/>
-                    <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
-                    <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rankly-g2)"/>
-                    <circle cx="24" cy="8" r="3" fill="url(#rankly-g3)" />
-                </svg>
-                <span class="font-extrabold text-xl tracking-tight text-[#111111] dark:text-white" style="color: var(--text-main);">
-                    Rankly<span class="text-[#D95D39]">.ai</span>
-                </span>
+            <a href="/" class="flex items-center gap-3 select-none group" title="Rankly.ai">
+                <img src="/assets/brand/rankly-full-logo-light.png" alt="Rankly.ai" class="rankly-brand-logo-light h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                <img src="/assets/brand/rankly-full-logo-dark.png" alt="Rankly.ai" class="rankly-brand-logo-dark h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
             </a>
 
             <!-- Right Actions -->
