@@ -1,5 +1,5 @@
-﻿# ─── 1. BASE IMAGE ───
-FROM node:20-slim
+# ─── 1. BASE IMAGE ───
+FROM node:22-slim
 
 # ─── 2. SYSTEM DEPENDENCIES (OpenSSL for Prisma, Python for SSL mailer) ───
 RUN apt-get update && apt-get install -y --no-install-recommends \

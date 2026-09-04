@@ -3,6 +3,13 @@
  * Initialized according to official Supabase agent-skills best practices.
  */
 
+// Polyfill WebSocket for Node versions without native WebSocket
+if (typeof globalThis.WebSocket === 'undefined') {
+  try {
+    globalThis.WebSocket = require('ws');
+  } catch (e) {}
+}
+
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();

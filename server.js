@@ -162,6 +162,23 @@ app.use('/api/v2', pgEmployeeRoutes);
 app.use('/api/jwt', jwtEmployeeRoutes);
 app.use('/health', healthRoutes);
 
+// Supabase JS Client live connectivity check
+const supabaseClient = require('./src/config/supabaseClient');
+app.get('/api/supabase/status', async (req, res) => {
+  try {
+    const { count, error } = await supabaseClient.from('employees').select('count', { count: 'exact', head: true });
+    if (error) throw error;
+    return res.json({
+      success: true,
+      message: 'Supabase JS Client connected & authenticated.',
+      url: process.env.SUPABASE_URL || 'https://baywowevjxteagnuhlgs.supabase.co',
+      employeeCount: count
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // -----------------------------------------------------------------------------
 // Backward-Compatibility Aliases (Ensures all UI frontend calls seamlessly work)
 // -----------------------------------------------------------------------------
