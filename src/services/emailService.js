@@ -235,6 +235,38 @@ async function sendSystemEmail(optionsOrTo, subject, html, text) {
         }
     }
 
+    // 4. Quaternary Fallback: Brevo REST API (Port 443 HTTPS - 300 free emails/day to ANY recipient)
+    const brevoApiKey = (process.env.BREVO_API_KEY || '').trim();
+    if (brevoApiKey) {
+        try {
+            const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+            const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+                method: 'POST',
+                headers: {
+                    'api-key': brevoApiKey,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    sender: { name: 'Rankly.ai Security', email: senderUser },
+                    to: [{ email: to }],
+                    subject: sub,
+                    htmlContent: h,
+                    textContent: t
+                })
+            });
+            const resData = await res.json();
+            if (res.ok && resData.messageId) {
+                console.log('✅ Email delivered via Brevo API (HTTPS 443) to:', to, 'ID:', resData.messageId);
+                return { success: true, method: 'brevo', messageId: resData.messageId };
+            } else {
+                console.warn('[Brevo API Response Warning]:', resData);
+            }
+        } catch (brevoErr) {
+            console.warn('[Brevo API Error]:', brevoErr.message);
+        }
+    }
+
     console.error('❌ All email delivery tiers failed for:', to);
     return { success: false, message: 'All email delivery tiers failed' };
 }
