@@ -28,11 +28,19 @@ function formatUserResponse(user) {
 }
 
 function getAppBaseUrl(req) {
-  const reqHost = req.headers['x-forwarded-host'] || req.headers.host;
-  const reqProto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
-  const dynamicBaseUrl = reqHost ? `${reqProto}://${reqHost}` : null;
-  const appUrl = process.env.APP_URL && !process.env.APP_URL.includes('localhost') ? process.env.APP_URL : null;
-  return appUrl || dynamicBaseUrl || process.env.APP_URL || 'http://localhost:3000';
+  if (req) {
+    const rawHost = req.headers['x-forwarded-host'] || req.headers.host;
+    if (rawHost) {
+      const host = rawHost.split(',')[0].trim();
+      const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+      return `${proto}://${host}`;
+    }
+  }
+  const appUrl = (process.env.APP_URL || process.env.BASE_URL || '').replace(/\/+$/, '');
+  if (appUrl && !appUrl.includes('trycloudflare.com') && !appUrl.includes('rankly-ai-production')) {
+    return appUrl;
+  }
+  return 'https://ranklyai-production.up.railway.app';
 }
 
 /**

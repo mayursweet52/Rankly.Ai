@@ -83,13 +83,17 @@ function sendViaPythonSmtp({ to, subject, html, text }) {
     });
 }
 
-// 1. Standard Transporter (Port 587 STARTTLS - Sabhi servers aur cloud par 100% stable hai)
-const createTransporter = () => {
+// 1. Standard Transporter (Port 587 STARTTLS with Port 465 SSL fallback & 6s timeout)
+const createTransporter = (port = 587) => {
     return nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // Port 587 ke liye false rakha jata hai (STARTTLS use hota hai)
-        requireTLS: true,
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: port,
+        secure: port === 465,
+        requireTLS: port === 587,
+        family: 4,
+        connectionTimeout: 6000,
+        greetingTimeout: 6000,
+        socketTimeout: 6000,
         auth: {
             user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
             pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
@@ -131,7 +135,7 @@ const sendRanklyEmail = async (toOrOptions, subject, htmlContent, textContent) =
     const cleanText = effectiveText || (effectiveHtml ? effectiveHtml.replace(/<[^>]*>?/gm, '') : 'Your rankly.ai verification details.');
 
     try {
-        const transporter = createTransporter();
+        let transporter = createTransporter(587);
 
         // Anti-Spam aur Deliverability ke liye Clean Headers
         const mailOptions = {
@@ -149,11 +153,18 @@ const sendRanklyEmail = async (toOrOptions, subject, htmlContent, textContent) =
             }
         };
 
-        console.log(`⏳ Sending email to ${cleanRecipient} via Port 587 STARTTLS...`);
-        const info = await transporter.sendMail(mailOptions);
-        
-        console.log(`✅ [SUCCESS]: Email successfully delivered! MessageID: ${info.messageId}`);
-        return { success: true, messageId: info.messageId };
+        try {
+            console.log(`⏳ Sending email to ${cleanRecipient} via Port 587 STARTTLS...`);
+            const info = await transporter.sendMail(mailOptions);
+            console.log(`✅ [SUCCESS]: Email successfully delivered! MessageID: ${info.messageId}`);
+            return { success: true, messageId: info.messageId };
+        } catch (port587Err) {
+            console.warn(`⚠️ Port 587 failed (${port587Err.message}), trying Port 465 SSL...`);
+            transporter = createTransporter(465);
+            const info = await transporter.sendMail(mailOptions);
+            console.log(`✅ [SUCCESS]: Email successfully delivered via Port 465 SSL! MessageID: ${info.messageId}`);
+            return { success: true, messageId: info.messageId };
+        }
 
     } catch (error) {
         console.error(`❌ [SMTP ERROR]: Failed to send email to ${cleanRecipient}. Reason:`, error.message);

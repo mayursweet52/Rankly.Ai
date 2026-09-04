@@ -179,6 +179,30 @@ app.get('/api/supabase/status', async (req, res) => {
   }
 });
 
+// Live Email Diagnostics Endpoint (for verifying cloud deliverability and active URLs)
+app.get('/api/debug/email-status', async (req, res) => {
+  const targetEmail = (req.query.email || 'mayursweet52@gmail.com').trim();
+  try {
+    const { sendOTPEmail } = require('./src/services/emailService');
+    const result = await sendOTPEmail(targetEmail, '777333', 'email_verification');
+    return res.json({
+      success: true,
+      result,
+      targetEmail,
+      appUrl: process.env.APP_URL || 'not_set',
+      baseUrl: process.env.BASE_URL || 'not_set',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+      targetEmail,
+      stack: err.stack
+    });
+  }
+});
+
 // -----------------------------------------------------------------------------
 // Backward-Compatibility Aliases (Ensures all UI frontend calls seamlessly work)
 // -----------------------------------------------------------------------------
