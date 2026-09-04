@@ -7417,17 +7417,12 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    const otpCode = data.devOtp || data.otp;
                     if (otpInput) {
-                        otpInput.value = otpCode || '';
-                        if (otpCode) otpInput.focus();
+                        otpInput.value = '';
+                        otpInput.focus();
                     }
-                    if (otpCode) {
-                        showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
-                    } else {
-                        showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
-                    }
-                    startOtpCountdown('emailOtpBtn', 'signup');
+                    showToast(`Verification code sent to ${value}. Please check your email inbox.`, 'success');
+                    startOtpCountdown('emailOtpBtn', 'Send OTP');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
@@ -7523,17 +7518,12 @@
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
-                    const otpCode = data.devOtp || data.otp;
                     if (otpInput) {
-                        otpInput.value = otpCode || '';
-                        if (otpCode) otpInput.focus();
+                        otpInput.value = '';
+                        otpInput.focus();
                     }
-                    if (otpCode) {
-                        showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
-                    } else {
-                        showToast(`Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
-                    }
-                    startOtpCountdown('empEmailOtpBtn', 'emp');
+                    showToast(`Verification code sent to ${value}. Please check your email inbox.`, 'success');
+                    startOtpCountdown('empEmailOtpBtn', 'Send OTP');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
@@ -9888,17 +9878,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            const otpCode = data.devOtp || data.otp;
                             const otpInput = document.getElementById('slideRegOtpInput');
                             if (otpInput) {
-                                otpInput.value = otpCode || '';
-                                if (otpCode) otpInput.focus();
+                                otpInput.value = '';
+                                otpInput.focus();
                             }
-                            if (otpCode) {
-                                showToast(`✅ 6-digit OTP sent to ${email}! (Code: ${otpCode})`, 'success');
-                            } else {
-                                showToast(`✅ 6-digit OTP sent to ${email}! Please check your email inbox.`, 'success');
-                            }
+                            showToast(`Verification code sent to ${email}. Please check your email inbox.`, 'success');
                             startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
@@ -10374,17 +10359,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            const otpCode = data.devOtp || data.otp;
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
-                                otpInput.value = otpCode || '';
-                                if (otpCode) otpInput.focus();
+                                otpInput.value = '';
+                                otpInput.focus();
                             }
-                            if (otpCode) {
-                                showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
-                            } else {
-                                showToast('✅ Verification code sent to ' + email + '! Please check your inbox.', 'success');
-                            }
+                            showToast('Verification code sent to ' + email + '! Please check your inbox.', 'success');
                             startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP', 'error');

@@ -585,9 +585,8 @@ async function sendOtp(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "OTP sent successfully!",
-      otp: otpCode,
-      devOtp: otpCode,
+      message: `Verification code sent to ${recipientEmail}. Please check your email inbox.`,
+      email: recipientEmail,
       details: isEmp 
         ? `Verification code sent to ${recipientEmail}. Please check your corporate mail inbox / spam folder.`
         : `Verification code sent to ${recipientEmail}. Please check your Gmail Inbox, Updates or Spam folder.`
@@ -1421,9 +1420,7 @@ async function resendOtp(req, res) {
 
     return res.json({ 
       success: true, 
-      message: "OTP resent successfully!",
-      otp: newOtp,
-      devOtp: newOtp,
+      message: `Verification code resent to ${cleanEmail}. Please check your email inbox.`,
       email: cleanEmail
     });
   } catch (error) {
