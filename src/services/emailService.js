@@ -192,20 +192,32 @@ async function sendSystemEmail(optionsOrTo, subject, html, text) {
         t = text;
     }
 
-    // 0. High-Priority Google HTTPS Gateway (Port 443 - Bypasses all cloud SMTP port blocks)
-    const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || process.env.GMAIL_WEBHOOK_URL || '').trim();
+    // 0. High-Priority Google HTTPS Gateway (Port 443 - Bypasses all cloud SMTP port blocks, 100% Google infrastructure)
+    const googleScriptUrl = (
+        process.env.GOOGLE_SCRIPT_URL || 
+        process.env.GMAIL_WEBHOOK_URL || 
+        process.env.GOOGLE_MAIL_WEBHOOK_URL || 
+        'https://script.google.com/macros/s/AKfycbzdtsKRpIqXcAa17Fz2OTe5WS0JmgaCkLdQC_-Va_r0VHgoMNBhdXDHQlBgFvxCJ8VO/exec'
+    ).trim();
+
     if (googleScriptUrl) {
         try {
-            console.log(`⏳ Dispatching via Google Apps Script HTTPS Gateway (Port 443)...`);
+            console.log(`⏳ Dispatching email to ${to} via Google Apps Script HTTPS Gateway (Port 443)...`);
+            const payload = { to, subject: sub, html: h, text: t };
+            if (typeof optionsOrTo === 'object' && optionsOrTo !== null && optionsOrTo.otp) {
+                payload.otp = optionsOrTo.otp;
+            }
             const res = await fetch(googleScriptUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ to, subject: sub, html: h, text: t })
+                body: JSON.stringify(payload)
             });
             const resData = await res.json();
-            if (resData.success) {
-                console.log(`✅ [SUCCESS]: Email successfully delivered via Google Apps Script (Port 443)!`);
+            if (resData && resData.success) {
+                console.log(`✅ [SUCCESS]: Email successfully delivered to ${to} via Google Apps Script (Port 443)!`);
                 return { success: true, method: 'google-apps-script' };
+            } else {
+                console.warn('⚠️ Google Apps Script returned false/warning:', resData);
             }
         } catch (gErr) {
             console.warn('⚠️ Google Apps Script dispatch failed:', gErr.message);
@@ -355,7 +367,8 @@ async function sendOTPEmail(to, otp, type = 'email_verification', customSubject 
         to: cleanRecipient,
         subject,
         html,
-        text
+        text,
+        otp
     });
 
     return res.success;
