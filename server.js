@@ -191,59 +191,7 @@ app.get('/api/supabase/status', async (req, res) => {
   }
 });
 
-// Live Email Diagnostics Endpoint (for verifying cloud deliverability and active URLs)
-app.get('/api/debug/email-status', async (req, res) => {
-  const targetEmail = (req.query.email || 'mayursweet52@gmail.com').trim();
-  const net = require('net');
-  const tls = require('tls');
-  const diagnostics = {};
 
-  // 1. Test TCP port 587 reachability
-  const testPort587 = new Promise(resolve => {
-    const s = net.createConnection({ host: 'smtp.gmail.com', port: 587, timeout: 3000 }, () => {
-      s.destroy();
-      resolve({ reachable: true });
-    });
-    s.on('error', err => resolve({ reachable: false, error: err.message }));
-    s.on('timeout', () => { s.destroy(); resolve({ reachable: false, error: 'Port 587 timeout (blocked by host)' }); });
-  });
-
-  // 2. Test SSL port 465 reachability
-  const testPort465 = new Promise(resolve => {
-    const s = tls.connect({ host: 'smtp.gmail.com', port: 465, timeout: 3000 }, () => {
-      s.destroy();
-      resolve({ reachable: true });
-    });
-    s.on('error', err => resolve({ reachable: false, error: err.message }));
-    s.on('timeout', () => { s.destroy(); resolve({ reachable: false, error: 'Port 465 timeout (blocked by host)' }); });
-  });
-
-  diagnostics.port587 = await testPort587;
-  diagnostics.port465 = await testPort465;
-
-  // 3. Test actual OTP dispatch
-  try {
-    const { sendOTPEmail } = require('./src/services/emailService');
-    const result = await sendOTPEmail(targetEmail, '777333', 'email_verification');
-    return res.json({
-      success: true,
-      result,
-      targetEmail,
-      diagnostics,
-      appUrl: process.env.APP_URL || 'not_set',
-      baseUrl: process.env.BASE_URL || 'not_set',
-      timestamp: new Date().toISOString()
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err.message,
-      targetEmail,
-      diagnostics,
-      stack: err.stack
-    });
-  }
-});
 
 // -----------------------------------------------------------------------------
 // Backward-Compatibility Aliases (Ensures all UI frontend calls seamlessly work)

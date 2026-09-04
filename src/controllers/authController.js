@@ -421,64 +421,7 @@ function logout(req, res) {
   });
 }
 
-/**
- * One-Click Quick Local Demo Login
- * Allows ANY user downloading the project on ANY device, IP, or localhost
- * to immediately test Candidate & HRMS Portals with zero setup needed!
- */
-async function quickDemoLogin(req, res) {
-  try {
-    const roleParam = (req.body.role || req.query.role || 'candidate').toLowerCase().trim();
-    const isHRMS = ['hrms', 'admin', 'hr', 'employee'].includes(roleParam);
 
-    const targetEmail = isHRMS ? 'test.hr.admin@company.com' : 'test.candidate.portal@gmail.com';
-    let user = await prisma.user.findFirst({
-      where: { email: targetEmail },
-      include: { organization: true }
-    });
-
-    if (!user) {
-      const dummyPassword = await bcrypt.hash('DemoPass123!', 10);
-      user = await prisma.user.create({
-        data: {
-          email: targetEmail,
-          firstName: isHRMS ? 'Chief HR' : 'Applicant',
-          lastName: isHRMS ? 'Officer' : 'Candidate',
-          username: isHRMS ? `hr_admin_${Date.now().toString().slice(-4)}` : `candidate_${Date.now().toString().slice(-4)}`,
-          password: dummyPassword,
-          role: isHRMS ? 'admin' : 'normal_user',
-          accountType: isHRMS ? 'employee' : 'normal_user',
-          isEmailVerified: true,
-          status: 'active'
-        },
-        include: { organization: true }
-      });
-    }
-
-    req.session.userId = user.id;
-    req.session.role = user.role;
-    req.session.accountType = user.accountType;
-    req.session.user = formatUserResponse(user);
-
-    const isEmployeeRole = user.accountType === 'employee' || ['admin', 'administrator', 'hr', 'hiring_manager', 'employee'].includes((user.role || '').toLowerCase());
-    const redirectUrl = isEmployeeRole ? '/hrms/dashboard' : '/candidate/dashboard';
-
-    req.session.save((err) => {
-      if (err) console.error('Demo Session Save Error:', err);
-
-      return res.json({
-        success: true,
-        message: `⚡ Instant local demo login as ${isHRMS ? 'Internal HR Admin' : 'Candidate'} successful!`,
-        user: formatUserResponse(user),
-        token: req.sessionID || `session_${user.id}`,
-        redirectUrl
-      });
-    });
-  } catch (err) {
-    console.error('Quick Demo Login Error:', err);
-    return res.status(500).json({ success: false, error: err.message, message: 'Quick demo login failed.' });
-  }
-}
 
 /**
  * Get Current Authenticated User (Session Context)
@@ -532,7 +475,6 @@ async function getMe(req, res) {
 async function sendOtp(req, res) {
   try {
     const { email, identifier, to, workEmail, corporateEmail, isEmployee, type = 'email_verification' } = req.body;
-    console.log("👉 OTP bhejne ki koshish is email par ho rahi hai:", email);
     const recipientEmail = (email || identifier || to || workEmail || corporateEmail || '').toLowerCase().trim();
 
     const isEmp = isEmployee === true || isEmployee === 'true' || type === 'corporate_email_verification' || !!workEmail || !!corporateEmail || !!req.body.orgName || !!req.body.organizationName;
@@ -588,9 +530,6 @@ async function sendOtp(req, res) {
         sendOTPEmail(recipientEmail, otpCode, type),
         new Promise(resolve => setTimeout(() => resolve(true), 4000))
       ]);
-      console.log(`\n======================================================`);
-      console.log(`🔑 [LIVE OTP CODE]: >>> ${otpCode} <<< (Sent to: ${recipientEmail})`);
-      console.log(`======================================================\n`);
     } catch (emailErr) {
       console.warn('⚠️ [OTP Email Dispatch Warning]:', emailErr.message);
     }
@@ -1427,9 +1366,6 @@ async function resendOtp(req, res) {
         sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject),
         new Promise(resolve => setTimeout(() => resolve(true), 4000))
       ]);
-      console.log(`\n======================================================`);
-      console.log(`🔄 [RESENT OTP CODE]: >>> ${newOtp} <<< (Sent to: ${cleanEmail})`);
-      console.log(`======================================================\n`);
     } catch (emailErr) {
       console.warn('⚠️ [Background Resend OTP Email Error]:', emailErr.message);
     }
@@ -1490,10 +1426,6 @@ async function resendLink(req, res) {
       customSubject: '🔄 Resend: Verify your rankly.ai account'
     });
 
-    console.log(`\n======================================================`);
-    console.log(`🔄 [RESENT VERIFICATION LINK]: >>> ${verifyLink} <<< (Sent to: ${cleanEmail})`);
-    console.log(`======================================================\n`);
-
     return res.json({ 
       success: true, 
       message: "Verification link resent successfully!",
@@ -1527,7 +1459,6 @@ module.exports = {
   verifyChangePasswordCredentials,
   submitChangePassword,
   createOrganization,
-  joinOrganization,
-  quickDemoLogin
+  joinOrganization
 };
 
