@@ -61,30 +61,6 @@ function validateEmailAddress(email, isEmployee = false) {
     return { valid: false, message: '❌ This email domain is not accepted. Please provide a real email address.' };
   }
 
-  // Personal free email providers that are NOT allowed for company/corporate registration
-  const personalEmailDomains = [
-    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk',
-    'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
-    'icloud.com', 'me.com', 'mac.com',
-    'aol.com', 'zoho.com', 'protonmail.com', 'proton.me',
-    'mail.com', 'gmx.com', 'yandex.com', 'rediffmail.com'
-  ];
-
-  if (isEmployee) {
-    // Company / Organization registration: Must be a corporate work email (e.g. name@company.com)
-    if (personalEmailDomains.includes(domain)) {
-      return { 
-        valid: false, 
-        message: `❌ Company registration requires a valid corporate work email (e.g. name@company.com). Free personal email providers like @${domain} are not allowed.` 
-      };
-    }
-  } else {
-    // Individual candidate registration: Strict Gmail validation
-    if (domain !== 'gmail.com' && domain !== 'googlemail.com') {
-      return { valid: false, message: '⚠️ Only Gmail addresses are allowed for individual candidate registration. Please use @gmail.com.' };
-    }
-  }
-
   return { valid: true, email: clean };
 }
 
