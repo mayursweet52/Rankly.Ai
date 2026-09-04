@@ -4316,7 +4316,221 @@
         }
 
     
-        </style>
+        /* ─── COLOR HARMONY & HIGH-CONTRAST THEME SYSTEM (LIGHT & DARK) ─── */
+        
+        /* 1. Header & Top Navigation */
+        .dash-topbar {
+            background-color: #FFFFFF !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            color: #111827 !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03) !important;
+        }
+
+        #dashPageTitle {
+            color: #111827 !important;
+            font-weight: 800 !important;
+            font-size: 15px !important;
+            letter-spacing: -0.01em !important;
+        }
+
+        .global-feature-search-box {
+            background-color: #FAFAF8 !important;
+            border: 1.5px solid #E5E7EB !important;
+            color: #111827 !important;
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .global-feature-search-box:focus-within {
+            background-color: #FFFFFF !important;
+            border-color: #183B33 !important;
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.08) !important;
+        }
+
+        .global-feature-search-field {
+            color: #111827 !important;
+        }
+
+        .global-feature-search-field::placeholder {
+            color: #9CA3AF !important;
+        }
+
+        /* 2. Main Background & Cards */
+        .dash-main {
+            background-color: #F8F8F5 !important;
+        }
+
+        .card {
+            background-color: #FFFFFF !important;
+            border: 1px solid #E5E7EB !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        /* 3. High-Legibility Input Fields */
+        .form-input, input[type="text"].form-input, textarea.form-input {
+            background-color: #FFFFFF !important;
+            border: 1.5px solid #D1D5DB !important;
+            border-radius: 12px !important;
+            color: #111827 !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .form-input:focus, input[type="text"].form-input:focus, textarea.form-input:focus {
+            background-color: #FFFFFF !important;
+            border-color: #183B33 !important;
+            box-shadow: 0 0 0 3px rgba(24, 59, 51, 0.12) !important;
+            outline: none !important;
+        }
+
+        .form-input::placeholder, input[type="text"].form-input::placeholder, textarea.form-input::placeholder {
+            color: #9CA3AF !important;
+            font-weight: 400 !important;
+        }
+
+        .form-label {
+            color: #374151 !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.03em !important;
+        }
+
+        /* 4. Luxury Forest Green Primary Actions */
+        #genResumeBtn, .btn-ai-generate, .btn-primary {
+            background-color: #183B33 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #132B25 !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 4px rgba(24, 59, 51, 0.15) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        #genResumeBtn:hover, .btn-ai-generate:hover, .btn-primary:hover {
+            background-color: #244C41 !important;
+            border-color: #183B33 !important;
+            box-shadow: 0 6px 16px rgba(24, 59, 51, 0.25) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        #genResumeBtn:active, .btn-ai-generate:active, .btn-primary:active {
+            transform: translateY(0) !important;
+            box-shadow: 0 2px 6px rgba(24, 59, 51, 0.2) !important;
+        }
+
+        /* 5. Quick Skill Chips in Light Mode */
+        #quickSkillPills button, #tab-resume button[onclick^="setQuickProfession"], #tab-resume button[onclick^="loadSampleResumeProfile"] {
+            background-color: #F3F4F6 !important;
+            border: 1px solid #E5E7EB !important;
+            color: #374151 !important;
+            font-weight: 600 !important;
+            transition: all 0.15s ease !important;
+        }
+
+        #quickSkillPills button:hover, #tab-resume button[onclick^="setQuickProfession"]:hover, #tab-resume button[onclick^="loadSampleResumeProfile"]:hover {
+            background-color: #FFFFFF !important;
+            border-color: #D95D39 !important;
+            color: #D95D39 !important;
+            box-shadow: 0 2px 6px rgba(217, 93, 57, 0.12) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* ─── DARK THEME OVERRIDES ─── */
+        body.dark-theme .dash-topbar, .dark .dash-topbar {
+            background-color: #12141F !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+
+        body.dark-theme #dashPageTitle, .dark #dashPageTitle {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .global-feature-search-box, .dark .global-feature-search-box {
+            background-color: #161926 !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .global-feature-search-box:focus-within, .dark .global-feature-search-box:focus-within {
+            border-color: #81E4DA !important;
+            box-shadow: 0 0 0 3px rgba(129, 228, 218, 0.15) !important;
+        }
+
+        body.dark-theme .global-feature-search-field, .dark .global-feature-search-field {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .global-feature-search-field::placeholder, .dark .global-feature-search-field::placeholder {
+            color: #6B7280 !important;
+        }
+
+        body.dark-theme .dash-main, .dark .dash-main {
+            background-color: #0B0D14 !important;
+        }
+
+        body.dark-theme .card, .dark .card {
+            background-color: #141724 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        body.dark-theme .form-input, .dark .form-input,
+        body.dark-theme input[type="text"].form-input, .dark input[type="text"].form-input,
+        body.dark-theme textarea.form-input, .dark textarea.form-input {
+            background-color: #1A1D2E !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .form-input:focus, .dark .form-input:focus,
+        body.dark-theme input[type="text"].form-input:focus, .dark input[type="text"].form-input:focus,
+        body.dark-theme textarea.form-input:focus, .dark textarea.form-input:focus {
+            background-color: #1E2235 !important;
+            border-color: #81E4DA !important;
+            box-shadow: 0 0 0 3px rgba(129, 228, 218, 0.18) !important;
+        }
+
+        body.dark-theme .form-input::placeholder, .dark .form-input::placeholder,
+        body.dark-theme input[type="text"].form-input::placeholder, .dark input[type="text"].form-input::placeholder,
+        body.dark-theme textarea.form-input::placeholder, .dark textarea.form-input::placeholder {
+            color: #6B7280 !important;
+        }
+
+        body.dark-theme .form-label, .dark .form-label {
+            color: #D1D5DB !important;
+        }
+
+        body.dark-theme #genResumeBtn, .dark #genResumeBtn,
+        body.dark-theme .btn-ai-generate, .dark .btn-ai-generate {
+            background-color: #183B33 !important;
+            border: 1px solid rgba(129, 228, 218, 0.3) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme #genResumeBtn:hover, .dark #genResumeBtn:hover,
+        body.dark-theme .btn-ai-generate:hover, .dark .btn-ai-generate:hover {
+            background-color: #244C41 !important;
+            border-color: #81E4DA !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-theme #quickSkillPills button, .dark #quickSkillPills button,
+        body.dark-theme #tab-resume button[onclick^="setQuickProfession"], .dark #tab-resume button[onclick^="setQuickProfession"],
+        body.dark-theme #tab-resume button[onclick^="loadSampleResumeProfile"], .dark #tab-resume button[onclick^="loadSampleResumeProfile"] {
+            background-color: #1E2235 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme #quickSkillPills button:hover, .dark #quickSkillPills button:hover,
+        body.dark-theme #tab-resume button[onclick^="setQuickProfession"]:hover, .dark #tab-resume button[onclick^="setQuickProfession"]:hover,
+        body.dark-theme #tab-resume button[onclick^="loadSampleResumeProfile"]:hover, .dark #tab-resume button[onclick^="loadSampleResumeProfile"]:hover {
+            background-color: #252B42 !important;
+            border-color: #FFA14A !important;
+            color: #FFA14A !important;
+        }
+    </style>
     
 </head>
 <body class="rankly-bg">
@@ -5053,7 +5267,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label font-bold text-[var(--text-primary)]">Current Password (पुरानी पासवर्ड) *</label>
+                            <label class="form-label font-bold text-[var(--text-primary)]">Current Password *</label>
                             <div class="password-toggle">
                                 <input type="password" id="cpCurrentPassword" class="form-input" required placeholder="Enter current password" />
                                 <button type="button" class="toggle-eye" onclick="togglePassword('cpCurrentPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
@@ -6973,7 +7187,7 @@
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send OTP to Gmail', 'error');
+                        showToast(data.message || data.error || 'Failed to send verification code. Please try again.', 'error');
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
@@ -6981,10 +7195,10 @@
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
                     if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    showToast(`Verification code sent to ${value}. Please check your inbox or spam folder.`, 'success');
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
-                    showToast('Error sending OTP: ' + err.message, 'error');
+                    showToast('Failed to send verification code: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                 }
             }
@@ -6998,7 +7212,7 @@
 
                 if (!input) return;
                 const entered = (input.value || '').replace(/\D/g, '').trim();
-                if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
+                if (!entered) { showToast('Please enter the 6-digit verification code sent to your email.', 'error'); return; }
 
                 if (emailInput) {
                     if (verifyBtn) { verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...'; }
@@ -7011,7 +7225,7 @@
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
+                            showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
                             if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
                             return;
                         }
@@ -7071,7 +7285,7 @@
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send OTP to corporate email', 'error');
+                        showToast(data.message || data.error || 'Failed to send verification code to corporate email.', 'error');
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
@@ -7079,10 +7293,10 @@
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
                     if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
+                    showToast(`Verification code sent to ${value}. Please check your corporate inbox or spam folder.`, 'success');
                     startOtpCountdown('empEmailOtpBtn', 'emp');
                 } catch (err) {
-                    showToast('Error sending OTP: ' + err.message, 'error');
+                    showToast('Failed to send verification code: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                 }
             }
@@ -7096,7 +7310,7 @@
 
                 if (!input) return;
                 const entered = (input.value || '').replace(/\D/g, '').trim();
-                if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
+                if (!entered) { showToast('Please enter the 6-digit verification code sent to your email.', 'error'); return; }
 
                 if (emailInput) {
                     if (verifyBtn) { verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...'; }
@@ -7109,7 +7323,7 @@
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
+                            showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
                             if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
                             return;
                         }
@@ -7266,7 +7480,7 @@
 
                     const otpInput = document.getElementById('fpResetOtp');
                     if (otpInput) { otpInput.value = ''; otpInput.focus(); }
-                    showToast('6-digit reset code sent to your Gmail inbox!', 'success');
+                    showToast('A 6-digit password reset code has been sent to your email. Please check your inbox or spam folder.', 'success');
                 } catch (err) {
                     showToast('Connection error: ' + err.message, 'error');
                 } finally {
@@ -7294,7 +7508,7 @@
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Invalid or expired OTP code.', 'error');
+                        showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
                         return;
                     }
 
@@ -7306,7 +7520,7 @@
                     const finalEmailEl = document.getElementById('fpResetFinalEmail');
                     if (finalEmailEl) finalEmailEl.textContent = fpTargetEmail;
 
-                    showToast('Identity verified! Reset link sent to your Gmail.', 'success');
+                    showToast('Identity verified successfully. A password reset link has been sent to your email.', 'success');
                 } catch (err) {
                     showToast('Verification failed: ' + err.message, 'error');
                 } finally {
@@ -7362,7 +7576,7 @@
 
                     const otpInput = document.getElementById('cpOtp');
                     if (otpInput) { otpInput.value = ''; otpInput.focus(); }
-                    showToast('OTP sent to ' + email + '! Check your Gmail.', 'success');
+                    showToast('Verification code sent to ' + email + '. Please check your inbox or spam folder.', 'success');
                 } catch (err) {
                     showToast('Network error: ' + err.message, 'error');
                 } finally {
@@ -7379,11 +7593,11 @@
                 const currentPassword = currPwdInput?.value;
 
                 if (!otp || otp.length < 6) {
-                    showToast('Please enter the 6-digit OTP code.', 'error');
+                    showToast('Please enter the 6-digit verification code.', 'error');
                     return;
                 }
                 if (!currentPassword) {
-                    showToast('Please enter your Current Password (पुरानी पासवर्ड).', 'error');
+                    showToast('Please enter your current password.', 'error');
                     currPwdInput?.focus();
                     return;
                 }
@@ -9333,7 +9547,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('✅ 6-digit OTP sent to ' + email + '! Please check your Gmail.', 'success');
+                            showToast('Verification code sent to ' + email + '. Please check your inbox or spam folder.', 'success');
                             if (sendBtn) {
                                 sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                                 sendBtn.disabled = false;
