@@ -91,7 +91,7 @@
       "parameters": {
         "sendTo": "={{ $env.HR_EMAIL || 'hr@company.com' }}",
         "subject": "🌟 [Shortlisted] Candidate {{ $json.body.candidateName || $json.candidateName }} for {{ $json.body.targetRole || $json.targetRole }} (Score: {{ $json.body.matchScore || $json.matchScore }}%)",
-        "message": "=Hi HR Team,\n\nA top candidate has achieved a high ATS match score (>70%) on Rankly.ai:\n\n👤 Name: {{ $json.body.candidateName || $json.candidateName }}\n🎯 Role: {{ $json.body.targetRole || $json.targetRole }}\n📊 Score: {{ $json.body.matchScore || $json.matchScore }}%\n🏆 Verdict: {{ $json.body.fitVerdict || $json.fitVerdict }}\n\nView candidate in ATS Dashboard: https://rankly-ai-production.up.railway.app/dashboard\n\nBest regards,\nRankly.ai Hiring Automation",
+        "message": "=Hi HR Team,\n\nA top candidate has achieved a high ATS match score (>70%) on Rankly.ai:\n\n👤 Name: {{ $json.body.candidateName || $json.candidateName }}\n🎯 Role: {{ $json.body.targetRole || $json.targetRole }}\n📊 Score: {{ $json.body.matchScore || $json.matchScore }}%\n🏆 Verdict: {{ $json.body.fitVerdict || $json.fitVerdict }}\n\nView candidate in ATS Dashboard: https://ranklyai-production.up.railway.app/dashboard\n\nBest regards,\nRankly.ai Hiring Automation",
         "options": {}
       },
       "name": "4. Email: Send Shortlist to HR",
@@ -140,7 +140,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rankly-ai-production.up.railway.app/api/pipeline/update",
+        "url": "https://ranklyai-production.up.railway.app/api/pipeline/update",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -178,7 +178,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rankly-ai-production.up.railway.app/api/backup",
+        "url": "https://ranklyai-production.up.railway.app/api/backup",
         "options": {}
       },
       "name": "9. HTTP: Create Code Backup",
@@ -190,7 +190,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rankly-ai-production.up.railway.app/api/apply-fix",
+        "url": "https://ranklyai-production.up.railway.app/api/apply-fix",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -211,7 +211,7 @@
     {
       "parameters": {
         "method": "GET",
-        "url": "https://rankly-ai-production.up.railway.app/api/health",
+        "url": "https://ranklyai-production.up.railway.app/api/health",
         "options": {}
       },
       "name": "11. HTTP: Test Post-Fix Health",
@@ -265,7 +265,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rankly-ai-production.up.railway.app/api/rollback",
+        "url": "https://ranklyai-production.up.railway.app/api/rollback",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -303,7 +303,7 @@
     {
       "parameters": {
         "method": "GET",
-        "url": "https://rankly-ai-production.up.railway.app/api/analytics/summary",
+        "url": "https://ranklyai-production.up.railway.app/api/analytics/summary",
         "options": {}
       },
       "name": "16. HTTP: Fetch Daily Analytics",

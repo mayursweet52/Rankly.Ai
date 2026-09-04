@@ -3,7 +3,7 @@
 **Project Name:** Rankly.ai  
 **Tagline:** Next-Gen Executive AI Candidate Screening & Recruitment Intelligence Operating System  
 **Version:** 2.0.0  
-**Target URL:** [https://rankly-ai-production.up.railway.app](https://rankly-ai-production.up.railway.app)
+**Target URL:** [https://ranklyai-production.up.railway.app](https://ranklyai-production.up.railway.app)
 
 ---
 
