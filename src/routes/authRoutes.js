@@ -142,7 +142,7 @@ router.get('/google/callback', (req, res, next) => {
   passport.authenticate('google', { callbackURL }, async (err, user, info) => {
     if (err || !user) {
       console.error('Google OAuth Authentication Failed:', err || info);
-      const errMsg = (err && err.message) ? err.message : 'Google authentication could not be completed. Please use Quick Demo Login or Email Login.';
+      const errMsg = (err && err.message) ? err.message : 'Google authentication could not be completed. Please sign in with your email and password.';
       return res.redirect('/?error=' + encodeURIComponent(errMsg));
     }
 

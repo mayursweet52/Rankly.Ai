@@ -100,7 +100,6 @@ const UserSchema = new mongoose.Schema({
 // Compare password method
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   if (!this.password) return false;
-  if (this.password === candidatePassword) return true; // Plaintext legacy / demo fallback
   return bcrypt.compare(candidatePassword, this.password);
 };
 

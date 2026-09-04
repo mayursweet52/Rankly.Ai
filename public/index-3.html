@@ -27,8 +27,9 @@
 
     <title>Rankly.ai — Enterprise AI Recruitment Platform</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
+    <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -46,6 +47,7 @@
             }
         };
     </script>
+    
     <!-- Performance Preloads for Instant Asset Delivery -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4600,8 +4602,775 @@
             border-color: #FFA14A !important;
             color: #FFA14A !important;
         }
+    /* ═══════════════════════════════════════════════════════════════════════
+           PRECISION THEME SYSTEM: LIGHT & DARK MODE CSS RULES
+           ═══════════════════════════════════════════════════════════════════════ */
+
+        /* ─── LIGHT MODE DEFAULTS ─── */
+        body {
+            background-color: #F8FAFC !important;
+            color: #0F172A !important;
+        }
+
+        .resume-studio-banner {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-icon-box {
+            background-color: rgba(24, 59, 51, 0.08) !important;
+            border: 1px solid rgba(24, 59, 51, 0.15) !important;
+        }
+        .resume-heading {
+            color: #0F172A !important;
+        }
+        .resume-subtext {
+            color: #475569 !important;
+        }
+        .resume-badge {
+            background-color: #ECFDF5 !important;
+            color: #047857 !important;
+            border: 1px solid #A7F3D0 !important;
+        }
+        .resume-demo-btn {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+            color: #0F172A !important;
+        }
+        .resume-demo-btn:hover {
+            border-color: #183B33 !important;
+            color: #183B33 !important;
+        }
+        .resume-reset-btn {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+            color: #64748B !important;
+        }
+        .resume-card {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-divider {
+            border-color: #E2E8F0 !important;
+        }
+        .resume-section-title {
+            color: #0F172A !important;
+        }
+        .resume-field-label {
+            color: #0F172A !important;
+        }
+        .resume-pill {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+            color: #1E293B !important;
+        }
+        .resume-pill:hover {
+            border-color: #183B33 !important;
+            color: #183B33 !important;
+            background-color: #FFFFFF !important;
+        }
+        .resume-quick-box {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-quick-title {
+            color: #475569 !important;
+        }
+        .resume-chip {
+            background-color: #FFFFFF !important;
+            border-color: #CBD5E1 !important;
+            color: #0F172A !important;
+        }
+        .resume-chip:hover {
+            border-color: #D95D39 !important;
+            color: #D95D39 !important;
+        }
+        .resume-score-box {
+            background-color: #F8FAFC !important;
+            border-color: #CBD5E1 !important;
+        }
+        .resume-score-val {
+            color: #183B33 !important;
+        }
+        .resume-score-denom {
+            color: #64748B !important;
+        }
+        .resume-rule-box {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-val {
+            color: #0F172A !important;
+        }
+        #atsLivePill {
+            background-color: #FFFBEB !important;
+            color: #B45309 !important;
+            border-color: #FDE68A !important;
+        }
+
+        /* ─── DARK MODE OVERRIDES (ONLY APPLIES WHEN .dark-theme OR .dark IS PRESENT) ─── */
+        body.dark-theme, .dark {
+            background-color: #0B0D14 !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .resume-studio-banner, .dark .resume-studio-banner {
+            background-color: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-icon-box, .dark .resume-icon-box {
+            background-color: rgba(129, 228, 218, 0.1) !important;
+            border-color: rgba(129, 228, 218, 0.2) !important;
+        }
+        body.dark-theme .resume-heading, .dark .resume-heading {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-subtext, .dark .resume-subtext {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-badge, .dark .resume-badge {
+            background-color: rgba(129, 228, 218, 0.12) !important;
+            color: #81E4DA !important;
+            border-color: rgba(129, 228, 218, 0.3) !important;
+        }
+        body.dark-theme .resume-demo-btn, .dark .resume-demo-btn {
+            background-color: #1A1D2E !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-demo-btn:hover, .dark .resume-demo-btn:hover {
+            border-color: #81E4DA !important;
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-reset-btn, .dark .resume-reset-btn {
+            background-color: #1A1D2E !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-card, .dark .resume-card {
+            background-color: #141724 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-divider, .dark .resume-divider {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-section-title, .dark .resume-section-title {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-field-label, .dark .resume-field-label {
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-accent-icon, .dark .resume-accent-icon {
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-pill, .dark .resume-pill {
+            background-color: #1E2235 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-pill:hover, .dark .resume-pill:hover {
+            border-color: #81E4DA !important;
+            color: #81E4DA !important;
+            background-color: #252B42 !important;
+        }
+        body.dark-theme .resume-quick-box, .dark .resume-quick-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-theme .resume-quick-title, .dark .resume-quick-title {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-chip, .dark .resume-chip {
+            background-color: #1E2235 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-chip:hover, .dark .resume-chip:hover {
+            border-color: #FFA14A !important;
+            color: #FFA14A !important;
+        }
+        body.dark-theme .resume-score-box, .dark .resume-score-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-score-val, .dark .resume-score-val {
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-score-denom, .dark .resume-score-denom {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-rule-box, .dark .resume-rule-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-theme .resume-val, .dark .resume-val {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme #atsLivePill, .dark #atsLivePill {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            color: #FBBF24 !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+        }
+    /* ═══════════════════════════════════════════════════════════════════════
+           PRECISION THEME SYSTEM: LIGHT & DARK MODE CSS RULES
+           ═══════════════════════════════════════════════════════════════════════ */
+
+        /* ─── LIGHT MODE DEFAULTS ─── */
+        body {
+            background-color: #F8FAFC !important;
+            color: #0F172A !important;
+        }
+
+        .resume-studio-banner {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-icon-box {
+            background-color: rgba(24, 59, 51, 0.08) !important;
+            border: 1px solid rgba(24, 59, 51, 0.15) !important;
+        }
+        .resume-heading {
+            color: #0F172A !important;
+        }
+        .resume-subtext {
+            color: #475569 !important;
+        }
+        .resume-badge {
+            background-color: #ECFDF5 !important;
+            color: #047857 !important;
+            border: 1px solid #A7F3D0 !important;
+        }
+        .resume-demo-btn {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+            color: #0F172A !important;
+        }
+        .resume-demo-btn:hover {
+            border-color: #183B33 !important;
+            color: #183B33 !important;
+        }
+        .resume-reset-btn {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+            color: #64748B !important;
+        }
+        .resume-card {
+            background-color: #FFFFFF !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-divider {
+            border-color: #E2E8F0 !important;
+        }
+        .resume-section-title {
+            color: #0F172A !important;
+        }
+        .resume-field-label {
+            color: #0F172A !important;
+        }
+        .resume-pill {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+            color: #1E293B !important;
+        }
+        .resume-pill:hover {
+            border-color: #183B33 !important;
+            color: #183B33 !important;
+            background-color: #FFFFFF !important;
+        }
+        .resume-quick-box {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-quick-title {
+            color: #475569 !important;
+        }
+        .resume-chip {
+            background-color: #FFFFFF !important;
+            border-color: #CBD5E1 !important;
+            color: #0F172A !important;
+        }
+        .resume-chip:hover {
+            border-color: #D95D39 !important;
+            color: #D95D39 !important;
+        }
+        .resume-score-box {
+            background-color: #F8FAFC !important;
+            border-color: #CBD5E1 !important;
+        }
+        .resume-score-val {
+            color: #183B33 !important;
+        }
+        .resume-score-denom {
+            color: #64748B !important;
+        }
+        .resume-rule-box {
+            background-color: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+        }
+        .resume-val {
+            color: #0F172A !important;
+        }
+        #atsLivePill {
+            background-color: #FFFBEB !important;
+            color: #B45309 !important;
+            border-color: #FDE68A !important;
+        }
+
+        /* ─── DARK MODE OVERRIDES (ONLY APPLIES WHEN .dark-theme OR .dark IS PRESENT) ─── */
+        body.dark-theme, .dark {
+            background-color: #0B0D14 !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .resume-studio-banner, .dark .resume-studio-banner {
+            background-color: #12141F !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-icon-box, .dark .resume-icon-box {
+            background-color: rgba(129, 228, 218, 0.1) !important;
+            border-color: rgba(129, 228, 218, 0.2) !important;
+        }
+        body.dark-theme .resume-heading, .dark .resume-heading {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-subtext, .dark .resume-subtext {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-badge, .dark .resume-badge {
+            background-color: rgba(129, 228, 218, 0.12) !important;
+            color: #81E4DA !important;
+            border-color: rgba(129, 228, 218, 0.3) !important;
+        }
+        body.dark-theme .resume-demo-btn, .dark .resume-demo-btn {
+            background-color: #1A1D2E !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-demo-btn:hover, .dark .resume-demo-btn:hover {
+            border-color: #81E4DA !important;
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-reset-btn, .dark .resume-reset-btn {
+            background-color: #1A1D2E !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-card, .dark .resume-card {
+            background-color: #141724 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-divider, .dark .resume-divider {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-section-title, .dark .resume-section-title {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .resume-field-label, .dark .resume-field-label {
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-accent-icon, .dark .resume-accent-icon {
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-pill, .dark .resume-pill {
+            background-color: #1E2235 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-pill:hover, .dark .resume-pill:hover {
+            border-color: #81E4DA !important;
+            color: #81E4DA !important;
+            background-color: #252B42 !important;
+        }
+        body.dark-theme .resume-quick-box, .dark .resume-quick-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-theme .resume-quick-title, .dark .resume-quick-title {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-chip, .dark .resume-chip {
+            background-color: #1E2235 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+        body.dark-theme .resume-chip:hover, .dark .resume-chip:hover {
+            border-color: #FFA14A !important;
+            color: #FFA14A !important;
+        }
+        body.dark-theme .resume-score-box, .dark .resume-score-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme .resume-score-val, .dark .resume-score-val {
+            color: #81E4DA !important;
+        }
+        body.dark-theme .resume-score-denom, .dark .resume-score-denom {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme .resume-rule-box, .dark .resume-rule-box {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-theme .resume-val, .dark .resume-val {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme #atsLivePill, .dark #atsLivePill {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            color: #FBBF24 !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+        }
     </style>
     
+<style id="resume-dual-theme-styles">
+
+/* ==========================================================================
+   RESUME BUILDER & ATS STUDIO - DUAL THEME ENGINE (LIGHT & DARK FIDELITY)
+   ========================================================================== */
+
+/* --- LIGHT THEME (DEFAULT) --- */
+.resume-studio-banner {
+  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 45%, #F8FAFC 100%) !important;
+  border: 1.5px solid #BBF7D0 !important;
+  box-shadow: 0 4px 16px -2px rgba(24, 59, 51, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+.resume-studio-banner .banner-icon {
+  background: #DCFCE7 !important;
+  border: 1.5px solid #86EFAC !important;
+  color: #166534 !important;
+}
+.resume-studio-banner .banner-title {
+  color: #0F172A !important;
+}
+.resume-studio-banner .banner-pill {
+  background: #DCFCE7 !important;
+  border: 1px solid #86EFAC !important;
+  color: #166534 !important;
+}
+.resume-studio-banner .banner-subtitle {
+  color: #475569 !important;
+}
+.resume-studio-banner .btn-demo-profile {
+  background: #183B33 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(24, 59, 51, 0.25) !important;
+  border: 1px solid transparent !important;
+}
+.resume-studio-banner .btn-demo-profile:hover {
+  background: #122923 !important;
+  transform: translateY(-1px);
+}
+.resume-studio-banner .btn-reset {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #475569 !important;
+}
+.resume-studio-banner .btn-reset:hover {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+.resume-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.resume-label {
+  color: #334155 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.resume-input {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+.resume-input:focus {
+  border-color: #5B998C !important;
+  box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.18) !important;
+  outline: none !important;
+}
+.resume-input::placeholder {
+  color: #94A3B8 !important;
+}
+
+.resume-chip-select {
+  background: #F1F5F9 !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  transition: all 0.15s ease-in-out !important;
+}
+.resume-chip-select:hover {
+  background: #E2E8F0 !important;
+  color: #0F172A !important;
+  border-color: #94A3B8 !important;
+}
+
+.resume-quick-box {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #334155 !important;
+}
+.resume-quick-box .quick-title {
+  color: #475569 !important;
+}
+.resume-keyword-chip {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #1E293B !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.15s ease-in-out !important;
+}
+.resume-keyword-chip:hover {
+  background: #F0FDF4 !important;
+  border-color: #5B998C !important;
+  color: #183B33 !important;
+  transform: translateY(-1px);
+}
+
+.resume-score-box {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+  border: 1.5px solid #86EFAC !important;
+  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.08) !important;
+}
+.resume-score-box .score-num {
+  color: #183B33 !important;
+}
+.resume-score-box .score-denom {
+  color: #166534 !important;
+}
+
+.resume-readiness-desc {
+  color: #475569 !important;
+}
+
+.resume-status-badge {
+  background: #FEF3C7 !important;
+  border: 1px solid #FDE68A !important;
+  color: #92400E !important;
+}
+
+.resume-metric-row {
+  color: #334155 !important;
+}
+.resume-metric-label {
+  color: #475569 !important;
+}
+.resume-metric-val {
+  color: #1E293B !important;
+  font-weight: 700 !important;
+}
+
+.resume-parser-box {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #334155 !important;
+}
+.resume-parser-box .parser-title {
+  color: #0F172A !important;
+}
+.resume-parser-box .parser-desc {
+  color: #475569 !important;
+}
+.resume-parser-box .parser-icon {
+  color: #166534 !important;
+  background: #DCFCE7 !important;
+}
+
+.resume-tip-box {
+  background: #FFFBEB !important;
+  border: 1.5px solid #FDE68A !important;
+  color: #78350F !important;
+}
+
+/* --- DARK THEME OVERRIDES --- */
+body.dark-theme .resume-studio-banner,
+.dark .resume-studio-banner {
+  background: linear-gradient(135deg, #131722 0%, #0F121C 100%) !important;
+  border: 1.5px solid #242B3D !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-studio-banner .banner-icon,
+.dark .resume-studio-banner .banner-icon {
+  background: rgba(91, 153, 140, 0.15) !important;
+  border: 1.5px solid rgba(91, 153, 140, 0.3) !important;
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-studio-banner .banner-title,
+.dark .resume-studio-banner .banner-title {
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-studio-banner .banner-pill,
+.dark .resume-studio-banner .banner-pill {
+  background: rgba(91, 153, 140, 0.12) !important;
+  border: 1px solid rgba(91, 153, 140, 0.28) !important;
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-studio-banner .banner-subtitle,
+.dark .resume-studio-banner .banner-subtitle {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-studio-banner .btn-demo-profile,
+.dark .resume-studio-banner .btn-demo-profile {
+  background: #5B998C !important;
+  color: #0A0D14 !important;
+  font-weight: 700 !important;
+}
+body.dark-theme .resume-studio-banner .btn-demo-profile:hover,
+.dark .resume-studio-banner .btn-demo-profile:hover {
+  background: #74B2A5 !important;
+}
+body.dark-theme .resume-studio-banner .btn-reset,
+.dark .resume-studio-banner .btn-reset {
+  background: #161B26 !important;
+  border: 1.5px solid #2D3748 !important;
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-studio-banner .btn-reset:hover,
+.dark .resume-studio-banner .btn-reset:hover {
+  background: #1F2738 !important;
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-card,
+.dark .resume-card {
+  background: #12151E !important;
+  border: 1.5px solid #202636 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-label,
+.dark .resume-label {
+  color: #CBD5E1 !important;
+}
+
+body.dark-theme .resume-input,
+.dark .resume-input {
+  background: #0D1017 !important;
+  border: 1.5px solid #283144 !important;
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-input:focus,
+.dark .resume-input:focus {
+  border-color: #5B998C !important;
+  box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.25) !important;
+}
+body.dark-theme .resume-input::placeholder,
+.dark .resume-input::placeholder {
+  color: #64748B !important;
+}
+
+body.dark-theme .resume-chip-select,
+.dark .resume-chip-select {
+  background: #181E2C !important;
+  border: 1px solid #283144 !important;
+  color: #CBD5E1 !important;
+}
+body.dark-theme .resume-chip-select:hover,
+.dark .resume-chip-select:hover {
+  background: #232B3E !important;
+  color: #FFFFFF !important;
+  border-color: #5B998C !important;
+}
+
+body.dark-theme .resume-quick-box,
+.dark .resume-quick-box {
+  background: #0E121A !important;
+  border: 1.5px solid #202738 !important;
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-quick-box .quick-title,
+.dark .resume-quick-box .quick-title {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-keyword-chip,
+.dark .resume-keyword-chip {
+  background: #161C28 !important;
+  border: 1.5px solid #283144 !important;
+  color: #E2E8F0 !important;
+}
+body.dark-theme .resume-keyword-chip:hover,
+.dark .resume-keyword-chip:hover {
+  background: rgba(91, 153, 140, 0.15) !important;
+  border-color: #5B998C !important;
+  color: #5EEAD4 !important;
+}
+
+body.dark-theme .resume-score-box,
+.dark .resume-score-box {
+  background: #10141D !important;
+  border: 1.5px solid #232B3D !important;
+  box-shadow: none !important;
+}
+body.dark-theme .resume-score-box .score-num,
+.dark .resume-score-box .score-num {
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-score-box .score-denom,
+.dark .resume-score-box .score-denom {
+  color: #94A3B8 !important;
+}
+
+body.dark-theme .resume-readiness-desc,
+.dark .resume-readiness-desc {
+  color: #94A3B8 !important;
+}
+
+body.dark-theme .resume-status-badge,
+.dark .resume-status-badge {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  color: #FCD34D !important;
+}
+
+body.dark-theme .resume-metric-row,
+.dark .resume-metric-row {
+  color: #CBD5E1 !important;
+}
+body.dark-theme .resume-metric-label,
+.dark .resume-metric-label {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-metric-val,
+.dark .resume-metric-val {
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-parser-box,
+.dark .resume-parser-box {
+  background: #0E121A !important;
+  border: 1.5px solid #202738 !important;
+  color: #E2E8F0 !important;
+}
+body.dark-theme .resume-parser-box .parser-title,
+.dark .resume-parser-box .parser-title {
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-parser-box .parser-desc,
+.dark .resume-parser-box .parser-desc {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-parser-box .parser-icon,
+.dark .resume-parser-box .parser-icon {
+  color: #5EEAD4 !important;
+  background: rgba(91, 153, 140, 0.15) !important;
+}
+
+body.dark-theme .resume-tip-box,
+.dark .resume-tip-box {
+  background: #18160E !important;
+  border: 1.5px solid #362E17 !important;
+  color: #FCD34D !important;
+}
+
+</style>
 </head>
 <body class="rankly-bg">
 
@@ -6246,31 +7015,30 @@
                     <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
                     <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
                     <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
+                    <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
+                    <!-- ─── TAB: RESUME BUILDER & OPTIMIZER ─── -->
                     <div class="tab-content" id="tab-resume" style="display:none;">
                         <div class="max-w-6xl mx-auto space-y-6">
                             
-                            <!-- Top Studio Banner Header (Light in Day Mode, Dark in Night Mode) -->
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-[#12141F] border border-[#E2E8F0] dark:border-white/10 shadow-xs">
+                            <!-- Top Studio Banner Header -->
+                            <div class="resume-studio-banner flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border shadow-xs">
                                 <div class="flex items-center gap-3.5">
-                                    <div class="w-12 h-12 rounded-2xl bg-[#183B33]/8 dark:bg-[#81E4DA]/10 border border-[#183B33]/15 dark:border-[#81E4DA]/20 flex items-center justify-center text-[#D95D39] text-xl shadow-xs flex-shrink-0">
+                                    <div class="w-12 h-12 rounded-2xl resume-icon-box flex items-center justify-center text-[#D95D39] text-xl shadow-xs flex-shrink-0">
                                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2 flex-wrap">
-                                            <h2 class="text-lg font-extrabold text-[#0F172A] dark:text-white tracking-tight">AI Resume Optimizer & ATS Studio</h2>
-                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-emerald-50 dark:bg-[#81E4DA]/10 text-emerald-700 dark:text-[#81E4DA] border border-emerald-200 dark:border-[#81E4DA]/30 flex items-center gap-1">
+                                            <h2 class="text-lg font-extrabold tracking-tight resume-heading">AI Resume Optimizer & ATS Studio</h2>
+                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full resume-badge flex items-center gap-1">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ATS Calibration Engine
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#475569] dark:text-gray-400 mt-0.5">Calibrate executive bullet points, technical keyword density & real-time ATS match index</p>
+                                        <p class="text-xs resume-subtext mt-0.5">Calibrate executive bullet points, technical keyword density & real-time ATS match index</p>
                                     </div>
                                 </div>
                                 <!-- Quick Action Presets -->
                                 <div class="flex items-center gap-2 flex-shrink-0">
-                                    <button type="button" onclick="loadSampleResumeProfile('fullstack')" class="px-3.5 py-2 text-xs font-bold rounded-xl border border-[#E2E8F0] dark:border-white/10 bg-white dark:bg-gray-800 text-[#0F172A] dark:text-gray-200 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
-                                        <i class="fa-solid fa-bolt text-[#D95D39] text-[11px]"></i> Load Demo Profile
-                                    </button>
-                                    <button type="button" onclick="resetResumeOptimizerForm()" class="p-2 text-xs font-semibold rounded-xl border border-[#E2E8F0] dark:border-white/10 bg-white dark:bg-gray-800 text-[#64748B] dark:text-gray-400 hover:text-red-500 transition-all cursor-pointer shadow-2xs" title="Clear Form" aria-label="Reset form">
+                                    <button type="button" onclick="resetResumeOptimizerForm()" class="resume-reset-btn p-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer shadow-2xs" title="Clear Form" aria-label="Reset form">
                                         <i class="fa-solid fa-rotate-left"></i>
                                     </button>
                                 </div>
@@ -6281,81 +7049,81 @@
                                 
                                 <!-- Left Form Studio: lg:col-span-7 -->
                                 <div class="lg:col-span-7 space-y-6">
-                                    <div class="card p-6 border border-[#E2E8F0] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
-                                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-[#E2E8F0] dark:border-white/10">
-                                            <span class="text-xs font-bold text-[#0F172A] dark:text-white uppercase tracking-wider flex items-center gap-2">
-                                                <i class="fa-solid fa-sliders text-[#183B33] dark:text-[#81E4DA]"></i> Profile Calibration Parameters
+                                    <div class="card resume-card p-6 border shadow-sm rounded-2xl">
+                                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b resume-divider">
+                                            <span class="text-xs font-bold uppercase tracking-wider flex items-center gap-2 resume-section-title">
+                                                <i class="fa-solid fa-sliders text-[#183B33] resume-accent-icon"></i> Profile Calibration Parameters
                                             </span>
-                                            <span class="text-[11px] font-semibold text-[#64748B] dark:text-gray-400">Step 1 of 2</span>
+                                            <span class="text-[11px] font-semibold resume-subtext">Step 1 of 2</span>
                                         </div>
 
                                         <div class="space-y-4">
                                             <!-- Candidate Name -->
                                             <div>
-                                                <label class="block text-xs font-bold text-[#0F172A] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                                <label class="block text-xs font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 resume-field-label">
                                                     <i class="fa-regular fa-user text-[#D95D39] text-[11px]"></i> YOUR FULL NAME
                                                 </label>
-                                                <input type="text" id="resumeName" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-white dark:bg-[#161926] text-[#0F172A] dark:text-white placeholder-[#94A3B8] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Full name (e.g. Alex Morgan)" />
+                                                <input type="text" id="resumeName" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border transition-all text-xs" placeholder="Full name (e.g. Alex Morgan)" />
                                             </div>
 
                                             <!-- Target Profession -->
                                             <div>
-                                                <label class="block text-xs font-bold text-[#0F172A] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                                                    <i class="fa-solid fa-briefcase text-[#183B33] dark:text-[#5B998C] text-[11px]"></i> TARGET PROFESSION / JOB TITLE
+                                                <label class="block text-xs font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 resume-field-label">
+                                                    <i class="fa-solid fa-briefcase text-[#183B33] resume-accent-icon text-[11px]"></i> TARGET PROFESSION / JOB TITLE
                                                 </label>
-                                                <input type="text" id="resumeProfession" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-white dark:bg-[#161926] text-[#0F172A] dark:text-white placeholder-[#94A3B8] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="e.g. Senior Software Engineer / Lead Product Designer" />
+                                                <input type="text" id="resumeProfession" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border transition-all text-xs" placeholder="e.g. Senior Software Engineer / Lead Product Designer" />
                                                 
                                                 <!-- Quick Role Selection Chips -->
                                                 <div class="flex flex-wrap items-center gap-1.5 mt-2">
-                                                    <span class="text-[11px] font-semibold text-[#64748B] dark:text-gray-400 mr-1">Quick Select:</span>
-                                                    <button type="button" onclick="setQuickProfession('Senior Full-Stack Engineer')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#F8FAFC] dark:bg-gray-800 border border-[#E2E8F0] dark:border-white/10 text-[#1E293B] dark:text-gray-200 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-semibold">Full-Stack Engineer</button>
-                                                    <button type="button" onclick="setQuickProfession('Lead UI/UX Product Designer')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#F8FAFC] dark:bg-gray-800 border border-[#E2E8F0] dark:border-white/10 text-[#1E293B] dark:text-gray-200 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-semibold">UI/UX Designer</button>
-                                                    <button type="button" onclick="setQuickProfession('AI/ML Solutions Architect')" class="text-[11px] px-2.5 py-1 rounded-lg bg-[#F8FAFC] dark:bg-gray-800 border border-[#E2E8F0] dark:border-white/10 text-[#1E293B] dark:text-gray-200 hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-all cursor-pointer font-semibold">AI/ML Architect</button>
+                                                    <span class="text-[11px] font-semibold resume-subtext mr-1">Quick Select:</span>
+                                                    <button type="button" onclick="setQuickProfession('Senior Full-Stack Engineer')" class="resume-pill text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold">Full-Stack Engineer</button>
+                                                    <button type="button" onclick="setQuickProfession('Lead UI/UX Product Designer')" class="resume-pill text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold">UI/UX Designer</button>
+                                                    <button type="button" onclick="setQuickProfession('AI/ML Solutions Architect')" class="resume-pill text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold">AI/ML Architect</button>
                                                 </div>
                                             </div>
 
                                             <!-- Key Technical Skills -->
                                             <div>
-                                                <label class="block text-xs font-bold text-[#0F172A] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                                                <label class="block text-xs font-bold uppercase tracking-wider mb-1.5 flex items-center justify-between resume-field-label">
                                                     <span class="flex items-center gap-1.5"><i class="fa-solid fa-code text-[#D95D39] text-[11px]"></i> KEY TECHNICAL & DOMAIN SKILLS</span>
-                                                    <span class="text-[10px] text-[#64748B] dark:text-gray-400 font-semibold lowercase">(comma separated)</span>
+                                                    <span class="text-[10px] resume-subtext font-semibold lowercase">(comma separated)</span>
                                                 </label>
-                                                <input type="text" id="resumeSkills" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-white dark:bg-[#161926] text-[#0F172A] dark:text-white placeholder-[#94A3B8] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Python, React, AWS, TypeScript, Docker, PostgreSQL" />
+                                                <input type="text" id="resumeSkills" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border transition-all text-xs" placeholder="Python, React, AWS, TypeScript, Docker, PostgreSQL" />
                                                 
                                                 <!-- Quick Skill Add Tags -->
-                                                <div class="mt-2.5 p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#161926]/60 border border-[#E2E8F0] dark:border-white/5">
-                                                    <div class="text-[10px] font-bold text-[#475569] dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                                        <i class="fa-solid fa-wand-magic-sparkles text-[#183B33] dark:text-[#5B998C]"></i> Click to Quick-Add Verified Keywords:
+                                                <div class="mt-2.5 p-3 rounded-xl resume-quick-box border">
+                                                    <div class="text-[10px] font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5 resume-quick-title">
+                                                        <i class="fa-solid fa-wand-magic-sparkles text-[#183B33] resume-accent-icon"></i> Click to Quick-Add Verified Keywords:
                                                     </div>
                                                     <div class="flex flex-wrap gap-1.5" id="quickSkillPills">
-                                                        <button type="button" onclick="addSkillChip('React')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ React</button>
-                                                        <button type="button" onclick="addSkillChip('Python')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ Python</button>
-                                                        <button type="button" onclick="addSkillChip('TypeScript')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ TypeScript</button>
-                                                        <button type="button" onclick="addSkillChip('AWS Cloud')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ AWS Cloud</button>
-                                                        <button type="button" onclick="addSkillChip('Docker')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ Docker</button>
-                                                        <button type="button" onclick="addSkillChip('Microservices')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ Microservices</button>
-                                                        <button type="button" onclick="addSkillChip('PostgreSQL')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ PostgreSQL</button>
-                                                        <button type="button" onclick="addSkillChip('Figma Design')" class="text-[11px] px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-[#CBD5E1] dark:border-white/10 text-[#0F172A] dark:text-gray-200 hover:border-[#D95D39] hover:text-[#D95D39] dark:hover:text-[#FFA14A] transition-all cursor-pointer font-semibold shadow-2xs">+ Figma Design</button>
+                                                        <button type="button" onclick="addSkillChip('React')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ React</button>
+                                                        <button type="button" onclick="addSkillChip('Python')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ Python</button>
+                                                        <button type="button" onclick="addSkillChip('TypeScript')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ TypeScript</button>
+                                                        <button type="button" onclick="addSkillChip('AWS Cloud')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ AWS Cloud</button>
+                                                        <button type="button" onclick="addSkillChip('Docker')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ Docker</button>
+                                                        <button type="button" onclick="addSkillChip('Microservices')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ Microservices</button>
+                                                        <button type="button" onclick="addSkillChip('PostgreSQL')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ PostgreSQL</button>
+                                                        <button type="button" onclick="addSkillChip('Figma Design')" class="resume-chip text-[11px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-semibold shadow-2xs">+ Figma Design</button>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Existing Experience -->
                                             <div>
-                                                <label class="block text-xs font-bold text-[#0F172A] dark:text-gray-200 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                                                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-file-lines text-[#183B33] dark:text-[#5B998C] text-[11px]"></i> EXISTING EXPERIENCE & IMPACT (OPTIONAL)</span>
-                                                    <span class="text-[10px] text-[#64748B] dark:text-gray-400 font-mono" id="resumeCharCount">0 chars</span>
+                                                <label class="block text-xs font-bold uppercase tracking-wider mb-1.5 flex items-center justify-between resume-field-label">
+                                                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-file-lines text-[#183B33] resume-accent-icon text-[11px]"></i> EXISTING EXPERIENCE & IMPACT (OPTIONAL)</span>
+                                                    <span class="text-[10px] resume-subtext font-mono" id="resumeCharCount">0 chars</span>
                                                 </label>
-                                                <textarea id="resumeExperience" oninput="updateAtsLiveMeter()" rows="3" class="form-input w-full p-3.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-white dark:bg-[#161926] text-[#0F172A] dark:text-white placeholder-[#94A3B8] focus:border-[#183B33] focus:ring-1 focus:ring-[#183B33] transition-all text-xs" placeholder="Built microservices serving 2M users; reduced latency by 35%; spearheaded migration to Kubernetes..."></textarea>
-                                                <p class="text-[11px] text-[#475569] dark:text-gray-400 mt-1.5 flex items-center gap-1.5 font-medium">
-                                                    <i class="fa-solid fa-circle-info text-[#183B33] dark:text-[#5B998C] text-[11px]"></i>
+                                                <textarea id="resumeExperience" oninput="updateAtsLiveMeter()" rows="3" class="form-input w-full p-3.5 rounded-xl border transition-all text-xs" placeholder="Built microservices serving 2M users; reduced latency by 35%; spearheaded migration to Kubernetes..."></textarea>
+                                                <p class="text-[11px] resume-subtext mt-1.5 flex items-center gap-1.5 font-medium">
+                                                    <i class="fa-solid fa-circle-info text-[#183B33] resume-accent-icon text-[11px]"></i>
                                                     <span>Formulation Hint: <em>"Accomplished [X] as measured by [Y] by executing [Z]"</em> (+25% ATS Score)</span>
                                                 </p>
                                             </div>
 
                                             <!-- CTA Submit Button -->
                                             <div class="pt-3">
-                                                <button type="button" id="genResumeBtn" onclick="generateResumeSuggestion()" class="w-full py-3.5 px-6 rounded-xl bg-[#183B33] hover:bg-[#204E44] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group cursor-pointer">
+                                                <button type="button" id="genResumeBtn" onclick="generateResumeSuggestion()" class="w-full py-3.5 px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group cursor-pointer">
                                                     <i class="fa-solid fa-wand-magic-sparkles text-[#81E4DA] group-hover:rotate-12 transition-transform"></i>
                                                     <span>Generate ATS-Optimized Blueprint</span>
                                                     <i class="fa-solid fa-arrow-right text-xs opacity-80 group-hover:translate-x-1 transition-transform"></i>
@@ -6371,76 +7139,76 @@
                                 <!-- Right Telemetry & Live Preview Sidebar: lg:col-span-5 -->
                                 <div class="lg:col-span-5 space-y-6">
                                     
-                                    <!-- Live ATS Readiness Score Card (Light in Day Mode, Dark in Night Mode) -->
-                                    <div class="card p-6 border border-[#E2E8F0] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
-                                        <div class="flex items-center justify-between pb-3.5 border-b border-[#E2E8F0] dark:border-white/10">
-                                            <span class="text-xs font-bold uppercase tracking-wider text-[#0F172A] dark:text-white flex items-center gap-2">
+                                    <!-- Live ATS Readiness Score Card -->
+                                    <div class="card resume-card p-6 border shadow-sm rounded-2xl">
+                                        <div class="flex items-center justify-between pb-3.5 border-b resume-divider">
+                                            <span class="text-xs font-bold uppercase tracking-wider flex items-center gap-2 resume-section-title">
                                                 <i class="fa-solid fa-gauge-high text-[#D95D39]"></i> Live ATS Readiness
                                             </span>
-                                            <span id="atsLivePill" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">Calibrating</span>
+                                            <span id="atsLivePill" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full border">Calibrating</span>
                                         </div>
 
-                                        <!-- Dial / Score Progress Box (White/Light in Day Mode, Dark in Night Mode) -->
+                                        <!-- Dial / Score Progress Box -->
                                         <div class="flex items-center gap-4 py-4">
-                                            <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl bg-[#F8FAFC] dark:bg-[#161926] border border-[#CBD5E1] dark:border-white/10 shadow-inner">
+                                            <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl resume-score-box border shadow-inner">
                                                 <div class="text-center">
-                                                    <span id="atsScoreValue" class="text-2xl font-extrabold text-[#183B33] dark:text-[#81E4DA] font-mono leading-none">65</span>
-                                                    <span class="block text-[10px] font-bold text-[#64748B] dark:text-gray-400 uppercase mt-0.5">/ 100</span>
+                                                    <span id="atsScoreValue" class="text-2xl font-extrabold font-mono leading-none resume-score-val">65</span>
+                                                    <span class="block text-[10px] font-bold uppercase mt-0.5 resume-score-denom">/ 100</span>
                                                 </div>
                                             </div>
                                             <div class="flex-1 space-y-1">
-                                                <h4 id="atsStatusHeading" class="text-sm font-bold text-[#0F172A] dark:text-white">Profile In Progress</h4>
-                                                <p id="atsStatusDesc" class="text-xs text-[#475569] dark:text-gray-400 leading-relaxed">Add specific role & 4+ key technical keywords to achieve 90+ Top Tier ATS ranking.</p>
+                                                <h4 id="atsStatusHeading" class="text-sm font-bold resume-heading">Profile In Progress</h4>
+                                                <p id="atsStatusDesc" class="text-xs resume-subtext leading-relaxed">Add specific role & 4+ key technical keywords to achieve 90+ Top Tier ATS ranking.</p>
                                             </div>
                                         </div>
 
                                         <!-- Dynamic Telemetry Checklist -->
-                                        <div class="space-y-2.5 pt-3 border-t border-[#E2E8F0] dark:border-white/10 text-xs">
+                                        <div class="space-y-2.5 pt-3 border-t resume-divider text-xs">
                                             <div class="flex items-center justify-between">
-                                                <span class="text-[#475569] dark:text-gray-400 flex items-center gap-1.5 font-medium">
+                                                <span class="resume-subtext flex items-center gap-1.5 font-medium">
                                                     <i id="chkNameIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Candidate Identity
                                                 </span>
-                                                <span id="chkNameVal" class="font-bold font-mono text-[#0F172A] dark:text-white">Required</span>
+                                                <span id="chkNameVal" class="font-bold font-mono resume-val">Required</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                                <span class="text-[#475569] dark:text-gray-400 flex items-center gap-1.5 font-medium">
+                                                <span class="resume-subtext flex items-center gap-1.5 font-medium">
                                                     <i id="chkProfIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Target Role Specificity
                                                 </span>
-                                                <span id="chkProfVal" class="font-bold font-mono text-[#0F172A] dark:text-white">Required</span>
+                                                <span id="chkProfVal" class="font-bold font-mono resume-val">Required</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                                <span class="text-[#475569] dark:text-gray-400 flex items-center gap-1.5 font-medium">
+                                                <span class="resume-subtext flex items-center gap-1.5 font-medium">
                                                     <i id="chkSkillsIcon" class="fa-solid fa-circle-dot text-amber-500"></i> Technical Keyword Density
                                                 </span>
-                                                <span id="chkSkillsVal" class="font-bold font-mono text-[#0F172A] dark:text-white">0 Keywords</span>
+                                                <span id="chkSkillsVal" class="font-bold font-mono resume-val">0 Keywords</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                                <span class="text-[#475569] dark:text-gray-400 flex items-center gap-1.5 font-medium">
+                                                <span class="resume-subtext flex items-center gap-1.5 font-medium">
                                                     <i id="chkExpIcon" class="fa-solid fa-circle-check text-emerald-600"></i> Quantifiable Metrics
                                                 </span>
-                                                <span id="chkExpVal" class="font-bold font-mono text-[#0F172A] dark:text-white">Optional</span>
+                                                <span id="chkExpVal" class="font-bold font-mono resume-val">Optional</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- ATS Intelligence Best Practices (Light Cards in Day Mode, Dark in Night Mode) -->
-                                    <div class="card p-6 border border-[#E2E8F0] dark:border-white/10 shadow-sm rounded-2xl bg-white dark:bg-[#12141F]">
-                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#0F172A] dark:text-white mb-3.5 flex items-center gap-2">
-                                            <i class="fa-solid fa-shield-check text-[#183B33] dark:text-[#5B998C]"></i> Enterprise ATS Parser Rules
+                                    <!-- ATS Intelligence Best Practices -->
+                                    <div class="card resume-card p-6 border shadow-sm rounded-2xl">
+                                        <h3 class="text-xs font-bold uppercase tracking-wider mb-3.5 flex items-center gap-2 resume-section-title">
+                                            <i class="fa-solid fa-shield-check text-[#183B33] resume-accent-icon"></i> Enterprise ATS Parser Rules
                                         </h3>
                                         <div class="space-y-3 text-xs">
-                                            <div class="p-3.5 rounded-xl bg-[#F8FAFC] dark:bg-[#161926] border border-[#E2E8F0] dark:border-white/5 flex gap-2.5">
+                                            <div class="p-3.5 rounded-xl resume-rule-box border flex gap-2.5">
                                                 <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
                                                 <div>
-                                                    <strong class="text-[#0F172A] dark:text-white block font-bold">Standard Parser Headers</strong>
-                                                    <span class="text-[#475569] dark:text-gray-400">Taleo, Greenhouse & Workday parse standardized headings 100% cleanly without graphic confusion.</span>
+                                                    <strong class="block font-bold resume-heading">Standard Parser Headers</strong>
+                                                    <span class="resume-subtext">Taleo, Greenhouse & Workday parse standardized headings 100% cleanly without graphic confusion.</span>
                                                 </div>
                                             </div>
-                                            <div class="p-3.5 rounded-xl bg-[#F8FAFC] dark:bg-[#161926] border border-[#E2E8F0] dark:border-white/5 flex gap-2.5">
+                                            <div class="p-3.5 rounded-xl resume-rule-box border flex gap-2.5">
                                                 <i class="fa-solid fa-bolt text-[#D95D39] mt-0.5"></i>
                                                 <div>
-                                                    <strong class="text-[#0F172A] dark:text-white block font-bold">Action Verbs & Impact</strong>
-                                                    <span class="text-[#475569] dark:text-gray-400">Lead bullet points with decisive action verbs (e.g. *Architected, Spearheaded, Accelerated*).</span>
+                                                    <strong class="block font-bold resume-heading">Action Verbs & Impact</strong>
+                                                    <span class="resume-subtext">Lead bullet points with decisive action verbs (e.g. *Architected, Spearheaded, Accelerated*).</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -9043,21 +9811,6 @@
                     window.updateAtsLiveMeter();
                     if (typeof showToast === 'function') showToast('Added keyword: ' + skill, 'info');
                 }
-            };
-
-            window.loadSampleResumeProfile = function(type) {
-                const nameEl = document.getElementById('resumeName');
-                const profEl = document.getElementById('resumeProfession');
-                const skillsEl = document.getElementById('resumeSkills');
-                const expEl = document.getElementById('resumeExperience');
-
-                if (nameEl) nameEl.value = 'Alex Morgan';
-                if (profEl) profEl.value = 'Senior Full-Stack Engineer';
-                if (skillsEl) skillsEl.value = 'React, Node.js, TypeScript, Python, AWS, Docker, PostgreSQL, Microservices, CI/CD';
-                if (expEl) expEl.value = 'Architected microservices architecture serving 2.5M active users with 99.99% SLA; reduced API latency by 42% and automated deployment pipelines across AWS ECS.';
-
-                window.updateAtsLiveMeter();
-                if (typeof showToast === 'function') showToast('Loaded Demo Profile: Senior Full-Stack Engineer', 'success');
             };
 
             window.resetResumeOptimizerForm = function() {
