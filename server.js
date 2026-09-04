@@ -839,6 +839,18 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🤖 AI Engine: Groq / Gemini / OpenRouter / Ollama / Heuristic Tiered Fallback`);
   console.log(`⚡ Self-Healing System: Background 2-minute Health Checker Active\n`);
   
+  // Multi-Port Safeguard for Cloud Proxies (Railway / Render / Docker)
+  const targetPorts = [3000, 8080].filter(p => p !== PORT);
+  targetPorts.forEach(p => {
+    try {
+      const backupServer = http.createServer(app);
+      backupServer.listen(p, '0.0.0.0', () => {
+        console.log(`📡 Multi-port safeguard active on port ${p} for cloud proxy compatibility`);
+      });
+      backupServer.on('error', () => {});
+    } catch (e) {}
+  });
+
   // Launch autonomous 2-minute background health checker
   startHealthChecker();
 });
