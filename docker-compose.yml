@@ -1,0 +1,20 @@
+﻿version: '3.8'
+
+services:
+  rankly-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rankly-ai-app
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      - ./rankly.db:/app/rankly.db
+      - ./uploads:/app/uploads
+      - ./backups:/app/backups
