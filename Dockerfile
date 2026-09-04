@@ -1,4 +1,4 @@
-﻿# ─── 1. BASE IMAGE ───
+# ─── 1. BASE IMAGE ───
 FROM node:20-slim
 
 # ─── 2. SYSTEM DEPENDENCIES (OpenSSL for Prisma, Python for SSL mailer) ───
@@ -29,4 +29,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # ─── 7. HEALTHCHECK & START COMMAND ───
-CMD [node, server.js]
+CMD ["node", "server.js"]
