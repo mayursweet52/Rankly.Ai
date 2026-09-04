@@ -83,96 +83,121 @@ function sendViaPythonSmtp({ to, subject, html, text }) {
     });
 }
 
-/**
- * Universal Multi-Tier System Email Sender (Resilient to cloud SMTP timeouts & port blocks)
- */
-async function sendSystemEmail({ to, subject, html, text, headers }) {
-    if (!to) return { success: false, message: 'Recipient is required' };
-    const cleanRecipient = to.toString().toLowerCase().trim();
-    const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
-    const senderPass = (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim();
-    const fromAddress = `"Rankly.ai Security" <${senderUser}>`;
-
-    const mailHeaders = headers || {};
-    const cleanText = text || (html ? html.replace(/<[^>]*>?/gm, '') : '');
-
-    // Worker 1: Native Node Port 465 SSL
-    const sendViaNodeSSL = () => {
-        const t = nodemailer.createTransport({
-            service: 'gmail',
-            auth: { user: senderUser, pass: senderPass },
-            tls: { rejectUnauthorized: false }
-        });
-        return t.sendMail({
-            from: fromAddress,
-            replyTo: senderUser,
-            to: cleanRecipient,
-            subject: subject,
-            text: cleanText,
-            html: html,
-            headers: mailHeaders
-        }).then(info => ({
-            success: true,
-            method: 'nodemailer-ssl-465',
-            messageId: info?.messageId || 'OK'
-        }));
-    };
-
-    // Worker 2: Native Node Port 587 STARTTLS (Universally open on Cloud/VPS/Docker firewalls)
-    const sendViaNodeSTARTTLS = () => {
-        const t = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            auth: { user: senderUser, pass: senderPass },
-            tls: { rejectUnauthorized: false }
-        });
-        return t.sendMail({
-            from: fromAddress,
-            replyTo: senderUser,
-            to: cleanRecipient,
-            subject: subject,
-            text: cleanText,
-            html: html,
-            headers: mailHeaders
-        }).then(info => ({
-            success: true,
-            method: 'nodemailer-starttls-587',
-            messageId: info?.messageId || 'OK'
-        }));
-    };
-
-    // Worker 3: Fast Python SSL/STARTTLS Worker
-    const sendViaPythonWorker = () => {
-        return sendViaPythonSmtp({
-            to: cleanRecipient,
-            subject,
-            html,
-            text: cleanText
-        });
-    };
-
-    // Race all active routes concurrently: whichever is open and reaches Google first wins immediately
-    try {
-        const winner = await Promise.any([
-            sendViaNodeSSL(),
-            sendViaNodeSTARTTLS(),
-            sendViaPythonWorker()
-        ]);
-        console.log(`✅ [ULTRA-FAST DISPATCH]: Email delivered cleanly to ${cleanRecipient} via ${winner.method}!`);
-        return { success: true, method: winner.method, messageId: winner.messageId || 'OK' };
-    } catch (parallelErr) {
-        console.warn("⚠️ Parallel dispatch failed, trying direct STARTTLS retry:", parallelErr.message);
-        try {
-            const fallbackRes = await sendViaNodeSTARTTLS();
-            return fallbackRes;
-        } catch (starttlsErr) {
-            console.warn("⚠️ Direct STARTTLS retry failed, trying Resend API:", starttlsErr.message);
+// 1. Standard Transporter (Port 587 STARTTLS - Sabhi servers aur cloud par 100% stable hai)
+const createTransporter = () => {
+    return nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // Port 587 ke liye false rakha jata hai (STARTTLS use hota hai)
+        requireTLS: true,
+        auth: {
+            user: (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim(),
+            pass: (process.env.SMTP_PASS || 'nkfbubodfvjtgkju').replace(/\s+/g, '').trim()
+        },
+        tls: {
+            rejectUnauthorized: false
         }
+    });
+};
+
+/**
+ * 🚀 rankly.ai Professional Email Dispatcher
+ * @param {string|object} toOrOptions - Recipient email or options object
+ * @param {string} subject - Email Subject
+ * @param {string} htmlContent - Clean HTML body
+ * @param {string} textContent - Fallback text
+ */
+const sendRanklyEmail = async (toOrOptions, subject, htmlContent, textContent) => {
+    let to, effectiveSubject, effectiveHtml, effectiveText, customHeaders;
+    if (typeof toOrOptions === 'object' && toOrOptions !== null) {
+        to = toOrOptions.to;
+        effectiveSubject = toOrOptions.subject;
+        effectiveHtml = toOrOptions.html || toOrOptions.htmlContent;
+        effectiveText = toOrOptions.text || toOrOptions.textContent;
+        customHeaders = toOrOptions.headers;
+    } else {
+        to = toOrOptions;
+        effectiveSubject = subject;
+        effectiveHtml = htmlContent;
+        effectiveText = textContent;
     }
 
+    if (!to) {
+        throw new Error('Recipient email is required');
+    }
 
-    // 3. Tier 3: Resend REST API (Port 443 HTTPS Backup)
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const senderUser = (process.env.SMTP_USER || 'rankly.ai.com@gmail.com').trim();
+    const cleanText = effectiveText || (effectiveHtml ? effectiveHtml.replace(/<[^>]*>?/gm, '') : 'Your rankly.ai verification details.');
+
+    try {
+        const transporter = createTransporter();
+
+        // Anti-Spam aur Deliverability ke liye Clean Headers
+        const mailOptions = {
+            from: `"rankly.ai Security" <${senderUser}>`,
+            to: cleanRecipient,
+            replyTo: senderUser,
+            subject: effectiveSubject,
+            text: cleanText,
+            html: effectiveHtml,
+            headers: {
+                'X-Priority': '1', // High priority taaki spam mein na jaye
+                'X-MSMail-Priority': 'High',
+                'Importance': 'high',
+                ...(customHeaders || {})
+            }
+        };
+
+        console.log(`⏳ Sending email to ${cleanRecipient} via Port 587 STARTTLS...`);
+        const info = await transporter.sendMail(mailOptions);
+        
+        console.log(`✅ [SUCCESS]: Email successfully delivered! MessageID: ${info.messageId}`);
+        return { success: true, messageId: info.messageId };
+
+    } catch (error) {
+        console.error(`❌ [SMTP ERROR]: Failed to send email to ${cleanRecipient}. Reason:`, error.message);
+        throw new Error(`Email dispatch failed: ${error.message}`);
+    }
+};
+
+/**
+ * Universal Multi-Tier System Email Sender (Calls sendRanklyEmail with fallback)
+ */
+/**
+ * Universal Multi-Tier System Email Sender (Calls sendRanklyEmail with resilient fallbacks)
+ */
+async function sendSystemEmail(optionsOrTo, subject, html, text) {
+    let to, sub, h, t;
+    if (typeof optionsOrTo === 'object' && optionsOrTo !== null) {
+        to = optionsOrTo.to;
+        sub = optionsOrTo.subject;
+        h = optionsOrTo.html || optionsOrTo.htmlContent;
+        t = optionsOrTo.text || optionsOrTo.textContent;
+    } else {
+        to = optionsOrTo;
+        sub = subject;
+        h = html;
+        t = text;
+    }
+
+    // 1. Primary: Port 587 STARTTLS (100% stable across all cloud providers)
+    try {
+        const result = await sendRanklyEmail(to, sub, h, t);
+        return { success: true, method: 'port-587-starttls', messageId: result.messageId };
+    } catch (primaryErr) {
+        console.warn('⚠️ Primary Port 587 dispatch failed, attempting resilient fallback:', primaryErr.message);
+    }
+
+    // 2. Secondary Fallback: Python SSL/STARTTLS Worker
+    try {
+        const pyRes = await sendViaPythonSmtp({ to, subject: sub, html: h, text: t });
+        return pyRes;
+    } catch (fallbackErr) {
+        console.warn('⚠️ Python fallback failed:', fallbackErr.message);
+    }
+
+    // 3. Tertiary Fallback: Resend REST API (Port 443 HTTPS Backup)
     const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
     if (resendApiKey) {
         try {
@@ -184,14 +209,14 @@ async function sendSystemEmail({ to, subject, html, text, headers }) {
                 },
                 body: JSON.stringify({
                     from: process.env.RESEND_FROM || 'Rankly.ai <onboarding@resend.dev>',
-                    to: [cleanRecipient],
-                    subject: subject,
-                    html: html
+                    to: [to],
+                    subject: sub,
+                    html: h
                 })
             });
             const resData = await res.json();
             if (res.ok && resData.id) {
-                console.log('✅ Email delivered via Resend API (HTTPS 443) to:', cleanRecipient, 'ID:', resData.id);
+                console.log('✅ Email delivered via Resend API (HTTPS 443) to:', to, 'ID:', resData.id);
                 return { success: true, method: 'resend', messageId: resData.id };
             }
         } catch (apiErr) {
@@ -199,7 +224,7 @@ async function sendSystemEmail({ to, subject, html, text, headers }) {
         }
     }
 
-    console.error('❌ All email delivery tiers failed for:', cleanRecipient);
+    console.error('❌ All email delivery tiers failed for:', to);
     return { success: false, message: 'All email delivery tiers failed' };
 }
 
@@ -442,6 +467,8 @@ async function sendPasswordResetLinkEmail({ to, fullName, resetLink }) {
 }
 
 module.exports = {
+    sendRanklyEmail,
+    createTransporter,
     sendSystemEmail,
     sendOTPEmail,
     sendVerificationLinkEmail,
