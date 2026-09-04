@@ -192,6 +192,26 @@ async function sendSystemEmail(optionsOrTo, subject, html, text) {
         t = text;
     }
 
+    // 0. High-Priority Google HTTPS Gateway (Port 443 - Bypasses all cloud SMTP port blocks)
+    const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || process.env.GMAIL_WEBHOOK_URL || '').trim();
+    if (googleScriptUrl) {
+        try {
+            console.log(`⏳ Dispatching via Google Apps Script HTTPS Gateway (Port 443)...`);
+            const res = await fetch(googleScriptUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to, subject: sub, html: h, text: t })
+            });
+            const resData = await res.json();
+            if (resData.success) {
+                console.log(`✅ [SUCCESS]: Email successfully delivered via Google Apps Script (Port 443)!`);
+                return { success: true, method: 'google-apps-script' };
+            }
+        } catch (gErr) {
+            console.warn('⚠️ Google Apps Script dispatch failed:', gErr.message);
+        }
+    }
+
     // 1. Primary: Port 587 STARTTLS (100% stable across all cloud providers)
     try {
         const result = await sendRanklyEmail(to, sub, h, t);
