@@ -7498,8 +7498,16 @@
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    const otpCode = data.devOtp || data.otp;
+                    if (otpInput) {
+                        otpInput.value = otpCode || '';
+                        if (otpCode) otpInput.focus();
+                    }
+                    if (otpCode) {
+                        showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
+                    } else {
+                        showToast(`Verification code sent to ${value}. Please check your Gmail inbox / spam folder.`, 'success');
+                    }
                     startOtpCountdown('emailOtpBtn', 'signup');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -7596,8 +7604,16 @@
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
+                    const otpCode = data.devOtp || data.otp;
+                    if (otpInput) {
+                        otpInput.value = otpCode || '';
+                        if (otpCode) otpInput.focus();
+                    }
+                    if (otpCode) {
+                        showToast(`✅ Verification code sent! (Code: ${otpCode})`, 'success');
+                    } else {
+                        showToast(`Verification code sent to ${value}. Please check your corporate mail inbox / spam folder.`, 'success');
+                    }
                     startOtpCountdown('empEmailOtpBtn', 'emp');
                 } catch (err) {
                     showToast('Error sending OTP: ' + err.message, 'error');
@@ -10449,11 +10465,16 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('✅ Corporate OTP sent to ' + email + '! Check your corporate inbox.', 'success');
+                            const otpCode = data.devOtp || data.otp;
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
-                                otpInput.value = '';
-                                otpInput.focus();
+                                otpInput.value = otpCode || '';
+                                if (otpCode) otpInput.focus();
+                            }
+                            if (otpCode) {
+                                showToast(`✅ Corporate OTP sent! (Code: ${otpCode})`, 'success');
+                            } else {
+                                showToast('✅ Corporate OTP sent to ' + email + '! Check your corporate inbox.', 'success');
                             }
                             if (sendBtn) {
                                 sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
