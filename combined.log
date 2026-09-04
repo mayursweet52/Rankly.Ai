@@ -102,7 +102,7 @@
 {"level":"info","message":"Socket connected: LDC2HkL8cohmq4L-AAAD","timestamp":"2026-08-18T22:59:07.537Z"}
 {"level":"info","message":"Socket connected: bOn67wxjCU9loTsDAAAF","timestamp":"2026-08-18T23:00:13.160Z"}
 {"level":"info","message":"Client disconnected: LDC2HkL8cohmq4L-AAAD (ping timeout)","timestamp":"2026-08-18T23:00:42.542Z"}
-{"level":"info","message":"Profile onboarding completed for user google_116682905356385489710 (mayursweet52@gmail.com)","timestamp":"2026-08-18T23:00:47.103Z"}
+{"level":"info","message":"Profile onboarding completed for user google_116682905356385489710 (user@example.com)","timestamp":"2026-08-18T23:00:47.103Z"}
 {"level":"info","message":"✓ Google OAuth strategy active","timestamp":"2026-08-18T23:03:16.267Z"}
 {"level":"info","message":"✓ Facebook OAuth strategy active","timestamp":"2026-08-18T23:03:16.269Z"}
 {"level":"info","message":"🚀 Rankly.ai Enterprise Server running at http://localhost:3000","timestamp":"2026-08-18T23:03:16.285Z"}
