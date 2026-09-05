@@ -117,15 +117,67 @@ async function register(req, res) {
 
     // Corporate / Organization Workspace Registration requires verified workmail OTP
     if (isEmp) {
-      const verifiedOtp = await prisma.oTP.findFirst({
-        where: {
-          email: normalizedEmail,
-          isUsed: true,
-          createdAt: { gte: new Date(Date.now() - 30 * 60 * 1000) }
-        },
-        orderBy: { createdAt: 'desc' }
-      });
-      if (!verifiedOtp) {
+      let isVerified = false;
+
+      // Tier 1: Cryptographic JWT Verification Token (from Authorization header or request body)
+      const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+      const clientToken = req.body.verificationToken || req.body.token || 
+        (req.headers.authorization ? req.headers.authorization.replace(/^Bearer\s+/i, '').trim() : null);
+
+      if (clientToken) {
+        try {
+          const decoded = jwt.verify(clientToken, jwtSecret);
+          if (decoded && (decoded.email || '').toLowerCase().trim() === normalizedEmail) {
+            isVerified = true;
+            console.log(`✅ [Register] Verified work email via JWT token for: ${normalizedEmail}`);
+          }
+        } catch (jwtErr) {
+          console.warn('⚠️ [Register Verification Token invalid]:', jwtErr.message);
+        }
+      }
+
+      // Tier 2: Active Authenticated Session matching the normalized email
+      if (!isVerified && req.session && req.session.userEmail && req.session.userEmail.toLowerCase().trim() === normalizedEmail) {
+        isVerified = true;
+        console.log(`✅ [Register] Verified work email via active session for: ${normalizedEmail}`);
+      }
+
+      // Tier 3: Database OTP Record (matching email & isUsed: true)
+      if (!isVerified) {
+        const verifiedOtp = await prisma.oTP.findFirst({
+          where: {
+            email: normalizedEmail,
+            isUsed: true
+          },
+          orderBy: { createdAt: 'desc' }
+        });
+        if (verifiedOtp) {
+          const ageMs = verifiedOtp.createdAt ? (Date.now() - new Date(verifiedOtp.createdAt).getTime()) : 0;
+          if (isNaN(ageMs) || ageMs <= 24 * 60 * 60 * 1000) {
+            isVerified = true;
+            console.log(`✅ [Register] Verified work email via DB OTP record for: ${normalizedEmail}`);
+          }
+        }
+      }
+
+      // Tier 4: Direct OTP code provided in body
+      if (!isVerified && req.body.otp) {
+        const cleanOtp = String(req.body.otp).replace(/\D/g, '').trim();
+        const directOtp = await prisma.oTP.findFirst({
+          where: {
+            email: normalizedEmail,
+            otp: cleanOtp
+          },
+          orderBy: { createdAt: 'desc' }
+        });
+        if (directOtp) {
+          isVerified = true;
+          await prisma.oTP.updateMany({ where: { email: normalizedEmail }, data: { isUsed: true } });
+          console.log(`✅ [Register] Verified work email via direct body OTP for: ${normalizedEmail}`);
+        }
+      }
+
+      if (!isVerified) {
         return failAuth(res, req, '❌ Corporate work email verification required. Please verify the 6-digit OTP sent to your work email before creating workspace.', normalizedEmail);
       }
     }

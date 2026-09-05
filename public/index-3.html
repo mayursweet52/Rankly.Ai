@@ -5414,7 +5414,7 @@ body.dark-theme .resume-tip-box,
                                         <div>
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address *</label>
                                             <div class="flex gap-2">
-                                                <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="alex@gmail.com" required />
+                                                <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="Enter email address" required />
                                                 <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-[#183B33] hover:text-[#183B33] whitespace-nowrap transition-all cursor-pointer">
                                                     Send OTP
                                                 </button>
@@ -5538,7 +5538,7 @@ body.dark-theme .resume-tip-box,
                                         <div class="auth-input-stack">
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email / Username</label>
-                                                <input type="text" id="loginUsername" class="login-input" placeholder="alex@gmail.com or username" required />
+                                                <input type="text" id="loginUsername" class="login-input" placeholder="Enter email or username" required />
                                             </div>
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password</label>
@@ -5619,7 +5619,7 @@ body.dark-theme .resume-tip-box,
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Registered Account Email *</label>
                                                 <div class="relative w-full">
-                                                    <input type="email" id="inlineResetEmail" class="login-input pr-9" placeholder="alex@gmail.com" required />
+                                                    <input type="email" id="inlineResetEmail" class="login-input pr-9" placeholder="Enter email address" required />
                                                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#888880] pointer-events-none"><i class="fa-regular fa-envelope"></i></span>
                                                 </div>
                                             </div>
@@ -6421,8 +6421,8 @@ body.dark-theme .resume-tip-box,
             <h3>Provision Team Member</h3>
             <p class="text-sm text-[#666660] mb-6">Create internal recruitment or administrative access.</p>
             <form id="createEmployeeForm">
-                <div class="mb-4"><label class="form-label">Full Name *</label><input type="text" id="empName" class="form-input" required placeholder="e.g. Alex Morgan" /></div>
-                <div class="mb-4"><label class="form-label">Work Email *</label><input type="email" id="empEmailCreate" class="form-input" required placeholder="alex@company.com" /></div>
+                <div class="mb-4"><label class="form-label">Full Name *</label><input type="text" id="empName" class="form-input" required placeholder="Enter full name" /></div>
+                <div class="mb-4"><label class="form-label">Work Email *</label><input type="email" id="empEmailCreate" class="form-input" required placeholder="name@company.com" /></div>
                 <div class="mb-4"><label class="form-label">Initial Password *</label><input type="password" id="empPasswordCreate" class="form-input" required placeholder="••••••••" /></div>
                 <div class="mb-4"><label class="form-label">Role *</label>
                     <select id="empRoleCreate" class="form-input" required>
@@ -7003,7 +7003,7 @@ body.dark-theme .resume-tip-box,
                                                 <label class="block text-xs font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 resume-field-label">
                                                     <i class="fa-regular fa-user text-[#D95D39] text-[11px]"></i> YOUR FULL NAME
                                                 </label>
-                                                <input type="text" id="resumeName" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border transition-all text-xs" placeholder="Full name (e.g. Alex Morgan)" />
+                                                <input type="text" id="resumeName" oninput="updateAtsLiveMeter()" class="form-input w-full px-3.5 py-2.5 rounded-xl border transition-all text-xs" placeholder="Enter candidate full name" />
                                             </div>
 
                                             <!-- Target Profession -->
@@ -7085,20 +7085,20 @@ body.dark-theme .resume-tip-box,
                                             <span class="text-xs font-bold uppercase tracking-wider flex items-center gap-2 resume-section-title">
                                                 <i class="fa-solid fa-gauge-high text-[#D95D39]"></i> Live ATS Readiness
                                             </span>
-                                            <span id="atsLivePill" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full border">Calibrating</span>
+                                            <span id="atsLivePill" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20">Awaiting Input</span>
                                         </div>
 
                                         <!-- Dial / Score Progress Box -->
                                         <div class="flex items-center gap-4 py-4">
                                             <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl resume-score-box border shadow-inner">
                                                 <div class="text-center">
-                                                    <span id="atsScoreValue" class="text-2xl font-extrabold font-mono leading-none resume-score-val">65</span>
+                                                    <span id="atsScoreValue" class="text-2xl font-extrabold font-mono leading-none resume-score-val">0</span>
                                                     <span class="block text-[10px] font-bold uppercase mt-0.5 resume-score-denom">/ 100</span>
                                                 </div>
                                             </div>
                                             <div class="flex-1 space-y-1">
-                                                <h4 id="atsStatusHeading" class="text-sm font-bold resume-heading">Profile In Progress</h4>
-                                                <p id="atsStatusDesc" class="text-xs resume-subtext leading-relaxed">Add specific role & 4+ key technical keywords to achieve 90+ Top Tier ATS ranking.</p>
+                                                <h4 id="atsStatusHeading" class="text-sm font-bold resume-heading">Ready to Calibrate</h4>
+                                                <p id="atsStatusDesc" class="text-xs resume-subtext leading-relaxed">Enter candidate name, target profession & key skills to calculate real-time ATS score.</p>
                                             </div>
                                         </div>
 
@@ -9776,12 +9776,12 @@ body.dark-theme .resume-tip-box,
 
                 const skillsCount = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean).length : 0;
 
-                let score = 40;
-                if (name.length > 2) score += 15;
-                if (prof.length > 3) score += 20;
-                score += Math.min(25, skillsCount * 4);
-                if (exp.length > 30) score += 10;
-                if (exp.length > 80) score += 5;
+                let score = 0;
+                if (name.length > 1) score += 20;
+                if (prof.length > 2) score += 25;
+                score += Math.min(35, skillsCount * 7);
+                if (exp.length > 20) score += 10;
+                if (exp.length > 80) score += 10;
                 if (score > 100) score = 100;
 
                 const scoreEl = document.getElementById('atsScoreValue');
@@ -9797,61 +9797,71 @@ body.dark-theme .resume-tip-box,
                         pill.textContent = 'Top Tier ATS (90+)';
                     }
                     if (heading) heading.textContent = 'Executive ATS Ready';
-                    if (desc) desc.textContent = 'High keyword density and role calibration. Guaranteed top candidate screening match.';
+                    if (desc) desc.textContent = 'High keyword density and role calibration. Calibrated for top candidate screening match.';
                 } else if (score >= 70) {
                     if (pill) {
                         pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20';
                         pill.textContent = 'Strong Match';
                     }
                     if (heading) heading.textContent = 'Well Calibrated';
-                    if (desc) desc.textContent = 'Add 2 more technical skills or quantified metrics in experience to reach 95+.';
-                } else {
+                    if (desc) desc.textContent = 'Add more technical skills or quantified metrics in experience to reach 95+.';
+                } else if (score > 0) {
                     if (pill) {
                         pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
                         pill.textContent = 'In Progress';
                     }
                     if (heading) heading.textContent = 'Profile In Progress';
                     if (desc) desc.textContent = 'Fill target role & 4+ key technical keywords to calibrate ATS readiness.';
+                } else {
+                    if (pill) {
+                        pill.className = 'px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20';
+                        pill.textContent = 'Awaiting Input';
+                    }
+                    if (heading) heading.textContent = 'Ready to Calibrate';
+                    if (desc) desc.textContent = 'Enter candidate name, target profession & key skills to calculate real-time ATS score.';
                 }
 
                 // Checkpoints
                 const chkNameIcon = document.getElementById('chkNameIcon');
                 const chkNameVal = document.getElementById('chkNameVal');
-                if (name.length > 2) {
+                if (name.length > 1) {
                     if (chkNameIcon) chkNameIcon.className = 'fa-solid fa-circle-check text-emerald-500';
                     if (chkNameVal) { chkNameVal.textContent = 'Ready'; chkNameVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
                 } else {
-                    if (chkNameIcon) chkNameIcon.className = 'fa-solid fa-circle-dot text-amber-500';
-                    if (chkNameVal) { chkNameVal.textContent = 'Required'; chkNameVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
+                    if (chkNameIcon) chkNameIcon.className = 'fa-solid fa-circle-dot text-slate-400';
+                    if (chkNameVal) { chkNameVal.textContent = 'Pending'; chkNameVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
                 }
 
                 const chkProfIcon = document.getElementById('chkProfIcon');
                 const chkProfVal = document.getElementById('chkProfVal');
-                if (prof.length > 3) {
+                if (prof.length > 2) {
                     if (chkProfIcon) chkProfIcon.className = 'fa-solid fa-circle-check text-emerald-500';
-                    if (chkProfVal) { chkProfVal.textContent = 'Calibrated'; chkProfVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                    if (chkProfVal) { chkProfVal.textContent = 'Ready'; chkProfVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
                 } else {
-                    if (chkProfIcon) chkProfIcon.className = 'fa-solid fa-circle-dot text-amber-500';
-                    if (chkProfVal) { chkProfVal.textContent = 'Required'; chkProfVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
+                    if (chkProfIcon) chkProfIcon.className = 'fa-solid fa-circle-dot text-slate-400';
+                    if (chkProfVal) { chkProfVal.textContent = 'Pending'; chkProfVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
                 }
 
                 const chkSkillsIcon = document.getElementById('chkSkillsIcon');
                 const chkSkillsVal = document.getElementById('chkSkillsVal');
                 if (skillsCount >= 4) {
                     if (chkSkillsIcon) chkSkillsIcon.className = 'fa-solid fa-circle-check text-emerald-500';
-                    if (chkSkillsVal) { chkSkillsVal.textContent = skillsCount + ' Keywords (Optimal)'; chkSkillsVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
-                } else {
+                    if (chkSkillsVal) { chkSkillsVal.textContent = skillsCount + ' Keywords'; chkSkillsVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                } else if (skillsCount > 0) {
                     if (chkSkillsIcon) chkSkillsIcon.className = 'fa-solid fa-circle-dot text-amber-500';
                     if (chkSkillsVal) { chkSkillsVal.textContent = skillsCount + ' Keywords'; chkSkillsVal.className = 'font-bold font-mono text-amber-600 dark:text-amber-400'; }
+                } else {
+                    if (chkSkillsIcon) chkSkillsIcon.className = 'fa-solid fa-circle-dot text-slate-400';
+                    if (chkSkillsVal) { chkSkillsVal.textContent = '0 Keywords'; chkSkillsVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
                 }
 
                 const chkExpIcon = document.getElementById('chkExpIcon');
                 const chkExpVal = document.getElementById('chkExpVal');
-                if (exp.length > 30) {
+                if (exp.length > 20) {
                     if (chkExpIcon) chkExpIcon.className = 'fa-solid fa-circle-check text-emerald-500';
-                    if (chkExpVal) { chkExpVal.textContent = 'Provided'; chkExpVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
+                    if (chkExpVal) { chkExpVal.textContent = 'Detected'; chkExpVal.className = 'font-bold font-mono text-emerald-600 dark:text-emerald-400'; }
                 } else {
-                    if (chkExpIcon) chkExpIcon.className = 'fa-solid fa-circle-dot text-gray-400';
+                    if (chkExpIcon) chkExpIcon.className = 'fa-solid fa-circle text-slate-400';
                     if (chkExpVal) { chkExpVal.textContent = 'Optional'; chkExpVal.className = 'font-bold font-mono text-[#666660] dark:text-gray-400'; }
                 }
             };

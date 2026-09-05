@@ -24,7 +24,10 @@ const registerSchema = {
   organizationName: { type: 'string', max: 120 },
   company: { type: 'string', max: 120 },
   referralCode: { type: 'string', min: 4, max: 30 },
-  accessLevel: { type: 'string', max: 50 }
+  accessLevel: { type: 'string', max: 50 },
+  verificationToken: { type: 'string', max: 2000 },
+  token: { type: 'string', max: 2000 },
+  otp: { type: 'string', max: 10 }
 };
 
 const loginSchema = {
