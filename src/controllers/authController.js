@@ -542,6 +542,20 @@ async function sendOtp(req, res) {
       }
     }
 
+    // Pre-check for registration flows: If email already has an account, reject immediately at OTP request
+    const registrationTypes = ['corporate_email_verification', 'email_verification', 'registration'];
+    if (registrationTypes.includes(type) && type !== 'password_reset' && req.body.purpose !== 'login') {
+      const existingUser = await prisma.user.findUnique({ where: { email: recipientEmail } });
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          code: 'EMAIL_ALREADY_EXISTS',
+          error: 'An account with this email already exists. Please log in.',
+          message: 'An account with this email already exists. Please log in.'
+        });
+      }
+    }
+
     // Cooldown check (2s) to prevent double clicks while allowing smooth Resend OTP
     const recentOtp = await prisma.oTP.findFirst({
       where: {
@@ -576,15 +590,17 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Send real verification email with await (parallel race resolves in ~3.4s)
+    // Ultra-Fast Email Dispatch: Fire real verification email with non-blocking 400ms quick-race
+    const emailPromise = sendOTPEmail(recipientEmail, otpCode, type).catch(emailErr => {
+      console.warn('⚠️ [OTP Email Dispatch Warning]:', emailErr.message);
+    });
+
     try {
       await Promise.race([
-        sendOTPEmail(recipientEmail, otpCode, type),
-        new Promise(resolve => setTimeout(() => resolve(true), 4000))
+        emailPromise,
+        new Promise(resolve => setTimeout(resolve, 400))
       ]);
-    } catch (emailErr) {
-      console.warn('⚠️ [OTP Email Dispatch Warning]:', emailErr.message);
-    }
+    } catch (e) {}
 
     return res.status(200).json({
       success: true,

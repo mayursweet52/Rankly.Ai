@@ -83,14 +83,27 @@ function sendViaPythonSmtp({ to, subject, html, text }) {
     });
 }
 
-// 1. Standard Transporter (Port 587 STARTTLS with Port 465 SSL fallback & 6s timeout)
+// 1. Persistent Pooled Transporter (Port 587 STARTTLS with connection pooling)
+let persistentTransporter587 = null;
+let persistentTransporter465 = null;
+
 const createTransporter = (port = 587) => {
-    return nodemailer.createTransport({
+    if (port === 587 && persistentTransporter587) {
+        return persistentTransporter587;
+    }
+    if (port === 465 && persistentTransporter465) {
+        return persistentTransporter465;
+    }
+
+    const t = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
         port: port,
         secure: port === 465,
         requireTLS: port === 587,
         family: 4,
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100,
         connectionTimeout: 6000,
         greetingTimeout: 6000,
         socketTimeout: 6000,
@@ -102,6 +115,10 @@ const createTransporter = (port = 587) => {
             rejectUnauthorized: false
         }
     });
+
+    if (port === 587) persistentTransporter587 = t;
+    if (port === 465) persistentTransporter465 = t;
+    return t;
 };
 
 /**
@@ -192,7 +209,15 @@ async function sendSystemEmail(optionsOrTo, subject, html, text) {
         t = text;
     }
 
-    // 0. High-Priority Google HTTPS Gateway (Port 443 - Bypasses all cloud SMTP port blocks, 100% Google infrastructure)
+    // 1. Primary: Port 587 STARTTLS with Pooled Transporter (Direct, ultra-fast ~1s delivery)
+    try {
+        const result = await sendRanklyEmail(to, sub, h, t);
+        return { success: true, method: 'port-587-starttls', messageId: result.messageId };
+    } catch (primaryErr) {
+        console.warn('⚠️ Primary Port 587 dispatch failed, attempting resilient fallback:', primaryErr.message);
+    }
+
+    // 2. Secondary: Google Apps Script HTTPS Gateway (Port 443 Fallback)
     const googleScriptUrl = (
         process.env.GOOGLE_SCRIPT_URL || 
         process.env.GMAIL_WEBHOOK_URL || 
@@ -222,14 +247,6 @@ async function sendSystemEmail(optionsOrTo, subject, html, text) {
         } catch (gErr) {
             console.warn('⚠️ Google Apps Script dispatch failed:', gErr.message);
         }
-    }
-
-    // 1. Primary: Port 587 STARTTLS (100% stable across all cloud providers)
-    try {
-        const result = await sendRanklyEmail(to, sub, h, t);
-        return { success: true, method: 'port-587-starttls', messageId: result.messageId };
-    } catch (primaryErr) {
-        console.warn('⚠️ Primary Port 587 dispatch failed, attempting resilient fallback:', primaryErr.message);
     }
 
     // 2. Secondary Fallback: Python SSL/STARTTLS Worker
