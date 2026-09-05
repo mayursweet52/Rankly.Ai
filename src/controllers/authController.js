@@ -1371,8 +1371,200 @@ async function joinOrganization(req, res) {
   }
 }
 
+// Render standalone email verification popup card
+function renderVerificationResultPage(res, success, message, email = '') {
+  const safeEmail = String(email || '').replace(/[&<>"']/g, '');
+  const safeMessage = String(message || '').replace(/[&<>"']/g, '');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>${success ? 'Email Verified Successfully' : 'Verification Failed'} — Rankly.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', system-ui, sans-serif; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #F5F5F0;
+      color: #111111;
+      padding: 20px;
+    }
+    .verified-card {
+      max-width: 480px;
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid #E5E5DF;
+      border-radius: 28px;
+      padding: 42px 32px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .icon-badge {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      ${success 
+        ? 'background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.25); box-shadow: 0 0 30px rgba(16, 185, 129, 0.18);' 
+        : 'background: rgba(239, 68, 68, 0.12); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.25); box-shadow: 0 0 30px rgba(239, 68, 68, 0.18);'}
+    }
+    h1 {
+      font-size: 23px;
+      font-weight: 800;
+      color: #111111;
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
+    }
+    .email-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(24, 59, 51, 0.06);
+      border: 1px solid rgba(24, 59, 51, 0.15);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #183B33;
+      margin-bottom: 18px;
+    }
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #666660;
+      margin-bottom: 30px;
+    }
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 14px;
+      background: #183B33;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(24, 59, 51, 0.22);
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: #112a24;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 14px;
+      background: transparent;
+      color: #555550;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid #E5E5DF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: #F8F8F5;
+      color: #111111;
+    }
+  </style>
+</head>
+<body>
+  <div class="verified-card">
+    <div class="icon-badge">
+      <i class="${success ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation'}"></i>
+    </div>
+    <h1>${success ? 'Email Verified Successfully! 🎉' : 'Verification Failed'}</h1>
+    ${safeEmail ? `
+    <div class="email-chip">
+      <i class="fa-regular fa-envelope"></i>
+      <span>${safeEmail}</span>
+    </div>
+    ` : ''}
+    <p>${safeMessage}</p>
+    <div class="btn-container">
+      ${success ? `
+      <button type="button" class="btn-primary" onclick="closePopupOrReturn()">
+        <i class="fa-solid fa-xmark"></i>
+        <span>Close This Window</span>
+      </button>
+      <a href="/" class="btn-secondary">
+        <span>Go to Sign In / Main Site</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      ` : `
+      <a href="/" class="btn-primary">
+        <span>Return to Sign In</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      `}
+    </div>
+  </div>
+
+  <script>
+    ${success ? `
+    // Cross-tab broadcast to notify Tab 1 (Main Site) instantly
+    try {
+      localStorage.setItem('rankly_verified_email', '${safeEmail}');
+      localStorage.setItem('rankly_email_verified_event', Date.now().toString());
+      if (window.opener) {
+        window.opener.postMessage({ type: 'EMAIL_VERIFIED', email: '${safeEmail}' }, '*');
+      }
+      if (typeof BroadcastChannel !== 'undefined') {
+        const bc = new BroadcastChannel('rankly_auth_channel');
+        bc.postMessage({ type: 'EMAIL_VERIFIED', email: '${safeEmail}' });
+      }
+    } catch (e) {}
+
+    function closePopupOrReturn() {
+      window.close();
+      setTimeout(function() {
+        window.location.href = '/';
+      }, 400);
+    }
+    ` : ''}
+  </script>
+</body>
+</html>`;
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  return res.status(success ? 200 : 400).send(html);
+}
+
 /**
- * Final Step: Verify Email Link from Gmail (Unlocks Dashboard)
+ * Final Step: Verify Email Link from Gmail (Shows Popup - Does NOT auto-open full website in this tab)
  */
 async function verifyEmailLink(req, res) {
   try {
@@ -1380,7 +1572,7 @@ async function verifyEmailLink(req, res) {
     const normalizedEmail = (email || '').toLowerCase().trim();
 
     if (!token || !normalizedEmail) {
-      return res.redirect('/?error=' + encodeURIComponent('Missing verification token or email.'));
+      return renderVerificationResultPage(res, false, 'Missing verification token or email. Please open the complete link sent to your email.');
     }
 
     const tokenRecord = await prisma.oTP.findFirst({
@@ -1395,7 +1587,7 @@ async function verifyEmailLink(req, res) {
     });
 
     if (!tokenRecord) {
-      return res.redirect('/?error=' + encodeURIComponent('Invalid or expired verification link. Please sign in or request a new one.'));
+      return renderVerificationResultPage(res, false, 'Invalid or expired verification link. Please sign in or request a new one.', normalizedEmail);
     }
 
     // 1. Mark token as used
@@ -1416,73 +1608,57 @@ async function verifyEmailLink(req, res) {
       include: { organization: true }
     });
 
-    if (!user) {
-      return res.redirect(`/?verified=true&email=${encodeURIComponent(normalizedEmail)}`);
-    }
+    if (user) {
+      const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+      const effectiveRole = user.role || 'normal';
+      const effectiveAccountType = user.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
 
-    // 4. Generate secure JWT token & establish session so user enters main site directly
-    const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
-    const effectiveRole = user.role || 'normal';
-    const effectiveAccountType = user.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
-
-    const tokenPayload = {
-      id: user.id,
-      userId: user.id,
-      email: user.email,
-      role: effectiveRole,
-      accountType: effectiveAccountType,
-      isEmailVerified: true,
-      verified: true
-    };
-    const sessionToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
-
-    if (req.session) {
-      req.session.authenticated = true;
-      req.session.userId = user.id;
-      req.session.userEmail = user.email;
-      req.session.jwtToken = sessionToken;
-      req.session.user = {
+      const tokenPayload = {
         id: user.id,
+        userId: user.id,
         email: user.email,
-        fname: user.fname,
-        lname: user.lname,
-        username: user.username,
         role: effectiveRole,
         accountType: effectiveAccountType,
-        organizationId: user.organizationId,
-        isEmailVerified: true
+        isEmailVerified: true,
+        verified: true
       };
+      const sessionToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
+
+      if (req.session) {
+        req.session.authenticated = true;
+        req.session.userId = user.id;
+        req.session.userEmail = user.email;
+        req.session.jwtToken = sessionToken;
+        req.session.user = {
+          id: user.id,
+          email: user.email,
+          fname: user.fname,
+          lname: user.lname,
+          username: user.username,
+          role: effectiveRole,
+          accountType: effectiveAccountType,
+          organizationId: user.organizationId,
+          isEmailVerified: true
+        };
+      }
+
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      };
+      res.cookie('token', sessionToken, cookieOptions);
+      res.cookie('jwt', sessionToken, cookieOptions);
     }
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    };
-    res.cookie('token', sessionToken, cookieOptions);
-    res.cookie('jwt', sessionToken, cookieOptions);
+    console.log(`✅ [EMAIL VERIFIED]: ${normalizedEmail} successfully verified (popup displayed).`);
 
-    const userPayload = {
-      id: user.id,
-      email: user.email,
-      fname: user.fname,
-      lname: user.lname,
-      username: user.username,
-      role: effectiveRole,
-      accountType: effectiveAccountType,
-      organizationId: user.organizationId,
-      organizationName: user.organization ? user.organization.name : null,
-      isEmailVerified: true
-    };
-
-    console.log(`✅ [EMAIL VERIFIED]: ${user.email} successfully verified and redirected to main site.`);
-
-    // 5. Redirect straight to the main site with full authentication
-    return res.redirect(`/?auth=success&verified=true&token=${encodeURIComponent(sessionToken)}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
+    // 4. Render ONLY the clean popup page (DO NOT redirect to full website/dashboard in this tab)
+    return renderVerificationResultPage(res, true, 'Your email has been verified successfully! You can now close this tab and return to your application.', normalizedEmail);
   } catch (error) {
     console.error('Verify Email Link Error:', error);
-    return res.redirect('/?error=' + encodeURIComponent('Failed to verify email link.'));
+    return renderVerificationResultPage(res, false, 'Failed to verify email link. Please try again.');
   }
 }
 

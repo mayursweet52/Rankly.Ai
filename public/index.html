@@ -13515,6 +13515,33 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 };
 
+                window.triggerAutoVerifiedLogin = async function(email) {
+                    const targetEmail = email || document.getElementById('noticeEmailTarget')?.innerText.trim();
+                    if (!targetEmail) return;
+                    try {
+                        const res = await fetch(`/api/auth/check-verified?email=${encodeURIComponent(targetEmail)}`, { credentials: 'include' });
+                        const data = await res.json();
+                        if (data && data.success && data.verified && data.user) {
+                            if (window._verifyPollTimer) {
+                                clearInterval(window._verifyPollTimer);
+                                window._verifyPollTimer = null;
+                            }
+                            const noticeModal = document.getElementById('emailVerificationNoticeModal');
+                            if (noticeModal) noticeModal.classList.add('hidden');
+                            currentUser = data.user;
+                            window.currentUser = currentUser;
+                            if (data.token) {
+                                localStorage.setItem('rankly_jwt', data.token);
+                                sessionStorage.setItem('rankly_jwt', data.token);
+                            }
+                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                            showToast('🎉 Email verified! Redirecting to your dashboard...', 'success');
+                            loginUser();
+                        }
+                    } catch (e) {}
+                };
+
                 window.handleResendVerificationLink = async function() {
                     const emailTarget = document.getElementById('noticeEmailTarget')?.innerText.trim();
                     if (!emailTarget) return;
@@ -15514,7 +15541,26 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 const verifiedEmail = urlParams.get('email');
                 const errorParam = urlParams.get('error');
 
-                if ((authStatus === 'success' || isEmailVerified === 'true' || isEmailVerified === 'success') && userParam) {
+                // If redirected after Email Verification: Show ONLY the verified popup (do NOT open dashboard)
+                if (isEmailVerified === 'true' || isEmailVerified === 'success' || urlParams.get('email_verified') === 'true') {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    const noticeModal = document.getElementById('emailVerificationNoticeModal');
+                    if (noticeModal) noticeModal.classList.add('hidden');
+
+                    if (typeof showAccountVerifiedPopup === 'function') {
+                        showAccountVerifiedPopup(verifiedEmail);
+                    } else if (typeof showToast === 'function') {
+                        showToast('🎉 Email verified successfully! Please sign in to continue.', 'success');
+                    }
+                    if (verifiedEmail) {
+                        const loginInput = document.getElementById('loginUsername');
+                        if (loginInput) loginInput.value = verifiedEmail;
+                    }
+                    return;
+                }
+
+                // Dedicated OAuth redirect (e.g. Google Sign-In)
+                if (authStatus === 'success' && userParam) {
                     try {
                         currentUser = JSON.parse(decodeURIComponent(userParam));
                         if (tokenParam) {
@@ -15529,43 +15575,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const noticeModal = document.getElementById('emailVerificationNoticeModal');
                         if (noticeModal) noticeModal.classList.add('hidden');
 
-                        if (isEmailVerified === 'true' || isEmailVerified === 'success') {
-                            showToast('🎉 Email verified successfully! Welcome to Rankly.ai', 'success');
-                        } else {
-                            showToast('Welcome to Rankly.ai!', 'success');
-                        }
+                        showToast('Welcome to Rankly.ai!', 'success');
                         loginUser();
                         return;
                     } catch (e) {
                         console.error('Auth parse error:', e);
                     }
-                } else if (isEmailVerified === 'true' || isEmailVerified === 'success') {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    fetch('/api/auth/me', { credentials: 'include' })
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data && data.authenticated && data.user) {
-                                currentUser = data.user;
-                                window.currentUser = currentUser;
-                                sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                                localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                                showToast('🎉 Email verified successfully! Welcome to Rankly.ai', 'success');
-                                loginUser();
-                            } else {
-                                if (verifiedEmail) {
-                                    const loginInput = document.getElementById('loginUsername');
-                                    if (loginInput) loginInput.value = verifiedEmail;
-                                }
-                                showToast('Email verified! Please sign in.', 'success');
-                            }
-                        })
-                        .catch(() => {
-                            if (verifiedEmail) {
-                                const loginInput = document.getElementById('loginUsername');
-                                if (loginInput) loginInput.value = verifiedEmail;
-                            }
-                        });
-                    return;
                 } else if (errorParam) {
                     window.history.replaceState({}, document.title, window.location.pathname);
                     showToast('Authentication failed: ' + decodeURIComponent(errorParam), 'error');
@@ -15588,8 +15603,14 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
                 }
 
-                // Cross-tab auto-sync: instantly redirect to main site when email is verified in another tab
+                // Cross-tab auto-sync: instantly unlock main site when email is verified in another tab
                 window.addEventListener('storage', function(e) {
+                    if (e.key === 'rankly_email_verified_event' || e.key === 'rankly_verified_email') {
+                        const email = localStorage.getItem('rankly_verified_email') || document.getElementById('noticeEmailTarget')?.innerText.trim();
+                        if (typeof window.triggerAutoVerifiedLogin === 'function') {
+                            window.triggerAutoVerifiedLogin(email);
+                        }
+                    }
                     if (e.key === 'rankly_session' && e.newValue) {
                         try {
                             const user = JSON.parse(e.newValue);
@@ -15607,6 +15628,19 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         } catch (err) {}
                     }
                 });
+
+                if (typeof BroadcastChannel !== 'undefined') {
+                    try {
+                        const bc = new BroadcastChannel('rankly_auth_channel');
+                        bc.onmessage = (event) => {
+                            if (event.data && event.data.type === 'EMAIL_VERIFIED') {
+                                if (typeof window.triggerAutoVerifiedLogin === 'function') {
+                                    window.triggerAutoVerifiedLogin(event.data.email);
+                                }
+                            }
+                        };
+                    } catch (e) {}
+                }
 
                 // Strictly verify active backend session
                 fetch('/api/auth/me', { credentials: 'include' })
