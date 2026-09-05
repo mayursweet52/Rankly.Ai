@@ -32,6 +32,8 @@ router.post('/create-account', authLimiter, authBackoffLimiter, authController.r
 router.post('/resend-otp', authLimiter, authBackoffLimiter, authController.resendOtp);
 router.post('/resend-link', authLimiter, authBackoffLimiter, authController.resendLink);
 router.get('/verify-email', authController.verifyEmailLink);
+router.get('/check-verification', authController.checkVerificationStatus);
+router.get('/check-verified', authController.checkVerificationStatus);
 router.post('/candidate/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
 router.post('/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 router.post('/candidate/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);

@@ -12962,7 +12962,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         noticeModal = document.createElement('div');
                         noticeModal.id = 'emailVerificationNoticeModal';
                         noticeModal.className = 'modal-overlay z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
-                        noticeModal.onclick = function(e) { if (e.target === noticeModal) noticeModal.classList.add('hidden'); };
+                        noticeModal.onclick = function(e) { if (e.target === noticeModal) { noticeModal.classList.add('hidden'); if (window._verifyPollTimer) { clearInterval(window._verifyPollTimer); window._verifyPollTimer = null; } } };
                         noticeModal.innerHTML = `
                             <div class="modal-box text-center relative overflow-hidden shadow-2xl" style="max-width: 480px; padding: 28px 24px;">
                                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-xs border" style="background: rgba(24, 59, 51, 0.08); border-color: rgba(24, 59, 51, 0.18); color: #183B33;">
@@ -12970,7 +12970,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 </div>
                                 <h3 class="text-xl font-extrabold text-[var(--text-primary)] mb-1.5 tracking-tight">Verification Link Sent</h3>
                                 <p class="text-xs text-[var(--text-muted)] mb-4 leading-relaxed">
-                                    We have sent a verification link to your email address. Please click the link to confirm your account, then sign in with your credentials.
+                                    We have sent a verification link to your email address. Clicking the link will instantly verify your account and take you straight into the main site.
                                 </p>
                                 <div class="py-2.5 px-3.5 rounded-xl mb-5 text-xs font-mono break-all border flex items-center justify-center gap-2" style="background: var(--bg-input); border-color: var(--border-color); color: var(--text-primary);">
                                     <i class="fa-solid fa-paper-plane text-[11px] text-[#D95D39]"></i>
@@ -12986,7 +12986,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                         <i class="fa-solid fa-rotate-right text-xs"></i>
                                         <span>Resend Link</span>
                                     </button>
-                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden')" class="py-2.5 px-3.5 rounded-xl border font-semibold text-xs sm:text-sm transition-all cursor-pointer hover:text-[var(--text-primary)]" style="background: transparent; border-color: var(--border-color); color: var(--text-muted);">
+                                    <button onclick="document.getElementById('emailVerificationNoticeModal').classList.add('hidden'); if (window._verifyPollTimer) { clearInterval(window._verifyPollTimer); window._verifyPollTimer = null; }" class="py-2.5 px-3.5 rounded-xl border font-semibold text-xs sm:text-sm transition-all cursor-pointer hover:text-[var(--text-primary)]" style="background: transparent; border-color: var(--border-color); color: var(--text-muted);">
                                         Dismiss
                                     </button>
                                 </div>
@@ -12999,6 +12999,34 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     noticeModal.classList.remove('hidden');
                     if (typeof showToast === 'function') {
                         showToast('Verification link sent to your Gmail inbox!', 'info');
+                    }
+
+                    // Real-Time Background Auto-Redirect: Poll verification status every 2 seconds
+                    if (window._verifyPollTimer) {
+                        clearInterval(window._verifyPollTimer);
+                    }
+                    if (email) {
+                        window._verifyPollTimer = setInterval(async () => {
+                            try {
+                                const res = await fetch(`/api/auth/check-verified?email=${encodeURIComponent(email)}`, { credentials: 'include' });
+                                const data = await res.json();
+                                if (data && data.success && data.verified && data.user) {
+                                    clearInterval(window._verifyPollTimer);
+                                    window._verifyPollTimer = null;
+                                    if (noticeModal) noticeModal.classList.add('hidden');
+                                    currentUser = data.user;
+                                    window.currentUser = currentUser;
+                                    if (data.token) {
+                                        localStorage.setItem('rankly_jwt', data.token);
+                                        sessionStorage.setItem('rankly_jwt', data.token);
+                                    }
+                                    sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                                    localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                                    showToast('🎉 Email verified! Redirecting to your dashboard...', 'success');
+                                    loginUser();
+                                }
+                            } catch (e) {}
+                        }, 2000);
                     }
                 };
 
@@ -14994,53 +15022,65 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 // Handle Email Verification & OAuth Redirect Flow
                 const urlParams = new URLSearchParams(window.location.search);
-                const isEmailVerified = urlParams.get('verified');
-                const verifiedEmail = urlParams.get('email');
-
-                if (isEmailVerified === 'true' || isEmailVerified === 'success') {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    localStorage.removeItem('rankly_jwt');
-                    sessionStorage.removeItem('rankly_jwt');
-                    localStorage.removeItem('rankly_session');
-                    sessionStorage.removeItem('rankly_session');
-                    localStorage.removeItem('user');
-                    sessionStorage.removeItem('user');
-                    currentUser = null;
-                    window.currentUser = null;
-
-                    // Strictly ensure dashboard is closed and login page is active
-                    const dashPage = document.getElementById('dashboardPage');
-                    const loginPage = document.getElementById('loginPage');
-                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
-                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-
-                    if (verifiedEmail) {
-                        const loginInput = document.getElementById('loginUsername');
-                        if (loginInput) loginInput.value = verifiedEmail;
-                    }
-                    if (typeof toggleAuthSlide === 'function') toggleAuthSlide('login');
-                    if (typeof flipEntireAuthCard === 'function') flipEntireAuthCard(false);
-
-                    showAccountVerifiedPopup(verifiedEmail);
-                    return;
-                }
-
                 const authStatus = urlParams.get('auth');
                 const userParam = urlParams.get('user');
+                const tokenParam = urlParams.get('token');
+                const isEmailVerified = urlParams.get('verified');
+                const verifiedEmail = urlParams.get('email');
                 const errorParam = urlParams.get('error');
 
-                if (authStatus === 'success' && userParam) {
+                if ((authStatus === 'success' || isEmailVerified === 'true' || isEmailVerified === 'success') && userParam) {
                     try {
                         currentUser = JSON.parse(decodeURIComponent(userParam));
+                        if (tokenParam) {
+                            localStorage.setItem('rankly_jwt', tokenParam);
+                            sessionStorage.setItem('rankly_jwt', tokenParam);
+                        }
                         sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                         localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                        window.currentUser = currentUser;
                         window.history.replaceState({}, document.title, window.location.pathname);
-                        showToast('Google OAuth login successful', 'success');
+
+                        const noticeModal = document.getElementById('emailVerificationNoticeModal');
+                        if (noticeModal) noticeModal.classList.add('hidden');
+
+                        if (isEmailVerified === 'true' || isEmailVerified === 'success') {
+                            showToast('🎉 Email verified successfully! Welcome to Rankly.ai', 'success');
+                        } else {
+                            showToast('Welcome to Rankly.ai!', 'success');
+                        }
                         loginUser();
                         return;
                     } catch (e) {
-                        console.error('OAuth parse error:', e);
+                        console.error('Auth parse error:', e);
                     }
+                } else if (isEmailVerified === 'true' || isEmailVerified === 'success') {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    fetch('/api/auth/me', { credentials: 'include' })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data && data.authenticated && data.user) {
+                                currentUser = data.user;
+                                window.currentUser = currentUser;
+                                sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                                localStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                                showToast('🎉 Email verified successfully! Welcome to Rankly.ai', 'success');
+                                loginUser();
+                            } else {
+                                if (verifiedEmail) {
+                                    const loginInput = document.getElementById('loginUsername');
+                                    if (loginInput) loginInput.value = verifiedEmail;
+                                }
+                                showToast('Email verified! Please sign in.', 'success');
+                            }
+                        })
+                        .catch(() => {
+                            if (verifiedEmail) {
+                                const loginInput = document.getElementById('loginUsername');
+                                if (loginInput) loginInput.value = verifiedEmail;
+                            }
+                        });
+                    return;
                 } else if (errorParam) {
                     window.history.replaceState({}, document.title, window.location.pathname);
                     showToast('Authentication failed: ' + decodeURIComponent(errorParam), 'error');
@@ -15062,6 +15102,26 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         currentUser = null;
                     }
                 }
+
+                // Cross-tab auto-sync: instantly redirect to main site when email is verified in another tab
+                window.addEventListener('storage', function(e) {
+                    if (e.key === 'rankly_session' && e.newValue) {
+                        try {
+                            const user = JSON.parse(e.newValue);
+                            if (user && user.isEmailVerified !== false && user.verified?.email !== false) {
+                                if (window._verifyPollTimer) {
+                                    clearInterval(window._verifyPollTimer);
+                                    window._verifyPollTimer = null;
+                                }
+                                const noticeModal = document.getElementById('emailVerificationNoticeModal');
+                                if (noticeModal) noticeModal.classList.add('hidden');
+                                currentUser = user;
+                                window.currentUser = currentUser;
+                                loginUser();
+                            }
+                        } catch (err) {}
+                    }
+                });
 
                 // Strictly verify active backend session
                 fetch('/api/auth/me', { credentials: 'include' })

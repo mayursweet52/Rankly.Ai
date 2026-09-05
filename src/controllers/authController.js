@@ -1410,25 +1410,170 @@ async function verifyEmailLink(req, res) {
       data: { isEmailVerified: true }
     });
 
-    // 3. Security Hardening: Do NOT automatically log in or establish a session on the verification device.
-    // Strictly destroy any residual session and cookies to prevent dashboard auto-login.
-    if (req.session) {
-      try {
-        req.session.destroy(() => {});
-      } catch (sessErr) {
-        console.warn('Session destroy warning on verify link:', sessErr.message);
-      }
-    }
-    res.clearCookie('connect.sid');
-    res.clearCookie('token');
-    res.clearCookie('jwt');
-    res.clearCookie('rankly_session');
+    // 3. Fetch verified user to automatically establish authenticated session
+    const user = await prisma.user.findUnique({
+      where: { email: normalizedEmail },
+      include: { organization: true }
+    });
 
-    // Redirect to login view with verified=success flag so user is prompted to manually sign in.
-    return res.redirect(`/?verified=success&email=${encodeURIComponent(normalizedEmail)}`);
+    if (!user) {
+      return res.redirect(`/?verified=true&email=${encodeURIComponent(normalizedEmail)}`);
+    }
+
+    // 4. Generate secure JWT token & establish session so user enters main site directly
+    const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+    const effectiveRole = user.role || 'normal';
+    const effectiveAccountType = user.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
+
+    const tokenPayload = {
+      id: user.id,
+      userId: user.id,
+      email: user.email,
+      role: effectiveRole,
+      accountType: effectiveAccountType,
+      isEmailVerified: true,
+      verified: true
+    };
+    const sessionToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
+
+    if (req.session) {
+      req.session.authenticated = true;
+      req.session.userId = user.id;
+      req.session.userEmail = user.email;
+      req.session.jwtToken = sessionToken;
+      req.session.user = {
+        id: user.id,
+        email: user.email,
+        fname: user.fname,
+        lname: user.lname,
+        username: user.username,
+        role: effectiveRole,
+        accountType: effectiveAccountType,
+        organizationId: user.organizationId,
+        isEmailVerified: true
+      };
+    }
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    };
+    res.cookie('token', sessionToken, cookieOptions);
+    res.cookie('jwt', sessionToken, cookieOptions);
+
+    const userPayload = {
+      id: user.id,
+      email: user.email,
+      fname: user.fname,
+      lname: user.lname,
+      username: user.username,
+      role: effectiveRole,
+      accountType: effectiveAccountType,
+      organizationId: user.organizationId,
+      organizationName: user.organization ? user.organization.name : null,
+      isEmailVerified: true
+    };
+
+    console.log(`✅ [EMAIL VERIFIED]: ${user.email} successfully verified and redirected to main site.`);
+
+    // 5. Redirect straight to the main site with full authentication
+    return res.redirect(`/?auth=success&verified=true&token=${encodeURIComponent(sessionToken)}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
   } catch (error) {
     console.error('Verify Email Link Error:', error);
     return res.redirect('/?error=' + encodeURIComponent('Failed to verify email link.'));
+  }
+}
+
+/**
+ * 🔄 Check Email Verification Status (Real-Time Background Poller)
+ * Enables Tab 1 to automatically detect verification and log in to the main site immediately.
+ */
+async function checkVerificationStatus(req, res) {
+  try {
+    const email = (req.query.email || req.body?.email || '').toLowerCase().trim();
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required.' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { organization: true }
+    });
+
+    if (!user) {
+      return res.json({ success: true, verified: false });
+    }
+
+    if (user.isEmailVerified) {
+      const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+      const effectiveRole = user.role || 'normal';
+      const effectiveAccountType = user.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
+
+      const tokenPayload = {
+        id: user.id,
+        userId: user.id,
+        email: user.email,
+        role: effectiveRole,
+        accountType: effectiveAccountType,
+        isEmailVerified: true,
+        verified: true
+      };
+      const sessionToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
+
+      if (req.session) {
+        req.session.authenticated = true;
+        req.session.userId = user.id;
+        req.session.userEmail = user.email;
+        req.session.jwtToken = sessionToken;
+        req.session.user = {
+          id: user.id,
+          email: user.email,
+          fname: user.fname,
+          lname: user.lname,
+          username: user.username,
+          role: effectiveRole,
+          accountType: effectiveAccountType,
+          organizationId: user.organizationId,
+          isEmailVerified: true
+        };
+      }
+
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      };
+      res.cookie('token', sessionToken, cookieOptions);
+      res.cookie('jwt', sessionToken, cookieOptions);
+
+      const userPayload = {
+        id: user.id,
+        email: user.email,
+        fname: user.fname,
+        lname: user.lname,
+        username: user.username,
+        role: effectiveRole,
+        accountType: effectiveAccountType,
+        organizationId: user.organizationId,
+        organizationName: user.organization ? user.organization.name : null,
+        isEmailVerified: true
+      };
+
+      return res.json({
+        success: true,
+        verified: true,
+        token: sessionToken,
+        user: userPayload
+      });
+    }
+
+    return res.json({ success: true, verified: false });
+  } catch (err) {
+    console.error('Check Verification Status Error:', err);
+    return res.status(500).json({ success: false, error: err.message });
   }
 }
 
@@ -1562,6 +1707,7 @@ module.exports = {
   verifyChangePasswordCredentials,
   submitChangePassword,
   createOrganization,
-  joinOrganization
+  joinOrganization,
+  checkVerificationStatus
 };
 
