@@ -1657,40 +1657,23 @@ async function verifyEmailLink(req, res) {
       return renderVerificationResultPage(res, false, 'Missing verification token or email. Please open the complete link sent to your email.');
     }
 
-    const tokenRecord = await prisma.oTP.findFirst({
+    const cleanToken = token.trim();
+
+    // 1. Check if user exists in database
+    const user = await prisma.user.findFirst({
       where: {
-        email: normalizedEmail,
-        otp: token.trim(),
-        type: 'email_verification_link',
-        isUsed: false,
-        expiresAt: { gt: new Date() }
+        OR: [
+          { email: { equals: normalizedEmail } },
+          { workEmail: { equals: normalizedEmail } }
+        ]
       },
-      orderBy: { createdAt: 'desc' }
-    });
-
-    if (!tokenRecord) {
-      return renderVerificationResultPage(res, false, 'Invalid or expired verification link. Please sign in or request a new one.', normalizedEmail);
-    }
-
-    // 1. Mark token as used
-    await prisma.oTP.update({
-      where: { id: tokenRecord.id },
-      data: { isUsed: true }
-    });
-
-    // 2. Mark User isEmailVerified: true
-    await prisma.user.updateMany({
-      where: { email: normalizedEmail },
-      data: { isEmailVerified: true }
-    });
-
-    // 3. Fetch verified user to automatically establish authenticated session
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
       include: { organization: true }
     });
 
-    if (user) {
+    // 2. If user is ALREADY verified, immediately show success page and establish session
+    if (user && user.isEmailVerified) {
+      console.log(`ℹ️ [verifyEmailLink] User ${normalizedEmail} is already verified.`);
+      
       const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
       const effectiveRole = user.role || 'normal';
       const effectiveAccountType = user.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
@@ -1714,8 +1697,8 @@ async function verifyEmailLink(req, res) {
         req.session.user = {
           id: user.id,
           email: user.email,
-          fname: user.fname,
-          lname: user.lname,
+          fname: user.firstName,
+          lname: user.lastName,
           username: user.username,
           role: effectiveRole,
           accountType: effectiveAccountType,
@@ -1732,11 +1715,104 @@ async function verifyEmailLink(req, res) {
       };
       res.cookie('token', sessionToken, cookieOptions);
       res.cookie('jwt', sessionToken, cookieOptions);
+
+      return renderVerificationResultPage(res, true, 'Your email has been verified successfully! You can now close this tab and sign in.', normalizedEmail);
     }
 
-    console.log(`✅ [EMAIL VERIFIED]: ${normalizedEmail} successfully verified (popup displayed).`);
+    // 3. Look for matching verification token record
+    const tokenRecord = await prisma.oTP.findFirst({
+      where: {
+        email: normalizedEmail,
+        otp: cleanToken,
+        type: 'email_verification_link'
+      },
+      orderBy: { createdAt: 'desc' }
+    });
 
-    // 4. Render ONLY the clean popup page (DO NOT redirect to full website/dashboard in this tab)
+    if (!tokenRecord) {
+      return renderVerificationResultPage(res, false, 'Invalid or expired verification link. Please sign in or request a new one.', normalizedEmail);
+    }
+
+    // 4. Mark token as used
+    await prisma.oTP.update({
+      where: { id: tokenRecord.id },
+      data: { isUsed: true }
+    });
+
+    // 5. Mark User isEmailVerified: true in Prisma SQLite & PostgreSQL
+    await prisma.user.updateMany({
+      where: {
+        OR: [
+          { email: normalizedEmail },
+          { workEmail: normalizedEmail }
+        ]
+      },
+      data: { isEmailVerified: true }
+    });
+
+    if (pgDb && typeof pgDb.query === 'function') {
+      try {
+        await pgDb.query('UPDATE candidates SET status = $1 WHERE LOWER(email) = LOWER($2);', ['verified', normalizedEmail]);
+        await pgDb.query('UPDATE employees SET updated_at = NOW() WHERE LOWER(email) = LOWER($1);', [normalizedEmail]);
+      } catch (_) {}
+    }
+
+    // 6. Fetch refreshed user & establish session
+    const verifiedUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: { equals: normalizedEmail } },
+          { workEmail: { equals: normalizedEmail } }
+        ]
+      },
+      include: { organization: true }
+    });
+
+    if (verifiedUser) {
+      const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+      const effectiveRole = verifiedUser.role || 'normal';
+      const effectiveAccountType = verifiedUser.accountType || (['admin', 'hr', 'employee'].includes(effectiveRole.toLowerCase()) ? 'employee' : 'candidate');
+
+      const tokenPayload = {
+        id: verifiedUser.id,
+        userId: verifiedUser.id,
+        email: verifiedUser.email,
+        role: effectiveRole,
+        accountType: effectiveAccountType,
+        isEmailVerified: true,
+        verified: true
+      };
+      const sessionToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '7d' });
+
+      if (req.session) {
+        req.session.authenticated = true;
+        req.session.userId = verifiedUser.id;
+        req.session.userEmail = verifiedUser.email;
+        req.session.jwtToken = sessionToken;
+        req.session.user = {
+          id: verifiedUser.id,
+          email: verifiedUser.email,
+          fname: verifiedUser.firstName,
+          lname: verifiedUser.lastName,
+          username: verifiedUser.username,
+          role: effectiveRole,
+          accountType: effectiveAccountType,
+          organizationId: verifiedUser.organizationId,
+          isEmailVerified: true
+        };
+      }
+
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      };
+      res.cookie('token', sessionToken, cookieOptions);
+      res.cookie('jwt', sessionToken, cookieOptions);
+    }
+
+    console.log(`✅ [EMAIL VERIFIED]: ${normalizedEmail} successfully verified.`);
     return renderVerificationResultPage(res, true, 'Your email has been verified successfully! You can now close this tab and return to your application.', normalizedEmail);
   } catch (error) {
     console.error('Verify Email Link Error:', error);
@@ -1912,15 +1988,22 @@ async function resendLink(req, res) {
     }
     const cleanEmail = email.toLowerCase().trim();
 
-    // 🔒 If user is already registered, reject resend verification link
-    const existingUser = await findExistingUserByEmail(cleanEmail, req);
-    if (existingUser) {
+    // 🔒 If user is already registered AND verified, reject resend verification link
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: { equals: cleanEmail } },
+          { workEmail: { equals: cleanEmail } }
+        ]
+      }
+    });
+    if (existingUser && existingUser.isEmailVerified) {
       return res.status(409).json({
         success: false,
         code: 'EMAIL_ALREADY_EXISTS',
         alreadyRegistered: true,
-        error: 'An account with this email is already registered. Please log in.',
-        message: 'An account with this email is already registered. Please log in.'
+        error: 'Your email is already verified. Please sign in.',
+        message: 'Your email is already verified. Please sign in.'
       });
     }
 
@@ -1949,7 +2032,13 @@ async function resendLink(req, res) {
     const subject = "Verify your email for Rankly.ai";
     try {
       await Promise.race([
-        sendVerificationLinkEmail(cleanEmail, verifyLink, subject),
+        sendVerificationLinkEmail({
+          to: cleanEmail,
+          fullName: existingUser?.firstName || 'User',
+          verifyLink,
+          isResend: true,
+          customSubject: subject
+        }),
         new Promise(resolve => setTimeout(() => resolve(true), 4000))
       ]);
     } catch (emailErr) {
@@ -1958,8 +2047,9 @@ async function resendLink(req, res) {
 
     return res.json({ 
       success: true, 
-      message: `Verification link resent to ${cleanEmail}. Please check your email.`,
-      email: cleanEmail
+      message: `Verification link resent to ${cleanEmail}. Please check your email inbox and spam folder.`,
+      email: cleanEmail,
+      verifyLink
     });
   } catch (error) {
     console.error('Resend Link Error:', error);
