@@ -8233,6 +8233,172 @@ body.dark-theme .resume-tip-box,
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── TAB: CONFIDENTIAL GRIEVANCE BOX (REPORT DIRECTLY TO ADMIN) ─── -->
+                    <div class="tab-content" id="tab-grievance" style="display:none;">
+                        <div class="max-w-4xl mx-auto space-y-6">
+                            
+                            <!-- Header & Confidentiality Notice Card -->
+                            <div class="card p-6 rounded-2xl shadow-sm border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E5DF] dark:border-gray-700">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-500/20 shadow-xs">
+                                            <i class="fa-solid fa-user-shield text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h2 class="text-xl font-black text-[#111111] dark:text-white tracking-tight mb-0">Confidential Grievance Box</h2>
+                                                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700 uppercase tracking-wider">
+                                                    <i class="fa-solid fa-lock text-[9px]"></i> Admin Direct
+                                                </span>
+                                            </div>
+                                            <p class="text-xs text-[#666660] dark:text-gray-400 font-medium mt-0.5">End-to-end confidential channel. Completely bypasses HR and internal managers.</p>
+                                        </div>
+                                    </div>
+                                    <div id="grievanceRoleToggleBtnGroup" class="flex items-center gap-2" style="display:none;">
+                                        <button type="button" onclick="switchGrievanceSubView('submit')" id="btnGrievanceViewSubmit" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#183B33] text-white">
+                                            <i class="fa-solid fa-paper-plane mr-1"></i> Submit Report
+                                        </button>
+                                        <button type="button" onclick="switchGrievanceSubView('admin')" id="btnGrievanceViewAdmin" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111111] dark:text-white">
+                                            <i class="fa-solid fa-inbox mr-1"></i> Admin Inbox (<span id="adminGrievanceCountBadge">0</span>)
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Security Guarantee Banner -->
+                                <div class="mt-4 p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200">
+                                    <i class="fa-solid fa-shield-halved text-amber-600 dark:text-amber-400 mt-0.5 text-sm"></i>
+                                    <div>
+                                        <span class="font-bold">Strict HR-Bypass Guarantee:</span>
+                                        <span class="opacity-90"> Complaints submitted here are isolated from the HR team and visible <strong>only to the Organization Administrator</strong>. If you check "Submit Anonymously", your name and email are stripped to guarantee complete whistleblower protection.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SUB-VIEW 1: EMPLOYEE SUBMISSION FORM -->
+                            <div id="grievanceSubmitView" class="space-y-6">
+                                <div class="card p-6 md:p-8 rounded-2xl shadow-sm border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800">
+                                    <form id="grievanceForm" onsubmit="handleGrievanceSubmit(event)" class="space-y-4">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <!-- Category -->
+                                            <div>
+                                                <label class="block text-xs font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1.5">Grievance Category *</label>
+                                                <select id="grievanceCategory" class="w-full form-input bg-[#FAFAF8] dark:bg-gray-900 border border-[#E5E5DF] dark:border-gray-700 rounded-xl p-3 text-sm text-[#111111] dark:text-white" required>
+                                                    <option value="HR Issue / Behavior">HR Issue / Unfair Behavior</option>
+                                                    <option value="Payroll / Salary Problem">Payroll / Salary / Incentive Problem</option>
+                                                    <option value="Workplace Concern">Workplace Environment / Facilities</option>
+                                                    <option value="Harassment / Discrimination">Harassment / Discrimination / Bias</option>
+                                                    <option value="Management / Leadership">Management & Leadership Concern</option>
+                                                    <option value="Ethics & Compliance">Ethics, Policy Violation or Whistleblower</option>
+                                                    <option value="Other">Other Confidential Concern</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Urgency / Priority -->
+                                            <div>
+                                                <label class="block text-xs font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1.5">Urgency Level</label>
+                                                <select id="grievancePriority" class="w-full form-input bg-[#FAFAF8] dark:bg-gray-900 border border-[#E5E5DF] dark:border-gray-700 rounded-xl p-3 text-sm text-[#111111] dark:text-white">
+                                                    <option value="Normal">Normal — Standard Review</option>
+                                                    <option value="Urgent">Urgent — Attention Requested Within 48h</option>
+                                                    <option value="Critical">Critical — Immediate Intervention Required</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Subject -->
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1.5">Subject / Short Summary *</label>
+                                            <input type="text" id="grievanceSubject" class="w-full form-input bg-[#FAFAF8] dark:bg-gray-900 border border-[#E5E5DF] dark:border-gray-700 rounded-xl p-3 text-sm text-[#111111] dark:text-white" placeholder="Brief summary of your concern (e.g., Unresolved salary deduction in August payroll)" required maxlength="200" />
+                                        </div>
+
+                                        <!-- Description -->
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1.5">Detailed Description *</label>
+                                            <textarea id="grievanceDescription" rows="5" class="w-full form-input bg-[#FAFAF8] dark:bg-gray-900 border border-[#E5E5DF] dark:border-gray-700 rounded-xl p-3 text-sm text-[#111111] dark:text-white" placeholder="Describe the incident, concern, or grievance in detail. Include dates, relevant parties, and any steps already taken..." required style="resize: vertical;"></textarea>
+                                        </div>
+
+                                        <!-- Anonymous Checkbox -->
+                                        <div class="p-3.5 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-900 flex items-start gap-3">
+                                            <input type="checkbox" id="grievanceIsAnonymous" class="mt-1 h-4 w-4 rounded border-gray-300 text-[#183B33] focus:ring-[#183B33] cursor-pointer" />
+                                            <label for="grievanceIsAnonymous" class="cursor-pointer">
+                                                <span class="block text-sm font-bold text-[#111111] dark:text-white">Submit Anonymously</span>
+                                                <span class="block text-xs text-[#666660] dark:text-gray-400 mt-0.5">Your name, email, and employee ID will be completely masked. Neither HR nor the Administrator will be able to see who submitted this report.</span>
+                                            </label>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="pt-2 flex justify-end">
+                                            <button type="submit" id="grievanceSubmitBtn" class="btn-primary flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm bg-[#111111] text-white hover:bg-black dark:bg-[#183B33] dark:hover:bg-[#243E36] transition-all cursor-pointer shadow-sm">
+                                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                                                <span>Submit Complaint to Admin</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- My Submitted Complaints History -->
+                                <div class="card p-6 rounded-2xl shadow-sm border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800">
+                                    <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-gray-700 mb-4">
+                                        <h3 class="text-base font-bold text-[#111111] dark:text-white mb-0">My Submitted Complaints & Status</h3>
+                                        <button type="button" onclick="loadMyGrievances()" class="text-xs text-[#183B33] dark:text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+                                            <i class="fa-solid fa-rotate-right text-[10px]"></i> Refresh
+                                        </button>
+                                    </div>
+                                    <div id="myGrievancesList" class="space-y-3">
+                                        <div class="text-center py-6 text-xs text-gray-400 font-mono">
+                                            <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading your reports...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SUB-VIEW 2: ADMIN GRIEVANCE MANAGEMENT INBOX (ADMIN ONLY) -->
+                            <div id="grievanceAdminView" style="display:none;" class="space-y-6">
+                                <!-- 4 Stat Cards -->
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-900">
+                                        <span class="stat-label text-xs uppercase font-bold text-[#888880]">Total Reports</span>
+                                        <div class="text-2xl font-black text-[#111111] dark:text-white mt-1" id="statGrievancesTotal">0</div>
+                                    </div>
+                                    <div class="stat-card p-4 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50/40 dark:bg-amber-950/20">
+                                        <span class="stat-label text-xs uppercase font-bold text-amber-700 dark:text-amber-400">Pending Action</span>
+                                        <div class="text-2xl font-black text-amber-700 dark:text-amber-400 mt-1" id="statGrievancesPending">0</div>
+                                    </div>
+                                    <div class="stat-card p-4 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20">
+                                        <span class="stat-label text-xs uppercase font-bold text-blue-700 dark:text-blue-400">Under Review</span>
+                                        <div class="text-2xl font-black text-blue-700 dark:text-blue-400 mt-1" id="statGrievancesReview">0</div>
+                                    </div>
+                                    <div class="stat-card p-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20">
+                                        <span class="stat-label text-xs uppercase font-bold text-emerald-700 dark:text-emerald-400">Resolved</span>
+                                        <div class="text-2xl font-black text-emerald-700 dark:text-emerald-400 mt-1" id="statGrievancesResolved">0</div>
+                                    </div>
+                                </div>
+
+                                <!-- Filter Bar -->
+                                <div class="card p-4 rounded-2xl border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-wrap items-center justify-between gap-3">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <button type="button" onclick="filterAdminGrievances('all')" class="admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border bg-[#111111] text-white" data-filter="all">All</button>
+                                        <button type="button" onclick="filterAdminGrievances('Pending')" class="admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#666660] dark:text-gray-300" data-filter="Pending">Pending</button>
+                                        <button type="button" onclick="filterAdminGrievances('Under Review')" class="admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#666660] dark:text-gray-300" data-filter="Under Review">Under Review</button>
+                                        <button type="button" onclick="filterAdminGrievances('Resolved')" class="admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#666660] dark:text-gray-300" data-filter="Resolved">Resolved</button>
+                                    </div>
+                                    <button type="button" onclick="loadAdminGrievances()" class="text-xs text-[#183B33] dark:text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+                                        <i class="fa-solid fa-rotate-right text-[10px]"></i> Refresh Inbox
+                                    </button>
+                                </div>
+
+                                <!-- Grievance Cards List -->
+                                <div id="adminGrievancesList" class="space-y-4">
+                                    <div class="text-center py-10 text-xs text-gray-400 font-mono">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading confidential grievances...
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!-- ─── TAB 8: SYSTEM HEALTH & AUTONOMOUS SELF-HEALING ─── -->
@@ -9348,6 +9514,7 @@ body.dark-theme .resume-tip-box,
                     case 'screening': return 'fa-solid fa-file-invoice';
                     case 'pipeline': return 'fa-solid fa-users';
                     case 'analytics': return 'fa-solid fa-chart-line';
+                    case 'grievance': return 'fa-solid fa-user-shield text-amber-500';
                     case 'resume': return 'fa-solid fa-wand-magic-sparkles text-[#D95D39]';
                     case 'settings': return 'fa-solid fa-gear';
                     case 'feedback': return 'fa-solid fa-comment-dots';
@@ -9404,6 +9571,7 @@ body.dark-theme .resume-tip-box,
                         { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
+                        { id: 'grievance', label: isAdmin ? 'Admin Grievance Inbox' : 'Confidential Grievance', target: 'grievance' },
                         { id: 'health', label: 'System Health', target: 'health' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
@@ -9448,7 +9616,7 @@ body.dark-theme .resume-tip-box,
                 const userRole = (window.currentUser ? (window.currentUser.role || 'normal') : 'normal').toLowerCase();
                 const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (window.currentUser && window.currentUser.accountType === 'employee');
                 
-                const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health'];
+                const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
                 if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
                     showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
                     tabId = 'resume';
@@ -9493,6 +9661,9 @@ body.dark-theme .resume-tip-box,
                 }
                 if (actualTarget === 'health' && typeof window.loadHealthTelemetry === 'function') {
                     window.loadHealthTelemetry();
+                }
+                if (actualTarget === 'grievance' && typeof window.loadGrievanceUI === 'function') {
+                    window.loadGrievanceUI();
                 }
 
                 const title = document.getElementById('dashPageTitle');
@@ -14388,6 +14559,410 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             } catch (e) {
                 console.warn('Reset URL check error:', e);
             }
+        })();
+
+        /* ─── CONFIDENTIAL GRIEVANCE BOX CLIENT LOGIC (REPORT DIRECTLY TO ADMIN) ─── */
+        (function initGrievanceModule() {
+            window._adminGrievancesData = [];
+            window._activeGrievanceFilter = 'all';
+
+            const gEscape = (str) => String(str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+
+            function formatDate(d) {
+                if (!d) return '';
+                try {
+                    const date = new Date(d);
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                } catch (e) {
+                    return String(d);
+                }
+            }
+
+            window.loadGrievanceUI = function() {
+                const user = window.currentUser || {};
+                const userRole = (user.role || 'employee').toLowerCase();
+                const isAdmin = ['admin', 'administrator'].includes(userRole);
+
+                const toggleGroup = document.getElementById('grievanceRoleToggleBtnGroup');
+                if (isAdmin) {
+                    if (toggleGroup) toggleGroup.style.display = 'flex';
+                    window.loadAdminGrievances();
+                    // Default to admin view if not already on submit view
+                    const adminView = document.getElementById('grievanceAdminView');
+                    if (adminView && adminView.style.display !== 'block') {
+                        window.switchGrievanceSubView('admin');
+                    }
+                } else {
+                    if (toggleGroup) toggleGroup.style.display = 'none';
+                    window.switchGrievanceSubView('submit');
+                }
+                window.loadMyGrievances();
+            };
+
+            window.switchGrievanceSubView = function(view) {
+                const submitView = document.getElementById('grievanceSubmitView');
+                const adminView = document.getElementById('grievanceAdminView');
+                const btnSubmit = document.getElementById('btnGrievanceViewSubmit');
+                const btnAdmin = document.getElementById('btnGrievanceViewAdmin');
+
+                if (view === 'admin') {
+                    if (submitView) submitView.style.display = 'none';
+                    if (adminView) adminView.style.display = 'block';
+                    if (btnAdmin) {
+                        btnAdmin.className = 'px-3 py-1.5 text-xs font-bold rounded-xl border border-[#183B33] bg-[#183B33] text-white';
+                    }
+                    if (btnSubmit) {
+                        btnSubmit.className = 'px-3 py-1.5 text-xs font-bold rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111111] dark:text-white';
+                    }
+                    window.loadAdminGrievances();
+                } else {
+                    if (adminView) adminView.style.display = 'none';
+                    if (submitView) submitView.style.display = 'block';
+                    if (btnSubmit) {
+                        btnSubmit.className = 'px-3 py-1.5 text-xs font-bold rounded-xl border border-[#183B33] bg-[#183B33] text-white';
+                    }
+                    if (btnAdmin) {
+                        btnAdmin.className = 'px-3 py-1.5 text-xs font-bold rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111111] dark:text-white';
+                    }
+                    window.loadMyGrievances();
+                }
+            };
+
+            window.handleGrievanceSubmit = async function(event) {
+                if (event) event.preventDefault();
+                const category = document.getElementById('grievanceCategory')?.value || 'HR Issue / Behavior';
+                const priority = document.getElementById('grievancePriority')?.value || 'Normal';
+                const subject = document.getElementById('grievanceSubject')?.value?.trim();
+                const description = document.getElementById('grievanceDescription')?.value?.trim();
+                const isAnonymous = !!document.getElementById('grievanceIsAnonymous')?.checked;
+                const submitBtn = document.getElementById('grievanceSubmitBtn');
+
+                if (!subject) {
+                    if (window.showToast) showToast('Please enter a subject for your report.', 'warning');
+                    return;
+                }
+                if (!description) {
+                    if (window.showToast) showToast('Please describe your concern in detail.', 'warning');
+                    return;
+                }
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5 text-xs"></i> Submitting securely...';
+                }
+
+                try {
+                    const res = await fetch('/api/grievances', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ category, priority, subject, description, isAnonymous })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok || !data.success) {
+                        if (window.showToast) showToast(data.message || data.error || 'Failed to submit complaint.', 'error');
+                        return;
+                    }
+
+                    if (window.showToast) {
+                        showToast(data.message || '🔒 Complaint securely dispatched directly to Organization Admin.', 'success');
+                    }
+
+                    const form = document.getElementById('grievanceForm');
+                    if (form) form.reset();
+
+                    window.loadMyGrievances();
+
+                    // If user is also admin, refresh admin view
+                    const userRole = (window.currentUser?.role || '').toLowerCase();
+                    if (['admin', 'administrator'].includes(userRole)) {
+                        window.loadAdminGrievances();
+                    }
+                } catch (err) {
+                    console.error('Grievance submission error:', err);
+                    if (window.showToast) showToast('Network error during complaint submission.', 'error');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs mr-1.5"></i> <span>Submit Complaint to Admin</span>';
+                    }
+                }
+            };
+
+            window.loadMyGrievances = async function() {
+                const listEl = document.getElementById('myGrievancesList');
+                if (!listEl) return;
+
+                try {
+                    const res = await fetch('/api/grievances/my', { credentials: 'include' });
+                    const result = await res.json();
+
+                    if (!res.ok || !result.success) {
+                        listEl.innerHTML = `<div class="p-4 text-center text-xs text-red-500 font-medium">Failed to load complaints: ${gEscape(result.message || 'Error')}</div>`;
+                        return;
+                    }
+
+                    const items = result.data || [];
+                    if (items.length === 0) {
+                        listEl.innerHTML = `
+                            <div class="text-center py-8 px-4 rounded-xl border border-dashed border-[#E5E5DF] dark:border-gray-700">
+                                <div class="w-10 h-10 mx-auto mb-2.5 rounded-full bg-[#FAFAF8] dark:bg-gray-800 flex items-center justify-center text-gray-400">
+                                    <i class="fa-solid fa-shield-check text-lg"></i>
+                                </div>
+                                <p class="text-xs font-semibold text-[#111111] dark:text-white">No complaints on record</p>
+                                <p class="text-[11px] text-[#666660] dark:text-gray-400 mt-0.5">Your submitted reports and confidential status updates will appear here.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    listEl.innerHTML = items.map(item => {
+                        let statusBadge = '';
+                        switch (item.status) {
+                            case 'Resolved':
+                                statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700"><i class="fa-solid fa-circle-check text-[9px] mr-1"></i>Resolved</span>';
+                                break;
+                            case 'Under Review':
+                                statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700"><i class="fa-solid fa-clock text-[9px] mr-1"></i>Under Review</span>';
+                                break;
+                            case 'Dismissed':
+                                statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">Dismissed</span>';
+                                break;
+                            default:
+                                statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700"><i class="fa-solid fa-hourglass-half text-[9px] mr-1"></i>Pending Review</span>';
+                        }
+
+                        let priorityBadge = '';
+                        if (item.priority === 'Critical') {
+                            priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border border-red-200"><i class="fa-solid fa-triangle-exclamation text-[9px] mr-1"></i>Critical</span>';
+                        } else if (item.priority === 'Urgent') {
+                            priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200">Urgent</span>';
+                        } else {
+                            priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">Normal</span>';
+                        }
+
+                        const anonBadge = item.isAnonymous ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200"><i class="fa-solid fa-mask text-[9px] mr-1"></i>Anonymous</span>' : '';
+
+                        let adminResponseBox = '';
+                        if (item.adminNotes) {
+                            adminResponseBox = `
+                                <div class="mt-3 p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40">
+                                    <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 mb-1">
+                                        <i class="fa-solid fa-reply text-[11px]"></i> Administrator Resolution Response:
+                                        ${item.resolvedAt ? `<span class="font-normal text-[10px] text-emerald-600 dark:text-emerald-400">(${formatDate(item.resolvedAt)})</span>` : ''}
+                                    </div>
+                                    <div class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${gEscape(item.adminNotes)}</div>
+                                </div>
+                            `;
+                        }
+
+                        return `
+                            <div class="p-4 rounded-xl border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-900/60 hover:shadow-xs transition-all">
+                                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                                    <div>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="text-xs font-black text-[#111111] dark:text-white">${gEscape(item.subject)}</span>
+                                            ${statusBadge}
+                                            ${priorityBadge}
+                                            ${anonBadge}
+                                        </div>
+                                        <div class="text-[11px] text-[#888880] dark:text-gray-400 mt-1 flex items-center gap-2">
+                                            <span class="font-medium text-[#183B33] dark:text-emerald-400">${gEscape(item.category)}</span>
+                                            <span>•</span>
+                                            <span>Submitted ${formatDate(item.createdAt)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-[#444440] dark:text-gray-300 leading-relaxed whitespace-pre-wrap mt-2 p-2.5 rounded-lg bg-white dark:bg-gray-800 border border-[#E5E5DF] dark:border-gray-700">
+                                    ${gEscape(item.description)}
+                                </div>
+                                ${adminResponseBox}
+                            </div>
+                        `;
+                    }).join('');
+                } catch (err) {
+                    console.error('Load My Grievances Error:', err);
+                    listEl.innerHTML = `<div class="p-4 text-center text-xs text-red-500 font-medium">Failed to retrieve grievance records.</div>`;
+                }
+            };
+
+            window.loadAdminGrievances = async function() {
+                const listEl = document.getElementById('adminGrievancesList');
+                if (!listEl) return;
+
+                try {
+                    const res = await fetch('/api/grievances/admin', { credentials: 'include' });
+                    const result = await res.json();
+
+                    if (!res.ok || !result.success) {
+                        listEl.innerHTML = `<div class="p-6 text-center text-xs text-red-500 font-medium">Failed to load admin inbox: ${gEscape(result.message || 'Access denied')}</div>`;
+                        return;
+                    }
+
+                    const items = result.data || [];
+                    window._adminGrievancesData = items;
+
+                    // Update Metrics
+                    const totalEl = document.getElementById('statGrievancesTotal');
+                    const pendingEl = document.getElementById('statGrievancesPending');
+                    const reviewEl = document.getElementById('statGrievancesReview');
+                    const resolvedEl = document.getElementById('statGrievancesResolved');
+                    const countBadge = document.getElementById('adminGrievanceCountBadge');
+
+                    const totalCount = items.length;
+                    const pendingCount = items.filter(i => i.status === 'Pending').length;
+                    const reviewCount = items.filter(i => i.status === 'Under Review').length;
+                    const resolvedCount = items.filter(i => i.status === 'Resolved').length;
+
+                    if (totalEl) totalEl.textContent = totalCount;
+                    if (pendingEl) pendingEl.textContent = pendingCount;
+                    if (reviewEl) reviewEl.textContent = reviewCount;
+                    if (resolvedEl) resolvedEl.textContent = resolvedCount;
+                    if (countBadge) countBadge.textContent = totalCount;
+
+                    window.renderAdminGrievancesList(window._adminGrievancesData);
+                } catch (err) {
+                    console.error('Load Admin Grievances Error:', err);
+                    listEl.innerHTML = `<div class="p-6 text-center text-xs text-red-500 font-medium">Network error loading grievances inbox.</div>`;
+                }
+            };
+
+            window.filterAdminGrievances = function(filter) {
+                window._activeGrievanceFilter = filter;
+                document.querySelectorAll('.admin-g-filter-btn').forEach(btn => {
+                    if (btn.getAttribute('data-filter') === filter) {
+                        btn.className = 'admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border bg-[#111111] text-white';
+                    } else {
+                        btn.className = 'admin-g-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#666660] dark:text-gray-300';
+                    }
+                });
+
+                let filtered = window._adminGrievancesData;
+                if (filter !== 'all') {
+                    filtered = window._adminGrievancesData.filter(i => i.status === filter);
+                }
+                window.renderAdminGrievancesList(filtered);
+            };
+
+            window.renderAdminGrievancesList = function(items) {
+                const listEl = document.getElementById('adminGrievancesList');
+                if (!listEl) return;
+
+                if (!items || items.length === 0) {
+                    listEl.innerHTML = `
+                        <div class="card text-center py-12 px-4 rounded-2xl border border-dashed border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800">
+                            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                                <i class="fa-solid fa-inbox text-xl"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-[#111111] dark:text-white mb-1">No Grievances Found</h4>
+                            <p class="text-xs text-[#666660] dark:text-gray-400">There are no reports matching the active filter.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listEl.innerHTML = items.map(item => {
+                    const submitterLabel = item.isAnonymous
+                        ? '<span class="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-950/40 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-800"><i class="fa-solid fa-mask text-[10px]"></i> Anonymous Whistleblower</span>'
+                        : `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700"><i class="fa-solid fa-user text-[10px] text-gray-500"></i> ${gEscape(item.employeeName)} ${item.employeeEmail ? `<span class="text-gray-500 font-normal">(${gEscape(item.employeeEmail)})</span>` : ''}</span>`;
+
+                    let priorityBadge = '';
+                    if (item.priority === 'Critical') {
+                        priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border border-red-300"><i class="fa-solid fa-triangle-exclamation text-[9px] mr-1"></i>Critical Priority</span>';
+                    } else if (item.priority === 'Urgent') {
+                        priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300">Urgent</span>';
+                    } else {
+                        priorityBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-200">Normal</span>';
+                    }
+
+                    return `
+                        <div class="card p-5 md:p-6 rounded-2xl border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm space-y-4">
+                            <!-- Top Info Header -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#E5E5DF] dark:border-gray-700">
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <h4 class="text-sm font-black text-[#111111] dark:text-white mb-0">${gEscape(item.subject)}</h4>
+                                        ${priorityBadge}
+                                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">${gEscape(item.category)}</span>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2.5 mt-1.5">
+                                        ${submitterLabel}
+                                        <span class="text-[11px] text-gray-400 font-mono">• Received ${formatDate(item.createdAt)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description Body -->
+                            <div class="p-3.5 rounded-xl bg-[#FAFAF8] dark:bg-gray-900 border border-[#E5E5DF] dark:border-gray-700 text-xs text-[#222220] dark:text-gray-200 whitespace-pre-wrap leading-relaxed">
+                                ${gEscape(item.description)}
+                            </div>
+
+                            <!-- Admin Action & Resolution Bar -->
+                            <div class="p-4 rounded-xl bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200/70 dark:border-amber-900/40 space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div class="flex items-center gap-2">
+                                        <label class="text-xs font-bold text-amber-900 dark:text-amber-200">Update Status:</label>
+                                        <select id="adminGrievanceStatus_${item.id}" class="form-input text-xs font-semibold py-1 px-2.5 rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111111] dark:text-white">
+                                            <option value="Pending" ${item.status === 'Pending' ? 'selected' : ''}>Pending Action</option>
+                                            <option value="Under Review" ${item.status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                                            <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>Mark Resolved</option>
+                                            <option value="Dismissed" ${item.status === 'Dismissed' ? 'selected' : ''}>Dismiss Concern</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" onclick="updateGrievanceResolution('${item.id}')" id="btnUpdateGrievance_${item.id}" class="btn-primary text-xs py-1.5 px-4 rounded-lg font-bold bg-[#111111] text-white hover:bg-black transition-all cursor-pointer shadow-xs">
+                                        <i class="fa-solid fa-check text-[10px] mr-1"></i> Save Resolution
+                                    </button>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-[#666660] dark:text-gray-400 mb-1">Confidential Resolution Note (Visible to Submitter):</label>
+                                    <textarea id="adminGrievanceNotes_${item.id}" rows="2" class="w-full text-xs form-input p-2.5 rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111111] dark:text-white" placeholder="Enter findings, decisions or resolution notes for the employee...">${gEscape(item.adminNotes || '')}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            window.updateGrievanceResolution = async function(id) {
+                const statusEl = document.getElementById('adminGrievanceStatus_' + id);
+                const notesEl = document.getElementById('adminGrievanceNotes_' + id);
+                const btn = document.getElementById('btnUpdateGrievance_' + id);
+
+                const status = statusEl ? statusEl.value : 'Pending';
+                const adminNotes = notesEl ? notesEl.value.trim() : '';
+
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[10px] mr-1"></i> Saving...';
+                }
+
+                try {
+                    const res = await fetch(`/api/grievances/${id}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ status, adminNotes })
+                    });
+                    const result = await res.json();
+
+                    if (!res.ok || !result.success) {
+                        if (window.showToast) showToast(result.message || result.error || 'Failed to update grievance.', 'error');
+                        return;
+                    }
+
+                    if (window.showToast) showToast('Grievance status updated successfully.', 'success');
+                    window.loadAdminGrievances();
+                } catch (err) {
+                    console.error('Update Grievance Error:', err);
+                    if (window.showToast) showToast('Network error updating grievance.', 'error');
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-check text-[10px] mr-1"></i> Save Resolution';
+                    }
+                }
+            };
         })();
     </script>
 </body>
