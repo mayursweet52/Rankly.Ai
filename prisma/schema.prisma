@@ -315,6 +315,11 @@ model Employee {
   trainingRecommendations  RecommendedTraining[]
   draftedEmails            AgentEmailDraft[]
 
+  // Attendance & Leave Management
+  attendances              Attendance[]
+  leaveRequests            LeaveRequest[]       @relation("EmployeeLeaves")
+  reviewedLeaves           LeaveRequest[]       @relation("ReviewedLeaves")
+
   createdAt                DateTime             @default(now())
   updatedAt                DateTime             @updatedAt
 }
@@ -582,3 +587,52 @@ model Grievance {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 }
+
+// ---------------------------------------------------------
+// Attendance Model (Daily Tracking & Shift Work Hours)
+// ---------------------------------------------------------
+model Attendance {
+  id           String    @id @default(uuid())
+  employeeId   String
+  employee     Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  date         DateTime  // Normalized date for the attendance day
+  checkIn      DateTime?
+  checkOut     DateTime?
+  workHours    Float?    // Total work hours logged for the shift
+  status       String    @default("present") // "present" | "absent" | "half_day" | "late" | "on_leave" | "remote"
+  notes        String?
+  ipAddress    String?
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([employeeId, date])
+  @@index([date])
+  @@index([employeeId])
+}
+
+// ---------------------------------------------------------
+// Leave Request Model (Leave Applications, Approvals & Workflow)
+// ---------------------------------------------------------
+model LeaveRequest {
+  id            String    @id @default(uuid())
+  employeeId    String
+  employee      Employee  @relation("EmployeeLeaves", fields: [employeeId], references: [id], onDelete: Cascade)
+  leaveType     String    @default("casual") // "casual" | "sick" | "earned" | "maternity" | "paternity" | "unpaid"
+  startDate     DateTime
+  endDate       DateTime
+  daysCount     Float     @default(1.0)
+  reason        String
+  status        String    @default("pending") // "pending" | "approved" | "rejected" | "cancelled"
+  reviewedById  String?
+  reviewedBy    Employee? @relation("ReviewedLeaves", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewRemarks String?
+  reviewedAt    DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([employeeId])
+  @@index([status])
+}
+
