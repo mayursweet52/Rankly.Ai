@@ -82,6 +82,22 @@ const response = await fetch('/api/employees', {
 | `GET`  | `/api/auth/me` | Fetch active logged-in user profile. |
 | `POST` | `/api/auth/logout` | Terminate session. |
 
+### D. Employee Grievances & Complaints (RBAC Protected)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/complaints/submit` | Submit employee grievance/complaint (`category`, `subject`, `description`, `is_anonymous`). Auth required. |
+| `GET`  | `/api/complaints/admin/all` | Fetch all submitted complaints with linked employee details. Restricted to `admin` / `hr` / `hr_manager`. |
+
+#### Sample Complaint Submission Payload (`POST /api/complaints/submit`):
+```json
+{
+  "category": "Workplace Environment",
+  "subject": "HVAC Temperature Control",
+  "description": "The HVAC temperature in Section B is running too cold during afternoon hours.",
+  "is_anonymous": false
+}
+```
+
 ---
 
 ## 🤖 3. For AI & Agent Developers (AI Engine & Recommendations)

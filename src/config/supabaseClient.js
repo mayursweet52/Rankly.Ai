@@ -46,4 +46,7 @@ if (supabaseUrl && supabaseKey) {
   };
 }
 
+// Support both const supabase = require(...) and const { supabase } = require(...)
+supabase.supabase = supabase;
+
 module.exports = supabase;
