@@ -49,6 +49,7 @@ model User {
   employeeProfile  Employee?
   companyDocuments CompanyDocument[]
   grievances       Grievance[]
+  applications     CandidateApplication[]
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -634,5 +635,32 @@ model LeaveRequest {
 
   @@index([employeeId])
   @@index([status])
+}
+
+// ---------------------------------------------------------
+// Candidate Job Application Tracker Model
+// ---------------------------------------------------------
+model CandidateApplication {
+  id              String        @id @default(uuid())
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  candidateEmail  String?
+  companyName     String
+  jobTitle        String
+  location        String?
+  salaryRange     String?
+  jobUrl          String?
+  appliedDate     DateTime      @default(now())
+  stage           String        @default("applied") // "applied" | "under_review" | "shortlisted" | "interview" | "offered" | "rejected"
+  notes           String?
+  nextStep        String?
+  matchScore      Float?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([userId, stage])
+  @@index([candidateEmail])
+  @@index([createdAt])
 }
 
