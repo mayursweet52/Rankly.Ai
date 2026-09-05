@@ -515,12 +515,6 @@ app.get('/api/ai/status', async (req, res) => {
       headers: (k) => ({ 'Authorization': `Bearer ${k}` })
     },
     { 
-      name: 'Together AI', 
-      key: 'TOGETHER_API_KEY', 
-      endpoint: 'https://api.together.xyz/v1/models',
-      headers: (k) => ({ 'Authorization': `Bearer ${k}` })
-    },
-    { 
       name: 'Ollama (Local)', 
       key: 'OLLAMA_URL', 
       endpoint: `${process.env.OLLAMA_URL || 'http://localhost:11434'}/api/tags`,
