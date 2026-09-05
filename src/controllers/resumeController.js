@@ -49,6 +49,9 @@ async function screenResumeHandler(req, res) {
     const userId = req.user ? req.user.id : null;
     const organizationId = req.user ? req.user.organizationId : null;
 
+    const safeScore = (val, fallback = 0) => Math.max(0, Math.min(100, Math.round(Number(val) || fallback)));
+    const finalMatchScore = safeScore(evaluation.matchScore, 75);
+
     // Save Evaluation to SQLite via Prisma
     const savedEvaluation = await prisma.evaluation.create({
       data: {
@@ -62,11 +65,11 @@ async function screenResumeHandler(req, res) {
         resumeFileName,
         resumeFilePath,
         extractedText: resumeText.slice(0, 5000), // store preview
-        matchScore: evaluation.matchScore || 0,
-        skillsScore: evaluation.scoreBreakdown?.skills || 0,
-        experienceScore: evaluation.scoreBreakdown?.experience || 0,
-        toolsScore: evaluation.scoreBreakdown?.tools || 0,
-        educationScore: evaluation.scoreBreakdown?.education || 0,
+        matchScore: finalMatchScore,
+        skillsScore: safeScore(evaluation.scoreBreakdown?.skills, 75),
+        experienceScore: safeScore(evaluation.scoreBreakdown?.experience, 70),
+        toolsScore: safeScore(evaluation.scoreBreakdown?.tools, 75),
+        educationScore: safeScore(evaluation.scoreBreakdown?.education, 75),
         fitVerdict: evaluation.fitVerdict || 'Potential Fit',
         summary: evaluation.summary || '',
         matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
@@ -87,11 +90,11 @@ async function screenResumeHandler(req, res) {
           phone: candidatePhone,
           targetRole,
           stage: 'ai_screened',
-          score: evaluation.matchScore || 0,
-          skillsScore: evaluation.scoreBreakdown?.skills || 0,
-          experienceScore: evaluation.scoreBreakdown?.experience || 0,
-          toolsScore: evaluation.scoreBreakdown?.tools || 0,
-          educationScore: evaluation.scoreBreakdown?.education || 0,
+          score: finalMatchScore,
+          skillsScore: safeScore(evaluation.scoreBreakdown?.skills, 75),
+          experienceScore: safeScore(evaluation.scoreBreakdown?.experience, 70),
+          toolsScore: safeScore(evaluation.scoreBreakdown?.tools, 75),
+          educationScore: safeScore(evaluation.scoreBreakdown?.education, 75),
           fitVerdict: evaluation.fitVerdict || 'Potential Fit',
           summary: evaluation.summary || '',
           matchedSkills: JSON.stringify(evaluation.matchedSkills || []),
@@ -100,10 +103,11 @@ async function screenResumeHandler(req, res) {
           organizationId,
           userId,
           evaluationId: savedEvaluation.id,
-          resumeUrl: resumeFilePath ? `/uploads/${file.filename}` : null
+          resumeUrl: resumeFilePath && file ? `/uploads/${file.filename}` : null
         }
       });
     }
+
 
     // Optional async trigger for n8n Candidates Google Sheet Webhook
     const n8nCandidateWebhook = process.env.N8N_CANDIDATE_WEBHOOK_URL;
