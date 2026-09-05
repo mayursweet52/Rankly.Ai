@@ -15,6 +15,9 @@ services:
       - PORT=3000
       - NODE_ENV=production
     volumes:
+      - .:/app
+      - /app/node_modules
       - ./prisma:/app/prisma
+      - ./rankly.db:/app/rankly.db
       - ./uploads:/app/uploads
       - ./backups:/app/backups

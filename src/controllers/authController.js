@@ -1411,7 +1411,20 @@ async function verifyEmailLink(req, res) {
     });
 
     // 3. Security Hardening: Do NOT automatically log in or establish a session on the verification device.
-    // Redirect to login view with verified=success flag so user is prompted to log in.
+    // Strictly destroy any residual session and cookies to prevent dashboard auto-login.
+    if (req.session) {
+      try {
+        req.session.destroy(() => {});
+      } catch (sessErr) {
+        console.warn('Session destroy warning on verify link:', sessErr.message);
+      }
+    }
+    res.clearCookie('connect.sid');
+    res.clearCookie('token');
+    res.clearCookie('jwt');
+    res.clearCookie('rankly_session');
+
+    // Redirect to login view with verified=success flag so user is prompted to manually sign in.
     return res.redirect(`/?verified=success&email=${encodeURIComponent(normalizedEmail)}`);
   } catch (error) {
     console.error('Verify Email Link Error:', error);
