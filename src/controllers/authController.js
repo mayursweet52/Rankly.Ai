@@ -11,11 +11,19 @@ const { sendSuccess, sendError } = require('../utils/apiResponse');
 /**
  * Strict Multi-Layer Check if an Email is Already Registered in System
  */
-async function findExistingUserByEmail(email) {
+async function findExistingUserByEmail(email, req = null) {
   if (!email) return null;
   const cleanEmail = String(email).toLowerCase().trim();
+  if (!cleanEmail) return null;
 
-  // 1. Check Prisma SQLite User table (email, workEmail, username)
+  // 1. Check active authenticated session if provided
+  try {
+    if (req && req.session && req.session.userEmail && req.session.userEmail.toLowerCase().trim() === cleanEmail) {
+      return { id: req.session.userId || 'session_user', email: cleanEmail, source: 'active_session' };
+    }
+  } catch (_) {}
+
+  // 2. Check Prisma SQLite User table (email, workEmail, username)
   try {
     const directUser = await prisma.user.findFirst({
       where: {
@@ -29,16 +37,40 @@ async function findExistingUserByEmail(email) {
     if (directUser) return directUser;
   } catch (_) {}
 
-  // 2. Case-insensitive raw SQLite query fallback
+  // 3. Case-insensitive raw SQLite query fallback on User table
   try {
     const rawUsers = await prisma.$queryRawUnsafe(
-      'SELECT id, email, role, isEmailVerified FROM "User" WHERE LOWER(email) = LOWER(?) OR LOWER(workEmail) = LOWER(?) LIMIT 1',
-      cleanEmail, cleanEmail
+      'SELECT id, email, role, isEmailVerified FROM "User" WHERE LOWER(email) = LOWER(?) OR LOWER(workEmail) = LOWER(?) OR LOWER(username) = LOWER(?) LIMIT 1',
+      cleanEmail, cleanEmail, cleanEmail
     );
     if (rawUsers && rawUsers.length > 0) return rawUsers[0];
   } catch (_) {}
 
-  // 3. Check live PostgreSQL employees & candidates
+  // 4. Check Prisma Employee & Candidate models
+  try {
+    if (prisma.employee) {
+      const emp = await prisma.employee.findFirst({
+        where: {
+          OR: [
+            { personalEmail: { equals: cleanEmail } },
+            { workEmail: { equals: cleanEmail } }
+          ]
+        }
+      });
+      if (emp) return { id: emp.id, email: emp.workEmail || emp.personalEmail, source: 'prisma_employee' };
+    }
+  } catch (_) {}
+
+  try {
+    if (prisma.candidate) {
+      const cand = await prisma.candidate.findFirst({
+        where: { email: { equals: cleanEmail } }
+      });
+      if (cand && cand.email) return { id: cand.id, email: cand.email, source: 'prisma_candidate' };
+    }
+  } catch (_) {}
+
+  // 5. Check live PostgreSQL employees & candidates
   try {
     if (pgDb && typeof pgDb.query === 'function') {
       const pgEmp = await pgDb.query('SELECT employee_id as id, email, role FROM employees WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]);
@@ -627,7 +659,26 @@ async function getMe(req, res) {
 async function sendOtp(req, res) {
   try {
     const { email, identifier, to, workEmail, corporateEmail, isEmployee, type = 'email_verification' } = req.body;
-    const recipientEmail = (email || identifier || to || workEmail || corporateEmail || '').toLowerCase().trim();
+    const recipientEmail = (email || identifier || to || workEmail || corporateEmail || req.body.email || '').toLowerCase().trim();
+
+    if (!recipientEmail) {
+      return res.status(400).json({ success: false, error: 'Email address is required.', message: 'Email address is required.' });
+    }
+
+    // 🔒 ABSOLUTE FIRST CHECK: If registering and email already exists in system, BLOCK IMMEDIATELY!
+    if (type !== 'password_reset' && type !== 'change_password' && req.body.purpose !== 'login') {
+      const existingUser = await findExistingUserByEmail(recipientEmail, req);
+      if (existingUser) {
+        console.log(`🔒 [sendOtp] Blocked OTP dispatch: email already exists (${recipientEmail})`);
+        return res.status(409).json({
+          success: false,
+          code: 'EMAIL_ALREADY_EXISTS',
+          alreadyRegistered: true,
+          error: 'An account with this email already exists. Please log in.',
+          message: 'An account with this email already exists. Please log in.'
+        });
+      }
+    }
 
     const isEmp = isEmployee === true || isEmployee === 'true' || type === 'corporate_email_verification' || !!workEmail || !!corporateEmail || !!req.body.orgName || !!req.body.organizationName;
     const emailValidation = validateEmailAddress(recipientEmail, isEmp);
@@ -639,21 +690,6 @@ async function sendOtp(req, res) {
       const user = await prisma.user.findUnique({ where: { email: recipientEmail } });
       if (!user) {
         return res.status(404).json({ success: false, error: 'No account found with this email address.', message: 'No account found with this email address.' });
-      }
-    }
-
-    // Pre-check for registration flows: If email already has an account, reject immediately at OTP request
-    if (type !== 'password_reset' && type !== 'change_password' && req.body.purpose !== 'login') {
-      const existingUser = await findExistingUserByEmail(recipientEmail);
-      if (existingUser) {
-        console.log(`🔒 [sendOtp] Blocked OTP dispatch: email already exists (${recipientEmail})`);
-        return res.status(409).json({
-          success: false,
-          code: 'EMAIL_ALREADY_EXISTS',
-          alreadyRegistered: true,
-          error: 'An account with this email already exists. Please log in.',
-          message: 'An account with this email already exists. Please log in.'
-        });
       }
     }
 
@@ -1876,14 +1912,15 @@ async function resendLink(req, res) {
     }
     const cleanEmail = email.toLowerCase().trim();
 
-    // 🔒 If user is already registered and verified, reject resend verification link
-    const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
-    if (existingUser && existingUser.isEmailVerified) {
+    // 🔒 If user is already registered, reject resend verification link
+    const existingUser = await findExistingUserByEmail(cleanEmail, req);
+    if (existingUser) {
       return res.status(409).json({
         success: false,
         code: 'EMAIL_ALREADY_EXISTS',
-        error: 'An account with this email is already registered and verified. Please log in.',
-        message: 'An account with this email is already registered and verified. Please log in.'
+        alreadyRegistered: true,
+        error: 'An account with this email is already registered. Please log in.',
+        message: 'An account with this email is already registered. Please log in.'
       });
     }
 
@@ -1908,22 +1945,21 @@ async function resendLink(req, res) {
     const baseUrl = getAppBaseUrl(req);
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(cleanEmail)}`;
 
-    const fullName = existingUser ? `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() : 'Developer';
-
-    // 5. Dispatch Verification Link Email
-    await sendVerificationLinkEmail({
-      to: cleanEmail,
-      fullName,
-      verifyLink,
-      isResend: true,
-      customSubject: '🔄 Resend: Verify your rankly.ai account'
-    });
+    // 4. Dispatch Email with user's requested subject
+    const subject = "Verify your email for Rankly.ai";
+    try {
+      await Promise.race([
+        sendVerificationLinkEmail(cleanEmail, verifyLink, subject),
+        new Promise(resolve => setTimeout(() => resolve(true), 4000))
+      ]);
+    } catch (emailErr) {
+      console.warn('⚠️ [Background Resend Link Email Error]:', emailErr.message);
+    }
 
     return res.json({ 
       success: true, 
-      message: "Verification link resent successfully!",
-      email: cleanEmail,
-      verifyLink
+      message: `Verification link resent to ${cleanEmail}. Please check your email.`,
+      email: cleanEmail
     });
   } catch (error) {
     console.error('Resend Link Error:', error);
@@ -1932,7 +1968,9 @@ async function resendLink(req, res) {
 }
 
 /**
+ * 🔒 Check Email Availability & Registration Pre-Flight
  * GET /api/auth/check-email?email=...
+ * POST /api/auth/check-email
  * Instant pre-check if an email is available for registration
  */
 async function checkEmailAvailability(req, res) {
@@ -1942,13 +1980,23 @@ async function checkEmailAvailability(req, res) {
       return res.status(400).json({ success: false, message: 'Valid email is required.' });
     }
     const cleanEmail = rawEmail.toLowerCase().trim();
-    const existing = await findExistingUserByEmail(cleanEmail);
+    const existing = await findExistingUserByEmail(cleanEmail, req);
+    if (existing) {
+      return res.status(409).json({
+        success: false,
+        email: cleanEmail,
+        isAvailable: false,
+        alreadyRegistered: true,
+        code: 'EMAIL_ALREADY_EXISTS',
+        message: 'An account with this email already exists. Please log in.'
+      });
+    }
     return res.json({
       success: true,
       email: cleanEmail,
-      isAvailable: !existing,
-      alreadyRegistered: !!existing,
-      message: existing ? 'An account with this email already exists.' : 'Email is available for registration.'
+      isAvailable: true,
+      alreadyRegistered: false,
+      message: 'Email is available for registration.'
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
@@ -1956,6 +2004,7 @@ async function checkEmailAvailability(req, res) {
 }
 
 module.exports = {
+  findExistingUserByEmail,
   register,
   createAccount: register,
   verifyEmailLink,
@@ -1980,4 +2029,3 @@ module.exports = {
   checkVerificationStatus,
   checkEmailAvailability
 };
-
