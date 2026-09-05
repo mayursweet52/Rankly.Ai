@@ -380,7 +380,7 @@ async function uploadInternalDocument(req, res) {
     // 2. Also record in SQLite CompanyDocument for unified local access if user exists
     if (req.user?.id) {
       try {
-        await prisma.companyDocument.create({
+        const localCreated = await prisma.companyDocument.create({
           data: {
             title,
             category,
@@ -391,6 +391,9 @@ async function uploadInternalDocument(req, res) {
             organizationId: orgId
           }
         });
+        if (insertedDoc && (!supaDoc || !supaDoc[0])) {
+          insertedDoc.id = localCreated.id;
+        }
       } catch (localDbErr) {}
     }
 
@@ -481,9 +484,25 @@ async function processDocumentWithAi(req, res) {
       } else {
         // Fallback: Check local SQLite prisma.companyDocument
         try {
-          const localDoc = await prisma.companyDocument.findUnique({
+          let localDoc = await prisma.companyDocument.findUnique({
             where: { id: String(documentId) }
           });
+          if (!localDoc) {
+            localDoc = await prisma.companyDocument.findFirst({
+              where: {
+                OR: [
+                  { title: { contains: String(documentId) } },
+                  { fileName: { contains: String(documentId) } }
+                ]
+              },
+              orderBy: { createdAt: 'desc' }
+            });
+          }
+          if (!localDoc) {
+            localDoc = await prisma.companyDocument.findFirst({
+              orderBy: { createdAt: 'desc' }
+            });
+          }
           if (localDoc && (localDoc.content || localDoc.description)) {
             documentContext = `Document: ${localDoc.title} (${localDoc.fileName || 'document.pdf'})\n\n${localDoc.content || localDoc.description}`;
           }

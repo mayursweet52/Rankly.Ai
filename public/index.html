@@ -13476,8 +13476,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const safeEmail = email ? String(email).replace(/[&<>"']/g, '') : '';
                     const overlay = document.createElement('div');
                     overlay.id = 'accountVerifiedModal';
-                    overlay.className = 'modal-overlay';
-                    overlay.style.cssText = 'display:flex; align-items:center; justify-content:center; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.72); backdrop-filter:blur(8px); padding:16px; animation:fadeIn 0.25s ease;';
+                    overlay.className = 'modal-overlay active';
+                    overlay.style.cssText = 'display:flex; align-items:center; justify-content:center; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.72); backdrop-filter:blur(8px); padding:16px; opacity:1 !important; visibility:visible !important; pointer-events:auto !important; animation:fadeIn 0.25s ease;';
 
                     overlay.innerHTML = `
                         <div class="modal-box text-center" style="max-width:460px; width:100%; padding:36px 28px; border-radius:24px; background:var(--bg-card, #ffffff); border:1px solid var(--border-color, #e2e8f0); box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); position:relative;">
@@ -13493,13 +13493,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 <span>${safeEmail}</span>
                             </div>
                             ` : ''}
-                            <p style="font-size:14px; line-height:1.6; color:var(--text-muted, #64748b); margin-bottom:20px;">
+                            <p style="font-size:14px; line-height:1.6; color:var(--text-muted, #64748b); margin-bottom:26px;">
                                 Your account has been verified successfully! You can safely leave this page and proceed to the login page to sign in to your account.
                             </p>
-                            <div style="background:rgba(241, 245, 249, 0.7); border:1px dashed #cbd5e1; border-radius:14px; padding:12px 14px; font-size:12px; color:#64748b; line-height:1.5; margin-bottom:24px; text-align:left; display:flex; gap:10px; align-items:flex-start;">
-                                <i class="fa-solid fa-shield-halved" style="color:#10b981; font-size:16px; margin-top:2px; flex-shrink:0;"></i>
-                                <span>For your security, automatic dashboard login is disabled on this verification window. If you already have Rankly.ai open on another device or tab, you can simply close this page and sign in there.</span>
-                            </div>
                             <button type="button" onclick="closeAccountVerifiedPopup()" style="width:100%; padding:14px 22px; border-radius:14px; background:#183B33; color:#ffffff; font-size:15px; font-weight:700; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 10px 20px -3px rgba(24, 59, 51, 0.35); transition:all 0.2s;">
                                 <span>Go to Login Page</span>
                                 <i class="fa-solid fa-arrow-right"></i>
@@ -13513,6 +13509,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 function closeAccountVerifiedPopup() {
                     const el = document.getElementById('accountVerifiedModal');
                     if (el) el.remove();
+                    const dashPage = document.getElementById('dashboardPage');
+                    const loginPage = document.getElementById('loginPage');
+                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
                     if (typeof toggleAuthSlide === 'function') toggleAuthSlide('login');
                     if (typeof flipEntireAuthCard === 'function') flipEntireAuthCard(false);
                     const passInput = document.getElementById('loginPassword');
@@ -13532,6 +13532,16 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     sessionStorage.removeItem('rankly_jwt');
                     localStorage.removeItem('rankly_session');
                     sessionStorage.removeItem('rankly_session');
+                    localStorage.removeItem('user');
+                    sessionStorage.removeItem('user');
+                    currentUser = null;
+                    window.currentUser = null;
+
+                    // Strictly ensure dashboard is closed and login page is active
+                    const dashPage = document.getElementById('dashboardPage');
+                    const loginPage = document.getElementById('loginPage');
+                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
 
                     if (verifiedEmail) {
                         const loginInput = document.getElementById('loginUsername');
