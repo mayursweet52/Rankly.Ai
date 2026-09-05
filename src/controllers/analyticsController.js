@@ -314,7 +314,7 @@ async function generateAiPerformanceReport(req, res) {
       report: aiReport,
       metricsSummary: metricsData,
       generatedAt: new Date().toISOString(),
-      modelTier: 'Strict HRMS Talent Intelligence (Nemotron / Multi-tier)'
+      modelTier: 'Strict HRMS Talent Intelligence (Multi-tier AI)'
     });
   } catch (error) {
     console.error('AI Performance Report Error:', error);

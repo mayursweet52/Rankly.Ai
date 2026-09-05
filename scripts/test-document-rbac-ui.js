@@ -107,8 +107,8 @@ async function runTests() {
   const uploadedDocId = uploadRes.data?.document?.id;
   assert(Boolean(uploadedDocId), `Document ID generated: ${uploadedDocId}`);
 
-  // 4. Admin / HR queries Nemotron AI document processor
-  console.log('\n--- Test Suite 4: Process Document with Nemotron AI (Ollama HRMS Engine) ---');
+  // 4. Admin / HR queries AI document processor
+  console.log('\n--- Test Suite 4: Process Document with Multi-Tier AI (HRMS Engine) ---');
   const aiProcessRes = await makeRequest(
     'POST',
     '/api/documents/internal/process',
@@ -118,9 +118,9 @@ async function runTests() {
     },
     adminCookie
   );
-  assert(aiProcessRes.status === 200 && aiProcessRes.data.success, `Nemotron AI document processing returned 200 OK (Status ${aiProcessRes.status})`);
-  assert(typeof aiProcessRes.data?.result === 'string' && aiProcessRes.data.result.length > 10, 'Nemotron AI returned a detailed policy analysis result');
-  console.log(`      ?? Nemotron Result snippet: "${aiProcessRes.data?.result?.slice(0, 120)}..."`);
+  assert(aiProcessRes.status === 200 && aiProcessRes.data.success, `AI document processing returned 200 OK (Status ${aiProcessRes.status})`);
+  assert(typeof aiProcessRes.data?.result === 'string' && aiProcessRes.data.result.length > 10, 'AI returned a detailed policy analysis result');
+  console.log(`      💡 AI Result snippet: "${aiProcessRes.data?.result?.slice(0, 120)}..."`);
 
   // 5. Admin / HR lists internal documents
   console.log('\n--- Test Suite 5: List Internal Documents via GET /api/documents/internal ---');

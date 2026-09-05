@@ -75,7 +75,7 @@
 
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing with Nemotron AI...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing with AI Engine...';
         }
 
         try {
@@ -1003,7 +1003,7 @@
     // ─────────────────────────────────────────────────────────────────────────
     // 6. DEDICATED CANDIDATE PROFILE PAGE
     // ─────────────────────────────────────────────────────────────────────────
-    let currentProfileSkills = ['JavaScript', 'TypeScript', 'React.js', 'Node.js', 'PostgreSQL', 'Docker', 'NVIDIA Nemotron', 'Tailwind CSS', 'AWS'];
+    let currentProfileSkills = ['JavaScript', 'TypeScript', 'React.js', 'Node.js', 'PostgreSQL', 'Docker', 'GraphQL', 'Tailwind CSS', 'AWS'];
 
     window.loadCandidateProfile = async function() {
         try {
@@ -1193,7 +1193,7 @@
 
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Polishing with Nemotron...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Polishing with AI...';
         }
 
         try {
@@ -1208,7 +1208,7 @@
             if (polished && bioEl) {
                 bioEl.value = polished.trim();
                 updateProfileCompletenessMeter();
-                if (typeof window.showToast === 'function') window.showToast('✨ Bio polished with Nemotron AI!', 'success');
+                if (typeof window.showToast === 'function') window.showToast('✨ Bio polished with AI!', 'success');
             }
         } catch (e) {
             if (bioEl && !bioEl.value.trim()) {
@@ -1218,7 +1218,7 @@
         } finally {
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Bio Polish (Nemotron)</span>';
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Bio Polish</span>';
             }
         }
     };
@@ -1426,7 +1426,7 @@
             const data = await res.json();
             if (data && data.success) {
                 renderAiTalentReport(data);
-                if (typeof window.showToast === 'function') window.showToast('Talent Health Score updated with Nemotron AI!', 'success');
+                if (typeof window.showToast === 'function') window.showToast('Talent Health Score updated with AI Engine!', 'success');
             }
         } catch (e) {
             console.error('Talent report error:', e);
@@ -1499,7 +1499,7 @@
         const btn = document.getElementById('btnSubmitPolicySummary');
         const btnHeader = document.getElementById('btnRunPolicySummary');
 
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing with Nemotron AI...';
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing with AI Engine...';
         if (btnHeader) btnHeader.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Summarizing...';
 
         const payload = {};

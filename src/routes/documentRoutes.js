@@ -13,7 +13,7 @@ const { authorizeRoles } = require('../middleware/rbac');
 const { publicLimiter, aiLimiter } = require('../middleware/rateLimit');
 
 // ---------------------------------------------------------
-// Internal HRMS Document Engine (Supabase + Local Ollama Nemotron)
+// Internal HRMS Document Vault (Supabase + Multi-Tier AI)
 // Strictly locked behind HRMS RBAC (Admin & HR only for modifications/AI)
 // ---------------------------------------------------------
 router.post('/internal/upload', isAuthenticated, requireHRMS, authorizeRoles('admin', 'hr', 'hr_manager'), publicLimiter, upload.single('document'), documentController.uploadInternalDocument);

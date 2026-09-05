@@ -233,7 +233,7 @@ app.get('/reset-password', (req, res) => {
   return res.redirect(`/?action=reset-password&token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`);
 });
 app.get('/dashboard.html', (req, res) => res.redirect('/' + (req._parsedUrl.search || '')));
-// 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Using NVIDIA Nemotron & Multi-Tier AI)
+// 🚀 Tagda AI Code Reviewer & Bug Hunter Route (Multi-Tier AI)
 const { Ollama } = require('ollama');
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434' });
 
@@ -254,16 +254,16 @@ Be precise, technical, and direct.`;
 
     const userPrompt = `Here is my project code / query to review:\n\n${codeSnippet || userQuery}`;
 
-    console.log("🤖 Nemotron analyzing code...");
+    console.log("🤖 AI analyzing code...");
 
     let analysisText = null;
-    let modelUsed = 'nemotron (ollama)';
+    let modelUsed = 'multi-tier-ai (local)';
 
     // 1. Try Local Ollama First
     try {
       const response = await Promise.race([
         ollama.chat({
-          model: process.env.OLLAMA_MODEL || 'nemotron',
+          model: process.env.OLLAMA_MODEL || 'llama3',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
@@ -283,7 +283,7 @@ Be precise, technical, and direct.`;
     if (!analysisText) {
       const { executeAiInference } = require('./src/services/aiService');
       analysisText = await executeAiInference(userPrompt, false, systemPrompt);
-      modelUsed = 'nemotron-cloud-engine';
+      modelUsed = 'cloud-ai-engine';
     }
 
     return res.json({ 
@@ -293,10 +293,10 @@ Be precise, technical, and direct.`;
     });
 
   } catch (error) {
-    console.error("❌ Nemotron AI Error:", error);
+    console.error("❌ AI Reviewer Error:", error);
     return res.status(500).json({ 
       success: false, 
-      error: "Unable to connect to the Nemotron AI engine. Please verify the AI service configuration.",
+      error: "Unable to connect to the AI engine. Please verify the AI service configuration.",
       details: error.message 
     });
   }
@@ -475,7 +475,7 @@ app.get('/api/ai/status', async (req, res) => {
 
   const providers = [
     { 
-      name: 'NVIDIA Nemotron', 
+      name: 'NVIDIA Cloud AI', 
       key: 'NVIDIA_API_KEY', 
       endpoint: 'https://integrate.api.nvidia.com/v1/models',
       headers: (k) => ({ 'Authorization': `Bearer ${k}` })

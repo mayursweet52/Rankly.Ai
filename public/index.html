@@ -6839,96 +6839,6 @@ body.dark-theme .resume-tip-box,
         </div>
     </div>
 
-    <!-- ─── HRMS NEMOTRON AI DOCUMENT & POLICY ASSISTANT MODAL ─── -->
-    <div id="aiDocAssistantModal" class="modal-overlay" onclick="if(event.target===this) closeModal('aiDocAssistantModal')">
-        <div class="modal-box" style="max-width:680px;">
-            <!-- Modal Header -->
-            <div class="flex justify-between items-start mb-3 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
-                            <i class="fa-solid fa-shield-halved mr-1"></i> HRMS Isolated
-                        </span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60">
-                            Nemotron 111B Local
-                        </span>
-                    </div>
-                    <h3 class="text-lg font-black text-[#111111] dark:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-robot text-amber-500"></i>
-                        <span>AI Policy & Document Assistant</span>
-                    </h3>
-                </div>
-                <button type="button" onclick="closeModal('aiDocAssistantModal')" class="text-gray-400 hover:text-gray-600 p-1">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Scope Bar -->
-            <div class="flex items-center justify-between p-2.5 mb-3 bg-[#FAFAF8] dark:bg-zinc-800/60 border border-[#E5E5DF] dark:border-zinc-700/60 rounded-xl text-xs">
-                <div class="flex items-center gap-2 overflow-hidden">
-                    <i class="fa-solid fa-file-contract text-amber-500 flex-shrink-0"></i>
-                    <span class="text-gray-400">Target Scope:</span>
-                    <span id="aiDocScopeLabel" class="font-bold text-[#111111] dark:text-white truncate">All Corporate Policies & Handbooks</span>
-                </div>
-                <button type="button" id="aiDocResetScopeBtn" onclick="resetAiDocScope()" class="text-[11px] text-gray-500 hover:text-gray-800 dark:hover:text-zinc-200 underline hidden flex-shrink-0 ml-2">
-                    Query All Policies
-                </button>
-            </div>
-
-            <!-- Quick Query Presets -->
-            <div class="mb-3">
-                <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 block">Quick Policy Queries</label>
-                <div class="flex flex-wrap gap-1.5">
-                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('Summarize the primary guidelines, obligations, and key clauses of this policy.')">
-                        📋 Summarize Clauses
-                    </button>
-                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the working hours, PTO annual quota, and holiday rules specified here?')">
-                        🏖️ Working Hours & PTO
-                    </button>
-                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the non-disclosure, IP ownership, and data confidentiality restrictions?')">
-                        🔒 NDA & IP Rules
-                    </button>
-                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the workplace ethics, compliance requirements, and disciplinary procedures?')">
-                        ⚖️ Ethics & Compliance
-                    </button>
-                </div>
-            </div>
-
-            <!-- Query Input -->
-            <form id="aiDocQueryForm" onsubmit="submitAiDocQuery(event)" class="mb-4">
-                <div class="relative">
-                    <textarea id="aiDocQueryInput" rows="3" class="form-input text-xs leading-relaxed" placeholder="Ask Nemotron anything regarding company policy, vacation leaves, compliance clauses, or employee regulations..." required></textarea>
-                </div>
-                <div class="flex justify-between items-center mt-2.5">
-                    <span class="text-[10px] text-gray-400 font-mono flex items-center gap-1">
-                        <i class="fa-solid fa-lock text-emerald-500"></i> Zero web queries • Corporate data only
-                    </span>
-                    <button type="submit" id="aiDocSubmitBtn" class="btn-primary text-xs py-2 px-4 flex items-center gap-2 bg-[#183B33] hover:bg-[#122e28] text-white">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400" id="aiDocSubmitIcon"></i>
-                        <span id="aiDocSubmitText">Ask Nemotron</span>
-                    </button>
-                </div>
-            </form>
-
-            <!-- Result Box -->
-            <div id="aiDocResultContainer" class="hidden">
-                <div class="border border-[#E5E5DF] dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
-                    <div class="flex justify-between items-center px-4 py-2.5 bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[11px]">
-                        <span class="font-bold text-[#111111] dark:text-white flex items-center gap-1.5">
-                            <i class="fa-solid fa-circle-check text-emerald-500"></i> Nemotron Analysis
-                        </span>
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="copyAiDocResponse()" class="text-gray-400 hover:text-gray-700 dark:hover:text-zinc-200 text-xs px-2 py-0.5 rounded border border-transparent hover:border-gray-300 cursor-pointer" title="Copy response">
-                                <i class="fa-regular fa-copy mr-1"></i> Copy
-                            </button>
-                        </div>
-                    </div>
-                    <div id="aiDocResponseContent" class="p-4 text-xs text-[#222220] dark:text-zinc-200 leading-relaxed max-h-72 overflow-y-auto whitespace-pre-wrap font-sans"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ─── RANKLY EXECUTIVE CALENDAR & DATEPICKER POPOVER ─── -->
     <div id="ranklyExecutiveDatePicker" class="rankly-cal-popover hidden select-none">
         <!-- Header: Month, Year Controls and Jumpers -->
@@ -8552,7 +8462,7 @@ body.dark-theme .resume-tip-box,
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <h2 class="text-base font-extrabold text-[#111111] dark:text-white tracking-tight">AI Application & Resume Suite</h2>
                                             <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> NVIDIA Nemotron 70B
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Advanced ATS AI Engine
                                             </span>
                                         </div>
                                         <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Calibrate ATS keyword compatibility and generate tailored cover letters from one streamlined studio.</p>
@@ -9312,7 +9222,7 @@ body.dark-theme .resume-tip-box,
                                         <div class="grid grid-cols-2 gap-2.5" id="profileBadgesGrid">
                                             <div class="p-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 dark:bg-amber-950/20 text-center">
                                                 <i class="fa-solid fa-wand-magic-sparkles text-amber-500 text-lg mb-1 block"></i>
-                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">Nemotron Master</span>
+                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">AI Evaluation Master</span>
                                                 <span class="text-[9px] text-gray-500">GenAI Inference</span>
                                             </div>
                                             <div class="p-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 dark:bg-blue-950/20 text-center">
@@ -9405,7 +9315,7 @@ body.dark-theme .resume-tip-box,
                                             </h3>
                                             <button type="button" onclick="aiPolishCandidateBio()" id="btnAiBioPolish" class="py-1 px-3 rounded-lg border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer">
                                                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                                <span>AI Bio Polish (Nemotron)</span>
+                                                <span>AI Bio Polish</span>
                                             </button>
                                         </div>
                                         <div class="space-y-2 text-xs">
@@ -9444,7 +9354,7 @@ body.dark-theme .resume-tip-box,
                                                     <button type="button" onclick="quickAddCandidateSkill('Python')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ Python</button>
                                                     <button type="button" onclick="quickAddCandidateSkill('Docker')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ Docker</button>
                                                     <button type="button" onclick="quickAddCandidateSkill('PostgreSQL')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ PostgreSQL</button>
-                                                    <button type="button" onclick="quickAddCandidateSkill('NVIDIA Nemotron')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ NVIDIA Nemotron</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('GraphQL')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ GraphQL</button>
                                                     <button type="button" onclick="quickAddCandidateSkill('AWS')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ AWS</button>
                                                 </div>
                                             </div>
@@ -9529,7 +9439,7 @@ body.dark-theme .resume-tip-box,
                                 <div class="flex-1 flex items-center gap-2.5">
                                     <div class="relative flex-1">
                                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="jobSearchInput" oninput="filterJobListings()" placeholder="Search by role title, company, or keyword (e.g. React, Nemotron, DevOps)..." class="form-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border" />
+                                        <input type="text" id="jobSearchInput" oninput="filterJobListings()" placeholder="Search by role title, company, or keyword (e.g. React, Python, DevOps)..." class="form-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border" />
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2.5 flex-wrap">
@@ -9579,7 +9489,7 @@ body.dark-theme .resume-tip-box,
                                             <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">AI Talent & Policy Executive Intelligence</h2>
                                             <span class="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30">Enterprise Exclusive</span>
                                         </div>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">One-click corporate policy auto-summaries and talent health analytics powered by live Nemotron 70B & HRMS endpoints.</p>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Talent health analytics and workforce insights powered by live HRMS intelligence.</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
@@ -9640,7 +9550,7 @@ body.dark-theme .resume-tip-box,
                                             </div>
                                             <div class="p-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
                                                 <span class="block text-[10px] uppercase font-bold text-gray-400">AI Model</span>
-                                                <span class="text-[11px] font-bold text-purple-600 dark:text-purple-400">Nemotron 70B</span>
+                                                <span class="text-[11px] font-bold text-purple-600 dark:text-purple-400">AI Screening</span>
                                             </div>
                                         </div>
 
@@ -9769,7 +9679,7 @@ body.dark-theme .resume-tip-box,
                                             </div>
 
                                             <div class="flex items-center justify-between pt-2">
-                                                <span class="text-[11px] text-gray-400 font-mono">Engine: Nemotron 70B Multi-Tier</span>
+                                                <span class="text-[11px] text-gray-400 font-mono">Engine: Enterprise Multi-Tier AI</span>
                                                 <button type="button" onclick="copyPolicySummary()" class="btn-secondary py-1 px-3 text-xs flex items-center gap-1.5">
                                                     <i class="fa-solid fa-copy"></i> Copy Summary
                                                 </button>
@@ -10015,7 +9925,7 @@ body.dark-theme .resume-tip-box,
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Ranked (90%+ on Top)
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Live applicant queue automatically ordered by NVIDIA Nemotron AI Fit Score. Review cheat sheets & 1-click shortlist with immutable audit logs.</p>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Live applicant queue automatically ordered by AI Fit Score. Review cheat sheets & 1-click shortlist with immutable audit logs.</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-2">
@@ -16061,7 +15971,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     return;
                 }
 
-                // Ingest into Supabase internal_documents for Nemotron AI
+                // Ingest into Supabase internal_documents vault
                 try {
                     await fetch('/api/documents/internal/upload', {
                         method: 'POST',
@@ -16088,109 +15998,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     btn.textContent = 'Publish Document';
                 }
             }
-        };
-
-        // ─── NEMOTRON AI DOCUMENT & POLICY ASSISTANT CONTROLLER ───
-        let activeAiDocId = null;
-        let activeAiDocTitle = '';
-
-        window.openAiDocAssistant = function(docId, docTitle) {
-            activeAiDocId = docId || null;
-            activeAiDocTitle = docTitle || '';
-
-            const scopeLabel = document.getElementById('aiDocScopeLabel');
-            const resetBtn = document.getElementById('aiDocResetScopeBtn');
-            if (scopeLabel) {
-                scopeLabel.textContent = activeAiDocTitle ? `Document: ${activeAiDocTitle}` : 'All Corporate Policies & Handbooks';
-            }
-            if (resetBtn) {
-                resetBtn.classList.toggle('hidden', !activeAiDocTitle);
-            }
-
-            const input = document.getElementById('aiDocQueryInput');
-            if (input) input.value = '';
-            const resContainer = document.getElementById('aiDocResultContainer');
-            if (resContainer) resContainer.classList.add('hidden');
-
-            openModal('aiDocAssistantModal');
-            if (input) input.focus();
-        };
-
-        window.resetAiDocScope = function() {
-            activeAiDocId = null;
-            activeAiDocTitle = '';
-            const scopeLabel = document.getElementById('aiDocScopeLabel');
-            const resetBtn = document.getElementById('aiDocResetScopeBtn');
-            if (scopeLabel) scopeLabel.textContent = 'All Corporate Policies & Handbooks';
-            if (resetBtn) resetBtn.classList.add('hidden');
-        };
-
-        window.setAiDocPreset = function(text) {
-            const input = document.getElementById('aiDocQueryInput');
-            if (input) {
-                input.value = text;
-                input.focus();
-            }
-        };
-
-        window.submitAiDocQuery = async function(e) {
-            if (e) e.preventDefault();
-            const input = document.getElementById('aiDocQueryInput');
-            const promptText = (input?.value || '').trim();
-            if (!promptText) {
-                showToast('Please enter a policy query or select a preset.', 'warning');
-                return;
-            }
-
-            const submitBtn = document.getElementById('aiDocSubmitBtn');
-            const icon = document.getElementById('aiDocSubmitIcon');
-            const textEl = document.getElementById('aiDocSubmitText');
-            const resContainer = document.getElementById('aiDocResultContainer');
-            const resContent = document.getElementById('aiDocResponseContent');
-
-            if (submitBtn) submitBtn.disabled = true;
-            if (icon) icon.className = 'fa-solid fa-spinner fa-spin mr-1';
-            if (textEl) textEl.textContent = 'Analyzing with Nemotron...';
-
-            try {
-                const payload = {
-                    promptText,
-                    documentId: activeAiDocId || undefined
-                };
-
-                const res = await fetch('/api/documents/internal/process', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await res.json();
-                if (!res.ok || !data.success) {
-                    showToast(data.error || data.message || 'AI processing request failed.', 'error');
-                    return;
-                }
-
-                if (resContainer && resContent) {
-                    resContent.textContent = data.result || 'No response returned from model.';
-                    resContainer.classList.remove('hidden');
-                    resContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-                showToast('Policy analysis completed by Nemotron.', 'success');
-            } catch (err) {
-                showToast('Network error querying AI engine: ' + err.message, 'error');
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
-                if (icon) icon.className = 'fa-solid fa-wand-magic-sparkles text-amber-400';
-                if (textEl) textEl.textContent = 'Ask Nemotron';
-            }
-        };
-
-        window.copyAiDocResponse = function() {
-            const resContent = document.getElementById('aiDocResponseContent');
-            if (!resContent || !resContent.textContent) return;
-            navigator.clipboard?.writeText(resContent.textContent);
-            showToast('Nemotron analysis copied to clipboard!', 'info');
         };
 
         window.readDocument = function(id) {

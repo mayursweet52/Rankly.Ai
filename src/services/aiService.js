@@ -14,7 +14,7 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
   const errors = [];
 
   // =========================================================================
-  // 0. Tier 0: NVIDIA Nemotron (Llama-3.1-Nemotron-70B-Instruct)
+  // 0. Tier 0: NVIDIA Cloud AI (Llama-3.1 / Deep Reasoning)
   // =========================================================================
   if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_API_KEY.trim().length > 10) {
     try {
@@ -40,7 +40,7 @@ async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are
         return isJson ? safeJsonParse(content) : content;
       }
     } catch (err) {
-      errors.push(`NVIDIA Nemotron: ${err.response?.data?.error?.message || err.message}`);
+      errors.push(`NVIDIA AI: ${err.response?.data?.error?.message || err.message}`);
     }
   }
 
@@ -385,18 +385,18 @@ const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://127.0.0.1:1
 
 /**
  * Strict Internal HRMS Document Processor
- * Connects to Local Ollama Nemotron with resilient cloud fallback using strict internal prompt rules
+ * Connects to Local Ollama with resilient cloud fallback using strict internal prompt rules
  */
 async function processInternalDocument(promptText, documentContext) {
   const systemPrompt = `You are the strict internal HRMS document processor for rankly.ai. 
 RULES: Read and write internal corporate data only. Zero external web queries or candidate resume generation allowed.`;
   const userContent = `Context: ${documentContext}\n\nTask: ${promptText}`;
 
-  // 1. Primary: Local Ollama Nemotron Engine
+  // 1. Primary: Local Ollama Engine
   try {
     const response = await Promise.race([
       ollama.chat({
-        model: process.env.OLLAMA_MODEL || 'nemotron',
+        model: process.env.OLLAMA_MODEL || 'llama3',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userContent }
@@ -410,10 +410,10 @@ RULES: Read and write internal corporate data only. Zero external web queries or
       return response.message.content;
     }
   } catch (ollamaErr) {
-    console.warn(`[InternalDocProcessor] Local Ollama Nemotron offline/busy (${ollamaErr.message}). Cascading to multi-tier cloud AI engine...`);
+    console.warn(`[InternalDocProcessor] Local Ollama offline/busy (${ollamaErr.message}). Cascading to multi-tier cloud AI engine...`);
   }
 
-  // 2. Secondary: Multi-Tier Cloud AI Engine (OpenRouter DeepSeek / Nemotron / Groq)
+  // 2. Secondary: Multi-Tier Cloud AI Engine (OpenRouter DeepSeek / Groq)
   try {
     const fallbackResponse = await executeAiInference(userContent, false, systemPrompt);
     if (fallbackResponse && typeof fallbackResponse === 'string' && fallbackResponse.trim().length > 0) {
@@ -567,7 +567,7 @@ Return a valid JSON object ONLY:
 
 /**
  * ATS Score Checker with Job Description Keyword Matching
- * Uses NVIDIA Nemotron / Multi-Tier AI with intelligent heuristic fallback
+ * Uses Multi-Tier AI with intelligent heuristic fallback
  */
 async function calculateAtsScoreWithJd(resumeText, jobDescription, targetRole = 'Software Engineer') {
   const systemPrompt = `You are the Lead ATS Architect & Executive Recruiter for Rankly.ai. 
@@ -826,7 +826,7 @@ const ROLE_BENCHMARKS = {
     ],
     badges: [
       { id: 'ai_python', title: 'Pythonic Alchemist', icon: 'fa-brands fa-python', desc: 'Deep fluency in vectorized computing with Python', skill: 'Python & NumPy / Pandas', minScore: 85 },
-      { id: 'ai_llm', title: 'Nemotron Master', icon: 'fa-wand-magic-sparkles', desc: 'Advanced LLM prompting, fine-tuning, and inference', skill: 'LLM Prompting & Fine-Tuning', minScore: 80 },
+      { id: 'ai_llm', title: 'AI Evaluation Master', icon: 'fa-wand-magic-sparkles', desc: 'Advanced LLM prompting, fine-tuning, and inference', skill: 'LLM Prompting & Fine-Tuning', minScore: 80 },
       { id: 'ai_rag', title: 'RAG Pathfinder', icon: 'fa-network-wired', desc: 'High-precision hybrid retrieval and semantic indexing', skill: 'Vector DBs & RAG Architecture', minScore: 75 },
       { id: 'ai_mlops', title: 'MLOps Navigator', icon: 'fa-gears', desc: 'Productionizing AI pipelines with robust monitoring', skill: 'MLOps & Model Serving', minScore: 70 }
     ]

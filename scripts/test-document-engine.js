@@ -126,9 +126,9 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
   }
 
   // -------------------------------------------------------------
-  // Step 4: AI Document Processing with Nemotron / Local Ollama
+  // Step 4: AI Document Processing with Multi-Tier AI
   // -------------------------------------------------------------
-  console.log('\n🤖 STEP 4: Executing Document Query with Local Ollama / Nemotron Engine...');
+  console.log('\n🤖 STEP 4: Executing Document Query with Multi-Tier AI Engine...');
   try {
     const promptText = 'Summarize the core PTO allowance, hybrid working hours, and confidentiality rules.';
     const processRes = await axios.post(`${BASE_URL}/api/documents/internal/process`, {
@@ -140,7 +140,7 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
     });
 
     assert(processRes.status === 200 && processRes.data.success, 'Document AI processing endpoint returned 200 OK');
-    assert(processRes.data.result && processRes.data.result.length > 50, `Nemotron model generated response (${processRes.data.result.length} chars)`);
+    assert(processRes.data.result && processRes.data.result.length > 50, `AI model generated response (${processRes.data.result.length} chars)`);
     console.log('\n--- 🧠 Model Output Preview ---');
     console.log(processRes.data.result.slice(0, 300) + '...\n-------------------------------');
 

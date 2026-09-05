@@ -464,7 +464,7 @@ async function getInternalDocumentById(req, res) {
 
 /**
  * POST /api/documents/internal/process
- * Process internal document context with Local Ollama Nemotron AI (Strict HRMS prompt)
+ * Process internal document context with Multi-Tier AI Engine (Strict HRMS prompt)
  */
 async function processDocumentWithAi(req, res) {
   try {
@@ -540,7 +540,7 @@ async function processDocumentWithAi(req, res) {
       query: promptText.trim(),
       result: aiResult,
       documentId: documentId || null,
-      modelUsed: 'nemotron (Local Ollama / HRMS Tier)'
+      modelUsed: 'multi-tier-ai (HRMS Tier)'
     });
   } catch (err) {
     console.error('Error processing document with AI:', err);
@@ -611,7 +611,7 @@ async function summarizeDocumentWithAi(req, res) {
       title: documentTitle,
       summary: summaryResult,
       processedAt: new Date().toISOString(),
-      modelTier: 'Strict HRMS AI Engine (Nemotron / Multi-tier)'
+      modelTier: 'Strict HRMS AI Engine (Multi-tier)'
     });
   } catch (err) {
     console.error('Error generating document summary:', err);

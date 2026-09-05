@@ -1,7 +1,7 @@
 /**
  * Anti-Gravity Autonomous AI Agent Service
  * Implementation for Spec v1.0 (Page 2 & 3)
- * Model Engines: NVIDIA Nemotron API & LLaMA 3.3 (8B) via Ollama
+ * Model Engines: Multi-Tier Cloud AI & LLaMA 3.3 (8B) via Ollama
  */
 
 const prisma = require('../config/database');
@@ -109,7 +109,7 @@ async function getAgentById(agentId) {
 }
 
 /**
- * Dispatch inference to the agent using NVIDIA Nemotron or Ollama LLaMA 3.3
+ * Dispatch inference to the agent using Multi-Tier AI or Ollama LLaMA 3.3
  */
 async function dispatchAgentTurn(agentId, userMessage, targetRecipient = null) {
   const startTime = Date.now();

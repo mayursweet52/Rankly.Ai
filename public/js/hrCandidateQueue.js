@@ -23,7 +23,7 @@
             tableBody.innerHTML = `
                 <tr>
                     <td colspan="6" class="p-8 text-center text-xs text-gray-400">
-                        <i class="fa-solid fa-spinner fa-spin mr-2 text-emerald-500 text-sm"></i> Calibrating AI Candidate Queue with Nemotron ranking...
+                        <i class="fa-solid fa-spinner fa-spin mr-2 text-emerald-500 text-sm"></i> Calibrating AI Candidate Queue with AI Fit ranking...
                     </td>
                 </tr>
             `;
@@ -398,7 +398,7 @@
                 <div class="p-4 rounded-2xl bg-[#FAFAF8] dark:bg-zinc-800/60 border border-[#E5E5DF] dark:border-zinc-800 space-y-2">
                     <div class="flex items-center gap-2 font-bold text-xs text-[#111111] dark:text-white uppercase tracking-wider">
                         <i class="fa-solid fa-sparkles text-amber-500"></i>
-                        <span>AI Executive 3-Line Summary (Nemotron 70B)</span>
+                        <span>AI Executive 3-Line Summary</span>
                     </div>
                     <div class="space-y-1.5 text-xs text-[#333330] dark:text-zinc-200 leading-relaxed pl-1">
                         ${lines.map((line, lidx) => `

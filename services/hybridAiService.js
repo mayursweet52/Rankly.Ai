@@ -5,7 +5,7 @@ async function executeAiInference(prompt, isJson = true) {
   const isJsonFlag = typeof isJson === 'boolean' ? isJson : (typeof isJson === 'object' && isJson !== null ? !!isJson.isJson : (typeof isJson === 'string' ? false : true));
   const errors = [];
 
-  // 1. Try NVIDIA Nemotron (If API key exists)
+  // 1. Try NVIDIA AI (If API key exists)
   if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_API_KEY.trim().startsWith('nvapi-')) {
     try {
       const baseUrl = process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1';
@@ -24,7 +24,7 @@ async function executeAiInference(prompt, isJson = true) {
       const content = res.data.choices[0].message.content;
       return isJsonFlag ? JSON.parse(content) : content;
     } catch (err) {
-      errors.push(`NVIDIA Nemotron: ${err.response?.data?.message || err.message}`);
+      errors.push(`NVIDIA AI: ${err.response?.data?.message || err.message}`);
     }
   }
 

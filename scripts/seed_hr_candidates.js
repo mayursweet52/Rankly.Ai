@@ -59,13 +59,13 @@ const candidatesData = [
     educationScore: 90,
     fitVerdict: 'Optimal Fit',
     stage: 'ai_screened',
-    matchedSkills: JSON.stringify(['Python', 'PyTorch', 'NVIDIA Nemotron', 'LangChain', 'Vector DB', 'FastAPI', 'RAG', 'LoRA']),
+    matchedSkills: JSON.stringify(['Python', 'PyTorch', 'Transformer Models', 'LangChain', 'Vector DB', 'FastAPI', 'RAG', 'LoRA']),
     missingSkills: JSON.stringify(['C++', 'Triton Inference Server']),
     recommendations: JSON.stringify(['Schedule technical deep-dive on agentic orchestration.', 'Top candidate for GenAI platform lead role.']),
-    summary: 'Strong GenAI and LLM fine-tuning specialist with 5+ years shipping production AI workflows using NVIDIA Nemotron, PyTorch, and LangChain. Demonstrates robust understanding of semantic search, vector databases (Pinecone/Milvus), and low-latency inference caching. Proven capability translating ambiguous enterprise requirements into scalable agentic pipelines.',
+    summary: 'Strong GenAI and LLM fine-tuning specialist with 5+ years shipping production AI workflows using Transformer Models, PyTorch, and LangChain. Demonstrates robust understanding of semantic search, vector databases (Pinecone/Milvus), and low-latency inference caching. Proven capability translating ambiguous enterprise requirements into scalable agentic pipelines.',
     aiCheatSheet: JSON.stringify({
       summaryLines: [
-        'Strong GenAI and LLM fine-tuning specialist with 5+ years shipping production AI workflows using NVIDIA Nemotron, PyTorch, and LangChain.',
+        'Strong GenAI and LLM fine-tuning specialist with 5+ years shipping production AI workflows using Transformer Models, PyTorch, and LangChain.',
         'Demonstrates robust understanding of semantic search, vector databases (Pinecone/Milvus), and low-latency inference caching.',
         'Proven capability translating ambiguous enterprise requirements into scalable agentic pipelines.'
       ],
