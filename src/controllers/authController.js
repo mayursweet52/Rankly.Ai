@@ -121,8 +121,8 @@ async function register(req, res) {
 
       // Tier 1: Cryptographic JWT Verification Token (from Authorization header or request body)
       const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
-      const clientToken = req.body.verificationToken || req.body.token || 
-        (req.headers.authorization ? req.headers.authorization.replace(/^Bearer\s+/i, '').trim() : null);
+      const clientToken = (req.body.verificationToken || req.body.token || 
+        (req.headers.authorization ? req.headers.authorization.replace(/^Bearer\s+/i, '').trim() : null));
 
       if (clientToken) {
         try {
@@ -465,8 +465,8 @@ async function login(req, res) {
  */
 function logout(req, res) {
   try {
-    if (req.logout) {
-      try { req.logout(() => {}); } catch (e) {}
+    if (req.session && typeof req.logout === 'function') {
+      try { req.logout({ keepSessionInfo: false }, () => {}); } catch (e) {}
     }
 
     const clearAllCookies = () => {
@@ -505,11 +505,11 @@ function logout(req, res) {
 async function getMe(req, res) {
   try {
     if (!req.session || !req.session.userId) {
-      return res.status(401).json({
-        success: false,
+      return res.json({
+        success: true,
+        authenticated: false,
         user: null,
-        error: 'Not logged in',
-        message: 'Not logged in'
+        message: 'No active session'
       });
     }
 
@@ -520,7 +520,12 @@ async function getMe(req, res) {
 
     if (!user) {
       req.session.destroy();
-      return res.status(401).json({ success: false, user: null, error: 'User not found', message: 'User not found' });
+      return res.json({
+        success: true,
+        authenticated: false,
+        user: null,
+        message: 'User not found or session expired'
+      });
     }
 
     const responseUser = formatUserResponse(user);

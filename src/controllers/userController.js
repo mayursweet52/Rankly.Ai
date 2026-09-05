@@ -161,8 +161,8 @@ async function deleteAccount(req, res) {
 
     await prisma.user.delete({ where: { id: userId } });
 
-    if (req.logout) {
-      try { req.logout(() => {}); } catch (e) {}
+    if (req.session && typeof req.logout === 'function') {
+      try { req.logout({ keepSessionInfo: false }, () => {}); } catch (e) {}
     }
 
     if (req.session) {

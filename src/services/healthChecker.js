@@ -100,7 +100,9 @@ const checks = {
             const lines = content.split('\n');
             const issues = [];
             lines.forEach((line, index) => {
-                const trimmed = line.trim();
+                let trimmed = line.trim();
+                // Strip trailing single-line comments so inline comments don't break check
+                trimmed = trimmed.replace(/\/\/.*$/, '').trim();
                 if (
                     trimmed &&
                     !trimmed.startsWith('//') &&
@@ -116,6 +118,10 @@ const checks = {
                     !trimmed.endsWith('[') &&
                     !trimmed.endsWith(']') &&
                     !trimmed.endsWith('`') &&
+                    !trimmed.endsWith('||') &&
+                    !trimmed.endsWith('&&') &&
+                    !trimmed.endsWith('+') &&
+                    !trimmed.endsWith('?') &&
                     !trimmed.startsWith('case ') &&
                     !trimmed.startsWith('default:') &&
                     (trimmed.startsWith('const ') || trimmed.startsWith('let ') || trimmed.startsWith('var ') || trimmed.startsWith('return ') || trimmed.startsWith('throw '))

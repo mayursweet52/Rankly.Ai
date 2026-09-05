@@ -105,7 +105,8 @@ app.use(cors({
     if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) || origin.endsWith('.railway.app')) {
       return callback(null, true);
     }
-    return callback(null, true); // Safe fallback to support tunnels/mobile while preserving credentials
+    // Safe fallback to support tunnels/mobile while preserving credentials
+    return callback(null, true);
   },
   credentials: true
 }));
