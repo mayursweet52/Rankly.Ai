@@ -464,13 +464,37 @@ async function login(req, res) {
  * Logout User
  */
 function logout(req, res) {
-  req.session.destroy((err) => {
-    res.clearCookie('connect.sid');
-    return res.json({
-      success: true,
-      message: 'Logged out successfully.'
-    });
-  });
+  try {
+    if (req.logout) {
+      try { req.logout(() => {}); } catch (e) {}
+    }
+
+    const clearAllCookies = () => {
+      res.clearCookie('connect.sid', { path: '/' });
+      res.clearCookie('token', { path: '/' });
+      res.clearCookie('jwt', { path: '/' });
+      res.clearCookie('rankly_session', { path: '/' });
+    };
+
+    if (req.session) {
+      req.session.destroy((err) => {
+        clearAllCookies();
+        return res.json({
+          success: true,
+          message: 'Logged out successfully.'
+        });
+      });
+    } else {
+      clearAllCookies();
+      return res.json({
+        success: true,
+        message: 'Logged out successfully.'
+      });
+    }
+  } catch (e) {
+    res.clearCookie('connect.sid', { path: '/' });
+    return res.json({ success: true, message: 'Logged out successfully.' });
+  }
 }
 
 

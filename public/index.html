@@ -10013,58 +10013,74 @@ body.dark-theme .resume-tip-box,
                 }
             };
 
-            window.logoutUser = function() {
-                fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
+            window.logoutUser = async function() {
+                try {
+                    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+                } catch (e) {}
                 currentUser = null;
-                sessionStorage.removeItem('rankly_session');
+                sessionStorage.clear();
                 localStorage.removeItem('rankly_session');
+                localStorage.removeItem('user');
                 localStorage.removeItem('token');
                 localStorage.removeItem('rankly_jwt');
+                localStorage.removeItem('org_verified_token');
+                localStorage.removeItem('org_verified_email');
+                document.cookie = 'connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
                 const dashPage = document.getElementById('dashboardPage');
                 const loginPage = document.getElementById('loginPage');
                 if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
                 if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
                 showToast('Signed out successfully.', 'info');
+
+                setTimeout(() => {
+                    window.location.replace('/');
+                }, 400);
             };
 
             window.confirmDeleteAccount = async function() {
                 const btn = document.getElementById('confirmDeleteBtn');
                 if (btn) {
                     btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting permanently...';
                 }
 
                 try {
-                    await fetch('/api/users/account', {
+                    await fetch('/api/user/account', {
                         method: 'DELETE',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' }
                     });
                 } catch (e) {
-                    console.warn('API delete request failed, proceeding with client cleanup', e);
+                    console.warn('API delete request failed', e);
                 }
 
-                // Clear stored data and user records
-                if (currentUser) {
-                    users = users.filter(u => u.id !== currentUser.id && u.email !== currentUser.email && u.username !== currentUser.username);
-                    setStoredData('rankly_users', users);
-                }
+                // Completely wipe all local and session storage
+                sessionStorage.clear();
                 localStorage.removeItem('rankly_session');
-                sessionStorage.removeItem('rankly_session');
+                localStorage.removeItem('user');
                 localStorage.removeItem('token');
                 localStorage.removeItem('rankly_jwt');
+                localStorage.removeItem('org_verified_token');
+                localStorage.removeItem('org_verified_email');
+                document.cookie = 'connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+                if (currentUser) {
+                    users = (users || []).filter(u => u.id !== currentUser.id && u.email !== currentUser.email && u.username !== currentUser.username);
+                    setStoredData('rankly_users', users);
+                }
                 currentUser = null;
 
                 closeModal('deleteAccountModal');
-                showToast('Account permanently deleted', 'success');
+                showToast('Account permanently deleted from system.', 'success');
 
                 setTimeout(() => {
-                    const dashPage = document.getElementById('dashboardPage');
-                    const loginPage = document.getElementById('loginPage');
-                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
-                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-                    window.location.reload();
-                }, 1000);
+                    window.location.replace('/');
+                }, 500);
             };
 
             // ─── GPU-ACCELERATED BORDER-BEAM BUTTON LOADING CONTROLLER ───
@@ -13509,30 +13525,58 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             currentUser = parsedUser;
                             loginUser();
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        currentUser = null;
+                    }
                 }
 
-                // Verify active backend session
+                // Strictly verify active backend session
                 fetch('/api/auth/me', { credentials: 'include' })
-                    .then(r => r.json())
+                    .then(r => {
+                        if (!r.ok) throw new Error('Session invalid or logged out');
+                        return r.json();
+                    })
                     .then(data => {
                         if (data && (data.authenticated || data.success) && data.user) {
                             if (data.user.isEmailVerified === false || data.user.verified?.email === false) {
-                                sessionStorage.removeItem('rankly_session');
+                                sessionStorage.clear();
                                 localStorage.removeItem('rankly_session');
+                                localStorage.removeItem('user');
                                 currentUser = null;
+                                const dashPage = document.getElementById('dashboardPage');
+                                const loginPage = document.getElementById('loginPage');
+                                if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                                if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
                                 return;
                             }
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             localStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             loginUser();
-                        } else if (data && data.requiresEmailVerification) {
-                            sessionStorage.removeItem('rankly_session');
+                        } else {
+                            // Backend confirms: NOT logged in! Clear all local states
+                            sessionStorage.clear();
                             localStorage.removeItem('rankly_session');
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('rankly_jwt');
                             currentUser = null;
+                            const dashPage = document.getElementById('dashboardPage');
+                            const loginPage = document.getElementById('loginPage');
+                            if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                            if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
                         }
-                    }).catch(() => {});
+                    }).catch(() => {
+                        // Backend returned 401 or invalid: ensure client reflects logged out state
+                        sessionStorage.clear();
+                        localStorage.removeItem('rankly_session');
+                        localStorage.removeItem('user');
+                        currentUser = null;
+                        const dashPage = document.getElementById('dashboardPage');
+                        const loginPage = document.getElementById('loginPage');
+                        if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                        if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
+                    });
             });
         })();
     </script>
