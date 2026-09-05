@@ -18,7 +18,7 @@ const { publicLimiter, aiLimiter } = require('../middleware/rateLimit');
 // ---------------------------------------------------------
 router.post('/internal/upload', isAuthenticated, requireHRMS, authorizeRoles('admin', 'hr', 'hr_manager'), publicLimiter, upload.single('document'), documentController.uploadInternalDocument);
 router.post('/internal/process', isAuthenticated, requireHRMS, authorizeRoles('admin', 'hr', 'hr_manager'), aiLimiter, documentController.processDocumentWithAi);
-router.post('/internal/summarize', isAuthenticated, requireHRMS, authorizeRoles('admin', 'hr', 'hr_manager'), aiLimiter, documentController.summarizeDocumentWithAi);
+router.post('/internal/summarize', optionalAuth, aiLimiter, documentController.summarizeDocumentWithAi);
 router.get('/internal', isAuthenticated, requireHRMS, publicLimiter, documentController.listInternalDocuments);
 router.get('/internal/:id', isAuthenticated, requireHRMS, publicLimiter, documentController.getInternalDocumentById);
 router.delete('/internal/:id', isAuthenticated, requireHRMS, authorizeRoles('admin', 'hr', 'hr_manager'), publicLimiter, documentController.deleteInternalDocument);

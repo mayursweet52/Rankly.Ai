@@ -27,4 +27,14 @@ router.patch('/applications/:id', optionalAuth, apiLimiter, candidateFeatureCont
 router.put('/applications/:id', optionalAuth, apiLimiter, candidateFeatureController.updateApplicationHandler);
 router.delete('/applications/:id', optionalAuth, apiLimiter, candidateFeatureController.deleteApplicationHandler);
 
+// 6. Dedicated Candidate Profile Page
+router.get('/profile', optionalAuth, apiLimiter, candidateFeatureController.getCandidateProfileHandler);
+router.post('/profile', optionalAuth, apiLimiter, candidateFeatureController.updateCandidateProfileHandler);
+router.put('/profile', optionalAuth, apiLimiter, candidateFeatureController.updateCandidateProfileHandler);
+
+// 7. Curated Job Listings Directory & 1-Click Apply
+router.get('/jobs', optionalAuth, apiLimiter, candidateFeatureController.getJobListingsHandler);
+router.post('/jobs/apply', optionalAuth, apiLimiter, candidateFeatureController.applyToJobHandler);
+
 module.exports = router;
+

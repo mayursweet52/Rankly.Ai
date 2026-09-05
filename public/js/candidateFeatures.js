@@ -729,4 +729,507 @@
         });
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // 6. DEDICATED CANDIDATE PROFILE PAGE
+    // ─────────────────────────────────────────────────────────────────────────
+    let currentProfileSkills = ['JavaScript', 'TypeScript', 'React.js', 'Node.js', 'PostgreSQL', 'Docker', 'NVIDIA Nemotron', 'Tailwind CSS', 'AWS'];
+
+    window.loadCandidateProfile = async function() {
+        try {
+            const res = await fetch('/api/candidate/profile');
+            const data = await res.json();
+            if (data && data.profile) {
+                renderCandidateProfile(data.profile);
+            } else {
+                const local = localStorage.getItem('candidate_profile');
+                if (local) renderCandidateProfile(JSON.parse(local));
+            }
+        } catch (e) {
+            const local = localStorage.getItem('candidate_profile');
+            if (local) renderCandidateProfile(JSON.parse(local));
+        }
+    };
+
+    function renderCandidateProfile(p) {
+        if (!p) return;
+        setVal('profileFirstName', p.firstName || '');
+        setVal('profileLastName', p.lastName || '');
+        setVal('profileEmail', p.email || '');
+        setVal('profilePhone', p.phone || '');
+        setVal('profileLocation', p.location || '');
+        setVal('profileProfession', p.profession || '');
+        setVal('profileBio', p.bio || '');
+        setVal('profileExpYears', p.experienceYears || 4);
+        setVal('profileExpLevel', p.experienceLevel || 'Mid');
+        setVal('profileWorkType', p.workType || 'Remote / Hybrid');
+        setVal('profileEducation', p.education || '');
+        setVal('profileExpectedSalary', p.expectedSalary || '₹22 - 28 LPA');
+        setVal('profileLinkedIn', p.linkedInUrl || '');
+        setVal('profileGitHub', p.githubUrl || '');
+        setVal('profilePortfolio', p.portfolioUrl || '');
+
+        const fullName = `${p.firstName || 'Sumit'} ${p.lastName || 'Khomne'}`.trim();
+        const headerName = document.getElementById('profileHeaderName');
+        const headerTitle = document.getElementById('profileHeaderTitle');
+        const headerEmail = document.getElementById('profileHeaderEmail');
+        const headerPhone = document.getElementById('profileHeaderPhone');
+        const avatar = document.getElementById('profileAvatar');
+        const completeness = document.getElementById('profileCompletenessVal');
+        const badgeWork = document.getElementById('badgeWorkType');
+        const badgeSalary = document.getElementById('badgeExpectedSalary');
+
+        if (headerName) headerName.textContent = fullName;
+        if (headerTitle) headerTitle.textContent = `${p.profession || 'Senior Full Stack Engineer'} • ${p.location || 'India'}`;
+        if (headerEmail) headerEmail.innerHTML = `<i class="fa-regular fa-envelope mr-1 text-emerald-500"></i> ${escapeHtml(p.email || '')}`;
+        if (headerPhone) headerPhone.innerHTML = `<i class="fa-solid fa-phone mr-1 text-emerald-500"></i> ${escapeHtml(p.phone || '')}`;
+        if (badgeWork) badgeWork.textContent = p.workType || 'Remote / Hybrid';
+        if (badgeSalary) badgeSalary.textContent = p.expectedSalary || '₹22 - 28 LPA';
+
+        if (avatar) {
+            const initials = `${(p.firstName || 'S')[0]}${(p.lastName || 'K')[0]}`.toUpperCase();
+            avatar.textContent = initials;
+        }
+
+        if (completeness) completeness.textContent = (p.completeness || 90) + '%';
+
+        if (Array.isArray(p.skills) && p.skills.length > 0) {
+            currentProfileSkills = [...p.skills];
+        }
+        renderProfileSkillChips();
+    }
+
+    function setVal(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+    }
+
+    function renderProfileSkillChips() {
+        const container = document.getElementById('profileSkillsChips');
+        const countEl = document.getElementById('profileSkillsCount');
+        if (countEl) countEl.textContent = `${currentProfileSkills.length} Skills Added`;
+        if (!container) return;
+
+        if (currentProfileSkills.length === 0) {
+            container.innerHTML = '<span class="text-xs text-gray-400 italic">No skills added yet. Type below to add.</span>';
+            return;
+        }
+
+        container.innerHTML = currentProfileSkills.map(s => `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                ${escapeHtml(s)}
+                <button type="button" onclick="removeCandidateSkill('${escapeHtml(s)}')" class="hover:text-red-500 cursor-pointer ml-1"><i class="fa-solid fa-xmark text-[10px]"></i></button>
+            </span>
+        `).join('');
+    }
+
+    window.addCandidateSkillFromInput = function() {
+        const input = document.getElementById('profileNewSkillInput');
+        if (!input) return;
+        const val = input.value.trim();
+        if (!val) return;
+        if (!currentProfileSkills.map(s => s.toLowerCase()).includes(val.toLowerCase())) {
+            currentProfileSkills.push(val);
+            renderProfileSkillChips();
+            updateProfileCompletenessMeter();
+        }
+        input.value = '';
+    };
+
+    window.quickAddCandidateSkill = function(skill) {
+        if (!currentProfileSkills.map(s => s.toLowerCase()).includes(skill.toLowerCase())) {
+            currentProfileSkills.push(skill);
+            renderProfileSkillChips();
+            updateProfileCompletenessMeter();
+            if (typeof window.showToast === 'function') window.showToast(`Added ${skill}!`, 'info');
+        }
+    };
+
+    window.removeCandidateSkill = function(skill) {
+        currentProfileSkills = currentProfileSkills.filter(s => s.toLowerCase() !== skill.toLowerCase());
+        renderProfileSkillChips();
+        updateProfileCompletenessMeter();
+    };
+
+    function updateProfileCompletenessMeter() {
+        const fields = ['profileFirstName', 'profileLastName', 'profileEmail', 'profilePhone', 'profileLocation', 'profileProfession', 'profileBio', 'profileEducation', 'profileLinkedIn'];
+        let filled = 0;
+        fields.forEach(f => {
+            const el = document.getElementById(f);
+            if (el && el.value.trim().length > 0) filled++;
+        });
+        if (currentProfileSkills.length >= 3) filled++;
+        const total = fields.length + 1;
+        const pct = Math.min(100, Math.round((filled / total) * 100));
+        const meter = document.getElementById('profileCompletenessVal');
+        if (meter) meter.textContent = pct + '%';
+        return pct;
+    }
+
+    window.saveCandidateProfile = async function() {
+        const btn = document.getElementById('saveProfileTopBtn');
+        const bottomBtn = document.getElementById('saveProfileBottomBtn');
+        const origTop = btn ? btn.innerHTML : '';
+        const origBottom = bottomBtn ? bottomBtn.innerHTML : '';
+
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        if (bottomBtn) bottomBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+        const profileData = {
+            firstName: document.getElementById('profileFirstName')?.value.trim() || '',
+            lastName: document.getElementById('profileLastName')?.value.trim() || '',
+            email: document.getElementById('profileEmail')?.value.trim() || '',
+            phone: document.getElementById('profilePhone')?.value.trim() || '',
+            location: document.getElementById('profileLocation')?.value.trim() || '',
+            profession: document.getElementById('profileProfession')?.value.trim() || '',
+            bio: document.getElementById('profileBio')?.value.trim() || '',
+            skills: currentProfileSkills,
+            experienceYears: Number(document.getElementById('profileExpYears')?.value) || 4,
+            experienceLevel: document.getElementById('profileExpLevel')?.value || 'Mid',
+            workType: document.getElementById('profileWorkType')?.value || 'Remote / Hybrid',
+            education: document.getElementById('profileEducation')?.value.trim() || '',
+            expectedSalary: document.getElementById('profileExpectedSalary')?.value.trim() || '₹22 - 28 LPA',
+            linkedInUrl: document.getElementById('profileLinkedIn')?.value.trim() || '',
+            githubUrl: document.getElementById('profileGitHub')?.value.trim() || '',
+            portfolioUrl: document.getElementById('profilePortfolio')?.value.trim() || '',
+            completeness: updateProfileCompletenessMeter()
+        };
+
+        try {
+            const res = await fetch('/api/candidate/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(profileData)
+            });
+            const data = await res.json();
+            localStorage.setItem('candidate_profile', JSON.stringify(profileData));
+            renderCandidateProfile(profileData);
+            if (typeof window.showToast === 'function') window.showToast('🎉 Candidate Profile saved successfully!', 'success');
+        } catch (e) {
+            localStorage.setItem('candidate_profile', JSON.stringify(profileData));
+            renderCandidateProfile(profileData);
+            if (typeof window.showToast === 'function') window.showToast('Profile saved locally.', 'success');
+        } finally {
+            if (btn) btn.innerHTML = origTop;
+            if (bottomBtn) bottomBtn.innerHTML = origBottom;
+        }
+    };
+
+    window.aiPolishCandidateBio = async function() {
+        const bioEl = document.getElementById('profileBio');
+        const role = document.getElementById('profileProfession')?.value.trim() || 'Full Stack Engineer';
+        const skills = currentProfileSkills.slice(0, 6).join(', ');
+        const btn = document.getElementById('btnAiBioPolish');
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Polishing with Nemotron...';
+        }
+
+        try {
+            const prompt = `Elevate this candidate bio into a high-impact, professional 2-3 sentence executive summary for an ATS profile. Target Role: ${role}. Key Skills: ${skills}. Current draft: "${bioEl ? bioEl.value : ''}". Strictly return ONLY the polished summary text without quotes or preamble.`;
+            const res = await fetch('/api/chat/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: prompt })
+            });
+            const data = await res.json();
+            const polished = data.reply || data.response;
+            if (polished && bioEl) {
+                bioEl.value = polished.trim();
+                updateProfileCompletenessMeter();
+                if (typeof window.showToast === 'function') window.showToast('✨ Bio polished with Nemotron AI!', 'success');
+            }
+        } catch (e) {
+            if (bioEl && !bioEl.value.trim()) {
+                bioEl.value = `High-impact ${role} with 4+ years of proven expertise across ${skills}. Track record of architecting performant, resilient distributed architectures and accelerating release velocity.`;
+            }
+            if (typeof window.showToast === 'function') window.showToast('Bio updated with standard template.', 'info');
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Bio Polish (Nemotron)</span>';
+            }
+        }
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 7. CURATED JOB LISTINGS & DIRECT APPLY
+    // ─────────────────────────────────────────────────────────────────────────
+    let allLoadedJobs = [];
+
+    window.loadJobListings = async function() {
+        const grid = document.getElementById('jobListingsGrid');
+        if (grid) grid.innerHTML = '<div class="col-span-full text-center py-10 text-xs text-gray-500"><i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2 block"></i> Loading verified tech job openings...</div>';
+
+        try {
+            const res = await fetch('/api/candidate/jobs');
+            const data = await res.json();
+            if (data && data.jobs) {
+                allLoadedJobs = data.jobs;
+                renderJobListings(allLoadedJobs);
+            }
+        } catch (e) {
+            console.error('Failed to load jobs:', e);
+        }
+    };
+
+    window.filterJobListings = function() {
+        const q = (document.getElementById('jobSearchInput')?.value || '').toLowerCase().trim();
+        const dept = document.getElementById('jobDeptFilter')?.value || 'all';
+
+        let filtered = [...allLoadedJobs];
+        if (dept !== 'all') {
+            filtered = filtered.filter(j => j.department.toLowerCase().includes(dept.toLowerCase()));
+        }
+        if (q) {
+            filtered = filtered.filter(j => 
+                j.title.toLowerCase().includes(q) || 
+                j.company.toLowerCase().includes(q) || 
+                (j.skills && j.skills.some(s => s.toLowerCase().includes(q)))
+            );
+        }
+        renderJobListings(filtered);
+    };
+
+    function renderJobListings(jobs) {
+        const grid = document.getElementById('jobListingsGrid');
+        if (!grid) return;
+
+        if (!jobs || jobs.length === 0) {
+            grid.innerHTML = '<div class="col-span-full p-8 rounded-2xl border text-center text-xs text-gray-500 bg-white dark:bg-zinc-900">No matching jobs found. Try adjusting your search keywords or department filter.</div>';
+            return;
+        }
+
+        grid.innerHTML = jobs.map(j => `
+            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4">
+                <div class="space-y-2.5">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">${escapeHtml(j.company)}</span>
+                            <h3 class="text-sm font-bold text-[#111111] dark:text-white mt-0.5 leading-snug">${escapeHtml(j.title)}</h3>
+                        </div>
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex-shrink-0">
+                            ${j.matchScore}% ATS Match
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-gray-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">${escapeHtml(j.description)}</p>
+
+                    <div class="flex flex-wrap gap-1 pt-1">
+                        ${(j.skills || []).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-medium">${escapeHtml(s)}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
+                    <div class="flex justify-between items-center text-gray-500 dark:text-zinc-400 text-[11px]">
+                        <span><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</span>
+                        <span class="font-bold font-mono text-emerald-600 dark:text-emerald-400">${escapeHtml(j.salaryRange)}</span>
+                    </div>
+
+                    <button type="button" onclick="applyToJobQuick('${escapeHtml(j.id)}', '${escapeHtml(j.title)}', '${escapeHtml(j.company)}', '${escapeHtml(j.location)}', '${escapeHtml(j.salaryRange)}')" class="w-full py-2 px-4 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane text-[11px]"></i>
+                        <span>1-Click Apply Now</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.applyToJobQuick = async function(jobId, jobTitle, company, location, salaryRange) {
+        try {
+            const email = document.getElementById('profileEmail')?.value.trim() || 'candidate@rankly.ai';
+            const res = await fetch('/api/candidate/jobs/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jobId,
+                    jobTitle,
+                    companyName: company,
+                    location,
+                    salaryRange,
+                    candidateEmail: email,
+                    notes: `Direct application submitted for ${jobTitle} via Rankly.ai portal.`
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                if (typeof window.showToast === 'function') {
+                    window.showToast(data.message || 'Already applied or application error.', 'warning');
+                } else {
+                    alert(data.message);
+                }
+                return;
+            }
+
+            if (typeof window.showToast === 'function') {
+                window.showToast(`🎉 Applied for ${jobTitle} at ${company}! Added to your live tracker.`, 'success');
+            }
+            if (typeof window.switchTab === 'function') {
+                window.switchTab('applications');
+            }
+        } catch (e) {
+            console.error('Apply error:', e);
+            if (typeof window.showToast === 'function') window.showToast('Application submission error: ' + e.message, 'error');
+        }
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 8. HR & ADMIN AI INTELLIGENCE & POLICY HUB
+    // ─────────────────────────────────────────────────────────────────────────
+    window.initHrAiIntelligence = function() {
+        fetchAiTalentReport();
+    };
+
+    window.fetchAiTalentReport = async function() {
+        const btn = document.getElementById('btnQuickTalentReport');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Calculating...';
+
+        try {
+            const res = await fetch('/api/analytics/ai-report');
+            const data = await res.json();
+            if (data && data.success) {
+                renderAiTalentReport(data);
+                if (typeof window.showToast === 'function') window.showToast('Talent Health Score updated with Nemotron AI!', 'success');
+            }
+        } catch (e) {
+            console.error('Talent report error:', e);
+        } finally {
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-sparkles text-emerald-400"></i> <span>Refresh Talent Score</span>';
+        }
+    };
+
+    function renderAiTalentReport(data) {
+        const report = data.report || {};
+        const metrics = data.metricsSummary || {};
+
+        const scoreEl = document.getElementById('talentHealthScoreVal');
+        const badgeEl = document.getElementById('talentHealthBadge');
+        const overviewEl = document.getElementById('hrTalentOverview');
+        const totalCandsEl = document.getElementById('hrTalentTotalCands');
+        const strongFitEl = document.getElementById('hrTalentStrongFit');
+        const avgScoreEl = document.getElementById('hrTalentAvgScore');
+
+        const score = report.talentHealthScore || 88;
+        if (scoreEl) scoreEl.textContent = score;
+        if (totalCandsEl) totalCandsEl.textContent = metrics.totalCandidates || 48;
+        if (strongFitEl) strongFitEl.textContent = (metrics.strongFitPercentage || 76) + '%';
+        if (avgScoreEl) avgScoreEl.textContent = metrics.averageScore || 79;
+
+        if (badgeEl) {
+            if (score >= 80) {
+                badgeEl.textContent = 'Optimal Health';
+                badgeEl.className = 'ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+            } else if (score >= 60) {
+                badgeEl.textContent = 'Stable Velocity';
+                badgeEl.className = 'ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30';
+            } else {
+                badgeEl.textContent = 'Action Required';
+                badgeEl.className = 'ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30';
+            }
+        }
+
+        if (overviewEl && report.executiveOverview) {
+            overviewEl.textContent = report.executiveOverview;
+        }
+
+        const strengthsList = document.getElementById('hrTalentStrengths');
+        if (strengthsList && Array.isArray(report.keyStrengths)) {
+            strengthsList.innerHTML = report.keyStrengths.map(s => `<li>${escapeHtml(s)}</li>`).join('');
+        }
+
+        const bottlenecksList = document.getElementById('hrTalentBottlenecks');
+        if (bottlenecksList && Array.isArray(report.criticalBottlenecks)) {
+            bottlenecksList.innerHTML = report.criticalBottlenecks.map(b => `<li>${escapeHtml(b)}</li>`).join('');
+        }
+
+        const recsList = document.getElementById('hrTalentRecommendations');
+        if (recsList && Array.isArray(report.strategicRecommendations)) {
+            recsList.innerHTML = report.strategicRecommendations.map(r => `<li>${escapeHtml(r)}</li>`).join('');
+        }
+    }
+
+    window.toggleCustomPolicyInput = function() {
+        const select = document.getElementById('policySelectDoc');
+        const wrap = document.getElementById('customPolicyInputWrap');
+        if (wrap && select) {
+            wrap.style.display = select.value === 'custom' ? 'block' : 'none';
+        }
+    };
+
+    window.fetchPolicySummary = async function() {
+        const select = document.getElementById('policySelectDoc');
+        const customText = document.getElementById('customPolicyText')?.value.trim() || '';
+        const btn = document.getElementById('btnSubmitPolicySummary');
+        const btnHeader = document.getElementById('btnRunPolicySummary');
+
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing with Nemotron AI...';
+        if (btnHeader) btnHeader.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Summarizing...';
+
+        const payload = {};
+        if (select && select.value === 'custom') {
+            payload.content = customText || 'All employees must adhere to standard security protocols and corporate communication guidelines.';
+            payload.title = 'Custom Company Policy';
+        } else if (select) {
+            payload.title = select.options[select.selectedIndex]?.text || 'Corporate Policy';
+            payload.content = `=== Policy Title: ${payload.title} ===\nThis policy defines universal compliance benchmarks, employee duties, remote work security parameters, leave allowances, and confidentiality rules governing all internal staff members.`;
+        }
+
+        try {
+            const res = await fetch('/api/documents/internal/summarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to summarize policy');
+
+            renderPolicySummary(data);
+            if (typeof window.showToast === 'function') window.showToast('Corporate policy summarized successfully!', 'success');
+        } catch (e) {
+            console.error('Policy summary error:', e);
+            if (typeof window.showToast === 'function') window.showToast('Summary error: ' + e.message, 'error');
+        } finally {
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-file-lines"></i> <span>Generate AI Executive Policy Brief</span>';
+            if (btnHeader) btnHeader.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Summarize Now';
+        }
+    };
+
+    function renderPolicySummary(data) {
+        const summary = data.summary || {};
+        const briefEl = document.getElementById('policyExecBrief');
+        const clausesList = document.getElementById('policyKeyClauses');
+        const entList = document.getElementById('policyEntitlements');
+        const compList = document.getElementById('policyCompliance');
+
+        const brief = summary.executiveSummary || summary.executiveBrief || 'Standard corporate operational policy establishing security and performance benchmarks.';
+        if (briefEl) briefEl.textContent = brief;
+
+        const directives = summary.keyDirectives || summary.keyClauses || [];
+        if (clausesList && Array.isArray(directives) && directives.length > 0) {
+            clausesList.innerHTML = directives.map(c => `<li>${escapeHtml(c)}</li>`).join('');
+        }
+
+        const entitlements = summary.employeeEntitlements || summary.entitlements || [];
+        if (entList && Array.isArray(entitlements) && entitlements.length > 0) {
+            entList.innerHTML = entitlements.map(e => `<li>${escapeHtml(e)}</li>`).join('');
+        }
+
+        const compliance = summary.complianceGuidelines || summary.complianceAndPenalties || [];
+        if (compList && Array.isArray(compliance) && compliance.length > 0) {
+            compList.innerHTML = compliance.map(p => `<li>${escapeHtml(p)}</li>`).join('');
+        }
+    }
+
+
+    window.copyPolicySummary = function() {
+        const brief = document.getElementById('policyExecBrief')?.innerText || '';
+        const clauses = Array.from(document.querySelectorAll('#policyKeyClauses li')).map(li => '• ' + li.innerText).join('\n');
+        const text = `EXECUTIVE POLICY BRIEF:\n${brief}\n\nKEY CLAUSES:\n${clauses}\n\nGenerated by Rankly.ai Policy Intelligence Engine`;
+        navigator.clipboard?.writeText(text);
+        if (typeof window.showToast === 'function') window.showToast('Copied policy summary to clipboard!', 'success');
+    };
+
 })();
+

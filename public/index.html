@@ -8991,6 +8991,545 @@ body.dark-theme .resume-tip-box,
                             </div>
                         </div>
                     </div>
+
+                    <!-- ─── TAB: DEDICATED CANDIDATE PROFILE PAGE ─── -->
+                    <div class="tab-content" id="tab-candidate-profile" style="display:none;">
+                        <div class="max-w-7xl mx-auto space-y-6">
+                            <!-- Hero / Top Banner -->
+                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="relative">
+                                        <div id="profileAvatar" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-2xl font-black shadow-md font-mono">
+                                            SK
+                                        </div>
+                                        <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[10px] text-white" title="Verified Candidate Identity">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2.5">
+                                            <h2 id="profileHeaderName" class="text-xl font-extrabold text-[#111111] dark:text-white tracking-tight">Sumit Khomne</h2>
+                                            <span class="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">Verified Jobseeker</span>
+                                        </div>
+                                        <p id="profileHeaderTitle" class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5 font-medium">Senior Full Stack Engineer • Pune / Bengaluru, India</p>
+                                        <div class="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-zinc-400">
+                                            <span id="profileHeaderEmail"><i class="fa-regular fa-envelope mr-1 text-emerald-500"></i> sumit.khomne@rankly.ai</span>
+                                            <span id="profileHeaderPhone"><i class="fa-solid fa-phone mr-1 text-emerald-500"></i> +91 98765 43210</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <!-- Completeness Meter -->
+                                    <div class="p-3 px-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center font-bold text-xs text-emerald-600 dark:text-emerald-400 font-mono">
+                                            <span id="profileCompletenessVal">90%</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-[10px] uppercase font-bold text-emerald-700 dark:text-emerald-400">Profile Completeness</span>
+                                            <span class="text-[11px] text-gray-600 dark:text-zinc-400 font-medium">ATS High Visibility</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="saveCandidateProfile()" id="saveProfileTopBtn" class="py-2.5 px-5 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                        <span>Save Changes</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 2-Column Grid -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                <!-- Left Column: Badges, Quick Links & Status (4 Cols) -->
+                                <div class="lg:col-span-4 space-y-6">
+                                    <!-- Job Search Status -->
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3">
+                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center gap-2">
+                                            <i class="fa-solid fa-signal text-emerald-500"></i> Job Search Availability
+                                        </h3>
+                                        <select id="profileJobSearchStatus" class="form-input w-full p-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-zinc-800">
+                                            <option value="actively_looking">🟢 Actively Interviewing & Looking</option>
+                                            <option value="open_to_offers">🟡 Open to Compelling Offers</option>
+                                            <option value="not_looking">⚪ Closed / Not Looking</option>
+                                        </select>
+                                        <div class="space-y-2 pt-2 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
+                                            <div class="flex justify-between items-center text-gray-600 dark:text-zinc-400">
+                                                <span>Work Mode:</span>
+                                                <span class="font-semibold text-[#111111] dark:text-white" id="badgeWorkType">Remote / Hybrid</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-gray-600 dark:text-zinc-400">
+                                                <span>Expected CTC:</span>
+                                                <span class="font-semibold text-emerald-600 dark:text-emerald-400 font-mono" id="badgeExpectedSalary">₹22 - 28 LPA</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Earned Skill Badges -->
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center gap-2">
+                                                <i class="fa-solid fa-award text-amber-500"></i> Verified Badges
+                                            </h3>
+                                            <a href="javascript:void(0)" onclick="switchTab('skill-gap')" class="text-[10px] font-bold text-[#D95D39] hover:underline">View All &rarr;</a>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2.5" id="profileBadgesGrid">
+                                            <div class="p-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 dark:bg-amber-950/20 text-center">
+                                                <i class="fa-solid fa-wand-magic-sparkles text-amber-500 text-lg mb-1 block"></i>
+                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">Nemotron Master</span>
+                                                <span class="text-[9px] text-gray-500">GenAI Inference</span>
+                                            </div>
+                                            <div class="p-2.5 rounded-xl border border-blue-500/20 bg-blue-500/5 dark:bg-blue-950/20 text-center">
+                                                <i class="fa-brands fa-react text-blue-500 text-lg mb-1 block"></i>
+                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">React Architect</span>
+                                                <span class="text-[9px] text-gray-500">High Velocity UI</span>
+                                            </div>
+                                            <div class="p-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-950/20 text-center">
+                                                <i class="fa-brands fa-node-js text-emerald-500 text-lg mb-1 block"></i>
+                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">Node Champion</span>
+                                                <span class="text-[9px] text-gray-500">Microservices</span>
+                                            </div>
+                                            <div class="p-2.5 rounded-xl border border-purple-500/20 bg-purple-500/5 dark:bg-purple-950/20 text-center">
+                                                <i class="fa-brands fa-docker text-purple-500 text-lg mb-1 block"></i>
+                                                <span class="text-[11px] font-bold block text-[#111111] dark:text-white">Cloud Container</span>
+                                                <span class="text-[9px] text-gray-500">Docker Deploy</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Online Presence & Links -->
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3 text-xs">
+                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center gap-2">
+                                            <i class="fa-solid fa-link text-blue-500"></i> Social & Portfolio Links
+                                        </h3>
+                                        <div>
+                                            <label class="block font-medium text-gray-600 dark:text-zinc-400 mb-1">LinkedIn URL</label>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-blue-600"><i class="fa-brands fa-linkedin text-sm"></i></span>
+                                                <input type="url" id="profileLinkedIn" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://linkedin.com/in/username" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block font-medium text-gray-600 dark:text-zinc-400 mb-1">GitHub URL</label>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-slate-800 dark:text-white"><i class="fa-brands fa-github text-sm"></i></span>
+                                                <input type="url" id="profileGitHub" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://github.com/username" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block font-medium text-gray-600 dark:text-zinc-400 mb-1">Portfolio / Personal Website</label>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-emerald-500"><i class="fa-solid fa-globe text-sm"></i></span>
+                                                <input type="url" id="profilePortfolio" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://mywebsite.dev" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Editable Profile Sections (8 Cols) -->
+                                <div class="lg:col-span-8 space-y-6">
+                                    <!-- Section 1: Personal & Contact -->
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
+                                        <h3 class="text-sm font-bold text-[#111111] dark:text-white flex items-center gap-2 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <i class="fa-solid fa-user-pen text-emerald-500"></i> Personal & Contact Details
+                                        </h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">First Name *</label>
+                                                <input type="text" id="profileFirstName" class="form-input w-full p-2.5 rounded-xl border" placeholder="First Name" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Last Name</label>
+                                                <input type="text" id="profileLastName" class="form-input w-full p-2.5 rounded-xl border" placeholder="Last Name" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Email Address *</label>
+                                                <input type="email" id="profileEmail" class="form-input w-full p-2.5 rounded-xl border" placeholder="name@domain.com" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Phone Number</label>
+                                                <input type="tel" id="profilePhone" class="form-input w-full p-2.5 rounded-xl border" placeholder="+91 98765 43210" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Current Location / City</label>
+                                                <input type="text" id="profileLocation" class="form-input w-full p-2.5 rounded-xl border" placeholder="e.g. Pune / Bengaluru, India" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Target Role / Headline *</label>
+                                                <input type="text" id="profileProfession" class="form-input w-full p-2.5 rounded-xl border" placeholder="e.g. Senior Full Stack Engineer" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 2: Executive Bio & Career Summary -->
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
+                                        <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <h3 class="text-sm font-bold text-[#111111] dark:text-white flex items-center gap-2">
+                                                <i class="fa-solid fa-paragraph text-purple-500"></i> Executive Career Summary & Bio
+                                            </h3>
+                                            <button type="button" onclick="aiPolishCandidateBio()" id="btnAiBioPolish" class="py-1 px-3 rounded-lg border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer">
+                                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                                <span>AI Bio Polish (Nemotron)</span>
+                                            </button>
+                                        </div>
+                                        <div class="space-y-2 text-xs">
+                                            <textarea id="profileBio" rows="4" class="form-input w-full p-3 rounded-xl border leading-relaxed" placeholder="Write a compelling 2-4 sentence summary of your engineering impact, core specialties, and career objectives..."></textarea>
+                                            <span class="text-[11px] text-gray-400">Click 'AI Bio Polish' to elevate tone, punchy action verbs, and ATS keyword relevance.</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 3: Technical Skills Chips -->
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
+                                        <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <h3 class="text-sm font-bold text-[#111111] dark:text-white flex items-center gap-2">
+                                                <i class="fa-solid fa-tags text-blue-500"></i> Technical Skills & Competencies
+                                            </h3>
+                                            <span class="text-xs text-gray-500" id="profileSkillsCount">0 Skills Added</span>
+                                        </div>
+                                        <div class="space-y-3 text-xs">
+                                            <!-- Current Skills Chips Container -->
+                                            <div id="profileSkillsChips" class="flex flex-wrap gap-2 min-h-[38px] p-2.5 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
+                                                <!-- Dynamic pills rendered via JS -->
+                                            </div>
+
+                                            <!-- Add Skill Input -->
+                                            <div class="flex items-center gap-2">
+                                                <input type="text" id="profileNewSkillInput" onkeydown="if(event.key==='Enter'){event.preventDefault(); addCandidateSkillFromInput();}" class="form-input flex-1 p-2 rounded-xl border" placeholder="Type a skill (e.g. Docker, GraphQL, PyTorch) and press Enter or click Add" />
+                                                <button type="button" onclick="addCandidateSkillFromInput()" class="py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white font-bold text-xs cursor-pointer">Add</button>
+                                            </div>
+
+                                            <!-- Quick Suggestions -->
+                                            <div>
+                                                <span class="text-[11px] text-gray-400 block mb-1.5 font-medium">Quick Add Popular Tech Skills:</span>
+                                                <div class="flex flex-wrap gap-1.5">
+                                                    <button type="button" onclick="quickAddCandidateSkill('React.js')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ React.js</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('Node.js')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ Node.js</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('TypeScript')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ TypeScript</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('Python')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ Python</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('Docker')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ Docker</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('PostgreSQL')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ PostgreSQL</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('NVIDIA Nemotron')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ NVIDIA Nemotron</button>
+                                                    <button type="button" onclick="quickAddCandidateSkill('AWS')" class="px-2 py-0.5 rounded-md border text-[11px] hover:bg-emerald-50 dark:hover:bg-zinc-800">+ AWS</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 4: Experience, Education & Preferences -->
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
+                                        <h3 class="text-sm font-bold text-[#111111] dark:text-white flex items-center gap-2 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <i class="fa-solid fa-graduation-cap text-amber-500"></i> Education, Experience & Preferences
+                                        </h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Total Experience (Years)</label>
+                                                <input type="number" id="profileExpYears" min="0" max="40" class="form-input w-full p-2.5 rounded-xl border" placeholder="4" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Experience Level</label>
+                                                <select id="profileExpLevel" class="form-input w-full p-2.5 rounded-xl border">
+                                                    <option value="Entry">Entry Level (0-2 yrs)</option>
+                                                    <option value="Mid">Mid-Level (2-5 yrs)</option>
+                                                    <option value="Senior">Senior Level (5-8 yrs)</option>
+                                                    <option value="Lead">Staff / Principal / Lead (8+ yrs)</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Preferred Work Mode</label>
+                                                <select id="profileWorkType" class="form-input w-full p-2.5 rounded-xl border">
+                                                    <option value="Remote / Hybrid">Remote / Hybrid</option>
+                                                    <option value="Remote Only">Remote Only</option>
+                                                    <option value="Hybrid (Office + Home)">Hybrid (Office + Home)</option>
+                                                    <option value="On-Site / In-Office">On-Site / In-Office</option>
+                                                </select>
+                                            </div>
+                                            <div class="md:col-span-2">
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Highest Degree & University</label>
+                                                <input type="text" id="profileEducation" class="form-input w-full p-2.5 rounded-xl border" placeholder="e.g. B.E. in Computer Science & Engineering" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Expected Salary / CTC</label>
+                                                <input type="text" id="profileExpectedSalary" class="form-input w-full p-2.5 rounded-xl border" placeholder="e.g. ₹22 - 28 LPA" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Save Profile Bottom Button -->
+                                        <div class="flex items-center justify-end pt-4 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                            <button type="button" onclick="saveCandidateProfile()" id="saveProfileBottomBtn" class="py-2.5 px-6 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                                <i class="fa-solid fa-floppy-disk"></i>
+                                                <span>Save Candidate Profile</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── TAB: CANDIDATE JOB LISTINGS & DIRECT APPLY ─── -->
+                    <div class="tab-content" id="tab-jobs" style="display:none;">
+                        <div class="max-w-7xl mx-auto space-y-6">
+                            <!-- Banner -->
+                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
+                                        <i class="fa-solid fa-briefcase"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">Curated Tech Job Openings</h2>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Explore verified roles matching your profile. 1-Click apply directly updates your live Application Tracker.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" onclick="switchTab('applications')" class="py-2.5 px-4 rounded-xl border border-[#243E36] dark:border-emerald-500/40 text-[#243E36] dark:text-emerald-400 hover:bg-[#243E36]/5 text-xs font-bold tracking-wider transition-all flex items-center gap-2 cursor-pointer">
+                                        <i class="fa-solid fa-list-check"></i>
+                                        <span>View My Tracker</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Filter & Search Bar -->
+                            <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+                                <div class="flex-1 flex items-center gap-3">
+                                    <div class="relative flex-1">
+                                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                        <input type="text" id="jobSearchInput" oninput="filterJobListings()" placeholder="Search by role title, company or skill keyword (e.g. React, Nemotron, DevOps)..." class="form-input w-full pl-9 pr-3 py-2 rounded-xl border" />
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-gray-500 font-medium">Department:</span>
+                                    <select id="jobDeptFilter" onchange="filterJobListings()" class="form-input py-2 px-3 rounded-xl border">
+                                        <option value="all">All Departments</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                        <option value="Infrastructure">Infrastructure / DevOps</option>
+                                        <option value="Design & Frontend">Frontend & Design</option>
+                                        <option value="Product">Product</option>
+                                        <option value="Data & Analytics">Data & Analytics</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Job Listings Cards Grid -->
+                            <div id="jobListingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                <!-- Rendered dynamically by candidateFeatures.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── TAB: HR & ADMIN AI INTELLIGENCE & POLICY HUB ─── -->
+                    <div class="tab-content" id="tab-hr-ai-intelligence" style="display:none;">
+                        <div class="max-w-7xl mx-auto space-y-6">
+                            <!-- Banner -->
+                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
+                                        <i class="fa-solid fa-brain"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">AI Talent & Policy Executive Intelligence</h2>
+                                            <span class="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30">Enterprise Exclusive</span>
+                                        </div>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">One-click corporate policy auto-summaries and talent health analytics powered by live Nemotron 70B & HRMS endpoints.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="fetchAiTalentReport()" id="btnQuickTalentReport" class="py-2.5 px-4 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                        <i class="fa-solid fa-sparkles text-emerald-400"></i>
+                                        <span>Refresh Talent Score</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 2 Main Operational Columns: Left (Talent Health Score), Right (Corporate Policy Summarizer) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                <!-- Left Column: AI Talent Health Score & Diagnostics (6 Cols) -->
+                                <div class="lg:col-span-6 space-y-6">
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-5">
+                                        <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <div class="flex items-center gap-2.5">
+                                                <i class="fa-solid fa-heart-pulse text-emerald-500 text-lg"></i>
+                                                <div>
+                                                    <h3 class="text-sm font-bold text-[#111111] dark:text-white">Talent Health & Performance Diagnostic</h3>
+                                                    <span class="text-[10px] text-gray-400 font-mono">Endpoint: /api/analytics/ai-report</span>
+                                                </div>
+                                            </div>
+                                            <button type="button" onclick="fetchAiTalentReport()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                                                <i class="fa-solid fa-rotate-right"></i> Run Diagnostic
+                                            </button>
+                                        </div>
+
+                                        <!-- Overall Talent Health Score Card -->
+                                        <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/20 flex items-center justify-between">
+                                            <div>
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Workforce Talent Health Score</span>
+                                                <div class="flex items-baseline gap-2 mt-1">
+                                                    <span id="talentHealthScoreVal" class="text-4xl font-extrabold text-[#111111] dark:text-white font-mono">88</span>
+                                                    <span class="text-xs font-bold text-gray-400">/ 100</span>
+                                                    <span id="talentHealthBadge" class="ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">Optimal Health</span>
+                                                </div>
+                                                <p id="talentHealthSub" class="text-xs text-gray-600 dark:text-zinc-400 mt-1">High conversion velocity and balanced talent distribution across technical benchmarks.</p>
+                                            </div>
+                                            <div class="w-16 h-16 rounded-full border-4 border-emerald-500/30 border-t-emerald-500 flex items-center justify-center flex-shrink-0">
+                                                <i class="fa-solid fa-bolt text-emerald-500 text-xl"></i>
+                                            </div>
+                                        </div>
+
+                                        <!-- Telemetry Key Metrics (4 Grid) -->
+                                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                                            <div class="p-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
+                                                <span class="block text-[10px] uppercase font-bold text-gray-400">Evaluated</span>
+                                                <span id="hrTalentTotalCands" class="text-base font-bold font-mono text-[#111111] dark:text-white">48</span>
+                                            </div>
+                                            <div class="p-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
+                                                <span class="block text-[10px] uppercase font-bold text-gray-400">Strong Fit %</span>
+                                                <span id="hrTalentStrongFit" class="text-base font-bold font-mono text-emerald-600 dark:text-emerald-400">76%</span>
+                                            </div>
+                                            <div class="p-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
+                                                <span class="block text-[10px] uppercase font-bold text-gray-400">Avg ATS Score</span>
+                                                <span id="hrTalentAvgScore" class="text-base font-bold font-mono text-blue-600 dark:text-blue-400">79</span>
+                                            </div>
+                                            <div class="p-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50">
+                                                <span class="block text-[10px] uppercase font-bold text-gray-400">AI Model</span>
+                                                <span class="text-[11px] font-bold text-purple-600 dark:text-purple-400">Nemotron 70B</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- AI Intelligence Narrative -->
+                                        <div class="space-y-4 text-xs">
+                                            <div class="p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/40 space-y-1.5">
+                                                <strong class="font-bold text-[#111111] dark:text-white flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-file-lines text-blue-500"></i> Executive Talent Overview
+                                                </strong>
+                                                <p id="hrTalentOverview" class="text-gray-600 dark:text-zinc-300 leading-relaxed">Candidate funnel indicates strong technical qualification in Frontend and Backend architectures. Early screening shows high alignment with standard tech stacks, with an average score of 79/100.</p>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                <div class="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-1.5">
+                                                    <strong class="font-bold text-emerald-800 dark:text-emerald-400 flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-circle-check text-emerald-600"></i> Core Strengths
+                                                    </strong>
+                                                    <ul id="hrTalentStrengths" class="space-y-1 text-gray-600 dark:text-zinc-300 list-disc list-inside">
+                                                        <li>Robust JavaScript & React framework fluency</li>
+                                                        <li>Consistent delivery in agile microservices</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="p-3.5 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-1.5">
+                                                    <strong class="font-bold text-amber-800 dark:text-amber-400 flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Talent Bottlenecks
+                                                    </strong>
+                                                    <ul id="hrTalentBottlenecks" class="space-y-1 text-gray-600 dark:text-zinc-300 list-disc list-inside">
+                                                        <li>Gap in Kubernetes orchestration depth</li>
+                                                        <li>Need for advanced RAG & Vector DB competencies</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3.5 rounded-xl border border-purple-500/20 bg-purple-500/5 space-y-1.5">
+                                                <strong class="font-bold text-purple-800 dark:text-purple-400 flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-lightbulb text-purple-600"></i> Actionable Hiring Recommendations
+                                                </strong>
+                                                <ul id="hrTalentRecommendations" class="space-y-1 text-gray-600 dark:text-zinc-300 list-disc list-inside">
+                                                    <li>Prioritize candidates demonstrating hands-on Docker & cloud deployments</li>
+                                                    <li>Incorporate system architecture design rounds for senior roles</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Corporate Policy Auto-Summarizer (6 Cols) -->
+                                <div class="lg:col-span-6 space-y-6">
+                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-5">
+                                        <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                            <div class="flex items-center gap-2.5">
+                                                <i class="fa-solid fa-file-contract text-blue-500 text-lg"></i>
+                                                <div>
+                                                    <h3 class="text-sm font-bold text-[#111111] dark:text-white">Corporate Policy Auto-Summary</h3>
+                                                    <span class="text-[10px] text-gray-400 font-mono">Endpoint: /api/documents/internal/summarize</span>
+                                                </div>
+                                            </div>
+                                            <button type="button" onclick="fetchPolicySummary()" id="btnRunPolicySummary" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                                                <i class="fa-solid fa-wand-magic-sparkles"></i> Summarize Now
+                                            </button>
+                                        </div>
+
+                                        <!-- Document Selector / Mode -->
+                                        <div class="space-y-3 text-xs">
+                                            <div>
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Select Policy to Summarize</label>
+                                                <select id="policySelectDoc" onchange="toggleCustomPolicyInput()" class="form-input w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-zinc-800">
+                                                    <option value="consolidated">📋 All Consolidated Company Policies</option>
+                                                    <option value="code_of_conduct">⚖️ Employee Code of Conduct & Ethics</option>
+                                                    <option value="leave_attendance">🏖️ Paid Time Off, Leaves & Attendance Policy</option>
+                                                    <option value="remote_work">💻 Remote & Hybrid Work Security Protocol</option>
+                                                    <option value="custom">✍️ Paste Custom Policy Document Text...</option>
+                                                </select>
+                                            </div>
+
+                                            <div id="customPolicyInputWrap" style="display:none;">
+                                                <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Custom Policy Content</label>
+                                                <textarea id="customPolicyText" rows="3" class="form-input w-full p-2.5 rounded-xl border" placeholder="Paste the text of your internal company policy or SOP here..."></textarea>
+                                            </div>
+
+                                            <button type="button" onclick="fetchPolicySummary()" id="btnSubmitPolicySummary" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                                <i class="fa-solid fa-file-lines"></i>
+                                                <span>Generate AI Executive Policy Brief</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Rendered Policy Summary Output -->
+                                        <div id="policySummaryOutput" class="space-y-4 text-xs pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                            <div class="p-4 rounded-xl border border-blue-500/20 bg-blue-500/5 space-y-1.5">
+                                                <strong class="font-bold text-blue-800 dark:text-blue-400 flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-circle-info text-blue-600"></i> Executive Brief & Scope
+                                                </strong>
+                                                <p id="policyExecBrief" class="text-gray-600 dark:text-zinc-300 leading-relaxed">This policy establishes universal operational standards, confidentiality rules, remote work security parameters, and professional conduct benchmarks for all team members.</p>
+                                            </div>
+
+                                            <div class="p-3.5 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/40 space-y-1.5">
+                                                <strong class="font-bold text-[#111111] dark:text-white flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-list-check text-emerald-500"></i> Key Clauses & Operational Guidelines
+                                                </strong>
+                                                <ul id="policyKeyClauses" class="space-y-1 text-gray-600 dark:text-zinc-300 list-disc list-inside">
+                                                    <li>Standard working hours are flexible with core availability between 11:00 AM - 5:00 PM IST</li>
+                                                    <li>All sensitive codebase and production credentials require multi-factor authentication (MFA)</li>
+                                                    <li>Leave requests must be submitted 48 hours in advance through the HRMS portal</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                <div class="p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-1">
+                                                    <strong class="font-bold text-emerald-800 dark:text-emerald-400 text-[11px] block">
+                                                        <i class="fa-solid fa-shield-heart mr-1"></i> Rights & Entitlements
+                                                    </strong>
+                                                    <ul id="policyEntitlements" class="space-y-0.5 text-gray-600 dark:text-zinc-300 text-[11px] list-disc list-inside">
+                                                        <li>24 days annual paid leaves</li>
+                                                        <li>Annual health & wellness stipend</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="p-3 rounded-xl border border-rose-500/20 bg-rose-500/5 space-y-1">
+                                                    <strong class="font-bold text-rose-800 dark:text-rose-400 text-[11px] block">
+                                                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Compliance & Restrictions
+                                                    </strong>
+                                                    <ul id="policyCompliance" class="space-y-0.5 text-gray-600 dark:text-zinc-300 text-[11px] list-disc list-inside">
+                                                        <li>Zero tolerance for harassment or discrimination</li>
+                                                        <li>Strict non-disclosure of internal company code</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center justify-between pt-2">
+                                                <span class="text-[11px] text-gray-400 font-mono">Engine: Nemotron 70B Multi-Tier</span>
+                                                <button type="button" onclick="copyPolicySummary()" class="btn-secondary py-1 px-3 text-xs flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-copy"></i> Copy Summary
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </main>
             </div>
         </div>
@@ -9994,6 +10533,7 @@ body.dark-theme .resume-tip-box,
             function getTabIcon(tabId) {
                 switch (tabId) {
                     case 'dashboard': return 'fa-solid fa-table-columns';
+                    case 'hr-ai-intelligence': return 'fa-solid fa-brain text-purple-500';
                     case 'employees': return 'fa-solid fa-users-gear';
                     case 'documents': return 'fa-solid fa-folder-open';
                     case 'chatbot': return 'fa-solid fa-robot';
@@ -10001,11 +10541,13 @@ body.dark-theme .resume-tip-box,
                     case 'pipeline': return 'fa-solid fa-users';
                     case 'analytics': return 'fa-solid fa-chart-line';
                     case 'grievance': return 'fa-solid fa-user-shield text-amber-500';
+                    case 'candidate-profile': return 'fa-solid fa-id-card text-emerald-500';
+                    case 'jobs': return 'fa-solid fa-briefcase text-blue-500';
                     case 'resume': return 'fa-solid fa-wand-magic-sparkles text-[#D95D39]';
                     case 'ats-checker': return 'fa-solid fa-gauge-high text-emerald-500';
                     case 'cover-letter': return 'fa-solid fa-envelope-open-text text-[#81E4DA]';
                     case 'skill-gap': return 'fa-solid fa-chart-pie text-indigo-400';
-                    case 'applications': return 'fa-solid fa-briefcase text-amber-500';
+                    case 'applications': return 'fa-solid fa-list-check text-amber-500';
                     case 'settings': return 'fa-solid fa-gear';
                     case 'feedback': return 'fa-solid fa-comment-dots';
                     case 'health': return 'fa-solid fa-heart-pulse text-emerald-500';
@@ -10057,6 +10599,7 @@ body.dark-theme .resume-tip-box,
                     }
                     currentTabsList = [
                         { id: 'dashboard', label: 'HRMS Overview', target: 'dashboard' },
+                        { id: 'hr-ai-intelligence', label: 'AI Talent & Policy Hub', target: 'hr-ai-intelligence' },
                         { id: 'employees', label: 'Employee Directory', target: 'employees' },
                         { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
@@ -10072,11 +10615,13 @@ body.dark-theme .resume-tip-box,
                         portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
                     }
                     currentTabsList = [
+                        { id: 'candidate-profile', label: 'Candidate Profile', target: 'candidate-profile' },
+                        { id: 'jobs', label: 'Job Listings & Apply', target: 'jobs' },
+                        { id: 'applications', label: 'Application Tracker', target: 'applications' },
                         { id: 'resume', label: 'AI Resume & ATS Studio', target: 'resume' },
                         { id: 'ats-checker', label: 'ATS Score & JD Matcher', target: 'ats-checker' },
                         { id: 'cover-letter', label: 'AI Cover Letter Generator', target: 'cover-letter' },
                         { id: 'skill-gap', label: 'Skill Gap & Badges', target: 'skill-gap' },
-                        { id: 'applications', label: 'Application Tracker', target: 'applications' },
                         { id: 'chatbot', label: 'Career AI Coach', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
@@ -10111,10 +10656,10 @@ body.dark-theme .resume-tip-box,
                 const userRole = (activeUser ? (activeUser.role || 'normal') : 'normal').toLowerCase();
                 const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (activeUser && activeUser.accountType === 'employee');
                 
-                const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
+                const hrmsOnlyTabs = ['dashboard', 'hr-ai-intelligence', 'employees', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
                 if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
                     showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
-                    tabId = 'resume';
+                    tabId = 'candidate-profile';
                 }
 
                 const matched = currentTabsList.find(t => t.id === tabId || t.target === tabId) || { id: tabId, target: tabId, label: tabId.toUpperCase() };
@@ -10142,6 +10687,15 @@ body.dark-theme .resume-tip-box,
                 const targetEl = document.getElementById(`tab-${actualTarget}`);
                 if (targetEl) targetEl.style.display = 'block';
 
+                if (actualTarget === 'candidate-profile' && typeof window.loadCandidateProfile === 'function') {
+                    window.loadCandidateProfile();
+                }
+                if (actualTarget === 'jobs' && typeof window.loadJobListings === 'function') {
+                    window.loadJobListings();
+                }
+                if (actualTarget === 'hr-ai-intelligence' && typeof window.initHrAiIntelligence === 'function') {
+                    window.initHrAiIntelligence();
+                }
                 if (actualTarget === 'employees' && typeof window.loadEmployeesDirectory === 'function') {
                     window.loadEmployeesDirectory();
                 }
@@ -10163,6 +10717,7 @@ body.dark-theme .resume-tip-box,
                 if (actualTarget === 'applications' && typeof window.loadCandidateApplications === 'function') {
                     window.loadCandidateApplications();
                 }
+
                 if (actualTarget === 'skill-gap' && typeof window.loadSkillGapAnalysis === 'function') {
                     window.loadSkillGapAnalysis();
                 }
@@ -11474,9 +12029,20 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                             <span>Profile: <strong class="text-[#111111]">${candidateDisplayName}</strong></span>
                                         </div>
                                     </div>
-                                    <button onclick="copyResumeBlueprint()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
-                                        <i class="fas fa-copy"></i> Copy All
-                                    </button>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <button type="button" onclick="copyResumeBlueprint()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+                                            <i class="fas fa-copy text-slate-500"></i> Copy All
+                                        </button>
+                                        <button type="button" onclick="downloadResumeBlueprintDocx()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5 text-blue-600 dark:text-blue-400 font-semibold hover:border-blue-500">
+                                            <i class="fa-solid fa-file-word"></i> Word (.docx)
+                                        </button>
+                                        <button type="button" onclick="downloadResumeBlueprintPdf()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-semibold hover:border-rose-500">
+                                            <i class="fa-solid fa-file-pdf"></i> PDF
+                                        </button>
+                                        <button type="button" onclick="downloadResumeBlueprintTxt()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold hover:border-emerald-500">
+                                            <i class="fa-solid fa-file-lines"></i> Text (.txt)
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- Card 1: Executive Summary -->
@@ -11550,6 +12116,102 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 navigator.clipboard?.writeText(textToCopy);
                 showToast('Copied Resume Blueprint to clipboard!', 'success');
             };
+
+            window.downloadResumeBlueprintDocx = async function() {
+                const name = document.getElementById('resumeName')?.value.trim() || (currentUser?.fname ? `${currentUser.fname} ${currentUser.lname || ''}`.trim() : 'Candidate');
+                const prof = document.getElementById('resumeProfession')?.value.trim() || 'Software Engineer';
+                const summary = document.getElementById('rbSummaryText')?.innerText || '';
+                const achs = Array.from(document.querySelectorAll('#rbAchievementsList li')).map(li => li.innerText.replace(/^[•\s]+/, '').trim()).filter(Boolean);
+                const kw = Array.from(document.querySelectorAll('#rbKeywordsList span')).map(s => s.innerText.trim()).filter(Boolean);
+
+                try {
+                    showToast('Generating ATS Word Document...', 'info');
+                    const res = await fetch('/api/candidate/export-resume', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            format: 'docx',
+                            fullName: name,
+                            profession: prof,
+                            summary: summary,
+                            skills: kw,
+                            achievements: achs
+                        })
+                    });
+                    if (!res.ok) throw new Error('Failed to generate document');
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `ATS_Blueprint_${name.replace(/\s+/g, '_')}.docx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    showToast('ATS Word Document (.docx) downloaded!', 'success');
+                } catch (e) {
+                    showToast('Download failed: ' + e.message, 'error');
+                }
+            };
+
+            window.downloadResumeBlueprintPdf = async function() {
+                const name = document.getElementById('resumeName')?.value.trim() || (currentUser?.fname ? `${currentUser.fname} ${currentUser.lname || ''}`.trim() : 'Candidate');
+                const prof = document.getElementById('resumeProfession')?.value.trim() || 'Software Engineer';
+                const summary = document.getElementById('rbSummaryText')?.innerText || '';
+                const achs = Array.from(document.querySelectorAll('#rbAchievementsList li')).map(li => li.innerText.replace(/^[•\s]+/, '').trim()).filter(Boolean);
+                const kw = Array.from(document.querySelectorAll('#rbKeywordsList span')).map(s => s.innerText.trim()).filter(Boolean);
+
+                try {
+                    showToast('Generating ATS PDF Document...', 'info');
+                    const res = await fetch('/api/candidate/export-resume', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            format: 'pdf',
+                            fullName: name,
+                            profession: prof,
+                            summary: summary,
+                            skills: kw,
+                            achievements: achs
+                        })
+                    });
+                    if (!res.ok) throw new Error('Failed to generate PDF');
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `ATS_Blueprint_${name.replace(/\s+/g, '_')}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    showToast('ATS PDF Document (.pdf) downloaded!', 'success');
+                } catch (e) {
+                    showToast('Download failed: ' + e.message, 'error');
+                }
+            };
+
+            window.downloadResumeBlueprintTxt = function() {
+                const name = document.getElementById('resumeName')?.value.trim() || (currentUser?.fname ? `${currentUser.fname} ${currentUser.lname || ''}`.trim() : 'Candidate');
+                const prof = document.getElementById('resumeProfession')?.value.trim() || 'Software Engineer';
+                const summary = document.getElementById('rbSummaryText')?.innerText || '';
+                const achs = Array.from(document.querySelectorAll('#rbAchievementsList li')).map(li => li.innerText).join('\n');
+                const kw = Array.from(document.querySelectorAll('#rbKeywordsList span')).map(s => s.innerText).join(', ');
+
+                const textContent = `====================================================\nATS RESUME BLUEPRINT - ${name.toUpperCase()}\nTARGET ROLE: ${prof.toUpperCase()}\n====================================================\n\nEXECUTIVE SUMMARY:\n${summary}\n\nATS-OPTIMIZED ACHIEVEMENTS:\n${achs}\n\nHIGH-PRIORITY KEYWORDS:\n${kw}\n\n====================================================\nGenerated by Rankly.ai ATS Studio\n`;
+
+                const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ATS_Blueprint_${name.replace(/\s+/g, '_')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                showToast('Text blueprint downloaded!', 'success');
+            };
+
 
             // ─── LOGIN PAGE THEME TOGGLE ───
             window.toggleLoginTheme = function() {
