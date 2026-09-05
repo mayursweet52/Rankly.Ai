@@ -9613,8 +9613,9 @@ body.dark-theme .resume-tip-box,
             window.setupDashboardForRole = setupDashboardForRole;
 
             function switchTab(tabId) {
-                const userRole = (window.currentUser ? (window.currentUser.role || 'normal') : 'normal').toLowerCase();
-                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (window.currentUser && window.currentUser.accountType === 'employee');
+                const activeUser = window.currentUser || currentUser;
+                const userRole = (activeUser ? (activeUser.role || 'normal') : 'normal').toLowerCase();
+                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (activeUser && activeUser.accountType === 'employee');
                 
                 const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
                 if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
@@ -9811,6 +9812,7 @@ body.dark-theme .resume-tip-box,
             }
 
             function loginUser() {
+                window.currentUser = currentUser;
                 if (currentUser && currentUser.isEmailVerified === false) {
                     showToast('Please verify your email via the link sent to your Gmail inbox first.', 'warning');
                     if (typeof window.showEmailVerificationNotice === 'function') {
@@ -10018,6 +10020,7 @@ body.dark-theme .resume-tip-box,
                     await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
                 } catch (e) {}
                 currentUser = null;
+                window.currentUser = null;
                 sessionStorage.clear();
                 localStorage.removeItem('rankly_session');
                 localStorage.removeItem('user');
