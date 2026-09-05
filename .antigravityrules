@@ -4,3 +4,5 @@
 3. Surgical snippets only. Never rewrite whole files.
 4. Respect existing CSS variables, themes, and classes.
 5. All rules in `rules.md` are mandatory and must be read prior to every operation.
+6. MANDATORY GIT PULL: ALWAYS pull latest changes (`git pull origin main`) before starting any new task and after every result/turn.
+7. MANDATORY GIT PUSH: After completing ANY code modification, bug fix, or feature update, immediately stage, commit, and push changes to GitHub (`git push origin main`).
