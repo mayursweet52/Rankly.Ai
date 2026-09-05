@@ -2,10 +2,55 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const prisma = require('../config/database');
+const pgDb = require('../config/pgDatabase');
 const { generateOtp, generateReferralCode } = require('../utils/helpers');
 const { sendOTPEmail, sendOtpEmail, sendVerificationLinkEmail, sendPasswordResetLinkEmail } = require('../services/emailService');
 const { recordAuthFailure, resetAuthFailure } = require('../middleware/authRateLimit');
 const { sendSuccess, sendError } = require('../utils/apiResponse');
+
+/**
+ * Strict Multi-Layer Check if an Email is Already Registered in System
+ */
+async function findExistingUserByEmail(email) {
+  if (!email) return null;
+  const cleanEmail = String(email).toLowerCase().trim();
+
+  // 1. Check Prisma SQLite User table (email, workEmail, username)
+  try {
+    const directUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: { equals: cleanEmail } },
+          { workEmail: { equals: cleanEmail } },
+          { username: { equals: cleanEmail } }
+        ]
+      }
+    });
+    if (directUser) return directUser;
+  } catch (_) {}
+
+  // 2. Case-insensitive raw SQLite query fallback
+  try {
+    const rawUsers = await prisma.$queryRawUnsafe(
+      'SELECT id, email, role, isEmailVerified FROM "User" WHERE LOWER(email) = LOWER(?) OR LOWER(workEmail) = LOWER(?) LIMIT 1',
+      cleanEmail, cleanEmail
+    );
+    if (rawUsers && rawUsers.length > 0) return rawUsers[0];
+  } catch (_) {}
+
+  // 3. Check live PostgreSQL employees & candidates
+  try {
+    if (pgDb && typeof pgDb.query === 'function') {
+      const pgEmp = await pgDb.query('SELECT employee_id as id, email, role FROM employees WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]);
+      if (pgEmp && pgEmp.rows && pgEmp.rows.length > 0) return { id: pgEmp.rows[0].id, email: pgEmp.rows[0].email, source: 'pg_employee' };
+
+      const pgCand = await pgDb.query('SELECT id, email, status FROM candidates WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]);
+      if (pgCand && pgCand.rows && pgCand.rows.length > 0) return { id: pgCand.rows[0].id, email: pgCand.rows[0].email, source: 'pg_candidate' };
+    }
+  } catch (_) {}
+
+  return null;
+}
 
 function failAuth(res, req, message, identifier = null, statusCode = 400, extra = {}) {
   recordAuthFailure(req, identifier);
@@ -142,11 +187,9 @@ async function register(req, res) {
     if (!emailValidation.valid) return failAuth(res, req, emailValidation.message, normalizedEmail);
 
     // 🔒 STRICT CHECK: Do not allow registration if account already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email: normalizedEmail }
-    });
+    const existingUser = await findExistingUserByEmail(normalizedEmail);
     if (existingUser) {
-      return failAuth(res, req, 'An account with this email already exists. Please log in.', normalizedEmail, 409, { code: 'EMAIL_ALREADY_EXISTS' });
+      return failAuth(res, req, 'An account with this email already exists. Please log in.', normalizedEmail, 409, { code: 'EMAIL_ALREADY_EXISTS', alreadyRegistered: true });
     }
 
     // Corporate / Organization Workspace Registration requires verified workmail OTP
@@ -601,11 +644,13 @@ async function sendOtp(req, res) {
 
     // Pre-check for registration flows: If email already has an account, reject immediately at OTP request
     if (type !== 'password_reset' && type !== 'change_password' && req.body.purpose !== 'login') {
-      const existingUser = await prisma.user.findUnique({ where: { email: recipientEmail } });
+      const existingUser = await findExistingUserByEmail(recipientEmail);
       if (existingUser) {
+        console.log(`🔒 [sendOtp] Blocked OTP dispatch: email already exists (${recipientEmail})`);
         return res.status(409).json({
           success: false,
           code: 'EMAIL_ALREADY_EXISTS',
+          alreadyRegistered: true,
           error: 'An account with this email already exists. Please log in.',
           message: 'An account with this email already exists. Please log in.'
         });
@@ -1767,11 +1812,12 @@ async function resendOtp(req, res) {
 
     // 🔒 Pre-check for registration flows: If email already has an account, reject resend OTP request
     if (req.body.type !== 'password_reset' && req.body.type !== 'change_password' && req.body.purpose !== 'login') {
-      const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
+      const existingUser = await findExistingUserByEmail(cleanEmail);
       if (existingUser) {
         return res.status(409).json({
           success: false,
           code: 'EMAIL_ALREADY_EXISTS',
+          alreadyRegistered: true,
           error: 'An account with this email already exists. Please log in.',
           message: 'An account with this email already exists. Please log in.'
         });
@@ -1885,6 +1931,30 @@ async function resendLink(req, res) {
   }
 }
 
+/**
+ * GET /api/auth/check-email?email=...
+ * Instant pre-check if an email is available for registration
+ */
+async function checkEmailAvailability(req, res) {
+  try {
+    const rawEmail = req.query.email || req.body.email || '';
+    if (!rawEmail || !rawEmail.includes('@')) {
+      return res.status(400).json({ success: false, message: 'Valid email is required.' });
+    }
+    const cleanEmail = rawEmail.toLowerCase().trim();
+    const existing = await findExistingUserByEmail(cleanEmail);
+    return res.json({
+      success: true,
+      email: cleanEmail,
+      isAvailable: !existing,
+      alreadyRegistered: !!existing,
+      message: existing ? 'An account with this email already exists.' : 'Email is available for registration.'
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+}
+
 module.exports = {
   register,
   createAccount: register,
@@ -1907,6 +1977,7 @@ module.exports = {
   submitChangePassword,
   createOrganization,
   joinOrganization,
-  checkVerificationStatus
+  checkVerificationStatus,
+  checkEmailAvailability
 };
 

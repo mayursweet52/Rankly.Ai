@@ -10510,7 +10510,17 @@ body.dark-theme .resume-tip-box,
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send OTP to Gmail', 'error');
+                        if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || data.alreadyRegistered || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                            if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                showEmailAlreadyExistsPopup(value);
+                            } else {
+                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                            }
+                            const row = document.getElementById('emailOtpRow');
+                            if (row) row.style.display = 'none';
+                        } else {
+                            showToast(data.message || data.error || 'Failed to send OTP to Gmail', 'error');
+                        }
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
@@ -10611,7 +10621,17 @@ body.dark-theme .resume-tip-box,
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send OTP to corporate email', 'error');
+                        if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || data.alreadyRegistered || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                            if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                showEmailAlreadyExistsPopup(value);
+                            } else {
+                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                            }
+                            const row = document.getElementById('empEmailOtpRow');
+                            if (row) row.style.display = 'none';
+                        } else {
+                            showToast(data.message || data.error || 'Failed to send OTP to corporate email', 'error');
+                        }
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
@@ -13120,9 +13140,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     const otpContainer = document.getElementById('candOtpContainer');
-                    if (otpContainer) {
-                        otpContainer.classList.remove('hidden');
-                    }
 
                     try {
                         const res = await fetch('/api/auth/send-otp', {
@@ -13132,6 +13149,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
+                            if (otpContainer) {
+                                otpContainer.classList.remove('hidden');
+                            }
                             const otpInput = document.getElementById('slideRegOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
@@ -13140,9 +13160,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
                             startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
-                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
-                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
-                                if (otpContainer) otpContainer.classList.add('hidden');
+                            if (otpContainer) otpContainer.classList.add('hidden');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || data.alreadyRegistered || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                    showEmailAlreadyExistsPopup(email);
+                                } else {
+                                    showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                }
                             } else {
                                 showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
                             }
@@ -13714,9 +13738,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
                     }
                     const otpContainer = document.getElementById('orgOtpContainer');
-                    if (otpContainer) {
-                        otpContainer.classList.remove('hidden');
-                    }
 
                     try {
                         const res = await fetch('/api/auth/send-otp', {
@@ -13726,6 +13747,9 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
+                            if (otpContainer) {
+                                otpContainer.classList.remove('hidden');
+                            }
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
@@ -13734,17 +13758,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             showToast('Verification code sent to ' + email + '! Please check your inbox and spam folder.', 'success');
                             startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
-                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
-                                showToast('⚠️ An account with this email already exists. Redirecting to Sign In...', 'warning');
-                                if (otpContainer) otpContainer.classList.add('hidden');
-                                setTimeout(() => {
-                                    switchOrgPortalTab('login');
-                                    const orgLoginInput = document.getElementById('orgLoginIdentifier');
-                                    if (orgLoginInput) {
-                                        orgLoginInput.value = email;
-                                        orgLoginInput.focus();
-                                    }
-                                }, 1200);
+                            if (otpContainer) otpContainer.classList.add('hidden');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || data.alreadyRegistered || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                    showEmailAlreadyExistsPopup(email);
+                                } else {
+                                    showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                }
                             } else {
                                 showToast(data.message || data.error || 'Failed to send OTP', 'error');
                             }
@@ -15371,6 +15391,89 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 }
                 window.closeAccountVerifiedPopup = closeAccountVerifiedPopup;
                 window.showAccountVerifiedPopup = showAccountVerifiedPopup;
+
+                function showEmailAlreadyExistsPopup(email) {
+                    const existing = document.getElementById('emailAlreadyExistsModal');
+                    if (existing) existing.remove();
+
+                    const safeEmail = email ? String(email).replace(/[&<>"']/g, '') : '';
+                    const overlay = document.createElement('div');
+                    overlay.id = 'emailAlreadyExistsModal';
+                    overlay.className = 'modal-overlay active';
+                    overlay.style.cssText = 'display:flex; align-items:center; justify-content:center; position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.75); backdrop-filter:blur(10px); padding:16px; opacity:1 !important; visibility:visible !important; pointer-events:auto !important; animation:fadeIn 0.25s ease;';
+
+                    overlay.innerHTML = `
+                        <div class="modal-box text-center" style="max-width:440px; width:100%; padding:34px 26px; border-radius:24px; background:var(--bg-card, #ffffff); border:1px solid rgba(239, 68, 68, 0.3); box-shadow:0 25px 50px -12px rgba(0,0,0,0.45); position:relative;">
+                            <button type="button" onclick="closeEmailAlreadyExistsPopup()" style="position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; border:none; background:rgba(0,0,0,0.06); color:#64748b; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <div style="width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:rgba(239, 68, 68, 0.12); color:#ef4444; display:flex; align-items:center; justify-content:center; font-size:34px; border:1px solid rgba(239, 68, 68, 0.25); box-shadow:0 0 24px rgba(239, 68, 68, 0.18);">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <h3 style="font-size:22px; font-weight:800; color:var(--text-primary, #0f172a); margin-bottom:8px; letter-spacing:-0.3px;">
+                                Account Already Exists!
+                            </h3>
+                            ${safeEmail ? `
+                            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.2); padding:5px 14px; border-radius:999px; font-size:12px; font-weight:600; color:#dc2626; margin-bottom:16px;">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>${safeEmail}</span>
+                            </div>
+                            ` : ''}
+                            <p style="font-size:14px; line-height:1.6; color:var(--text-muted, #64748b); margin-bottom:24px;">
+                                An account is already registered with this email address. OTP cannot be sent for duplicate registration. Please sign in with your credentials.
+                            </p>
+                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                <button type="button" onclick="goToSignInFromExistsPopup('${safeEmail}')" style="width:100%; padding:13px 22px; border-radius:14px; background:#183B33; color:#ffffff; font-size:14px; font-weight:700; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 10px 20px -3px rgba(24, 59, 51, 0.35); transition:all 0.2s;">
+                                    <span>Sign In with This Account</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                                <button type="button" onclick="closeEmailAlreadyExistsPopup()" style="width:100%; padding:11px 18px; border-radius:12px; background:transparent; color:#64748b; font-size:13px; font-weight:600; border:1px solid var(--border-color, #e2e8f0); cursor:pointer;">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.body.appendChild(overlay);
+                }
+
+                function closeEmailAlreadyExistsPopup() {
+                    const el = document.getElementById('emailAlreadyExistsModal');
+                    if (el) el.remove();
+                }
+
+                function goToSignInFromExistsPopup(email) {
+                    closeEmailAlreadyExistsPopup();
+                    if (typeof switchAuthTab === 'function') switchAuthTab('login');
+                    if (typeof toggleAuthSlide === 'function') toggleAuthSlide('login');
+                    if (typeof switchOrgPortalTab === 'function') switchOrgPortalTab('login');
+                    if (typeof flipEntireAuthCard === 'function') flipEntireAuthCard(false);
+                    if (typeof openModal === 'function') openModal('loginModal');
+
+                    const loginInputs = [
+                        document.getElementById('loginUsername'),
+                        document.getElementById('loginIdentifier'),
+                        document.getElementById('slideLoginIdentifier'),
+                        document.getElementById('orgLoginIdentifier')
+                    ];
+                    for (const inp of loginInputs) {
+                        if (inp) inp.value = email || '';
+                    }
+                    const pwdInputs = [
+                        document.getElementById('loginPassword'),
+                        document.getElementById('slideLoginPassword'),
+                        document.getElementById('orgLoginPassword')
+                    ];
+                    for (const p of pwdInputs) {
+                        if (p && p.offsetParent !== null) {
+                            p.focus();
+                            break;
+                        }
+                    }
+                }
+                window.showEmailAlreadyExistsPopup = showEmailAlreadyExistsPopup;
+                window.closeEmailAlreadyExistsPopup = closeEmailAlreadyExistsPopup;
+                window.goToSignInFromExistsPopup = goToSignInFromExistsPopup;
 
                 // Handle Email Verification & OAuth Redirect Flow
                 const urlParams = new URLSearchParams(window.location.search);
