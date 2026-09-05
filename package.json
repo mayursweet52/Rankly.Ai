@@ -49,6 +49,7 @@
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.4",
     "pg": "^8.23.0",
+    "puppeteer-core": "^25.10.0",
     "socket.io": "^4.7.5",
     "winston": "^3.14.2"
   },
