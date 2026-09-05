@@ -179,7 +179,7 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Punch In failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast(data.message || '✅ Punched In successfully!', 'success');
+                window.showToast(data.message || 'Punched In successfully!', 'success');
             }
 
             await fetchTodayAttendance();
@@ -210,7 +210,7 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Punch Out failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast(data.message || '✅ Punched Out successfully!', 'success');
+                window.showToast(data.message || 'Punched Out successfully!', 'success');
             }
 
             await fetchTodayAttendance();
@@ -419,7 +419,7 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Leave application failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast('✅ Leave request submitted successfully for approval!', 'success');
+                window.showToast('Leave request submitted successfully for approval!', 'success');
             }
 
             reasonEl.value = '';
