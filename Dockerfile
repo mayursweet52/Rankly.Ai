@@ -1,14 +1,5 @@
-# ─── 1. BASE IMAGE ───
-FROM node:22-slim
-
-# ─── 2. SYSTEM DEPENDENCIES (OpenSSL for Prisma, Python for SSL mailer) ───
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssl \
-    ca-certificates \
-    python3 \
-    python3-pip \
-    && ln -s /usr/bin/python3 /usr/bin/python \
-    && rm -rf /var/lib/apt/lists/*
+# ─── 1. BASE IMAGE (Full Node 22 with OpenSSL 3.0 & Python built-in) ───
+FROM node:22
 
 # ─── 3. WORK DIRECTORY ───
 WORKDIR /app
