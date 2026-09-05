@@ -8,6 +8,7 @@ const aiAgentController = require('../controllers/aiAgentController');
 const { optionalAuth } = require('../middleware/auth');
 const { publicLimiter, aiLimiter } = require('../middleware/rateLimit');
 
+router.get('/', optionalAuth, publicLimiter, aiAgentController.listAgents);
 router.post('/', optionalAuth, publicLimiter, aiAgentController.registerAgent);
 router.get('/:id', optionalAuth, publicLimiter, aiAgentController.getAgent);
 router.post('/:id/chat', optionalAuth, aiLimiter, aiAgentController.chatWithAgent);

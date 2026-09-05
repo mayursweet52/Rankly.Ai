@@ -54,10 +54,23 @@ async function getEmployeeMarketplace(req, res) {
   }
 }
 
+async function listRecommendations(req, res) {
+  try {
+    const trainings = await prisma.recommendedTraining.findMany({
+      include: { employee: true, skill: true },
+      orderBy: { assignedAt: 'desc' }
+    });
+    return res.json({ success: true, count: trainings.length, data: trainings });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+}
+
 module.exports = {
   listSkills,
   createSkill,
   assignSkill,
   recommendTrainingCourse,
-  getEmployeeMarketplace
+  getEmployeeMarketplace,
+  listRecommendations
 };

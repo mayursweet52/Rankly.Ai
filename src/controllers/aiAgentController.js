@@ -61,9 +61,30 @@ async function approveDraft(req, res) {
   }
 }
 
+async function listAgents(req, res) {
+  try {
+    const prisma = require('../config/database');
+    const agents = await prisma.aiAgent.findMany({
+      include: {
+        conversations: { orderBy: { createdAt: 'asc' } },
+        emailDrafts: { orderBy: { createdAt: 'desc' } },
+        analyticsMetrics: true
+      }
+    });
+    return res.json({
+      success: true,
+      count: agents.length,
+      data: agents.map(a => aiAgentService.formatAgentToJson(a))
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+}
+
 module.exports = {
   getAgent,
   registerAgent,
   chatWithAgent,
-  approveDraft
+  approveDraft,
+  listAgents
 };

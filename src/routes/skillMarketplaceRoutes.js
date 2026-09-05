@@ -13,6 +13,8 @@ router.get('/', optionalAuth, publicLimiter, skillMarketplaceController.listSkil
 router.post('/', optionalAuth, publicLimiter, skillMarketplaceController.createSkill);
 
 // Assignments & Training
+router.get('/recommendations', optionalAuth, publicLimiter, skillMarketplaceController.listRecommendations);
+router.get('/training', optionalAuth, publicLimiter, skillMarketplaceController.listRecommendations);
 router.post('/assign', optionalAuth, publicLimiter, skillMarketplaceController.assignSkill);
 router.post('/training', optionalAuth, publicLimiter, skillMarketplaceController.recommendTrainingCourse);
 

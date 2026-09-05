@@ -162,6 +162,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/pipeline', pipelineRoutes);
+app.use('/api/candidates', pipelineRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/health', healthRoutes);

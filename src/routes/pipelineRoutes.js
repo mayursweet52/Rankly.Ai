@@ -20,4 +20,16 @@ router.patch('/candidate/:id/notes', optionalAuth, validate({ params: candidateI
 router.post('/candidate/:id/notify', isAuthenticated, validate({ params: candidateIdParamSchema, body: notifyCandidateBodySchema }), pipelineController.notifyCandidate);
 router.delete('/candidate/:id', optionalAuth, validate({ params: candidateIdParamSchema }), pipelineController.deleteCandidate);
 
+// API_DOCS Spec Aliases
+router.get('/', optionalAuth, pipelineController.getCandidates);
+router.post('/', optionalAuth, validate({ body: createCandidateSchema }), pipelineController.createCandidate);
+router.post('/update', optionalAuth, (req, res, next) => {
+  if (req.body && req.body.id) {
+    req.params.id = req.body.id;
+  }
+  return pipelineController.updateCandidateStage(req, res, next);
+});
+router.get('/:id', optionalAuth, validate({ params: candidateIdParamSchema }), pipelineController.getCandidateById);
+router.delete('/:id', optionalAuth, validate({ params: candidateIdParamSchema }), pipelineController.deleteCandidate);
+
 module.exports = router;
