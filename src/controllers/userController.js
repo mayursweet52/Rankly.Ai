@@ -146,19 +146,33 @@ async function updatePassword(req, res) {
 async function deleteAccount(req, res) {
   try {
     const userId = req.user.id;
+    const userEmail = req.user.email;
 
     // Clean up dependent child records
     await prisma.referralCode.deleteMany({ where: { createdById: userId } }).catch(() => {});
     await prisma.chatMessage.deleteMany({ where: { userId } }).catch(() => {});
     await prisma.evaluation.deleteMany({ where: { userId } }).catch(() => {});
     await prisma.candidate.deleteMany({ where: { userId } }).catch(() => {});
+    await prisma.grievance.deleteMany({ where: { userId } }).catch(() => {});
+    if (userEmail) {
+      await prisma.oTP.deleteMany({ where: { email: userEmail } }).catch(() => {});
+    }
     await prisma.organization.deleteMany({ where: { adminId: userId } }).catch(() => {});
 
     await prisma.user.delete({ where: { id: userId } });
 
+    if (req.logout) {
+      try { req.logout(() => {}); } catch (e) {}
+    }
+
     if (req.session) {
       req.session.destroy();
     }
+    res.clearCookie('connect.sid', { path: '/' });
+    res.clearCookie('token', { path: '/' });
+    res.clearCookie('jwt', { path: '/' });
+    res.clearCookie('rankly_session', { path: '/' });
+
     return res.json({ success: true, message: 'Account deleted successfully.' });
   } catch (error) {
     console.error('Delete Account Error:', error);
