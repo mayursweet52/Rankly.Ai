@@ -3,7 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.TEST_BASE_URL || 'http://127.0.0.1:3000';
 
 async function runE2ETests() {
   console.log('\n' + '='.repeat(72));
