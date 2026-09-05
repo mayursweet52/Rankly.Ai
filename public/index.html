@@ -13458,7 +13458,19 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Registration failed', 'error');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                showToast('An account with this email already exists. Please sign in.', 'warning');
+                                setTimeout(() => {
+                                    if (typeof window.switchAuthTab === 'function') window.switchAuthTab('login');
+                                    const loginInput = document.getElementById('loginIdentifier') || document.getElementById('candLoginEmail');
+                                    if (loginInput) {
+                                        loginInput.value = email;
+                                        loginInput.focus();
+                                    }
+                                }, 1200);
+                            } else {
+                                showToast(data.message || data.error || 'Registration failed', 'error');
+                            }
                             if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }
@@ -13944,7 +13956,19 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Organization registration failed', 'error');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                showToast('An account with this email already exists. Please sign in.', 'warning');
+                                setTimeout(() => {
+                                    if (typeof switchOrgPortalTab === 'function') switchOrgPortalTab('login');
+                                    const orgLoginInput = document.getElementById('orgLoginIdentifier');
+                                    if (orgLoginInput) {
+                                        orgLoginInput.value = email;
+                                        orgLoginInput.focus();
+                                    }
+                                }, 1200);
+                            } else {
+                                showToast(data.message || data.error || 'Organization registration failed', 'error');
+                            }
                             if (submitBtn) setButtonLoading(submitBtn, false);
                             return;
                         }

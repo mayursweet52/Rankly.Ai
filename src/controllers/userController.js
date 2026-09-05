@@ -154,8 +154,11 @@ async function deleteAccount(req, res) {
     await prisma.evaluation.deleteMany({ where: { userId } }).catch(() => {});
     await prisma.candidate.deleteMany({ where: { userId } }).catch(() => {});
     await prisma.grievance.deleteMany({ where: { userId } }).catch(() => {});
+    await prisma.employee.deleteMany({ where: { userId } }).catch(() => {});
     if (userEmail) {
       await prisma.oTP.deleteMany({ where: { email: userEmail } }).catch(() => {});
+      await prisma.employee.deleteMany({ where: { workEmail: userEmail } }).catch(() => {});
+      await prisma.candidate.deleteMany({ where: { email: userEmail } }).catch(() => {});
     }
     await prisma.organization.deleteMany({ where: { adminId: userId } }).catch(() => {});
 

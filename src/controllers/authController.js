@@ -141,6 +141,14 @@ async function register(req, res) {
     const emailValidation = validateEmailAddress(normalizedEmail, isEmp);
     if (!emailValidation.valid) return failAuth(res, req, emailValidation.message, normalizedEmail);
 
+    // 🔒 STRICT CHECK: Do not allow registration if account already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email: normalizedEmail }
+    });
+    if (existingUser) {
+      return failAuth(res, req, 'An account with this email already exists. Please log in.', normalizedEmail, 409, { code: 'EMAIL_ALREADY_EXISTS' });
+    }
+
     // Corporate / Organization Workspace Registration requires verified workmail OTP
     if (isEmp) {
       let isVerified = false;
@@ -211,12 +219,6 @@ async function register(req, res) {
     if (!effectiveFirstName) return failAuth(res, req, 'First name is required.', normalizedEmail);
     if (!effectivePassword) return failAuth(res, req, 'Password is required.', normalizedEmail);
     if (effectivePassword.length < 6) return failAuth(res, req, 'Password must be at least 6 characters long.', normalizedEmail);
-
-    // Check if user already exists by email
-    const existingUser = await prisma.user.findUnique({
-      where: { email: normalizedEmail }
-    });
-    if (existingUser) return failAuth(res, req, 'An account with this email already exists. Please log in.', normalizedEmail);
 
     // Unique Username handling (fallback to email prefix if not provided or collision)
     let candidateUsername = (username || normalizedEmail.split('@')[0] || `user_${Date.now()}`).trim();
@@ -598,8 +600,7 @@ async function sendOtp(req, res) {
     }
 
     // Pre-check for registration flows: If email already has an account, reject immediately at OTP request
-    const registrationTypes = ['corporate_email_verification', 'email_verification', 'registration'];
-    if (registrationTypes.includes(type) && type !== 'password_reset' && req.body.purpose !== 'login') {
+    if (type !== 'password_reset' && type !== 'change_password' && req.body.purpose !== 'login') {
       const existingUser = await prisma.user.findUnique({ where: { email: recipientEmail } });
       if (existingUser) {
         return res.status(409).json({
@@ -1764,6 +1765,19 @@ async function resendOtp(req, res) {
     }
     const cleanEmail = email.toLowerCase().trim();
 
+    // 🔒 Pre-check for registration flows: If email already has an account, reject resend OTP request
+    if (req.body.type !== 'password_reset' && req.body.type !== 'change_password' && req.body.purpose !== 'login') {
+      const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          code: 'EMAIL_ALREADY_EXISTS',
+          error: 'An account with this email already exists. Please log in.',
+          message: 'An account with this email already exists. Please log in.'
+        });
+      }
+    }
+
     // 1. Invalidate only expired OTPs; keep recent active until verified
     await prisma.oTP.updateMany({
       where: { email: cleanEmail, isUsed: false, expiresAt: { lte: new Date() } },
@@ -1816,6 +1830,17 @@ async function resendLink(req, res) {
     }
     const cleanEmail = email.toLowerCase().trim();
 
+    // 🔒 If user is already registered and verified, reject resend verification link
+    const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (existingUser && existingUser.isEmailVerified) {
+      return res.status(409).json({
+        success: false,
+        code: 'EMAIL_ALREADY_EXISTS',
+        error: 'An account with this email is already registered and verified. Please log in.',
+        message: 'An account with this email is already registered and verified. Please log in.'
+      });
+    }
+
     // 1. Invalidate previous unused verification links
     await prisma.oTP.updateMany({
       where: { email: cleanEmail, type: 'email_verification_link', isUsed: false },
@@ -1837,8 +1862,6 @@ async function resendLink(req, res) {
     const baseUrl = getAppBaseUrl(req);
     const verifyLink = `${baseUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(cleanEmail)}`;
 
-    // 4. Fetch user display name if available
-    const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
     const fullName = existingUser ? `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() : 'Developer';
 
     // 5. Dispatch Verification Link Email
