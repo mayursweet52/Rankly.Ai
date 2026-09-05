@@ -1,16 +1,16 @@
 # Graph Report - Rankly.ai  (2026-09-06)
 
 ## Corpus Check
-- 186 files · ~482,129 words
+- 186 files · ~483,409 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1268 nodes · 1707 edges · 133 communities (80 shown, 47 thin omitted)
-- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 201 edges (avg confidence: 0.85)
+- 1271 nodes · 1715 edges · 140 communities (86 shown, 48 thin omitted)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 202 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `40bf04b3`
+- Built from commit: `dadb0feb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -67,6 +67,9 @@
 - js/upload.js
 - express
 - guardian.js
+- test-e2e-ai-pipeline.js
+- test-integration.js
+- test-complaints.js
 - setup_candidates_table.js
 - run_migration.js
 - extractTextFromDocument
@@ -76,6 +79,10 @@
 - setup_complaints_table.js
 - setup_internal_documents_table.js
 - test_applications_audit.js
+- puppeteer-core
+- capture_candidate_shots.js
+- capture_screenshots.js
+- test_authenticated_browser.js
 - query_db.js
 - Supabase
 - src/components/unlumen-ui/sidebar-toggle-icon.tsx
@@ -162,19 +169,19 @@
   scripts/test-document-engine.js → src/services/documentParserService.js
 - `getAgent()` --calls--> `getAgentById()`  [EXTRACTED]
   src/controllers/aiAgentController.js → src/services/aiAgentService.js
-- `resendOtp()` --calls--> `sendOTPEmail()`  [EXTRACTED]
-  src/controllers/authController.js → src/services/emailService.js
 - `processDocumentWithAi()` --calls--> `processInternalDocument()`  [EXTRACTED]
+  src/controllers/documentController.js → src/services/aiService.js
+- `summarizeDocumentWithAi()` --calls--> `summarizePolicyDocument()`  [EXTRACTED]
   src/controllers/documentController.js → src/services/aiService.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (133 total, 47 thin omitted)
+## Communities (140 total, 48 thin omitted)
 
 ### Community 0 - "authController.js"
-Cohesion: 0.08
-Nodes (44): bcrypt, companyResetPassword(), crypto, failAuth(), forgotPassword(), formatUserResponse(), { generateOtp, generateReferralCode }, getAppBaseUrl() (+36 more)
+Cohesion: 0.07
+Nodes (47): bcrypt, checkEmailAvailability(), companyResetPassword(), crypto, failAuth(), findExistingUserByEmail(), forgotPassword(), formatUserResponse() (+39 more)
 
 ### Community 1 - "server.js"
 Cohesion: 0.04
@@ -201,8 +208,8 @@ Cohesion: 0.13
 Nodes (7): bcrypt, createReferralCode(), crypto, { generateReferralCode }, prisma, { sendInvitationEmail }, generateReferralCode()
 
 ### Community 7 - "authRoutes.js"
-Cohesion: 0.06
-Nodes (34): bcryptjs, jsonwebtoken, autoSeedTestingUsers(), axios, bcrypt, fs, path, prisma (+26 more)
+Cohesion: 0.08
+Nodes (26): jsonwebtoken, jwt, authController, { authLimiter, authBackoffLimiter }, axios, bcrypt, crypto, express (+18 more)
 
 ### Community 8 - "dependencies"
 Cohesion: 0.07
@@ -270,8 +277,8 @@ Cohesion: 0.21
 Nodes (11): nodemailer, sendTestEmail(), inviteTeamMember(), dns, nodemailer, path, sendInvitationEmail(), sendSystemEmail() (+3 more)
 
 ### Community 22 - "axios"
-Cohesion: 0.05
-Nodes (29): axios, puppeteer-core, puppeteer, axios, path, puppeteer, axios, path (+21 more)
+Cohesion: 0.22
+Nodes (5): axios, axios, puppeteer, axios, prisma
 
 ### Community 23 - "figma"
 Cohesion: 0.29
@@ -389,6 +396,18 @@ Nodes (4): express, db, express, router
 Cohesion: 0.33
 Nodes (4): { exec }, fs, logFile, path
 
+### Community 52 - "test-e2e-ai-pipeline.js"
+Cohesion: 0.22
+Nodes (8): bcryptjs, autoSeedTestingUsers(), axios, bcrypt, fs, path, prisma, runE2ETests()
+
+### Community 53 - "test-integration.js"
+Cohesion: 0.25
+Nodes (7): axios, bcrypt, http, prisma, req, runSuite(), supabase
+
+### Community 54 - "test-complaints.js"
+Cohesion: 0.29
+Nodes (6): axios, http, req, runTest(), supabase, server
+
 ### Community 56 - "run_migration.js"
 Cohesion: 0.40
 Nodes (3): db, fs, path
@@ -404,6 +423,18 @@ Nodes (4): devDependencies, docx, nodemon, prisma
 ### Community 59 - "ask_nvidia_nemotron"
 Cohesion: 0.83
 Nodes (3): ask_nvidia_nemotron(), evaluate_candidate_nemotron(), tool
+
+### Community 64 - "puppeteer-core"
+Cohesion: 0.29
+Nodes (3): puppeteer-core, puppeteer, puppeteer
+
+### Community 65 - "capture_candidate_shots.js"
+Cohesion: 0.40
+Nodes (3): axios, path, puppeteer
+
+### Community 66 - "capture_screenshots.js"
+Cohesion: 0.40
+Nodes (3): axios, path, puppeteer
 
 ### Community 73 - "Supabase"
 Cohesion: 0.11
@@ -502,23 +533,23 @@ Cohesion: 0.50
 Nodes (3): Implementation Plan: Figma MCP Server Configuration, Objective, Step-by-Step Execution
 
 ## Knowledge Gaps
-- **651 isolated node(s):** `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp`, `name`, `version` (+646 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 819 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **47 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **652 isolated node(s):** `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp`, `name`, `version` (+647 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 820 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **48 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `axios` connect `axios` to `database.js`, `documentController.js`, `authRoutes.js`, `package.json`, `aiService.js`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Why does `express` connect `express` to `exportRoutes.js`, `server.js`, `healthRoutes.js`, `userRoutes.js`, `documentRoutes.js`, `authRoutes.js`, `package.json`, `attendanceRoutes.js`, `auth.js`, `candidateRoutes.js`, `resumeRoutes.js`, `analyticsRoutes.js`, `leaveRoutes.js`, `jwtEmployeeRoutes.js`, `optionalAuth`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `@prisma/client` connect `database.js` to `pipelineController.js`, `package.json`?**
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `axios` connect `axios` to `capture_candidate_shots.js`, `capture_screenshots.js`, `test_authenticated_browser.js`, `database.js`, `documentController.js`, `authRoutes.js`, `package.json`, `aiService.js`, `test-e2e-ai-pipeline.js`, `test-integration.js`, `test-complaints.js`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `package.json`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **What connects `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp` to the rest of the system?**
-  _651 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _652 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `authController.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.07542087542087542 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07199032062915911 - nodes in this community are weakly interconnected._
 - **Should `server.js` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `database.js` be split into smaller, more focused modules?**

@@ -318,10 +318,10 @@
     "semantic_hash": "14bf004fbc79b0d5155f32e2d8e36e80"
   },
   "src/controllers/authController.js": {
-    "mtime": 1788644166.562822,
-    "seen": 1788644245.8943598,
-    "ast_hash": "1a9f3160213830914b7962ea898c9c68",
-    "semantic_hash": "1a9f3160213830914b7962ea898c9c68"
+    "mtime": 1788645131.857564,
+    "seen": 1788645612.001439,
+    "ast_hash": "7e4358f9d9a4852eb3a848575b9e85d3",
+    "semantic_hash": ""
   },
   "src/controllers/candidateFeatureController.js": {
     "mtime": 1788644166.562822,
@@ -462,10 +462,10 @@
     "semantic_hash": "900edcd19cd93de83ff05fee80e78f4a"
   },
   "src/routes/authRoutes.js": {
-    "mtime": 1788639183.6876452,
-    "seen": 1788644245.8943763,
-    "ast_hash": "b1437bc74d96b87ff225b265f83998d2",
-    "semantic_hash": "b1437bc74d96b87ff225b265f83998d2"
+    "mtime": 1788645131.859071,
+    "seen": 1788645612.0034404,
+    "ast_hash": "7190dbbb75db23180db3177a30904a5f",
+    "semantic_hash": ""
   },
   "src/routes/candidateRoutes.js": {
     "mtime": 1788642648.2485666,
@@ -1122,15 +1122,15 @@
     "semantic_hash": ""
   },
   "public/index-3.html": {
-    "mtime": 1788644166.5504396,
-    "seen": 1788644549.3013184,
-    "ast_hash": "a97caf63f53d802922aaed94375cb2c0",
+    "mtime": 1788645600.909062,
+    "seen": 1788645612.0144784,
+    "ast_hash": "707d9d84c636031f0d4a162d796e54aa",
     "semantic_hash": ""
   },
   "public/index.html": {
-    "mtime": 1788644166.554767,
-    "seen": 1788644549.3013191,
-    "ast_hash": "a97caf63f53d802922aaed94375cb2c0",
+    "mtime": 1788645597.7860043,
+    "seen": 1788645612.01448,
+    "ast_hash": "707d9d84c636031f0d4a162d796e54aa",
     "semantic_hash": ""
   },
   "public/loading.html": {

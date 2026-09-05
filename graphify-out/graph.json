@@ -30,6 +30,18 @@
       "source_location": "L17"
     },
     {
+      "id": "src_controllers_authcontroller_checkemailavailability",
+      "label": "checkEmailAvailability()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "authController.js",
+      "file_type": "code",
+      "norm_label": "checkemailavailability()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1938"
+    },
+    {
       "id": "src_controllers_authcontroller_checkverificationstatus",
       "label": "checkVerificationStatus()",
       "_callable": true,
@@ -39,7 +51,7 @@
       "file_type": "code",
       "norm_label": "checkverificationstatus()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1670"
+      "source_location": "L1715"
     },
     {
       "id": "src_controllers_authcontroller_companyresetpassword",
@@ -51,7 +63,7 @@
       "file_type": "code",
       "norm_label": "companyresetpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1205"
+      "source_location": "L1250"
     },
     {
       "id": "src_controllers_authcontroller_createorganization",
@@ -63,7 +75,7 @@
       "file_type": "code",
       "norm_label": "createorganization()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1285"
+      "source_location": "L1330"
     },
     {
       "id": "src_controllers_authcontroller_failauth",
@@ -75,7 +87,19 @@
       "file_type": "code",
       "norm_label": "failauth()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L10"
+      "source_location": "L55"
+    },
+    {
+      "id": "src_controllers_authcontroller_findexistinguserbyemail",
+      "label": "findExistingUserByEmail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "authController.js",
+      "file_type": "code",
+      "norm_label": "findexistinguserbyemail()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L14"
     },
     {
       "id": "src_controllers_authcontroller_forgotpassword",
@@ -87,7 +111,7 @@
       "file_type": "code",
       "norm_label": "forgotpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L797"
+      "source_location": "L842"
     },
     {
       "id": "src_controllers_authcontroller_formatuserresponse",
@@ -99,7 +123,7 @@
       "file_type": "code",
       "norm_label": "formatuserresponse()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L15"
+      "source_location": "L60"
     },
     {
       "id": "src_controllers_authcontroller_getappbaseurl",
@@ -111,7 +135,7 @@
       "file_type": "code",
       "norm_label": "getappbaseurl()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L30"
+      "source_location": "L75"
     },
     {
       "id": "src_controllers_authcontroller_getme",
@@ -123,7 +147,7 @@
       "file_type": "code",
       "norm_label": "getme()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L533"
+      "source_location": "L576"
     },
     {
       "id": "src_controllers_authcontroller_joinorganization",
@@ -135,7 +159,7 @@
       "file_type": "code",
       "norm_label": "joinorganization()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1324"
+      "source_location": "L1369"
     },
     {
       "id": "src_controllers_authcontroller_login",
@@ -147,7 +171,7 @@
       "file_type": "code",
       "norm_label": "login()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L408"
+      "source_location": "L451"
     },
     {
       "id": "src_controllers_authcontroller_logout",
@@ -159,7 +183,7 @@
       "file_type": "code",
       "norm_label": "logout()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L494"
+      "source_location": "L537"
     },
     {
       "id": "src_controllers_authcontroller_register",
@@ -171,7 +195,7 @@
       "file_type": "code",
       "norm_label": "register()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L104"
+      "source_location": "L149"
     },
     {
       "id": "src_controllers_authcontroller_renderverificationresultpage",
@@ -183,7 +207,7 @@
       "file_type": "code",
       "norm_label": "renderverificationresultpage()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1376"
+      "source_location": "L1421"
     },
     {
       "id": "src_controllers_authcontroller_resendlink",
@@ -195,7 +219,7 @@
       "file_type": "code",
       "norm_label": "resendlink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1825"
+      "source_location": "L1871"
     },
     {
       "id": "src_controllers_authcontroller_resendotp",
@@ -207,7 +231,7 @@
       "file_type": "code",
       "norm_label": "resendotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1760"
+      "source_location": "L1805"
     },
     {
       "id": "src_controllers_authcontroller_resetpassword",
@@ -219,7 +243,7 @@
       "file_type": "code",
       "norm_label": "resetpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L856"
+      "source_location": "L901"
     },
     {
       "id": "src_controllers_authcontroller_resetpasswordwithtoken",
@@ -231,7 +255,7 @@
       "file_type": "code",
       "norm_label": "resetpasswordwithtoken()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L983"
+      "source_location": "L1028"
     },
     {
       "id": "src_controllers_authcontroller_sendotp",
@@ -243,7 +267,7 @@
       "file_type": "code",
       "norm_label": "sendotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L584"
+      "source_location": "L627"
     },
     {
       "id": "src_controllers_authcontroller_submitchangepassword",
@@ -255,7 +279,7 @@
       "file_type": "code",
       "norm_label": "submitchangepassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1110"
+      "source_location": "L1155"
     },
     {
       "id": "src_controllers_authcontroller_validateemailaddress",
@@ -267,7 +291,7 @@
       "file_type": "code",
       "norm_label": "validateemailaddress()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L67"
+      "source_location": "L112"
     },
     {
       "id": "src_controllers_authcontroller_verifychangepasswordcredentials",
@@ -279,7 +303,7 @@
       "file_type": "code",
       "norm_label": "verifychangepasswordcredentials()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1043"
+      "source_location": "L1088"
     },
     {
       "id": "src_controllers_authcontroller_verifycompanyreferral",
@@ -291,7 +315,7 @@
       "file_type": "code",
       "norm_label": "verifycompanyreferral()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1170"
+      "source_location": "L1215"
     },
     {
       "id": "src_controllers_authcontroller_verifyemaillink",
@@ -303,7 +327,7 @@
       "file_type": "code",
       "norm_label": "verifyemaillink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1570"
+      "source_location": "L1615"
     },
     {
       "id": "src_controllers_authcontroller_verifyforgototpandsendlink",
@@ -315,7 +339,7 @@
       "file_type": "code",
       "norm_label": "verifyforgototpandsendlink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L913"
+      "source_location": "L958"
     },
     {
       "id": "src_controllers_authcontroller_verifyotp",
@@ -327,7 +351,7 @@
       "file_type": "code",
       "norm_label": "verifyotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L680"
+      "source_location": "L725"
     },
     {
       "id": "src_middleware_authratelimit_authbackofflimiter",
@@ -1626,42 +1650,6 @@
       "source_location": "L28"
     },
     {
-      "id": "scripts_audit_webpage_auditwebpage",
-      "label": "auditWebPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "auditwebpage()",
-      "source_file": "scripts/audit_webpage.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_capture_candidate_shots_capturecandidatescreenshots",
-      "label": "captureCandidateScreenshots()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "capturecandidatescreenshots()",
-      "source_file": "scripts/capture_candidate_shots.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "scripts_capture_screenshots_capturescreenshots",
-      "label": "captureScreenshots()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "capturescreenshots()",
-      "source_file": "scripts/capture_screenshots.js",
-      "source_location": "L5"
-    },
-    {
       "id": "scripts_check_dashboard_status_checkdashboardstatus",
       "label": "checkDashboardStatus()",
       "_callable": true,
@@ -1672,78 +1660,6 @@
       "norm_label": "checkdashboardstatus()",
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L4"
-    },
-    {
-      "id": "scripts_inspect_ui_inspectui",
-      "label": "inspectUi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "inspectui()",
-      "source_file": "scripts/inspect_ui.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_test_authenticated_browser_testfullauthenticatedexperience",
-      "label": "testFullAuthenticatedExperience()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "testfullauthenticatedexperience()",
-      "source_file": "scripts/test_authenticated_browser.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "scripts_test_complaints_runtest",
-      "label": "runTest()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "runtest()",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "scripts_test_complaints_runtest_assert",
-      "label": "assert()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "assert()",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L16"
-    },
-    {
-      "id": "scripts_test_integration_runsuite",
-      "label": "runSuite()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "runsuite()",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L10"
-    },
-    {
-      "id": "scripts_test_integration_runsuite_assert",
-      "label": "assert()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "assert()",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L18"
     },
     {
       "id": "scripts_verify_env_verifyenvironment",
@@ -2910,6 +2826,90 @@
       "source_location": "L8"
     },
     {
+      "id": "scripts_test_e2e_ai_pipeline_autoseedtestingusers",
+      "label": "autoSeedTestingUsers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "autoseedtestingusers()",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_rune2etests",
+      "label": "runE2ETests()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "rune2etests()",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L67"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_rune2etests_assert",
+      "label": "assert()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "assert()",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L78"
+    },
+    {
+      "id": "scripts_test_integration_runsuite",
+      "label": "runSuite()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "runsuite()",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "scripts_test_integration_runsuite_assert",
+      "label": "assert()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "assert()",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "scripts_test_complaints_runtest",
+      "label": "runTest()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "runtest()",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "scripts_test_complaints_runtest_assert",
+      "label": "assert()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "assert()",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L16"
+    },
+    {
       "id": "scripts_setup_candidates_table_setupcandidates",
       "label": "setupCandidates()",
       "_callable": true,
@@ -3186,40 +3186,64 @@
       "source_location": "L9"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_autoseedtestingusers",
-      "label": "autoSeedTestingUsers()",
+      "id": "scripts_audit_webpage_auditwebpage",
+      "label": "auditWebPage()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 64,
+      "community_name": "puppeteer-core",
       "file_type": "code",
-      "norm_label": "autoseedtestingusers()",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L10"
+      "norm_label": "auditwebpage()",
+      "source_file": "scripts/audit_webpage.js",
+      "source_location": "L3"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_rune2etests",
-      "label": "runE2ETests()",
+      "id": "scripts_inspect_ui_inspectui",
+      "label": "inspectUi()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 64,
+      "community_name": "puppeteer-core",
       "file_type": "code",
-      "norm_label": "rune2etests()",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L67"
+      "norm_label": "inspectui()",
+      "source_file": "scripts/inspect_ui.js",
+      "source_location": "L3"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_rune2etests_assert",
-      "label": "assert()",
+      "id": "scripts_capture_candidate_shots_capturecandidatescreenshots",
+      "label": "captureCandidateScreenshots()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 65,
+      "community_name": "capture_candidate_shots.js",
       "file_type": "code",
-      "norm_label": "assert()",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L78"
+      "norm_label": "capturecandidatescreenshots()",
+      "source_file": "scripts/capture_candidate_shots.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "scripts_capture_screenshots_capturescreenshots",
+      "label": "captureScreenshots()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 66,
+      "community_name": "capture_screenshots.js",
+      "file_type": "code",
+      "norm_label": "capturescreenshots()",
+      "source_file": "scripts/capture_screenshots.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "scripts_test_authenticated_browser_testfullauthenticatedexperience",
+      "label": "testFullAuthenticatedExperience()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "test_authenticated_browser.js",
+      "file_type": "code",
+      "norm_label": "testfullauthenticatedexperience()",
+      "source_file": "scripts/test_authenticated_browser.js",
+      "source_location": "L4"
     },
     {
       "id": "src_middleware_verifytoken_verifytoken",
@@ -3243,7 +3267,7 @@
       "file_type": "code",
       "norm_label": "attachoauthsession()",
       "source_file": "src/routes/authRoutes.js",
-      "source_location": "L72"
+      "source_location": "L74"
     },
     {
       "id": "src_routes_authroutes_resolvegooglecallback",
@@ -3255,7 +3279,7 @@
       "file_type": "code",
       "norm_label": "resolvegooglecallback()",
       "source_file": "src/routes/authRoutes.js",
-      "source_location": "L95"
+      "source_location": "L97"
     },
     {
       "id": "src_components_unlumen_ui_sidebar_toggle_icon_sidebartoggleicon",
@@ -3611,7 +3635,7 @@
       "file_type": "code",
       "norm_label": "{ generateotp, generatereferralcode }",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L5"
+      "source_location": "L6"
     },
     {
       "id": "src_controllers_authcontroller_jwt",
@@ -3633,7 +3657,18 @@
       "file_type": "code",
       "norm_label": "personal_email_domains",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L47"
+      "source_location": "L92"
+    },
+    {
+      "id": "src_controllers_authcontroller_pgdb",
+      "label": "pgDb",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "authController.js",
+      "file_type": "code",
+      "norm_label": "pgdb",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L5"
     },
     {
       "id": "src_controllers_authcontroller_prisma",
@@ -3655,7 +3690,7 @@
       "file_type": "code",
       "norm_label": "{ recordauthfailure, resetauthfailure }",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L7"
+      "source_location": "L8"
     },
     {
       "id": "src_controllers_authcontroller_sendotpemail_sendotpemail_sendverificationlinkemail_sendpasswordresetlinkemail",
@@ -3666,7 +3701,7 @@
       "file_type": "code",
       "norm_label": "{ sendotpemail, sendotpemail, sendverificationlinkemail, sendpasswordresetlinkemail }",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L6"
+      "source_location": "L7"
     },
     {
       "id": "src_controllers_authcontroller_sendsuccess_senderror",
@@ -3677,7 +3712,7 @@
       "file_type": "code",
       "norm_label": "{ sendsuccess, senderror }",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L8"
+      "source_location": "L9"
     },
     {
       "id": "src_middleware_authratelimit",
@@ -8097,116 +8132,6 @@
       "source_location": "L44"
     },
     {
-      "id": "scripts_audit_webpage",
-      "label": "audit_webpage.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "audit_webpage.js",
-      "source_file": "scripts/audit_webpage.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_audit_webpage_puppeteer",
-      "label": "puppeteer",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "puppeteer",
-      "source_file": "scripts/audit_webpage.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_capture_candidate_shots",
-      "label": "capture_candidate_shots.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "capture_candidate_shots.js",
-      "source_file": "scripts/capture_candidate_shots.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_capture_candidate_shots_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/capture_candidate_shots.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_capture_candidate_shots_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "scripts/capture_candidate_shots.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_capture_candidate_shots_puppeteer",
-      "label": "puppeteer",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "puppeteer",
-      "source_file": "scripts/capture_candidate_shots.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_capture_screenshots",
-      "label": "capture_screenshots.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "capture_screenshots.js",
-      "source_file": "scripts/capture_screenshots.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_capture_screenshots_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/capture_screenshots.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_capture_screenshots_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "scripts/capture_screenshots.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_capture_screenshots_puppeteer",
-      "label": "puppeteer",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "puppeteer",
-      "source_file": "scripts/capture_screenshots.js",
-      "source_location": "L1"
-    },
-    {
       "id": "scripts_check_dashboard_status",
       "label": "check_dashboard_status.js",
       "_origin": "ast",
@@ -8238,193 +8163,6 @@
       "norm_label": "puppeteer",
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L1"
-    },
-    {
-      "id": "scripts_inspect_ui",
-      "label": "inspect_ui.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "inspect_ui.js",
-      "source_file": "scripts/inspect_ui.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_inspect_ui_puppeteer",
-      "label": "puppeteer",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "puppeteer",
-      "source_file": "scripts/inspect_ui.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_test_authenticated_browser",
-      "label": "test_authenticated_browser.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "test_authenticated_browser.js",
-      "source_file": "scripts/test_authenticated_browser.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_test_authenticated_browser_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/test_authenticated_browser.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_test_authenticated_browser_puppeteer",
-      "label": "puppeteer",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "puppeteer",
-      "source_file": "scripts/test_authenticated_browser.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_test_complaints",
-      "label": "test-complaints.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "test-complaints.js",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_test_complaints_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_test_complaints_http",
-      "label": "http",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "http",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_test_complaints_req",
-      "label": "req",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "req",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L147"
-    },
-    {
-      "id": "scripts_test_complaints_supabase",
-      "label": "supabase",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "supabase",
-      "source_file": "scripts/test-complaints.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "scripts_test_integration",
-      "label": "test-integration.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "test-integration.js",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_test_integration_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_test_integration_bcrypt",
-      "label": "bcrypt",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "bcrypt",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "scripts_test_integration_http",
-      "label": "http",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "http",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "scripts_test_integration_prisma",
-      "label": "prisma",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "scripts_test_integration_req",
-      "label": "req",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "req",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L301"
-    },
-    {
-      "id": "scripts_test_integration_supabase",
-      "label": "supabase",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "supabase",
-      "source_file": "scripts/test-integration.js",
-      "source_location": "L5"
     },
     {
       "id": "scripts_verify_env",
@@ -8460,17 +8198,6 @@
       "source_location": "L3"
     },
     {
-      "id": "server_server",
-      "label": "server",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "server",
-      "source_file": "server.js",
-      "source_location": "L56"
-    },
-    {
       "id": "ref_axios",
       "label": "axios",
       "_origin": "ast",
@@ -8480,17 +8207,6 @@
       "norm_label": "axios",
       "source_file": "package.json",
       "source_location": "L29"
-    },
-    {
-      "id": "ref_puppeteer_core",
-      "label": "puppeteer-core",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "concept",
-      "norm_label": "puppeteer-core",
-      "source_file": "package.json",
-      "source_location": "L52"
     },
     {
       "id": "env_var_figma_access_token",
@@ -11788,6 +11504,226 @@
       "source_location": "L3"
     },
     {
+      "id": "scripts_test_e2e_ai_pipeline",
+      "label": "test-e2e-ai-pipeline.js",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "test-e2e-ai-pipeline.js",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_bcrypt",
+      "label": "bcrypt",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "bcrypt",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "scripts_test_e2e_ai_pipeline_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "ref_bcryptjs",
+      "label": "bcryptjs",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "test-e2e-ai-pipeline.js",
+      "file_type": "concept",
+      "norm_label": "bcryptjs",
+      "source_file": "package.json",
+      "source_location": "L30"
+    },
+    {
+      "id": "scripts_test_integration",
+      "label": "test-integration.js",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "test-integration.js",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_test_integration_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_test_integration_bcrypt",
+      "label": "bcrypt",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "bcrypt",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "scripts_test_integration_http",
+      "label": "http",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "http",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "scripts_test_integration_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "scripts_test_integration_req",
+      "label": "req",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "req",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L301"
+    },
+    {
+      "id": "scripts_test_integration_supabase",
+      "label": "supabase",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test-integration.js",
+      "file_type": "code",
+      "norm_label": "supabase",
+      "source_file": "scripts/test-integration.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "scripts_test_complaints",
+      "label": "test-complaints.js",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "test-complaints.js",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_test_complaints_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_test_complaints_http",
+      "label": "http",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "http",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "scripts_test_complaints_req",
+      "label": "req",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "req",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L147"
+    },
+    {
+      "id": "scripts_test_complaints_supabase",
+      "label": "supabase",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "supabase",
+      "source_file": "scripts/test-complaints.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "server_server",
+      "label": "server",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "test-complaints.js",
+      "file_type": "code",
+      "norm_label": "server",
+      "source_file": "server.js",
+      "source_location": "L56"
+    },
+    {
       "id": "scripts_setup_candidates_table",
       "label": "setup_candidates_table.js",
       "_origin": "ast",
@@ -12118,70 +12054,180 @@
       "source_location": "L6"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline",
-      "label": "test-e2e-ai-pipeline.js",
+      "id": "scripts_audit_webpage",
+      "label": "audit_webpage.js",
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 64,
+      "community_name": "puppeteer-core",
       "file_type": "code",
-      "norm_label": "test-e2e-ai-pipeline.js",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "norm_label": "audit_webpage.js",
+      "source_file": "scripts/audit_webpage.js",
       "source_location": "L1"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_axios",
+      "id": "scripts_audit_webpage_puppeteer",
+      "label": "puppeteer",
+      "_origin": "ast",
+      "community": 64,
+      "community_name": "puppeteer-core",
+      "file_type": "code",
+      "norm_label": "puppeteer",
+      "source_file": "scripts/audit_webpage.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_inspect_ui",
+      "label": "inspect_ui.js",
+      "_origin": "ast",
+      "community": 64,
+      "community_name": "puppeteer-core",
+      "file_type": "code",
+      "norm_label": "inspect_ui.js",
+      "source_file": "scripts/inspect_ui.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_inspect_ui_puppeteer",
+      "label": "puppeteer",
+      "_origin": "ast",
+      "community": 64,
+      "community_name": "puppeteer-core",
+      "file_type": "code",
+      "norm_label": "puppeteer",
+      "source_file": "scripts/inspect_ui.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "ref_puppeteer_core",
+      "label": "puppeteer-core",
+      "_origin": "ast",
+      "community": 64,
+      "community_name": "puppeteer-core",
+      "file_type": "concept",
+      "norm_label": "puppeteer-core",
+      "source_file": "package.json",
+      "source_location": "L52"
+    },
+    {
+      "id": "scripts_capture_candidate_shots",
+      "label": "capture_candidate_shots.js",
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "capture_candidate_shots.js",
+      "file_type": "code",
+      "norm_label": "capture_candidate_shots.js",
+      "source_file": "scripts/capture_candidate_shots.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_capture_candidate_shots_axios",
       "label": "axios",
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 65,
+      "community_name": "capture_candidate_shots.js",
       "file_type": "code",
       "norm_label": "axios",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "source_file": "scripts/capture_candidate_shots.js",
       "source_location": "L2"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_bcrypt",
-      "label": "bcrypt",
+      "id": "scripts_capture_candidate_shots_path",
+      "label": "path",
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 65,
+      "community_name": "capture_candidate_shots.js",
       "file_type": "code",
-      "norm_label": "bcrypt",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "scripts_test_e2e_ai_pipeline_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
+      "norm_label": "path",
+      "source_file": "scripts/capture_candidate_shots.js",
       "source_location": "L3"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_path",
-      "label": "path",
+      "id": "scripts_capture_candidate_shots_puppeteer",
+      "label": "puppeteer",
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 65,
+      "community_name": "capture_candidate_shots.js",
       "file_type": "code",
-      "norm_label": "path",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L4"
+      "norm_label": "puppeteer",
+      "source_file": "scripts/capture_candidate_shots.js",
+      "source_location": "L1"
     },
     {
-      "id": "scripts_test_e2e_ai_pipeline_prisma",
-      "label": "prisma",
+      "id": "scripts_capture_screenshots",
+      "label": "capture_screenshots.js",
       "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
+      "community": 66,
+      "community_name": "capture_screenshots.js",
       "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "scripts/test-e2e-ai-pipeline.js",
-      "source_location": "L6"
+      "norm_label": "capture_screenshots.js",
+      "source_file": "scripts/capture_screenshots.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_capture_screenshots_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 66,
+      "community_name": "capture_screenshots.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/capture_screenshots.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_capture_screenshots_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 66,
+      "community_name": "capture_screenshots.js",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "scripts/capture_screenshots.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "scripts_capture_screenshots_puppeteer",
+      "label": "puppeteer",
+      "_origin": "ast",
+      "community": 66,
+      "community_name": "capture_screenshots.js",
+      "file_type": "code",
+      "norm_label": "puppeteer",
+      "source_file": "scripts/capture_screenshots.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_test_authenticated_browser",
+      "label": "test_authenticated_browser.js",
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "test_authenticated_browser.js",
+      "file_type": "code",
+      "norm_label": "test_authenticated_browser.js",
+      "source_file": "scripts/test_authenticated_browser.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_test_authenticated_browser_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "test_authenticated_browser.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/test_authenticated_browser.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_test_authenticated_browser_puppeteer",
+      "label": "puppeteer",
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "test_authenticated_browser.js",
+      "file_type": "code",
+      "norm_label": "puppeteer",
+      "source_file": "scripts/test_authenticated_browser.js",
+      "source_location": "L1"
     },
     {
       "id": "src_middleware_verifytoken",
@@ -12490,17 +12536,6 @@
       "norm_label": "verifyreferralschema",
       "source_file": "src/schemas/authSchemas.js",
       "source_location": "L80"
-    },
-    {
-      "id": "ref_bcryptjs",
-      "label": "bcryptjs",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "authRoutes.js",
-      "file_type": "concept",
-      "norm_label": "bcryptjs",
-      "source_file": "package.json",
-      "source_location": "L30"
     },
     {
       "id": "ref_jsonwebtoken",
@@ -15317,6 +15352,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_controllers_authcontroller_checkemailavailability",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1945",
+      "weight": 1.0
+    },
+    {
       "source": "src_controllers_authcontroller_companyresetpassword",
       "target": "src_controllers_authcontroller_failauth",
       "relation": "calls",
@@ -15325,7 +15372,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1212",
+      "source_location": "L1257",
       "weight": 1.0
     },
     {
@@ -15337,7 +15384,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1263",
+      "source_location": "L1308",
       "weight": 1.0
     },
     {
@@ -15349,7 +15396,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1271",
+      "source_location": "L1316",
       "weight": 1.0
     },
     {
@@ -15361,7 +15408,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L11",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -15373,7 +15420,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L12",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -15385,7 +15432,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L802",
+      "source_location": "L847",
       "weight": 1.0
     },
     {
@@ -15397,7 +15444,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L804",
+      "source_location": "L849",
       "weight": 1.0
     },
     {
@@ -15409,7 +15456,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L822",
+      "source_location": "L867",
       "weight": 1.0
     },
     {
@@ -15421,7 +15468,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L835",
+      "source_location": "L880",
       "weight": 1.0
     },
     {
@@ -15433,7 +15480,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L559",
+      "source_location": "L602",
       "weight": 1.0
     },
     {
@@ -15445,7 +15492,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L414",
+      "source_location": "L457",
       "weight": 1.0
     },
     {
@@ -15457,7 +15504,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L436",
+      "source_location": "L479",
       "weight": 1.0
     },
     {
@@ -15469,7 +15516,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L454",
+      "source_location": "L497",
       "weight": 1.0
     },
     {
@@ -15481,7 +15528,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L481",
+      "source_location": "L524",
       "weight": 1.0
     },
     {
@@ -15493,7 +15540,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L141",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -15505,7 +15552,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L142",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_register",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L190",
       "weight": 1.0
     },
     {
@@ -15517,7 +15576,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L360",
+      "source_location": "L403",
       "weight": 1.0
     },
     {
@@ -15529,7 +15588,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L364",
+      "source_location": "L407",
       "weight": 1.0
     },
     {
@@ -15541,7 +15600,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L375",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -15553,7 +15612,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L383",
+      "source_location": "L426",
       "weight": 1.0
     },
     {
@@ -15565,7 +15624,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L395",
+      "source_location": "L438",
       "weight": 1.0
     },
     {
@@ -15577,7 +15636,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1862",
+      "source_location": "L1908",
       "weight": 1.0
     },
     {
@@ -15589,7 +15648,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1868",
+      "source_location": "L1914",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_resendotp",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1815",
       "weight": 1.0
     },
     {
@@ -15601,7 +15672,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1804",
+      "source_location": "L1850",
       "weight": 1.0
     },
     {
@@ -15613,7 +15684,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L861",
+      "source_location": "L906",
       "weight": 1.0
     },
     {
@@ -15625,7 +15696,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L897",
+      "source_location": "L942",
       "weight": 1.0
     },
     {
@@ -15637,7 +15708,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L904",
+      "source_location": "L949",
       "weight": 1.0
     },
     {
@@ -15649,7 +15720,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L590",
+      "source_location": "L633",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_sendotp",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L647",
       "weight": 1.0
     },
     {
@@ -15661,7 +15744,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L637",
+      "source_location": "L682",
       "weight": 1.0
     },
     {
@@ -15673,7 +15756,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L650",
+      "source_location": "L695",
       "weight": 1.0
     },
     {
@@ -15685,7 +15768,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1173",
+      "source_location": "L1218",
       "weight": 1.0
     },
     {
@@ -15697,19 +15780,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1576",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
-      "target": "src_controllers_authcontroller_failauth",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L919",
+      "source_location": "L1621",
       "weight": 1.0
     },
     {
@@ -15721,7 +15792,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L955",
+      "source_location": "L1000",
       "weight": 1.0
     },
     {
@@ -15733,7 +15804,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L959",
+      "source_location": "L1004",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
+      "target": "src_controllers_authcontroller_failauth",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L964",
       "weight": 1.0
     },
     {
@@ -15745,7 +15828,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L689",
+      "source_location": "L734",
       "weight": 1.0
     },
     {
@@ -15757,7 +15840,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L771",
+      "source_location": "L816",
       "weight": 1.0
     },
     {
@@ -15769,7 +15852,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L787",
+      "source_location": "L832",
       "weight": 1.0
     },
     {
@@ -18073,7 +18156,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -18085,7 +18168,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -18097,7 +18180,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -18109,7 +18192,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -18121,7 +18204,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -18133,7 +18216,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -18145,7 +18228,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -18157,7 +18240,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -18169,7 +18252,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -20778,7 +20861,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_utils_helpers",
+      "target": "src_config_pgdatabase",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20790,7 +20873,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_services_emailservice",
+      "target": "src_utils_helpers",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20802,7 +20885,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_middleware_authratelimit",
+      "target": "src_services_emailservice",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20814,7 +20897,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_utils_apiresponse",
+      "target": "src_middleware_authratelimit",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -20822,6 +20905,18 @@
       "context": "import",
       "source_file": "src/controllers/authController.js",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_utils_apiresponse",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -28869,13 +28964,24 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_failauth",
+      "target": "src_controllers_authcontroller_validateemailaddress",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
-      "source_location": "L10",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L14",
       "weight": 1.0
     },
     {
@@ -28886,18 +28992,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1376",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_formatuserresponse",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L15",
+      "source_location": "L1421",
       "weight": 1.0
     },
     {
@@ -28924,17 +29019,6 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_getappbaseurl",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L30",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
       "target": "src_controllers_authcontroller_prisma",
       "relation": "contains",
       "_origin": "ast",
@@ -28946,18 +29030,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_personal_email_domains",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L47",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_generateotp_generatereferralcode",
+      "target": "src_controllers_authcontroller_pgdb",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -28968,7 +29041,18 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_sendotpemail_sendotpemail_sendverificationlinkemail_sendpasswordresetlinkemail",
+      "target": "src_controllers_authcontroller_failauth",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_generateotp_generatereferralcode",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -28979,18 +29063,18 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_validateemailaddress",
+      "target": "src_controllers_authcontroller_formatuserresponse",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
-      "source_location": "L67",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_recordauthfailure_resetauthfailure",
+      "target": "src_controllers_authcontroller_sendotpemail_sendotpemail_sendverificationlinkemail_sendpasswordresetlinkemail",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -29001,13 +29085,46 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_sendsuccess_senderror",
+      "target": "src_controllers_authcontroller_getappbaseurl",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_recordauthfailure_resetauthfailure",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_sendsuccess_senderror",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_personal_email_domains",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -30063,7 +30180,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/routes/authRoutes.js",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -30096,7 +30213,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/routes/authRoutes.js",
-      "source_location": "L95",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -32252,7 +32369,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1889",
+      "source_location": "L1959",
       "weight": 1.0
     },
     {
@@ -32264,7 +32381,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1891",
+      "source_location": "L1961",
       "weight": 1.0
     },
     {
@@ -32276,7 +32393,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1892",
+      "source_location": "L1962",
       "weight": 1.0
     },
     {
@@ -32288,7 +32405,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1893",
+      "source_location": "L1963",
       "weight": 1.0
     },
     {
@@ -32300,7 +32417,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1894",
+      "source_location": "L1964",
       "weight": 1.0
     },
     {
@@ -32312,7 +32429,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1895",
+      "source_location": "L1965",
       "weight": 1.0
     },
     {
@@ -32324,7 +32441,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1896",
+      "source_location": "L1966",
       "weight": 1.0
     },
     {
@@ -32336,7 +32453,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1897",
+      "source_location": "L1967",
       "weight": 1.0
     },
     {
@@ -32348,7 +32465,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1898",
+      "source_location": "L1968",
       "weight": 1.0
     },
     {
@@ -32360,7 +32477,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1899",
+      "source_location": "L1969",
       "weight": 1.0
     },
     {
@@ -32372,7 +32489,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1900",
+      "source_location": "L1970",
       "weight": 1.0
     },
     {
@@ -32384,7 +32501,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1901",
+      "source_location": "L1971",
       "weight": 1.0
     },
     {
@@ -32396,7 +32513,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1903",
+      "source_location": "L1973",
       "weight": 1.0
     },
     {
@@ -32408,7 +32525,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1904",
+      "source_location": "L1974",
       "weight": 1.0
     },
     {
@@ -32420,7 +32537,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1905",
+      "source_location": "L1975",
       "weight": 1.0
     },
     {
@@ -32432,7 +32549,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1906",
+      "source_location": "L1976",
       "weight": 1.0
     },
     {
@@ -32444,7 +32561,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1907",
+      "source_location": "L1977",
       "weight": 1.0
     },
     {
@@ -32456,7 +32573,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1908",
+      "source_location": "L1978",
       "weight": 1.0
     },
     {
@@ -32468,7 +32585,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1909",
+      "source_location": "L1979",
       "weight": 1.0
     },
     {
@@ -32480,7 +32597,19 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1910",
+      "source_location": "L1980",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_checkemailavailability",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1981",
       "weight": 1.0
     },
     {
@@ -34513,5 +34642,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "40bf04b3edb59b51ecd2e7e51f2a659fecfdc4b6"
+  "built_at_commit": "dadb0feb7963c751e1f1ff21ff36b9b0da69bf89"
 }

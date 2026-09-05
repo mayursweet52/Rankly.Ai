@@ -23,89 +23,11 @@
     "ast_hash": "a2b752b5ed335d1a2dc6050e2bf4d2a5",
     "semantic_hash": "a2b752b5ed335d1a2dc6050e2bf4d2a5"
   },
-  "Create-Shortcut.ps1": {
-    "mtime": 1787482528.4878492,
-    "seen": 1788644245.8943172,
-    "ast_hash": "e170e81150a3fe79909e33b152d602b7",
-    "semantic_hash": "e170e81150a3fe79909e33b152d602b7"
-  },
-  "components/AntigravityUI.jsx": {
-    "mtime": 1788122753.1317973,
-    "seen": 1788644245.8943179,
-    "ast_hash": "1b0d97f9c354205ea6dcf8c84fbb0857",
-    "semantic_hash": "1b0d97f9c354205ea6dcf8c84fbb0857"
-  },
-  "components/DynamicPortalBackground.jsx": {
-    "mtime": 1787135824.37985,
-    "seen": 1788644245.8943186,
-    "ast_hash": "812fb590efe474f2098624c9b7b28d52",
-    "semantic_hash": "812fb590efe474f2098624c9b7b28d52"
-  },
-  "components/FlipLoginCard.jsx": {
-    "mtime": 1788157410.194594,
-    "seen": 1788644245.8943193,
-    "ast_hash": "b0cf6d7ef7dec19acd7fecb73b5ea340",
-    "semantic_hash": "b0cf6d7ef7dec19acd7fecb73b5ea340"
-  },
-  "components/unlumen-ui/sidebar-toggle-icon.tsx": {
-    "mtime": 1788200054.0469542,
-    "seen": 1788644245.8943198,
-    "ast_hash": "59b50e2ca2b9d270daf9b833a632958a",
-    "semantic_hash": "59b50e2ca2b9d270daf9b833a632958a"
-  },
-  "create_icon.py": {
-    "mtime": 1787482528.4908483,
-    "seen": 1788644245.8943207,
-    "ast_hash": "947bfd539c5cb6c02e1b187771cdc885",
-    "semantic_hash": "947bfd539c5cb6c02e1b187771cdc885"
-  },
   "mcp_config.json": {
     "mtime": 1788504797.902703,
     "seen": 1788644245.894322,
     "ast_hash": "bf8b95e5aebe08c72f058416c3588c02",
     "semantic_hash": "bf8b95e5aebe08c72f058416c3588c02"
-  },
-  "models/Candidate.js": {
-    "mtime": 1787337467.4399157,
-    "seen": 1788644245.8943226,
-    "ast_hash": "64a772506707c57dd7d53a3dabfb1f3a",
-    "semantic_hash": "64a772506707c57dd7d53a3dabfb1f3a"
-  },
-  "models/Evaluation.js": {
-    "mtime": 1787135325.1573412,
-    "seen": 1788644245.894323,
-    "ast_hash": "5fd961a09ff08cb8f3f9593303b15dd4",
-    "semantic_hash": "5fd961a09ff08cb8f3f9593303b15dd4"
-  },
-  "models/OTP.js": {
-    "mtime": 1787337470.3083887,
-    "seen": 1788644245.894324,
-    "ast_hash": "1f07036884cef948b6e5354978d5202d",
-    "semantic_hash": "1f07036884cef948b6e5354978d5202d"
-  },
-  "models/Organization.js": {
-    "mtime": 1787135325.1532369,
-    "seen": 1788644245.894325,
-    "ast_hash": "31ccb0b1d1e5302fe6a2f212991f0efe",
-    "semantic_hash": "31ccb0b1d1e5302fe6a2f212991f0efe"
-  },
-  "models/ReferralCode.js": {
-    "mtime": 1787135325.1542363,
-    "seen": 1788644245.8943255,
-    "ast_hash": "f9fd4822acd07e88ae4882033cfed464",
-    "semantic_hash": "f9fd4822acd07e88ae4882033cfed464"
-  },
-  "models/User.js": {
-    "mtime": 1788565831.781515,
-    "seen": 1788644245.8943262,
-    "ast_hash": "62e58a979267a81cbc119139c706835b",
-    "semantic_hash": "62e58a979267a81cbc119139c706835b"
-  },
-  "models/schemas.js": {
-    "mtime": 1787134725.3257084,
-    "seen": 1788644245.8943267,
-    "ast_hash": "dcaa756bfe68530aa4c64e54c1702bef",
-    "semantic_hash": "dcaa756bfe68530aa4c64e54c1702bef"
   },
   "n8n-workflows/rankly-candidates-google-sheets.json": {
     "mtime": 1787846827.0610063,
@@ -334,12 +256,6 @@
     "seen": 1788644245.8943524,
     "ast_hash": "f18a6d331111f5b62d50af9ae0ee6c60",
     "semantic_hash": "f18a6d331111f5b62d50af9ae0ee6c60"
-  },
-  "services/hybridAiService.js": {
-    "mtime": 1788644166.560931,
-    "seen": 1788644245.894353,
-    "ast_hash": "316eb5b5999eba2f3efad2f1dc4469af",
-    "semantic_hash": "316eb5b5999eba2f3efad2f1dc4469af"
   },
   "skills-lock.json": {
     "mtime": 1788431552.434798,
@@ -1263,24 +1179,6 @@
     "mtime": 1788158662.0019574,
     "seen": 1788644549.3013253,
     "ast_hash": "9ba2b8c55e142b2102406d6a51f808b2",
-    "semantic_hash": ""
-  },
-  "rules/flutter-hot-reload.md": {
-    "mtime": 1788604329.7097306,
-    "seen": 1788644549.301326,
-    "ast_hash": "54a109f16b97b5908c870ea1d2f13191",
-    "semantic_hash": ""
-  },
-  "rules/hot_reload.md": {
-    "mtime": 1788604882.6914747,
-    "seen": 1788644549.3013265,
-    "ast_hash": "71b5150f8cf7ae0cb25b6ee04cb6e90d",
-    "semantic_hash": ""
-  },
-  "rules/protocol.md": {
-    "mtime": 1788159715.70519,
-    "seen": 1788644549.3013277,
-    "ast_hash": "65d584372da3245c9acb8f76e396afd3",
     "semantic_hash": ""
   },
   "Rankly_ai_12_Week_Progress_Report.pdf": {
