@@ -1,4 +1,4 @@
-﻿version: '3.8'
+version: '3.8'
 
 services:
   rankly-ai:
@@ -15,6 +15,6 @@ services:
       - PORT=3000
       - NODE_ENV=production
     volumes:
-      - ./rankly.db:/app/rankly.db
+      - ./prisma:/app/prisma
       - ./uploads:/app/uploads
       - ./backups:/app/backups
