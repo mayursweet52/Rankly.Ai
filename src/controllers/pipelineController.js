@@ -138,8 +138,12 @@ async function getCandidateById(req, res) {
  */
 async function updateCandidateStage(req, res) {
   try {
-    const { id } = req.params;
-    const { stage, notes } = req.body;
+    const id = req.params?.id || req.body?.id || req.body?.candidateId;
+    const { stage, notes } = req.body || {};
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: 'Candidate ID is required.' });
+    }
 
     const validStages = ['applied', 'ai_screened', 'hm_review', 'interview', 'offered', 'rejected'];
     if (!stage || !validStages.includes(stage)) {
@@ -163,6 +167,22 @@ async function updateCandidateStage(req, res) {
         where: { id: candidate.evaluationId },
         data: { pipelineStage: stage }
       }).catch(() => {});
+    }
+
+    // Automated Candidate Email Notification upon Pipeline Stage Change
+    if (candidate.email) {
+      try {
+        const { sendCandidateStatusNotification } = require('../services/emailService');
+        sendCandidateStatusNotification(
+          candidate.email,
+          candidate.name,
+          candidate.targetRole || 'Engineering',
+          stage,
+          notes || `Your application status has been updated to: ${stage.toUpperCase().replace('_', ' ')}.`
+        ).catch(err => console.warn(`[Auto-Email] Notification failed for ${candidate.email}:`, err.message));
+      } catch (e) {
+        console.warn('[Auto-Email] Service warning:', e.message);
+      }
     }
 
     return res.json({

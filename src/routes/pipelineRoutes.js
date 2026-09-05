@@ -24,8 +24,8 @@ router.delete('/candidate/:id', optionalAuth, validate({ params: candidateIdPara
 router.get('/', optionalAuth, pipelineController.getCandidates);
 router.post('/', optionalAuth, validate({ body: createCandidateSchema }), pipelineController.createCandidate);
 router.post('/update', optionalAuth, (req, res, next) => {
-  if (req.body && req.body.id) {
-    req.params.id = req.body.id;
+  if (req.body && (req.body.id || req.body.candidateId)) {
+    req.params.id = req.body.id || req.body.candidateId;
   }
   return pipelineController.updateCandidateStage(req, res, next);
 });

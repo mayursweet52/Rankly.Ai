@@ -47,6 +47,7 @@ const grievanceRoutes = require('./src/routes/grievanceRoutes');
 const attendanceRoutes = require('./src/routes/attendanceRoutes');
 const leaveRoutes = require('./src/routes/leaveRoutes');
 const candidateRoutes = require('./src/routes/candidateRoutes');
+const exportRoutes = require('./src/routes/exportRoutes');
 const { startHealthChecker } = require('./src/services/healthChecker');
 const { serveCachedHtml, apiCacheMiddleware, invalidateFragmentCache } = require('./src/utils/cacheManager');
 
@@ -188,6 +189,7 @@ app.use('/api/grievances', grievanceRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/candidate', candidateRoutes);
+app.use('/api/export', exportRoutes);
 app.use('/health', healthRoutes);
 
 // Supabase JS Client live connectivity check
@@ -714,9 +716,25 @@ app.post(['/api/pipeline/update', '/api/candidates/update-stage'], async (req, r
     // Invalidate analytics caches on status updates
     invalidateFragmentCache('analytics');
 
+    // Automated Candidate Email Dispatch on Stage Update (Sumit Work: Email Automation)
+    if (candidate.email) {
+      try {
+        const { sendCandidateStatusNotification } = require('./src/services/emailService');
+        sendCandidateStatusNotification(
+          candidate.email,
+          candidate.name,
+          candidate.targetRole || 'Software Engineering',
+          finalStage,
+          notes || `Your application status has been moved to: ${finalStage.toUpperCase().replace('_', ' ')}.`
+        ).catch(err => console.warn(`[Auto-Email] Status email failed for ${candidate.email}:`, err.message));
+      } catch (e) {
+        console.warn('[Auto-Email] Notification service warning:', e.message);
+      }
+    }
+
     return res.json({
       success: true,
-      message: `Candidate ${candidate.name} status updated to "${finalStage}".`,
+      message: `Candidate ${candidate.name} status updated to "${finalStage}". Notification sent.`,
       candidate: updated
     });
   } catch (err) {

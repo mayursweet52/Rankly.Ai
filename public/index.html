@@ -7331,6 +7331,14 @@ body.dark-theme .resume-tip-box,
                                         <option value="on_leave">On Leave</option>
                                         <option value="terminated">Terminated</option>
                                     </select>
+                                    <button type="button" onclick="exportEmployees('xlsx')" class="py-2 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-zinc-200 hover:border-emerald-500 hover:text-emerald-600 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer" title="Export workforce roster to Microsoft Excel (.xlsx)">
+                                        <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                                        <span>Excel</span>
+                                    </button>
+                                    <button type="button" onclick="exportEmployees('pdf')" class="py-2 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-zinc-200 hover:border-rose-500 hover:text-rose-600 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer" title="Export workforce roster to PDF document">
+                                        <i class="fa-solid fa-file-pdf text-rose-600"></i>
+                                        <span>PDF</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -7646,11 +7654,21 @@ body.dark-theme .resume-tip-box,
                         </div>
 
                         <div class="card">
-                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#E5E5DF]">
+                            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-3 border-b border-[#E5E5DF]">
                                 <h3 class="card-title mb-0 flex items-center gap-2">
                                     <i class="fas fa-layer-group text-[#D95D39]"></i>
                                     <span>Evaluated Candidate Vector Index</span>
                                 </h3>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="exportCandidates('xlsx')" class="py-1.5 px-3 rounded-lg border border-[#E5E5DF] bg-white text-xs font-semibold hover:border-emerald-500 text-gray-700 flex items-center gap-1.5 shadow-2xs cursor-pointer" title="Export shortlisted candidates to Excel (.xlsx)">
+                                        <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                                        <span>Export Excel</span>
+                                    </button>
+                                    <button type="button" onclick="exportCandidates('pdf')" class="py-1.5 px-3 rounded-lg border border-[#E5E5DF] bg-white text-xs font-semibold hover:border-rose-500 text-gray-700 flex items-center gap-1.5 shadow-2xs cursor-pointer" title="Export shortlisted candidates to PDF">
+                                        <i class="fa-solid fa-file-pdf text-rose-600"></i>
+                                        <span>Export PDF</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Modern Sleek Candidate Search Bar -->
@@ -7919,8 +7937,16 @@ body.dark-theme .resume-tip-box,
                                     <button class="btn-primary whitespace-nowrap" onclick="addCandidateToPipeline()">Add</button>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button type="button" onclick="openInterviewScheduleModal()" class="px-4 py-2.5 text-xs font-bold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] text-[var(--text-primary)] transition-all shadow-xs flex items-center gap-2 cursor-pointer">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="exportCandidates('xlsx')" class="px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-emerald-600 text-[var(--text-primary)] transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" title="Export candidates to Excel (.xlsx)">
+                                    <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                                    <span>Export Excel</span>
+                                </button>
+                                <button type="button" onclick="exportCandidates('pdf')" class="px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-rose-600 text-[var(--text-primary)] transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" title="Export candidates to PDF document">
+                                    <i class="fa-solid fa-file-pdf text-rose-600"></i>
+                                    <span>Export PDF</span>
+                                </button>
+                                <button type="button" onclick="openInterviewScheduleModal()" class="px-3.5 py-2 text-xs font-bold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] text-[var(--text-primary)] transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer">
                                     <i class="fa-regular fa-calendar-days text-emerald-600 dark:text-emerald-400 text-sm"></i>
                                     <span>Schedule Interview</span>
                                 </button>
@@ -9592,6 +9618,216 @@ body.dark-theme .resume-tip-box,
                         </div>
                     </div>
 
+                    <!-- ─── TAB: ATTENDANCE & LEAVE MANAGEMENT ─── -->
+                    <div class="tab-content" id="tab-attendance" style="display:none;">
+                        <div class="max-w-7xl mx-auto space-y-6">
+                            <!-- Top Hero Banner -->
+                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">Attendance & Leave Management</h2>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Biometric shift tracking, real-time work timers, and automated leave request approval.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="openApplyLeaveModal()" class="py-2 px-3.5 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-2xs transition-all flex items-center gap-2 cursor-pointer">
+                                        <i class="fa-solid fa-calendar-plus"></i>
+                                        <span>Apply for Leave</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 2-Column Row: Live Shift Punch Card (Left) + Leave Balances (Right) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                                <!-- Left: Live Punch Clock Widget -->
+                                <div class="lg:col-span-5 p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col justify-between space-y-4">
+                                    <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200">Daily Shift Punch</span>
+                                        </div>
+                                        <span id="liveAttendanceDate" class="text-xs font-mono text-gray-500 dark:text-zinc-400">Today</span>
+                                    </div>
+
+                                    <div class="text-center py-3 space-y-1.5">
+                                        <div id="liveDigitalClock" class="text-3xl font-black font-mono text-[#111111] dark:text-white tracking-wider">--:--:--</div>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span id="punchStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700">Not Punched In Today</span>
+                                        </div>
+                                        <p id="punchTimerDisplay" class="text-xs text-gray-400 font-mono pt-1">Work Hours Today: 0h 0m 0s</p>
+                                    </div>
+
+                                    <div class="pt-2">
+                                        <button type="button" id="btnPunchAction" onclick="toggleAttendancePunch()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                            <i class="fa-solid fa-fingerprint text-base"></i>
+                                            <span id="punchActionText">Punch In / Check-In</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
+                                        <div class="p-2 rounded-xl bg-[#FAFAF8] dark:bg-zinc-800/50">
+                                            <span class="text-[10px] text-gray-400 uppercase font-bold block">Check-In</span>
+                                            <span id="todayCheckInTime" class="font-bold text-[#111111] dark:text-white font-mono">--:--</span>
+                                        </div>
+                                        <div class="p-2 rounded-xl bg-[#FAFAF8] dark:bg-zinc-800/50">
+                                            <span class="text-[10px] text-gray-400 uppercase font-bold block">Check-Out</span>
+                                            <span id="todayCheckOutTime" class="font-bold text-[#111111] dark:text-white font-mono">--:--</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: 4 Leave Balance Cards & Policy Summary -->
+                                <div class="lg:col-span-7 space-y-4 flex flex-col justify-between">
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                        <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-500">Casual Leave</span>
+                                            <div id="balCasual" class="text-2xl font-black font-mono text-[#111111] dark:text-white mt-1">12</div>
+                                            <span class="text-[10px] text-gray-400">of 12 available</span>
+                                        </div>
+                                        <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-rose-500">Sick / Medical</span>
+                                            <div id="balSick" class="text-2xl font-black font-mono text-[#111111] dark:text-white mt-1">7</div>
+                                            <span class="text-[10px] text-gray-400">of 7 available</span>
+                                        </div>
+                                        <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-500">Paid Leave</span>
+                                            <div id="balPaid" class="text-2xl font-black font-mono text-[#111111] dark:text-white mt-1">18</div>
+                                            <span class="text-[10px] text-gray-400">of 18 available</span>
+                                        </div>
+                                        <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-500">Pending Review</span>
+                                            <div id="balPending" class="text-2xl font-black font-mono text-[#111111] dark:text-white mt-1">0</div>
+                                            <span class="text-[10px] text-gray-400">Requests</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Workforce Policy Notice Banner -->
+                                    <div class="p-4 rounded-2xl border border-indigo-100 dark:border-indigo-950/40 bg-indigo-50/40 dark:bg-indigo-950/20 text-xs space-y-1.5">
+                                        <div class="flex items-center gap-2 font-bold text-indigo-900 dark:text-indigo-300">
+                                            <i class="fa-solid fa-circle-info text-indigo-500"></i>
+                                            <span>Corporate Shift & Leave Policy v2.4</span>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-zinc-400 leading-relaxed text-[11px]">
+                                            Standard work hours are 9:30 AM to 6:30 PM (9.0 hours/day). Biometric punch logs are automatically synchronized with monthly payroll calculations. Planned leaves require 24 hours prior submission.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Two Split Tables: Attendance History & Leave Request History -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                <!-- Left: Attendance Logs (7 Cols) -->
+                                <div class="lg:col-span-7 space-y-3">
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
+                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3 mb-3">
+                                            <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
+                                                <i class="fa-solid fa-calendar-check text-emerald-500"></i> Recent Attendance History
+                                            </h3>
+                                            <button type="button" onclick="loadAttendanceHistory()" class="text-xs text-indigo-500 hover:text-indigo-600 font-medium">
+                                                <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                                            </button>
+                                        </div>
+
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-left border-collapse text-xs">
+                                                <thead class="bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[10px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
+                                                    <tr>
+                                                        <th class="py-2.5 px-3">Date</th>
+                                                        <th class="py-2.5 px-3">Check-In</th>
+                                                        <th class="py-2.5 px-3">Check-Out</th>
+                                                        <th class="py-2.5 px-3">Hours</th>
+                                                        <th class="py-2.5 px-3 text-right">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="attendanceLogsTableBody" class="divide-y divide-[#E5E5DF] dark:divide-zinc-800/60">
+                                                    <tr><td colspan="5" class="p-6 text-center text-xs text-gray-400 font-mono">Loading records...</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Leave Request History & Approvals (5 Cols) -->
+                                <div class="lg:col-span-5 space-y-3">
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
+                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3 mb-3">
+                                            <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
+                                                <i class="fa-solid fa-umbrella-beach text-indigo-500"></i> Leave History & Status
+                                            </h3>
+                                            <button type="button" onclick="loadLeavesHistory()" class="text-xs text-indigo-500 hover:text-indigo-600 font-medium">
+                                                <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                                            </button>
+                                        </div>
+
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-left border-collapse text-xs">
+                                                <thead class="bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[10px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
+                                                    <tr>
+                                                        <th class="py-2.5 px-3">Type</th>
+                                                        <th class="py-2.5 px-3">Duration</th>
+                                                        <th class="py-2.5 px-3">Days</th>
+                                                        <th class="py-2.5 px-3 text-right">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="leaveRequestsTableBody" class="divide-y divide-[#E5E5DF] dark:divide-zinc-800/60">
+                                                    <tr><td colspan="4" class="p-6 text-center text-xs text-gray-400 font-mono">Loading requests...</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal: Apply for Leave -->
+                    <div id="applyLeaveModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeApplyLeaveModal()">
+                        <div class="modal-card max-w-md w-full p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-xl space-y-4">
+                            <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                <h3 class="text-sm font-bold text-[#111111] dark:text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-calendar-plus text-emerald-500"></i> Apply for Workforce Leave
+                                </h3>
+                                <button type="button" onclick="closeApplyLeaveModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
+                            </div>
+
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold mb-1 text-[#444440] dark:text-zinc-300">Leave Type *</label>
+                                    <select id="leaveTypeSelect" class="form-input w-full p-2.5 rounded-xl border">
+                                        <option value="casual">Casual Leave (Personal / Urgent)</option>
+                                        <option value="sick">Sick / Medical Leave</option>
+                                        <option value="paid">Privilege / Paid Leave</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block font-bold mb-1 text-[#444440] dark:text-zinc-300">Start Date *</label>
+                                        <input type="date" id="leaveStartDate" class="form-input w-full p-2.5 rounded-xl border" onchange="calculateLeaveDays()" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold mb-1 text-[#444440] dark:text-zinc-300">End Date *</label>
+                                        <input type="date" id="leaveEndDate" class="form-input w-full p-2.5 rounded-xl border" onchange="calculateLeaveDays()" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="text-[11px] text-gray-500">Calculated Duration: <strong id="calculatedLeaveDays" class="text-emerald-600 font-mono">1.0 Day(s)</strong></span>
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-1 text-[#444440] dark:text-zinc-300">Reason / Notes *</label>
+                                    <textarea id="leaveReasonInput" rows="3" class="form-input w-full p-2.5 rounded-xl border" placeholder="Please provide brief reason for leave..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                <button type="button" onclick="closeApplyLeaveModal()" class="py-1.5 px-3 rounded-lg border text-xs font-medium text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer">Cancel</button>
+                                <button type="button" id="btnSubmitLeave" onclick="submitLeaveRequest()" class="py-1.5 px-3.5 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-2xs cursor-pointer">Submit Request</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </main>
             </div>
         </div>
@@ -10597,6 +10833,7 @@ body.dark-theme .resume-tip-box,
                     case 'dashboard': return 'fa-solid fa-table-columns';
                     case 'hr-ai-intelligence': return 'fa-solid fa-brain text-purple-500';
                     case 'employees': return 'fa-solid fa-users-gear';
+                    case 'attendance': return 'fa-solid fa-calendar-check text-emerald-500';
                     case 'documents': return 'fa-solid fa-folder-open';
                     case 'chatbot': return 'fa-solid fa-robot';
                     case 'screening': return 'fa-solid fa-file-invoice';
@@ -10663,6 +10900,7 @@ body.dark-theme .resume-tip-box,
                         { id: 'dashboard', label: 'HRMS Overview', target: 'dashboard' },
                         { id: 'hr-ai-intelligence', label: 'AI Talent & Policy Hub', target: 'hr-ai-intelligence' },
                         { id: 'employees', label: 'Employee Directory', target: 'employees' },
+                        { id: 'attendance', label: 'Attendance & Leaves', target: 'attendance' },
                         { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
@@ -10726,7 +10964,7 @@ body.dark-theme .resume-tip-box,
                 const userRole = (activeUser ? (activeUser.role || 'normal') : 'normal').toLowerCase();
                 const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (activeUser && activeUser.accountType === 'employee');
                 
-                const hrmsOnlyTabs = ['dashboard', 'hr-ai-intelligence', 'employees', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
+                const hrmsOnlyTabs = ['dashboard', 'hr-ai-intelligence', 'employees', 'attendance', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
                 if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
                     showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
                     tabId = 'candidate-profile';
@@ -10768,6 +11006,9 @@ body.dark-theme .resume-tip-box,
                 }
                 if (actualTarget === 'employees' && typeof window.loadEmployeesDirectory === 'function') {
                     window.loadEmployeesDirectory();
+                }
+                if (actualTarget === 'attendance' && typeof window.loadAttendanceLeaveDashboard === 'function') {
+                    window.loadAttendanceLeaveDashboard();
                 }
                 if (actualTarget === 'documents' && typeof window.loadCompanyDocuments === 'function') {
                     window.loadCompanyDocuments();
@@ -16321,5 +16562,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
     </script>
     <!-- Candidate Empowerment Core Features Engine -->
     <script src="/js/candidateFeatures.js"></script>
+    <!-- HRMS Attendance, Leaves & Data Export Suite -->
+    <script src="/js/attendanceLeave.js"></script>
 </body>
 </html>
