@@ -48,6 +48,7 @@ const attendanceRoutes = require('./src/routes/attendanceRoutes');
 const leaveRoutes = require('./src/routes/leaveRoutes');
 const candidateRoutes = require('./src/routes/candidateRoutes');
 const exportRoutes = require('./src/routes/exportRoutes');
+const applicationDbRoutes = require('./src/routes/applicationDbRoutes');
 const { startHealthChecker } = require('./src/services/healthChecker');
 const { serveCachedHtml, apiCacheMiddleware, invalidateFragmentCache } = require('./src/utils/cacheManager');
 
@@ -190,6 +191,8 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/candidate', candidateRoutes);
 app.use('/api/export', exportRoutes);
+app.use('/api/pg/applications', applicationDbRoutes);
+app.use('/api/applications', applicationDbRoutes);
 app.use('/health', healthRoutes);
 
 // Supabase JS Client live connectivity check

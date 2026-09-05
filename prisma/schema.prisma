@@ -664,3 +664,56 @@ model CandidateApplication {
   @@index([createdAt])
 }
 
+// ---------------------------------------------------------
+// Applications Model (Strict Lifecycle Status Workflow)
+// ---------------------------------------------------------
+model Application {
+  id               String      @id @default(uuid())
+  candidateId      String
+  jobTitle         String
+  companyName      String?     @default("Rankly.ai")
+  resumeUrl        String?
+  matchScore       Float?      @default(0.0)
+  status           String      @default("pending_screening") // "pending_screening" | "ai_shortlisted" | "hr_review_pending" | "hr_shortlisted" | "rejected"
+  screeningVerdict String?
+  screeningNotes   String?
+  matchedSkills    String?     // JSON array string
+  missingSkills    String?     // JSON array string
+  hrReviewerId     String?
+  hrFeedback       String?
+  rejectionReason  String?
+  appliedAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  auditLogs        AuditLog[]
+
+  @@index([candidateId])
+  @@index([status])
+  @@index([appliedAt])
+}
+
+// ---------------------------------------------------------
+// Audit Logs Model (Immutable History for Actions & Lifecycle)
+// ---------------------------------------------------------
+model AuditLog {
+  id             String       @id @default(uuid())
+  applicationId  String?
+  application    Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  action         String       // "STATUS_CHANGE" | "APPLICATION_CREATED" | "AI_SCREENED" | "HR_REVIEW" | "REJECTED"
+  previousStatus String?
+  newStatus      String
+  actorType      String       @default("system") // "system_ai" | "hr_admin" | "candidate"
+  actorId        String?
+  actorEmail     String?
+  changeReason   String?
+  metadata       String?      // JSON details string
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime     @default(now())
+
+  @@index([applicationId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+
