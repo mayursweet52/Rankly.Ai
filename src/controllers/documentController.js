@@ -8,7 +8,7 @@ const path = require('path');
 const prisma = require('../config/database');
 const supabase = require('../config/supabaseClient');
 const { extractDocumentText, formatFileSize } = require('../services/documentParserService');
-const { processInternalDocument } = require('../services/aiService');
+const { processInternalDocument, summarizePolicyDocument } = require('../services/aiService');
 
 /**
  * GET /api/documents
@@ -549,6 +549,77 @@ async function processDocumentWithAi(req, res) {
 }
 
 /**
+ * POST /api/documents/internal/summarize
+ * Generate structured executive summary for an internal policy document
+ */
+async function summarizeDocumentWithAi(req, res) {
+  try {
+    const { documentId, content: inlineContent, title: inlineTitle } = req.body || {};
+
+    let documentContext = inlineContent || '';
+    let documentTitle = inlineTitle || 'Company Policy Document';
+
+    if (documentId) {
+      // 1. Try Supabase internal_documents
+      const { data, error } = await supabase.from('internal_documents').select('*').eq('id', documentId).single();
+      if (!error && data && data.extracted_text) {
+        documentContext = data.extracted_text;
+        documentTitle = data.title || documentTitle;
+      } else {
+        // 2. Try SQLite CompanyDocument
+        try {
+          const localDoc = await prisma.companyDocument.findUnique({
+            where: { id: String(documentId) }
+          });
+          if (localDoc && (localDoc.content || localDoc.description)) {
+            documentContext = localDoc.content || localDoc.description;
+            documentTitle = localDoc.title || documentTitle;
+          }
+        } catch (e) {}
+      }
+    }
+
+    if (!documentContext || !documentContext.trim()) {
+      // Fallback: Aggregate top corporate policy documents
+      try {
+        const { data: supaDocs } = await supabase.from('internal_documents').select('title, extracted_text').limit(2);
+        if (supaDocs && supaDocs.length > 0) {
+          documentContext = supaDocs.map(d => `=== Policy: ${d.title} ===\n${d.extracted_text}`).join('\n\n');
+          documentTitle = 'Consolidated Corporate Policies';
+        } else {
+          const localDocs = await prisma.companyDocument.findMany({ take: 2 });
+          if (localDocs && localDocs.length > 0) {
+            documentContext = localDocs.map(d => `=== Policy: ${d.title} ===\n${d.content || d.description}`).join('\n\n');
+            documentTitle = 'Consolidated Corporate Policies';
+          }
+        }
+      } catch (err) {}
+    }
+
+    if (!documentContext || !documentContext.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'No document context found to summarize. Please provide documentId or text content.'
+      });
+    }
+
+    const summaryResult = await summarizePolicyDocument(documentContext, documentTitle);
+
+    return res.json({
+      success: true,
+      documentId: documentId || null,
+      title: documentTitle,
+      summary: summaryResult,
+      processedAt: new Date().toISOString(),
+      modelTier: 'Strict HRMS AI Engine (Nemotron / Multi-tier)'
+    });
+  } catch (err) {
+    console.error('Error generating document summary:', err);
+    return res.status(500).json({ success: false, error: 'Policy summarization failed: ' + err.message });
+  }
+}
+
+/**
  * DELETE /api/documents/internal/:id
  * Delete document from Supabase internal_documents
  */
@@ -573,5 +644,7 @@ module.exports = {
   listInternalDocuments,
   getInternalDocumentById,
   processDocumentWithAi,
+  summarizeDocumentWithAi,
   deleteInternalDocument
 };
+
