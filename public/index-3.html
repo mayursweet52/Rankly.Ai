@@ -10936,10 +10936,18 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         setButtonLoading(submitBtn, true, 'PROVISIONING WORKSPACE...');
                     }
 
+                    const verificationToken = window.orgVerificationToken || sessionStorage.getItem('org_verified_token') || '';
+                    const otpCode = (document.getElementById('orgOtpInput')?.value || '').replace(/\D/g, '').trim();
+
+                    const authHeaders = { 'Content-Type': 'application/json' };
+                    if (verificationToken) {
+                        authHeaders['Authorization'] = 'Bearer ' + verificationToken;
+                    }
+
                     try {
                         const res = await fetch('/api/auth/register', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: authHeaders,
                             credentials: 'include',
                             body: JSON.stringify({
                                 fname: firstName,
@@ -10957,7 +10965,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 role: 'admin',
                                 accessLevel: role,
                                 accountType: 'employee',
-                                isEmployee: true
+                                isEmployee: true,
+                                verificationToken,
+                                token: verificationToken,
+                                otp: otpCode
                             })
                         });
                         const data = await res.json();
