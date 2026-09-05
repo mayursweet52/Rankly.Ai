@@ -11347,7 +11347,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
                             startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
-                            showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                if (otpContainer) otpContainer.classList.add('hidden');
+                            } else {
+                                showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
+                            }
                             if (sendBtn) {
                                 sendBtn.disabled = false;
                                 sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
@@ -11828,7 +11833,20 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             showToast('Verification code sent to ' + email + '! Please check your inbox and spam folder.', 'success');
                             startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
-                            showToast(data.message || data.error || 'Failed to send OTP', 'error');
+                            if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
+                                showToast('⚠️ An account with this email already exists. Redirecting to Sign In...', 'warning');
+                                if (otpContainer) otpContainer.classList.add('hidden');
+                                setTimeout(() => {
+                                    switchOrgPortalTab('login');
+                                    const orgLoginInput = document.getElementById('orgLoginIdentifier');
+                                    if (orgLoginInput) {
+                                        orgLoginInput.value = email;
+                                        orgLoginInput.focus();
+                                    }
+                                }, 1200);
+                            } else {
+                                showToast(data.message || data.error || 'Failed to send OTP', 'error');
+                            }
                             if (sendBtn) {
                                 sendBtn.disabled = false;
                                 sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
