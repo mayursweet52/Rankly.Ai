@@ -7380,17 +7380,13 @@ body.dark-theme .resume-tip-box,
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
                                 <h2 class="text-2xl font-black tracking-tight text-[#111111] dark:text-white flex items-center gap-2 mb-1">
-                                    <i class="fa-solid fa-folder-open text-amber-500"></i> Company Documents & Policy Engine
+                                    <i class="fa-solid fa-folder-open text-amber-500"></i> Company Documents & Policies
                                 </h2>
                                 <p class="text-xs text-[#666660] dark:text-zinc-400">
-                                    Corporate policy vault with local Nemotron AI extraction, automated compliance checks, and instant Q&A.
+                                    Official corporate policy vault, employee handbooks, NDAs, and organizational compliance guidelines.
                                 </p>
                             </div>
                             <div class="flex items-center gap-2.5">
-                                <button type="button" onclick="openAiDocAssistant(null, 'All Corporate Policies')" class="btn-primary flex items-center gap-2 text-xs py-2.5 px-4 font-bold bg-[#183B33] hover:bg-[#122e28] text-white rounded-xl shadow-xs cursor-pointer">
-                                    <i class="fa-solid fa-robot text-amber-400"></i>
-                                    <span>Ask Nemotron (AI)</span>
-                                </button>
                                 <button type="button" onclick="openModal('publishDocModal')" class="btn-secondary flex items-center gap-2 text-xs py-2.5 px-3.5 font-bold rounded-xl cursor-pointer">
                                     <i class="fa-solid fa-file-circle-plus text-amber-500"></i>
                                     <span>Publish Document</span>
@@ -7416,11 +7412,9 @@ body.dark-theme .resume-tip-box,
                                 <span class="text-[10px] text-purple-600/70 dark:text-purple-400/70 font-mono mt-0.5 block">IP & Confidentiality</span>
                             </div>
                             <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
-                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">AI Document Engine</span>
-                                <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Nemotron Local
-                                </div>
-                                <span class="text-[10px] text-gray-400 font-mono mt-0.5 block">Isolated Ollama Processing</span>
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Compliance & Guidelines</span>
+                                <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1" id="docStatCompliance">0</div>
+                                <span class="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-mono mt-0.5 block">Audit & Regulatory Records</span>
                             </div>
                         </div>
 
@@ -9834,9 +9828,17 @@ body.dark-theme .resume-tip-box,
                                         <p id="punchTimerDisplay" class="text-xs text-gray-400 font-mono pt-1">Work Hours Today: 0h 0m 0s</p>
                                     </div>
 
-                                    <div class="pt-2">
-                                        <button type="button" id="btnPunchAction" onclick="toggleAttendancePunch()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                    <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        <button type="button" id="btnPunchIn" onclick="attendancePunchIn()" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                             <i class="fa-solid fa-fingerprint text-base"></i>
+                                            <span id="punchInText">Punch In</span>
+                                        </button>
+                                        <button type="button" id="btnPunchOut" onclick="attendancePunchOut()" disabled class="py-3 px-4 rounded-xl bg-gray-200 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-not-allowed">
+                                            <i class="fa-solid fa-right-from-bracket text-base"></i>
+                                            <span id="punchOutText">Punch Out</span>
+                                        </button>
+                                        <!-- Hidden legacy compatibility button -->
+                                        <button type="button" id="btnPunchAction" onclick="toggleAttendancePunch()" class="hidden" style="display:none;">
                                             <span id="punchActionText">Punch In / Check-In</span>
                                         </button>
                                     </div>
@@ -16013,10 +16015,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             const totalEl = document.getElementById('docStatTotal');
             const policiesEl = document.getElementById('docStatPolicies');
             const ndasEl = document.getElementById('docStatNdas');
+            const complianceEl = document.getElementById('docStatCompliance');
 
             if (totalEl) totalEl.textContent = list.length;
             if (policiesEl) policiesEl.textContent = list.filter(d => ['policy', 'handbook'].includes((d.category || '').toLowerCase())).length;
-            if (ndasEl) ndasEl.textContent = list.filter(d => ['nda', 'compliance', 'contract'].includes((d.category || '').toLowerCase())).length;
+            if (ndasEl) ndasEl.textContent = list.filter(d => ['nda', 'contract'].includes((d.category || '').toLowerCase())).length;
+            if (complianceEl) complianceEl.textContent = list.filter(d => ['compliance'].includes((d.category || '').toLowerCase())).length;
         }
 
         window.setDocCategoryFilter = function(category) {
@@ -16085,17 +16089,14 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             '<span><i class="fa-regular fa-calendar mr-1"></i> ' + dateStr + '</span>' +
                             '<span><i class="fa-solid fa-file-pdf mr-1 text-red-400"></i> ' + size + '</span>' +
                         '</div>' +
-                        '<div class="flex items-center justify-between gap-1.5 pt-1">' +
-                            '<button onclick="openAiDocAssistant(\'' + doc.id + '\', \'' + doc.title.replace(/'/g, "\\'") + '\')" class="btn-primary text-xs py-1.5 px-2.5 flex items-center gap-1.5 bg-[#183B33] hover:bg-[#122e28] text-white rounded-lg transition-all" title="Ask Nemotron AI">' +
-                                '<i class="fa-solid fa-robot text-amber-400"></i> <span>Ask AI</span>' +
+                        '<div class="flex items-center justify-between gap-2 pt-1">' +
+                            '<button onclick="readDocument(\'' + doc.id + '\')" class="btn-primary text-xs flex-1 py-2 text-center justify-center font-bold bg-[#183B33] hover:bg-[#122e28] text-white rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">' +
+                                '<i class="fa-regular fa-eye text-xs"></i> <span>View Document</span>' +
                             '</button>' +
-                            '<button onclick="readDocument(\'' + doc.id + '\')" class="btn-secondary text-xs flex-1 py-1.5 text-center justify-center">' +
-                                '<i class="fa-regular fa-eye mr-1"></i> View' +
-                            '</button>' +
-                            '<button onclick="downloadDocPrompt(\'' + doc.title.replace(/'/g, "\\'") + '\', \'' + (doc.fileName || '') + '\')" class="btn-secondary text-xs px-2.5 py-1.5" title="Download Document">' +
+                            '<button onclick="downloadDocPrompt(\'' + doc.title.replace(/'/g, "\\'") + '\', \'' + (doc.fileName || '') + '\')" class="btn-secondary text-xs px-3 py-2 rounded-xl" title="Download Document">' +
                                 '<i class="fa-solid fa-download"></i>' +
                             '</button>' +
-                            '<button onclick="deleteDocumentRecord(\'' + doc.id + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5" title="Remove Document">' +
+                            '<button onclick="deleteDocumentRecord(\'' + doc.id + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-2 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-all" title="Remove Document">' +
                                 '<i class="fa-solid fa-trash-can text-xs"></i>' +
                             '</button>' +
                         '</div>' +

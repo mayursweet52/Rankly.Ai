@@ -64,6 +64,10 @@
         isCheckedIn = !!checkedIn;
         const btn = document.getElementById('btnPunchAction');
         const actionText = document.getElementById('punchActionText');
+        const btnIn = document.getElementById('btnPunchIn');
+        const btnOut = document.getElementById('btnPunchOut');
+        const inText = document.getElementById('punchInText');
+        const outText = document.getElementById('punchOutText');
         const badge = document.getElementById('punchStatusBadge');
         const inEl = document.getElementById('todayCheckInTime');
         const outEl = document.getElementById('todayCheckOutTime');
@@ -84,19 +88,47 @@
         }
 
         if (checkedIn) {
+            // Shift is Active (Checked in)
             if (badge) {
                 badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/30';
-                badge.textContent = 'Shift Active (Checked In)';
+                badge.textContent = 'Shift Active (Punched In)';
             }
+            // Dedicated Punch In Button
+            if (btnIn) {
+                btnIn.disabled = true;
+                btnIn.className = 'py-3 px-4 rounded-xl bg-emerald-700/40 text-white/80 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-not-allowed';
+                if (inText) inText.innerHTML = '<i class="fa-solid fa-check"></i> Punched In';
+            }
+            // Dedicated Punch Out Button
+            if (btnOut) {
+                btnOut.disabled = false;
+                btnOut.className = 'py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
+                if (outText) outText.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Punch Out';
+            }
+            // Legacy single toggle button
             if (btn) {
                 btn.className = 'w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
             }
             if (actionText) actionText.textContent = 'Punch Out / End Shift';
         } else if (checkedOut) {
+            // Shift Completed Today
             if (badge) {
                 badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-500/10 text-blue-600 border border-blue-500/30';
                 badge.textContent = 'Shift Completed Today';
             }
+            // Dedicated Punch In Button
+            if (btnIn) {
+                btnIn.disabled = false;
+                btnIn.className = 'py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
+                if (inText) inText.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Punch In Again';
+            }
+            // Dedicated Punch Out Button
+            if (btnOut) {
+                btnOut.disabled = true;
+                btnOut.className = 'py-3 px-4 rounded-xl bg-gray-200 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-not-allowed';
+                if (outText) outText.innerHTML = '<i class="fa-solid fa-check"></i> Shift Ended';
+            }
+            // Legacy single toggle button
             if (btn) {
                 btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
             }
@@ -105,10 +137,24 @@
                 timerEl.textContent = `Today's Work Hours: ${today.work_hours} hrs completed`;
             }
         } else {
+            // Not Punched In Today
             if (badge) {
                 badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700';
                 badge.textContent = 'Not Punched In Today';
             }
+            // Dedicated Punch In Button
+            if (btnIn) {
+                btnIn.disabled = false;
+                btnIn.className = 'py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
+                if (inText) inText.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Punch In';
+            }
+            // Dedicated Punch Out Button
+            if (btnOut) {
+                btnOut.disabled = true;
+                btnOut.className = 'py-3 px-4 rounded-xl bg-gray-200 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-not-allowed';
+                if (outText) outText.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Punch Out';
+            }
+            // Legacy single toggle button
             if (btn) {
                 btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer';
             }
@@ -117,35 +163,73 @@
         }
     }
 
-    window.toggleAttendancePunch = async function() {
-        const btn = document.getElementById('btnPunchAction');
+    window.attendancePunchIn = async function() {
+        const btn = document.getElementById('btnPunchIn') || document.getElementById('btnPunchAction');
         if (btn) btn.disabled = true;
 
         try {
-            const endpoint = isCheckedIn ? '/api/attendance/check-out' : '/api/attendance/check-in';
-            const res = await fetch(endpoint, {
+            const res = await fetch('/api/attendance/check-in', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ notes: isCheckedIn ? 'Shift Checkout' : 'Morning Shift Check-in' })
+                body: JSON.stringify({ notes: 'Morning Shift Check-in' })
             });
 
             const data = await res.json();
-            if (!res.ok || !data.success) throw new Error(data.message || 'Attendance action failed');
+            if (!res.ok || !data.success) throw new Error(data.message || 'Punch In failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast(data.message || 'Attendance updated successfully!', 'success');
+                window.showToast(data.message || '✅ Punched In successfully!', 'success');
             }
 
             await fetchTodayAttendance();
             await loadAttendanceHistory();
         } catch (err) {
-            console.error('Punch error:', err);
+            console.error('Punch In error:', err);
             if (typeof window.showToast === 'function') {
-                window.showToast('Punch Error: ' + err.message, 'error');
+                window.showToast('Punch In Error: ' + err.message, 'error');
             }
         } finally {
             if (btn) btn.disabled = false;
+        }
+    };
+
+    window.attendancePunchOut = async function() {
+        const btn = document.getElementById('btnPunchOut') || document.getElementById('btnPunchAction');
+        if (btn) btn.disabled = true;
+
+        try {
+            const res = await fetch('/api/attendance/check-out', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ notes: 'Shift Checkout' })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.message || 'Punch Out failed');
+
+            if (typeof window.showToast === 'function') {
+                window.showToast(data.message || '✅ Punched Out successfully!', 'success');
+            }
+
+            await fetchTodayAttendance();
+            await loadAttendanceHistory();
+        } catch (err) {
+            console.error('Punch Out error:', err);
+            if (typeof window.showToast === 'function') {
+                window.showToast('Punch Out Error: ' + err.message, 'error');
+            }
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    };
+
+    window.toggleAttendancePunch = async function() {
+        if (isCheckedIn) {
+            await window.attendancePunchOut();
+        } else {
+            await window.attendancePunchIn();
         }
     };
 

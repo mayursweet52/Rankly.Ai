@@ -33,12 +33,33 @@ router.get('/today', optionalAuth, async (req, res) => {
       [employeeId]
     );
     const today = result.rows[0] || null;
+
+    let isCheckedIn = false;
+    let isCheckedOut = false;
+
+    if (today && today.check_in) {
+      if (!today.check_out) {
+        isCheckedIn = true;
+        isCheckedOut = false;
+      } else {
+        const inTime = new Date(today.check_in).getTime();
+        const outTime = new Date(today.check_out).getTime();
+        if (inTime > outTime) {
+          isCheckedIn = true;
+          isCheckedOut = false;
+        } else {
+          isCheckedIn = false;
+          isCheckedOut = true;
+        }
+      }
+    }
+
     return res.json({
       success: true,
       employeeId,
       today,
-      isCheckedIn: !!(today && today.check_in && !today.check_out),
-      isCheckedOut: !!(today && today.check_out)
+      isCheckedIn,
+      isCheckedOut
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
@@ -47,7 +68,7 @@ router.get('/today', optionalAuth, async (req, res) => {
 
 /**
  * POST /api/attendance/check-in
- * Employee daily check-in
+ * Employee daily check-in / Punch In
  */
 router.post('/check-in', optionalAuth, async (req, res) => {
   try {
@@ -63,14 +84,14 @@ router.post('/check-in', optionalAuth, async (req, res) => {
       INSERT INTO attendance (employee_id, date, check_in, status, notes, ip_address, created_at, updated_at)
       VALUES ($1, CURRENT_DATE, NOW(), 'present', $2, $3, NOW(), NOW())
       ON CONFLICT (employee_id, date)
-      DO UPDATE SET check_in = EXCLUDED.check_in, status = 'present', updated_at = NOW()
+      DO UPDATE SET check_in = NOW(), check_out = NULL, status = 'present', notes = EXCLUDED.notes, ip_address = EXCLUDED.ip_address, updated_at = NOW()
       RETURNING *;
     `;
 
     const result = await db.query(query, [employeeId, notes || 'Live Shift Check-in', ipAddress]);
     return res.status(201).json({
       success: true,
-      message: '✅ Check-in recorded successfully.',
+      message: '✅ Punch In recorded successfully.',
       data: result.rows[0]
     });
   } catch (err) {
@@ -81,7 +102,7 @@ router.post('/check-in', optionalAuth, async (req, res) => {
 
 /**
  * POST /api/attendance/check-out
- * Employee daily check-out
+ * Employee daily check-out / Punch Out
  */
 router.post('/check-out', optionalAuth, async (req, res) => {
   try {
@@ -90,26 +111,29 @@ router.post('/check-out', optionalAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Employee profile ID required for check-out.' });
     }
 
+    const { notes } = req.body || {};
+    const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+
     const query = `
-      UPDATE attendance
-      SET check_out = NOW(),
-          work_hours = ROUND(EXTRACT(EPOCH FROM (NOW() - check_in)) / 3600.0, 2),
+      INSERT INTO attendance (employee_id, date, check_in, check_out, work_hours, status, notes, ip_address, created_at, updated_at)
+      VALUES ($1, CURRENT_DATE, NOW() - INTERVAL '8 hours', NOW(), 8.0, 'present', $2, $3, NOW(), NOW())
+      ON CONFLICT (employee_id, date)
+      DO UPDATE SET check_out = NOW(),
+          work_hours = ROUND(EXTRACT(EPOCH FROM (NOW() - COALESCE(attendance.check_in, NOW()))) / 3600.0, 2),
+          status = 'present',
           updated_at = NOW()
-      WHERE employee_id = $1 AND date = CURRENT_DATE
       RETURNING *;
     `;
 
-    const result = await db.query(query, [employeeId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'No check-in record found for today.' });
-    }
+    const result = await db.query(query, [employeeId, notes || 'Shift Checkout', ipAddress]);
 
     return res.json({
       success: true,
-      message: '✅ Check-out recorded successfully.',
+      message: '✅ Punch Out recorded successfully.',
       data: result.rows[0]
     });
   } catch (err) {
+    console.error('Check-out error:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
 });
