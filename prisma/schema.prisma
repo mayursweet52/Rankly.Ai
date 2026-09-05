@@ -48,6 +48,7 @@ model User {
   administeredOrgs Organization[] @relation("AdminOrgs")
   employeeProfile  Employee?
   companyDocuments CompanyDocument[]
+  grievances       Grievance[]
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -73,6 +74,7 @@ model Organization {
   departments Department[]
   employees   Employee[]
   companyDocuments CompanyDocument[]
+  grievances  Grievance[]
 
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -554,6 +556,29 @@ model CompanyDocument {
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   isRestricted   Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------
+// Confidential Grievance Model (Report directly to Admin)
+// ---------------------------------------------------------
+model Grievance {
+  id             String        @id @default(uuid())
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  employeeName   String?       // "Anonymous Employee" if isAnonymous is true
+  employeeEmail  String?       // null if isAnonymous is true
+  category       String        // "HR Issue", "Payroll", "Workplace", "Harassment", "Ethics", "Other"
+  priority       String        @default("Normal") // "Normal", "Urgent", "Critical"
+  subject        String
+  description    String
+  isAnonymous    Boolean       @default(false)
+  status         String        @default("Pending") // "Pending", "Under Review", "Resolved", "Dismissed"
+  adminNotes     String?
+  resolvedAt     DateTime?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 }
