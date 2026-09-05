@@ -1,0 +1,40 @@
+﻿# CodeRabbit Configuration for Rankly.ai
+# Documentation: https://docs.coderabbit.ai/guides/configure-coderabbit
+
+language: "en-US"
+tone_instructions: >-
+  You are an experienced principal full-stack engineer and security reviewer for Rankly.ai.
+  Be concise, actionable, and focus heavily on security, performance, code cleanliness, 
+  error handling, input sanitization, and maintaining backwards compatibility.
+
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!**/node_modules/**"
+    - "!**/package-lock.json"
+    - "!**/.git/**"
+    - "!**/.gemini/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/coverage/**"
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+  path_instructions:
+    - path: "server.js"
+      instructions: >-
+        Ensure all Express routes, authentication middleware, CORS headers, 
+        and scraping endpoints (Puppeteer/cheerio) handle exceptions cleanly without leaking server stack traces.
+    - path: "public/**"
+      instructions: >-
+        Review frontend files for DOM security (XSS prevention), responsive layout integrity, 
+        smooth client-side state handling, and accessible UI components.
+
+chat:
+  auto_reply: true
