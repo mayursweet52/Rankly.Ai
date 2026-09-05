@@ -7,7 +7,7 @@ const createCandidateSchema = {
   targetRole: { type: 'string', required: true, min: 1, max: 100 },
   matchScore: { type: 'number', required: true, min: 0, max: 100 },
   fitVerdict: { type: 'string', max: 50 },
-  stage: { type: 'enum', enum: ['screening', 'interview', 'offer', 'hired', 'rejected'] },
+  stage: { type: 'enum', enum: ['applied', 'ai_screened', 'screening', 'shortlisted', 'hm_review', 'interview', 'offer', 'offered', 'hired', 'rejected'] },
   email: { type: 'email', max: 100 },
   notes: { type: 'string', max: 5000 },
   keySkills: { type: 'array', items: { type: 'string', max: 60 } },
@@ -15,7 +15,7 @@ const createCandidateSchema = {
 };
 
 const updateStageBodySchema = {
-  stage: { type: 'enum', required: true, enum: ['screening', 'interview', 'offer', 'hired', 'rejected'] }
+  stage: { type: 'enum', required: true, enum: ['applied', 'ai_screened', 'screening', 'shortlisted', 'hm_review', 'interview', 'offer', 'offered', 'hired', 'rejected'] }
 };
 
 const updateNotesBodySchema = {
@@ -24,7 +24,7 @@ const updateNotesBodySchema = {
 
 const notifyCandidateBodySchema = {
   message: { type: 'string', max: 2000 },
-  stage: { type: 'enum', enum: ['screening', 'interview', 'offer', 'hired', 'rejected'] }
+  stage: { type: 'enum', enum: ['applied', 'ai_screened', 'screening', 'shortlisted', 'hm_review', 'interview', 'offer', 'offered', 'hired', 'rejected'] }
 };
 
 const candidateIdParamSchema = {

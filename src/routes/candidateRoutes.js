@@ -36,5 +36,9 @@ router.put('/profile', optionalAuth, apiLimiter, candidateFeatureController.upda
 router.get('/jobs', optionalAuth, apiLimiter, candidateFeatureController.getJobListingsHandler);
 router.post('/jobs/apply', optionalAuth, apiLimiter, candidateFeatureController.applyToJobHandler);
 
+// 8. Candidate CV Upload & Application Form Submission
+router.post('/upload-application', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
+router.post('/upload-resume-form', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
+
 module.exports = router;
 
