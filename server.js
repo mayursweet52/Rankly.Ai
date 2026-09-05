@@ -1,4 +1,9 @@
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+if (fs.existsSync(path.join(__dirname, '.env.local'))) {
+  require('dotenv').config({ path: path.join(__dirname, '.env.local'), override: true });
+}
 
 // Production-Ready Environment Validation
 const { validateEnvironment } = require('./src/config/validateEnv');
@@ -8,8 +13,6 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
-const path = require('path');
-const fs = require('fs');
 const http = require('http');
 
 // Database Client
