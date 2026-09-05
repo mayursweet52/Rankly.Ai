@@ -43,8 +43,26 @@ function getAppBaseUrl(req) {
   return 'https://ranklyai-production.up.railway.app';
 }
 
+// Disallowed personal email domains for corporate workspace registrations
+const PERSONAL_EMAIL_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com',
+  'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'yahoo.com.au', 'ymail.com', 'rocketmail.com',
+  'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'passport.com',
+  'icloud.com', 'me.com', 'mac.com',
+  'aol.com', 'aim.com',
+  'proton.me', 'protonmail.com', 'pm.me',
+  'zoho.com',
+  'mail.com', 'email.com', 'usa.com', 'consultant.com',
+  'gmx.com', 'gmx.net', 'gmx.de',
+  'yandex.com', 'yandex.ru',
+  'rediffmail.com',
+  'tutanota.com', 'tuta.com', 'tuta.io',
+  'fastmail.com',
+  'inbox.com', 'lycos.com'
+]);
+
 /**
- * Validate Email Format, Domain Structure, and Gmail Requirement
+ * Validate Email Format, Domain Structure, and Workmail Requirement
  */
 function validateEmailAddress(email, isEmployee = false) {
   if (!email || typeof email !== 'string') {
@@ -69,7 +87,15 @@ function validateEmailAddress(email, isEmployee = false) {
     return { valid: false, message: '❌ This email domain is not accepted. Please provide a real email address.' };
   }
 
-  return { valid: true, email: clean };
+  // Strict Work Email Enforcement for Company / Workspace Registration
+  if (isEmployee && PERSONAL_EMAIL_DOMAINS.has(domain)) {
+    return {
+      valid: false,
+      message: `❌ Personal email addresses (@${domain}) are not allowed for Company Workspace registration. Please use your official corporate work email (e.g. name@company.com).`
+    };
+  }
+
+  return { valid: true, email: clean, domain };
 }
 
 /**

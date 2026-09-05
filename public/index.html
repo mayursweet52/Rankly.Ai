@@ -5952,11 +5952,13 @@ body.dark-theme .resume-tip-box,
                                     <div class="mb-3">
                                         <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Email *</label>
                                         <div class="flex gap-2 mb-1">
-                                            <input id="orgWorkEmailInput" name="org_workspace_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" required type="email" placeholder="name@company.com" />
+                                            <input id="orgWorkEmailInput" name="org_workspace_email_field" oninput="checkOrgWorkEmailLive(this)" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" required type="email" placeholder="name@company.com" />
                                             <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
                                         </div>
+                                        <p id="orgWorkEmailWarning" class="text-[11px] text-amber-700 dark:text-amber-300 mt-1.5 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 hidden"></p>
+                                        <p class="text-[10px] text-[var(--text-muted)] mt-1"><i class="fa-solid fa-briefcase mr-1 text-[#183B33] dark:text-[#5B998C]"></i> Corporate work email only (e.g. name@company.com). Personal Gmail / Yahoo not allowed.</p>
                                     </div>
 
                                     <!-- OTP Verification Box (Hidden until Send OTP clicked) -->
@@ -11816,13 +11818,54 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 };
 
                 // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
+                const PERSONAL_WORKMAIL_BLACKLIST = [
+                    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'yahoo.com.au', 'ymail.com', 'rocketmail.com',
+                    'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'passport.com',
+                    'icloud.com', 'me.com', 'mac.com',
+                    'aol.com', 'aim.com',
+                    'proton.me', 'protonmail.com', 'pm.me',
+                    'zoho.com', 'mail.com', 'email.com', 'gmx.com', 'gmx.net',
+                    'yandex.com', 'yandex.ru', 'rediffmail.com',
+                    'tutanota.com', 'tuta.com', 'fastmail.com', 'inbox.com'
+                ];
+
+                window.checkOrgWorkEmailLive = function(inputEl) {
+                    const val = (inputEl.value || '').trim().toLowerCase();
+                    const warningEl = document.getElementById('orgWorkEmailWarning');
+                    if (!warningEl) return;
+                    if (!val || !val.includes('@')) {
+                        warningEl.classList.add('hidden');
+                        return;
+                    }
+                    const domain = val.split('@')[1];
+                    if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
+                        warningEl.classList.remove('hidden');
+                        warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i> <strong>Work email required:</strong> Personal accounts (@' + domain + ') cannot be used to register a workspace. Please use your official corporate domain (e.g. name@company.com).';
+                    } else {
+                        warningEl.classList.add('hidden');
+                    }
+                };
+
                 window.handleSendOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
-                    if (!email) { showToast('Please enter your email address', 'error'); return; }
+                    if (!email) { showToast('Please enter your work email address', 'error'); return; }
 
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if (!emailRegex.test(email)) {
-                        showToast('Please enter a valid email address', 'error');
+                        showToast('Please enter a valid work email address', 'error');
+                        return;
+                    }
+
+                    const domain = email.split('@')[1]?.toLowerCase();
+                    if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
+                        const errMsg = '❌ Personal email providers (@' + domain + ') are not allowed for Company Workspaces. Please use your official work email (e.g. name@company.com).';
+                        showToast(errMsg, 'error');
+                        const warningEl = document.getElementById('orgWorkEmailWarning');
+                        if (warningEl) {
+                            warningEl.classList.remove('hidden');
+                            warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i> <strong>Work email required:</strong> Personal accounts (@' + domain + ') cannot be used to register a workspace. Please use your official corporate domain (e.g. name@company.com).';
+                        }
+                        document.getElementById('orgWorkEmailInput')?.focus();
                         return;
                     }
 
@@ -12019,6 +12062,12 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                     if (!orgName || !email || !firstName || !password) {
                         showToast('Please fill all required fields', 'error');
+                        return;
+                    }
+
+                    const domain = (email || '').split('@')[1]?.toLowerCase();
+                    if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
+                        showToast('❌ Workspace registration requires an official work email (e.g. name@company.com). Personal accounts like @' + domain + ' are not allowed.', 'error');
                         return;
                     }
 
