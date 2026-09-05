@@ -408,14 +408,143 @@
 
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 4. INTERACTIVE SKILL GAP & BADGE FINDER
+    // 3.5 UNIFIED AI APPLICATION SUITE SUB-TAB & SYNC HANDLERS
     // ─────────────────────────────────────────────────────────────────────────
+    window.switchAtsSuiteSubTab = function(sub) {
+        const matchBtn = document.getElementById('atsSuiteTabMatch');
+        const coverBtn = document.getElementById('atsSuiteTabCover');
+        const matchPanel = document.getElementById('atsSuiteMatchPanel');
+        const coverPanel = document.getElementById('atsSuiteCoverPanel');
+
+        if (sub === 'cover') {
+            if (matchPanel) matchPanel.style.display = 'none';
+            if (coverPanel) coverPanel.style.display = 'block';
+            if (coverBtn) {
+                coverBtn.className = 'py-1.5 px-3 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs flex items-center gap-1.5 cursor-pointer';
+            }
+            if (matchBtn) {
+                matchBtn.className = 'py-1.5 px-3 rounded-lg text-xs font-semibold transition-all text-gray-500 dark:text-zinc-400 hover:text-[#111111] dark:hover:text-white flex items-center gap-1.5 cursor-pointer';
+            }
+            // Auto sync inputs from ATS panel to Cover letter if empty
+            syncAtsToCoverLetter('all');
+        } else {
+            if (coverPanel) coverPanel.style.display = 'none';
+            if (matchPanel) matchPanel.style.display = 'block';
+            if (matchBtn) {
+                matchBtn.className = 'py-1.5 px-3 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs flex items-center gap-1.5 cursor-pointer';
+            }
+            if (coverBtn) {
+                coverBtn.className = 'py-1.5 px-3 rounded-lg text-xs font-semibold transition-all text-gray-500 dark:text-zinc-400 hover:text-[#111111] dark:hover:text-white flex items-center gap-1.5 cursor-pointer';
+            }
+        }
+    };
+
+    window.syncAtsToCoverLetter = function(field = 'all') {
+        if (field === 'role' || field === 'all') {
+            const r = document.getElementById('atsTargetRole')?.value;
+            const clR = document.getElementById('clTargetRole');
+            if (clR && r && (!clR.value || field === 'role')) clR.value = r;
+        }
+        if (field === 'name' || field === 'all') {
+            const n = document.getElementById('atsCandidateName')?.value;
+            const clN = document.getElementById('clCandidateName');
+            if (clN && n && (!clN.value || field === 'name')) clN.value = n;
+        }
+        if (field === 'jd' || field === 'all') {
+            const jd = document.getElementById('atsJobDescription')?.value;
+            const clJd = document.getElementById('clJobDescription');
+            if (clJd && jd && (!clJd.value || field === 'jd')) clJd.value = jd.slice(0, 400);
+        }
+        if (field === 'resume' || field === 'all') {
+            const res = document.getElementById('atsResumeText')?.value;
+            const clRes = document.getElementById('clResumeContext');
+            if (clRes && res && (!clRes.value || field === 'resume')) clRes.value = res.slice(0, 350);
+        }
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 4. INTERACTIVE SKILL GAP & BADGE FINDER (REAL DATA ENGINE)
+    // ─────────────────────────────────────────────────────────────────────────
+    let activeSkillGapSkills = [];
+
+    window.syncSkillsFromCandidateProfile = function() {
+        if (currentProfileSkills && currentProfileSkills.length > 0) {
+            activeSkillGapSkills = [...currentProfileSkills];
+        } else {
+            const saved = localStorage.getItem('candidate_profile');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.skills && Array.isArray(parsed.skills)) {
+                        activeSkillGapSkills = [...parsed.skills];
+                    }
+                } catch(e) {}
+            }
+        }
+
+        renderSkillGapCandidateChips();
+        window.loadSkillGapAnalysis();
+        if (typeof window.showToast === 'function') {
+            window.showToast(`Synced ${activeSkillGapSkills.length} skills from your Candidate Profile!`, 'info');
+        }
+    };
+
+    window.addCustomSkillToGap = function() {
+        const inp = document.getElementById('skillGapCustomInput');
+        if (!inp) return;
+        const val = inp.value.trim();
+        if (!val) return;
+
+        if (!activeSkillGapSkills.some(s => s.toLowerCase() === val.toLowerCase())) {
+            activeSkillGapSkills.push(val);
+            renderSkillGapCandidateChips();
+            window.loadSkillGapAnalysis();
+        }
+        inp.value = '';
+    };
+
+    window.removeSkillFromGap = function(skillName) {
+        activeSkillGapSkills = activeSkillGapSkills.filter(s => s.toLowerCase() !== skillName.toLowerCase());
+        renderSkillGapCandidateChips();
+        window.loadSkillGapAnalysis();
+    };
+
+    function renderSkillGapCandidateChips() {
+        const container = document.getElementById('skillGapCandidateSkillsList');
+        if (!container) return;
+
+        if (activeSkillGapSkills.length === 0) {
+            container.innerHTML = '<span class="text-xs text-gray-400 italic">No skills loaded yet. Click "Sync from Profile" or add custom skills above.</span>';
+            return;
+        }
+
+        container.innerHTML = activeSkillGapSkills.map(s => `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-2xs">
+                <span>${escapeHtml(s)}</span>
+                <button type="button" onclick="removeSkillFromGap('${escapeHtml(s)}')" class="hover:text-red-500 transition-colors ml-0.5"><i class="fa-solid fa-xmark text-[10px]"></i></button>
+            </span>
+        `).join('');
+    }
+
     window.loadSkillGapAnalysis = async function(roleKey = null) {
         const select = document.getElementById('skillGapRoleSelect');
-        const skillsInput = document.getElementById('skillGapSkillsInput');
         const selectedRole = roleKey || (select ? select.value : 'software-engineer');
 
-        const userSkills = skillsInput && skillsInput.value ? skillsInput.value : (document.getElementById('resumeSkills')?.value || 'JavaScript, React, Node.js, SQL, Docker, Python');
+        // Initial setup of activeSkillGapSkills if empty
+        if (activeSkillGapSkills.length === 0) {
+            if (currentProfileSkills && currentProfileSkills.length > 0) {
+                activeSkillGapSkills = [...currentProfileSkills];
+            } else {
+                const saved = localStorage.getItem('candidate_profile');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (parsed.skills && Array.isArray(parsed.skills)) activeSkillGapSkills = [...parsed.skills];
+                    } catch(e) {}
+                }
+            }
+        }
+        renderSkillGapCandidateChips();
 
         try {
             const res = await fetch('/api/candidate/skill-gap', {
@@ -423,7 +552,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     role: selectedRole,
-                    skills: userSkills.split(/[,;\n]/).map(s => s.trim()).filter(Boolean)
+                    skills: activeSkillGapSkills
                 })
             });
 
@@ -446,66 +575,77 @@
         // Render Skill Progress Bars
         const skillsContainer = document.getElementById('skillGapBarsList');
         if (skillsContainer) {
-            skillsContainer.innerHTML = (data.skills || []).map(s => {
-                const isExceed = s.status === 'Exceeds';
-                const isTarget = s.status === 'Target Met';
-                const colorClass = isExceed ? 'bg-emerald-500' : isTarget ? 'bg-indigo-500' : 'bg-amber-500';
-                const badgeClass = isExceed 
-                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' 
-                    : isTarget 
-                        ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30' 
-                        : 'bg-amber-500/10 text-amber-600 border-amber-500/30';
+            if (!data.skills || data.skills.length === 0) {
+                skillsContainer.innerHTML = '<div class="p-6 text-center text-xs text-gray-500">No skill specifications available for this role.</div>';
+            } else {
+                skillsContainer.innerHTML = data.skills.map(s => {
+                    const isExceed = s.status === 'Exceeds';
+                    const isTarget = s.status === 'Target Met';
+                    const isPartial = s.status === 'Partial Competency';
+                    const colorClass = isExceed ? 'bg-emerald-500' : isTarget ? 'bg-indigo-500' : isPartial ? 'bg-amber-500' : 'bg-red-500';
+                    const badgeClass = isExceed 
+                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' 
+                        : isTarget 
+                            ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30' 
+                            : isPartial 
+                                ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                                : 'bg-red-500/10 text-red-600 border-red-500/30';
 
-                return `
-                    <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 space-y-2 shadow-2xs">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold text-[#111111] dark:text-zinc-100">${s.skill}</span>
-                                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full border ${badgeClass}">${s.status}</span>
+                    return `
+                        <div class="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 space-y-2 shadow-2xs hover:border-indigo-400/40 transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-[#111111] dark:text-zinc-100">${escapeHtml(s.skill)}</span>
+                                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full border ${badgeClass}">${escapeHtml(s.status)}</span>
+                                </div>
+                                <div class="text-xs font-mono font-bold text-[#666660] dark:text-zinc-400">
+                                    <span>${s.currentLevel}%</span>
+                                    <span class="text-[10px] opacity-70">/ ${s.requiredLevel}% target</span>
+                                </div>
                             </div>
-                            <div class="text-xs font-mono font-bold text-[#666660] dark:text-zinc-400">
-                                <span>${s.currentLevel}%</span>
-                                <span class="text-[10px] opacity-70">/ ${s.requiredLevel}% req</span>
+                            <div class="w-full h-2 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden relative">
+                                <div class="h-full rounded-full transition-all duration-700 ${colorClass}" style="width: ${s.currentLevel}%;"></div>
+                                <div class="absolute top-0 bottom-0 w-0.5 bg-black/40 dark:bg-white/40 z-10" style="left: ${s.requiredLevel}%;" title="Required Target: ${s.requiredLevel}%"></div>
                             </div>
+                            ${s.gap > 0 ? `<div class="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1 font-medium"><i class="fa-solid fa-triangle-exclamation text-[10px]"></i> Skill Gap: ${s.gap}% required for full benchmark</div>` : `<div class="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium"><i class="fa-solid fa-circle-check text-[10px]"></i> Competency benchmark achieved!</div>`}
                         </div>
-                        <div class="w-full h-2 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden relative">
-                            <div class="h-full rounded-full transition-all duration-700 ${colorClass}" style="width: ${s.currentLevel}%;"></div>
-                            <div class="absolute top-0 bottom-0 w-0.5 bg-black/40 dark:bg-white/40 z-10" style="left: ${s.requiredLevel}%;" title="Required Target: ${s.requiredLevel}%"></div>
-                        </div>
-                        ${s.gap > 0 ? `<div class="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1 font-medium"><i class="fa-solid fa-triangle-exclamation text-[10px]"></i> Missing Gap: ${s.gap}% below benchmark target</div>` : ''}
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            }
         }
 
         // Render Gamified Badges
         const badgesContainer = document.getElementById('skillGapBadgesGrid');
         if (badgesContainer) {
-            badgesContainer.innerHTML = (data.badges || []).map(b => {
-                const isEarned = b.isEarned;
-                return `
-                    <div class="p-4 rounded-2xl border transition-all ${isEarned ? 'bg-gradient-to-br from-emerald-500/5 to-teal-500/10 border-emerald-500/40 shadow-sm' : 'bg-white dark:bg-zinc-900 border-[#E5E5DF] dark:border-zinc-800 opacity-75'}">
-                        <div class="flex items-start gap-3.5">
-                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg flex-shrink-0 ${isEarned ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30' : 'bg-gray-100 dark:bg-zinc-800 text-gray-400'}">
-                                <i class="${b.icon || 'fa-solid fa-award'}"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between gap-1">
-                                    <h4 class="text-xs font-bold text-[#111111] dark:text-zinc-100 truncate">${b.title}</h4>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isEarned ? 'bg-emerald-500 text-white' : 'bg-gray-100 dark:bg-zinc-800 text-gray-500'}">${b.status}</span>
+            if (!data.badges || data.badges.length === 0) {
+                badgesContainer.innerHTML = '<div class="p-6 text-center text-xs text-gray-500">No badges configured for this role.</div>';
+            } else {
+                badgesContainer.innerHTML = data.badges.map(b => {
+                    const isEarned = b.isEarned;
+                    return `
+                        <div class="p-3.5 rounded-xl border transition-all ${isEarned ? 'bg-gradient-to-br from-emerald-500/5 to-teal-500/10 border-emerald-500/40 shadow-2xs' : 'bg-white dark:bg-zinc-900 border-[#E5E5DF] dark:border-zinc-800 opacity-80'}">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-sm flex-shrink-0 ${isEarned ? 'bg-emerald-500 text-white shadow-xs shadow-emerald-500/30' : 'bg-gray-100 dark:bg-zinc-800 text-gray-400'}">
+                                    <i class="${escapeHtml(b.icon || 'fa-solid fa-award')}"></i>
                                 </div>
-                                <p class="text-[11px] text-[#666660] dark:text-zinc-400 mt-1 line-clamp-2">${b.desc}</p>
-                                <div class="mt-2.5 flex items-center gap-2">
-                                    <div class="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                                        <div class="h-full rounded-full ${isEarned ? 'bg-emerald-500' : 'bg-indigo-500'}" style="width: ${b.progress}%;"></div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <h4 class="text-xs font-bold text-[#111111] dark:text-zinc-100 truncate">${escapeHtml(b.title)}</h4>
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${isEarned ? 'bg-emerald-500 text-white' : 'bg-gray-100 dark:bg-zinc-800 text-gray-500'}">${escapeHtml(b.status)}</span>
                                     </div>
-                                    <span class="text-[10px] font-mono font-bold text-[#666660] dark:text-zinc-400">${b.progress}%</span>
+                                    <p class="text-[11px] text-[#666660] dark:text-zinc-400 mt-0.5 line-clamp-2">${escapeHtml(b.desc)}</p>
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <div class="flex-1 h-1 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
+                                            <div class="h-full rounded-full ${isEarned ? 'bg-emerald-500' : 'bg-indigo-500'}" style="width: ${b.progress}%;"></div>
+                                        </div>
+                                        <span class="text-[10px] font-mono font-bold text-[#666660] dark:text-zinc-400">${b.progress}%</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            }
         }
     }
 
@@ -991,44 +1131,109 @@
         renderJobListings(filtered);
     };
 
+    let currentJobViewMode = 'cards';
+
+    window.setJobViewMode = function(mode) {
+        currentJobViewMode = mode;
+        const cardsBtn = document.getElementById('jobViewCardsBtn');
+        const listBtn = document.getElementById('jobViewListBtn');
+        if (mode === 'list') {
+            if (listBtn) listBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs cursor-pointer';
+            if (cardsBtn) cardsBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer';
+        } else {
+            if (cardsBtn) cardsBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs cursor-pointer';
+            if (listBtn) listBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer';
+        }
+        renderJobListings(allLoadedJobs);
+    };
+
     function renderJobListings(jobs) {
         const grid = document.getElementById('jobListingsGrid');
         if (!grid) return;
 
         if (!jobs || jobs.length === 0) {
-            grid.innerHTML = '<div class="col-span-full p-8 rounded-2xl border text-center text-xs text-gray-500 bg-white dark:bg-zinc-900">No matching jobs found. Try adjusting your search keywords or department filter.</div>';
+            grid.className = 'col-span-full';
+            grid.innerHTML = '<div class="p-8 rounded-xl border text-center text-xs text-gray-500 bg-white dark:bg-zinc-900">No matching jobs found. Try adjusting your search keywords or department filter.</div>';
             return;
         }
 
+        if (currentJobViewMode === 'list') {
+            grid.className = 'col-span-full space-y-2';
+            grid.innerHTML = `
+                <div class="rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-gray-50 dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400">
+                            <tr>
+                                <th class="py-2.5 px-3.5">Position & Company</th>
+                                <th class="py-2.5 px-3">Department</th>
+                                <th class="py-2.5 px-3">Location</th>
+                                <th class="py-2.5 px-3">Salary Benchmark</th>
+                                <th class="py-2.5 px-3">Match</th>
+                                <th class="py-2.5 px-3.5 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#E5E5DF] dark:divide-zinc-800">
+                            ${jobs.map(j => `
+                                <tr class="hover:bg-slate-50/70 dark:hover:bg-zinc-800/40 transition-colors">
+                                    <td class="py-3 px-3.5">
+                                        <div class="font-bold text-[#111111] dark:text-white">${escapeHtml(j.title)}</div>
+                                        <div class="text-[11px] text-blue-600 dark:text-blue-400 font-medium">${escapeHtml(j.company)}</div>
+                                    </td>
+                                    <td class="py-3 px-3 text-[11px] text-gray-600 dark:text-zinc-300">${escapeHtml(j.department)}</td>
+                                    <td class="py-3 px-3 text-[11px] text-gray-500 dark:text-zinc-400"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</td>
+                                    <td class="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">${escapeHtml(j.salaryRange)}</td>
+                                    <td class="py-3 px-3">
+                                        <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                            ${j.matchScore}%
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-3.5 text-right">
+                                        <button type="button" onclick="applyToJobQuick('${escapeHtml(j.id)}', '${escapeHtml(j.title)}', '${escapeHtml(j.company)}', '${escapeHtml(j.location)}', '${escapeHtml(j.salaryRange)}')" class="py-1 px-3 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white font-semibold text-xs shadow-2xs hover:shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer">
+                                            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                                            <span>Apply</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            return;
+        }
+
+        // Default 'cards' view: sleek, compact 3-column grid
+        grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
         grid.innerHTML = jobs.map(j => `
-            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4">
-                <div class="space-y-2.5">
+            <div class="p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:border-emerald-500/40 hover:shadow-xs transition-all flex flex-col justify-between space-y-3">
+                <div class="space-y-2">
                     <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">${escapeHtml(j.company)}</span>
-                            <h3 class="text-sm font-bold text-[#111111] dark:text-white mt-0.5 leading-snug">${escapeHtml(j.title)}</h3>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block truncate">${escapeHtml(j.company)}</span>
+                            <h3 class="text-xs font-bold text-[#111111] dark:text-white mt-0.5 leading-snug truncate" title="${escapeHtml(j.title)}">${escapeHtml(j.title)}</h3>
                         </div>
-                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex-shrink-0">
-                            ${j.matchScore}% ATS Match
+                        <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex-shrink-0">
+                            ${j.matchScore}% Match
                         </span>
                     </div>
 
                     <p class="text-xs text-gray-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">${escapeHtml(j.description)}</p>
 
-                    <div class="flex flex-wrap gap-1 pt-1">
-                        ${(j.skills || []).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-medium">${escapeHtml(s)}</span>`).join('')}
+                    <div class="flex flex-wrap gap-1 pt-0.5">
+                        ${(j.skills || []).slice(0, 4).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-medium">${escapeHtml(s)}</span>`).join('')}
+                        ${(j.skills || []).length > 4 ? `<span class="px-1 py-0.5 text-[10px] text-gray-400 font-mono">+${j.skills.length - 4}</span>` : ''}
                     </div>
                 </div>
 
-                <div class="space-y-3 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
+                <div class="space-y-2.5 pt-2.5 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
                     <div class="flex justify-between items-center text-gray-500 dark:text-zinc-400 text-[11px]">
-                        <span><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</span>
-                        <span class="font-bold font-mono text-emerald-600 dark:text-emerald-400">${escapeHtml(j.salaryRange)}</span>
+                        <span class="truncate max-w-[140px]"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</span>
+                        <span class="font-bold font-mono text-emerald-600 dark:text-emerald-400 flex-shrink-0">${escapeHtml(j.salaryRange)}</span>
                     </div>
 
-                    <button type="button" onclick="applyToJobQuick('${escapeHtml(j.id)}', '${escapeHtml(j.title)}', '${escapeHtml(j.company)}', '${escapeHtml(j.location)}', '${escapeHtml(j.salaryRange)}')" class="w-full py-2 px-4 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane text-[11px]"></i>
-                        <span>1-Click Apply Now</span>
+                    <button type="button" onclick="applyToJobQuick('${escapeHtml(j.id)}', '${escapeHtml(j.title)}', '${escapeHtml(j.company)}', '${escapeHtml(j.location)}', '${escapeHtml(j.salaryRange)}')" class="w-full py-1.5 px-3 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white font-semibold text-xs shadow-2xs hover:shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                        <span>Quick Apply</span>
                     </button>
                 </div>
             </div>

@@ -622,21 +622,23 @@
             color: #FFFFFF;
             border: none;
             border-radius: 8px;
-            padding: 10px 20px;
+            padding: 7px 15px;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 7px;
             transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
         .btn-primary:hover {
             background: #1C322B;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(36, 62, 54, 0.15);
+            transform: translateY(-0.5px);
+            box-shadow: 0 3px 8px rgba(36, 62, 54, 0.18);
         }
 
         .btn-rankly-pill {
@@ -644,19 +646,20 @@
             color: #FFFFFF;
             border: none;
             border-radius: 8px;
-            padding: 10px 20px;
+            padding: 7px 15px;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             transition: all 0.2s ease;
         }
         .btn-rankly-pill:hover {
             background: #2D4DC6;
-            transform: translateY(-1px);
+            transform: translateY(-0.5px);
         }
 
         .btn-secondary {
@@ -664,15 +667,16 @@
             color: #111111;
             border: 1px solid #E5E5DF;
             border-radius: 8px;
-            padding: 10px 18px;
+            padding: 7px 14px;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 7px;
             transition: all 0.2s ease;
         }
         .btn-secondary:hover {
@@ -8520,191 +8524,292 @@ body.dark-theme .resume-tip-box,
                         </div>
                     </div>
 
-                    <!-- ─── TAB: ATS SCORE CHECKER & JD MATCHER ─── -->
+                    <!-- ─── TAB: UNIFIED AI APPLICATION SUITE (ATS SCORE & COVER LETTER) ─── -->
                     <div class="tab-content" id="tab-ats-checker" style="display:none;">
-                        <div class="max-w-6xl mx-auto space-y-6">
-                            <!-- Banner -->
-                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
-                                        <i class="fa-solid fa-gauge-high"></i>
+                        <div class="max-w-6xl mx-auto space-y-5">
+                            <!-- Banner & Sub-Tab Switcher -->
+                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg shadow-2xs flex-shrink-0">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2 flex-wrap">
-                                            <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">ATS Score & Job Description Matcher</h2>
-                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> NVIDIA Nemotron 70B Engine
+                                            <h2 class="text-base font-extrabold text-[#111111] dark:text-white tracking-tight">AI Application & Resume Suite</h2>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> NVIDIA Nemotron 70B
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Upload your resume and paste the target Job Description (JD). AI will calculate your exact ATS match score and highlight missing keywords.</p>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Calibrate ATS keyword compatibility and generate tailored cover letters from one streamlined studio.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-zinc-800/80 border border-[#E5E5DF] dark:border-zinc-700/60 flex-shrink-0">
+                                    <button type="button" id="atsSuiteTabMatch" onclick="switchAtsSuiteSubTab('match')" class="py-1.5 px-3 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs flex items-center gap-1.5 cursor-pointer">
+                                        <i class="fa-solid fa-gauge-high text-emerald-500"></i>
+                                        <span>ATS Score Matcher</span>
+                                    </button>
+                                    <button type="button" id="atsSuiteTabCover" onclick="switchAtsSuiteSubTab('cover')" class="py-1.5 px-3 rounded-lg text-xs font-semibold transition-all text-gray-500 dark:text-zinc-400 hover:text-[#111111] dark:hover:text-white flex items-center gap-1.5 cursor-pointer">
+                                        <i class="fa-solid fa-envelope-open-text text-teal-500"></i>
+                                        <span>AI Cover Letter</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- SUB-PANEL 1: ATS SCORE CHECKER -->
+                            <div id="atsSuiteMatchPanel" class="space-y-5">
+                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                                    <!-- Left Form Panel -->
+                                    <div class="lg:col-span-6 space-y-4">
+                                        <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
+                                            <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-2.5">
+                                                <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-file-arrow-up text-emerald-500"></i> Step 1: Candidate Resume
+                                                </span>
+                                                <span class="text-[11px] text-[#666660] font-mono">PDF, DOCX, TXT</span>
+                                            </div>
+
+                                            <!-- Target Role & Name -->
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                <div>
+                                                    <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Target Role</label>
+                                                    <input type="text" id="atsTargetRole" oninput="syncAtsToCoverLetter('role')" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border" placeholder="e.g. Full Stack Engineer" value="Software Engineer" />
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Your Name (Optional)</label>
+                                                    <input type="text" id="atsCandidateName" oninput="syncAtsToCoverLetter('name')" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border" placeholder="Candidate Name" />
+                                                </div>
+                                            </div>
+
+                                            <!-- File Drop Zone -->
+                                            <div id="atsDropZone" ondragover="event.preventDefault(); this.classList.add('border-emerald-500', 'bg-emerald-50/20');" ondragleave="this.classList.remove('border-emerald-500', 'bg-emerald-50/20');" ondrop="handleAtsFileDrop(event)" class="border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 rounded-xl p-4 text-center hover:border-emerald-500 transition-all cursor-pointer bg-[#FAFAF8] dark:bg-zinc-900/50">
+                                                <input type="file" id="atsResumeFile" accept=".pdf,.docx,.doc,.txt" class="hidden" onchange="handleAtsFileSelect(this)" />
+                                                <label for="atsResumeFile" class="cursor-pointer space-y-1 block">
+                                                    <div class="w-8 h-8 mx-auto rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
+                                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                    </div>
+                                                    <div class="text-xs font-bold text-[#111111] dark:text-white">Click to Upload Resume or Drag & Drop</div>
+                                                    <p class="text-[10px] text-gray-400">Supports PDF, Word (DOCX), TXT (up to 15MB)</p>
+                                                </label>
+                                                <div id="atsFileBadge" class="hidden mt-2 inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-700 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
+                                                    <i class="fa-solid fa-file-pdf"></i>
+                                                    <span id="atsFileSelectedName" class="truncate max-w-[200px]">file.pdf</span>
+                                                    <button type="button" onclick="clearAtsFile()" class="text-red-500 hover:text-red-700 ml-1"><i class="fa-solid fa-xmark"></i></button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Direct Resume Text Area (Optional) -->
+                                            <div>
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300 flex items-center justify-between">
+                                                    <span>Or Paste Resume Text</span>
+                                                    <span class="text-[10px] text-gray-400 font-normal">(optional)</span>
+                                                </label>
+                                                <textarea id="atsResumeText" rows="3" oninput="syncAtsToCoverLetter('resume')" class="form-input w-full p-2.5 text-xs rounded-lg border font-mono" placeholder="Paste your resume sections, skills, and experience here..."></textarea>
+                                            </div>
+
+                                            <!-- Job Description Text Area -->
+                                            <div>
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300 flex items-center justify-between">
+                                                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-briefcase text-emerald-600"></i> Target Job Description (JD)</span>
+                                                    <span class="text-[10px] text-emerald-600 font-semibold">Crucial for calibration</span>
+                                                </label>
+                                                <textarea id="atsJobDescription" rows="4" oninput="syncAtsToCoverLetter('jd')" class="form-input w-full p-2.5 text-xs rounded-lg border font-mono" placeholder="Paste the full job requirements, skills, and qualifications..."></textarea>
+                                            </div>
+
+                                            <!-- Sleek CTA Button -->
+                                            <button type="button" id="runAtsCheckBtn" onclick="runAtsJdCheck()" class="w-full py-2.5 px-4 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                                <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i>
+                                                <span>Calibrate & Check ATS Match</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Output Panel -->
+                                    <div class="lg:col-span-6 space-y-4">
+                                        <!-- Empty State -->
+                                        <div id="atsEmptyState" class="p-10 text-center rounded-2xl border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-2.5">
+                                            <div class="w-12 h-12 mx-auto rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                                                <i class="fa-solid fa-chart-simple"></i>
+                                            </div>
+                                            <h3 class="text-sm font-bold text-[#111111] dark:text-white">Awaiting Input Calibration</h3>
+                                            <p class="text-xs text-[#666660] dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">Upload your resume and paste the target Job Description to generate an instant 0-100% calibrated ATS score, missing keyword matrix, and optimization tips.</p>
+                                        </div>
+
+                                        <!-- Results Card (Hidden by default) -->
+                                        <div id="atsResultsContainer" class="hidden space-y-4">
+                                            <!-- Score Card Header -->
+                                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
+                                                <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                                    <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200">ATS Match Breakdown</span>
+                                                    <span id="atsResultVerdict" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">Calibrated</span>
+                                                </div>
+
+                                                <div class="flex items-center gap-5 py-3">
+                                                    <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/20 border border-emerald-500/30 shadow-inner">
+                                                        <div class="text-center">
+                                                            <span id="atsResultScoreVal" class="text-2xl font-black font-mono leading-none text-[#111111] dark:text-white">0</span>
+                                                            <span class="block text-[10px] font-bold uppercase mt-0.5 text-gray-400">/ 100</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-1 space-y-1">
+                                                        <h4 class="text-xs font-bold text-[#111111] dark:text-white">Executive Fit Summary</h4>
+                                                        <p id="atsResultSummary" class="text-xs text-[#666660] dark:text-zinc-400 leading-relaxed"></p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 4 Category Progress Bars -->
+                                                <div class="space-y-2.5 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                                    <div>
+                                                        <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
+                                                            <span>Technical Hard Skills</span>
+                                                            <span id="atsCatTechVal" class="font-mono">0%</span>
+                                                        </div>
+                                                        <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
+                                                            <div id="atsCatTechBar" class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
+                                                            <span>Experience Relevance</span>
+                                                            <span id="atsCatExpVal" class="font-mono">0%</span>
+                                                        </div>
+                                                        <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
+                                                            <div id="atsCatExpBar" class="h-full bg-indigo-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
+                                                            <span>Tools & Frameworks</span>
+                                                            <span id="atsCatToolsVal" class="font-mono">0%</span>
+                                                        </div>
+                                                        <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
+                                                            <div id="atsCatToolsBar" class="h-full bg-teal-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
+                                                            <span>Formatting & Parser Readability</span>
+                                                            <span id="atsCatFormatVal" class="font-mono">85%</span>
+                                                        </div>
+                                                        <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
+                                                            <div id="atsCatFormatBar" class="h-full bg-amber-500 rounded-full transition-all duration-700" style="width: 85%;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Matched vs Missing Keywords -->
+                                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
+                                                <div>
+                                                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-circle-check"></i> Verified Matched Keywords from JD:
+                                                    </h4>
+                                                    <div id="atsMatchedKeywordsBox" class="flex flex-wrap gap-1.5"></div>
+                                                </div>
+
+                                                <div class="pt-2.5 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                                    <h4 class="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-400 mb-1.5 flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-triangle-exclamation"></i> Missing High-Priority Keywords (Add to Resume):
+                                                    </h4>
+                                                    <div id="atsMissingKeywordsBox" class="flex flex-wrap gap-1.5"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Actionable Improvement Checklist -->
+                                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
+                                                <h4 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 mb-2.5 flex items-center gap-2">
+                                                    <i class="fa-solid fa-list-check text-emerald-500"></i> Actionable ATS Optimization Steps
+                                                </h4>
+                                                <ul id="atsImprovementsChecklist" class="space-y-2 text-xs"></ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 2-Column Split Studio -->
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                                <!-- Left Form Panel -->
-                                <div class="lg:col-span-6 space-y-5">
-                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
-                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3">
-                                            <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
-                                                <i class="fa-solid fa-file-arrow-up text-emerald-500"></i> Step 1: Candidate Resume
-                                            </span>
-                                            <span class="text-[11px] text-[#666660] font-mono">PDF, DOCX, TXT</span>
-                                        </div>
-
-                                        <!-- Target Role & Name -->
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                            <div>
-                                                <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Target Role</label>
-                                                <input type="text" id="atsTargetRole" class="form-input w-full px-3 py-2 text-xs rounded-xl border" placeholder="e.g. Full Stack Engineer" value="Software Engineer" />
+                            <!-- SUB-PANEL 2: AI COVER LETTER GENERATOR -->
+                            <div id="atsSuiteCoverPanel" class="space-y-5" style="display:none;">
+                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                                    <!-- Form Inputs -->
+                                    <div class="lg:col-span-5 space-y-4">
+                                        <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3">
+                                            <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-2">
+                                                <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200">Cover Letter Parameters</h3>
+                                                <span class="text-[10px] text-teal-600 font-semibold flex items-center gap-1"><i class="fa-solid fa-bolt"></i> Auto-Synced</span>
                                             </div>
+                                            
                                             <div>
-                                                <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Your Name (Optional)</label>
-                                                <input type="text" id="atsCandidateName" class="form-input w-full px-3 py-2 text-xs rounded-xl border" placeholder="Candidate Name" />
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Target Company Name *</label>
+                                                <input type="text" id="clCompanyName" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border" placeholder="e.g. Google, Microsoft, Stripe" />
                                             </div>
-                                        </div>
 
-                                        <!-- File Drop Zone -->
-                                        <div id="atsDropZone" ondragover="event.preventDefault(); this.classList.add('border-emerald-500', 'bg-emerald-50/20');" ondragleave="this.classList.remove('border-emerald-500', 'bg-emerald-50/20');" ondrop="handleAtsFileDrop(event)" class="border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 rounded-2xl p-5 text-center hover:border-emerald-500 transition-all cursor-pointer bg-[#FAFAF8] dark:bg-zinc-900/50">
-                                            <input type="file" id="atsResumeFile" accept=".pdf,.docx,.doc,.txt" class="hidden" onchange="handleAtsFileSelect(this)" />
-                                            <label for="atsResumeFile" class="cursor-pointer space-y-2 block">
-                                                <div class="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
-                                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                            <div class="grid grid-cols-2 gap-2.5">
+                                                <div>
+                                                    <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Target Role</label>
+                                                    <input type="text" id="clTargetRole" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border" placeholder="Software Engineer" value="Software Engineer" />
                                                 </div>
-                                                <div class="text-xs font-bold text-[#111111] dark:text-white">Click to Upload Resume or Drag & Drop</div>
-                                                <p class="text-[10px] text-gray-400">Supports PDF, Word (DOCX), TXT (up to 15MB)</p>
-                                            </label>
-                                            <div id="atsFileBadge" class="hidden mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-700 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
-                                                <i class="fa-solid fa-file-pdf"></i>
-                                                <span id="atsFileSelectedName" class="truncate max-w-[200px]">file.pdf</span>
-                                                <button type="button" onclick="clearAtsFile()" class="text-red-500 hover:text-red-700 ml-1"><i class="fa-solid fa-xmark"></i></button>
+                                                <div>
+                                                    <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Candidate Name</label>
+                                                    <input type="text" id="clCandidateName" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border" placeholder="Your Name" />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Direct Resume Text Area (Optional) -->
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300 flex items-center justify-between">
-                                                <span>Or Paste Resume Text</span>
-                                                <span class="text-[10px] text-gray-400 lowercase font-normal">(if not uploading file)</span>
-                                            </label>
-                                            <textarea id="atsResumeText" rows="4" class="form-input w-full p-3 text-xs rounded-xl border font-mono" placeholder="Paste your resume sections, technical skills, bullet points, and experience here..."></textarea>
-                                        </div>
+                                            <div>
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Tone & Style</label>
+                                                <select id="clTone" class="form-input w-full px-3 py-1.5 text-xs rounded-lg border">
+                                                    <option value="professional">Professional & Polished (Enterprise)</option>
+                                                    <option value="modern and dynamic">Modern & Dynamic (Tech / Startups)</option>
+                                                    <option value="executive and leadership focused">Executive & Leadership (Staff / Principal)</option>
+                                                    <option value="passionate and product-focused">Passionate & Impact-Focused</option>
+                                                </select>
+                                            </div>
 
-                                        <!-- Job Description Text Area -->
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300 flex items-center justify-between">
-                                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-briefcase text-emerald-600"></i> Target Job Description (JD)</span>
-                                                <span class="text-[10px] text-emerald-600 font-bold">Crucial for 100% calibration</span>
-                                            </label>
-                                            <textarea id="atsJobDescription" rows="5" class="form-input w-full p-3 text-xs rounded-xl border font-mono" placeholder="Paste the full job requirements, skills, responsibilities, and qualifications from LinkedIn, Indeed, or the company career page..."></textarea>
-                                        </div>
+                                            <div>
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Resume Achievements Excerpt</label>
+                                                <textarea id="clResumeContext" rows="2" class="form-input w-full p-2 text-xs rounded-lg border" placeholder="Key accomplishments, technologies, or experience to highlight..."></textarea>
+                                            </div>
 
-                                        <!-- CTA Button -->
-                                        <button type="button" id="runAtsCheckBtn" onclick="runAtsJdCheck()" class="w-full py-3.5 px-6 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                            <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i>
-                                            <span>Calibrate & Check ATS Match</span>
-                                        </button>
-                                    </div>
-                                </div>
+                                            <div>
+                                                <label class="block text-[11px] font-semibold mb-1 text-[#444440] dark:text-zinc-300">Job Description Highlights</label>
+                                                <textarea id="clJobDescription" rows="2" class="form-input w-full p-2 text-xs rounded-lg border" placeholder="Key qualifications or expectations from the JD..."></textarea>
+                                            </div>
 
-                                <!-- Right Output Panel -->
-                                <div class="lg:col-span-6 space-y-5">
-                                    <!-- Empty State -->
-                                    <div id="atsEmptyState" class="p-12 text-center rounded-2xl border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3">
-                                        <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl">
-                                            <i class="fa-solid fa-chart-simple"></i>
+                                            <!-- Sleek CTA Button -->
+                                            <button type="button" id="generateCoverLetterBtn" onclick="generateAiCoverLetter()" class="w-full py-2.5 px-4 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                                <i class="fa-solid fa-wand-magic-sparkles text-teal-300"></i>
+                                                <span>Generate Tailored Cover Letter</span>
+                                            </button>
                                         </div>
-                                        <h3 class="text-sm font-bold text-[#111111] dark:text-white">Awaiting Input Calibration</h3>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">Upload your resume and paste the target Job Description to generate an instant 0-100% calibrated ATS score, missing keyword matrix, and actionable optimization tips.</p>
                                     </div>
 
-                                    <!-- Results Card (Hidden by default) -->
-                                    <div id="atsResultsContainer" class="hidden space-y-5">
-                                        <!-- Score Card Header -->
-                                        <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
-                                            <div class="flex items-center justify-between pb-4 border-b border-[#E5E5DF] dark:border-zinc-800">
-                                                <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200">ATS Match Breakdown</span>
-                                                <span id="atsResultVerdict" class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">Calibrated</span>
+                                    <!-- Output Panel -->
+                                    <div class="lg:col-span-7 space-y-4">
+                                        <div id="clEmptyState" class="p-10 text-center rounded-2xl border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-2.5">
+                                            <div class="w-12 h-12 mx-auto rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl">
+                                                <i class="fa-regular fa-file-lines"></i>
                                             </div>
-
-                                            <div class="flex items-center gap-6 py-4">
-                                                <div class="relative w-24 h-24 flex-shrink-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/20 border border-emerald-500/30 shadow-inner">
-                                                    <div class="text-center">
-                                                        <span id="atsResultScoreVal" class="text-3xl font-black font-mono leading-none text-[#111111] dark:text-white">0</span>
-                                                        <span class="block text-[10px] font-bold uppercase mt-1 text-gray-400">/ 100</span>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-1 space-y-1">
-                                                    <h4 class="text-sm font-bold text-[#111111] dark:text-white">Executive Fit Summary</h4>
-                                                    <p id="atsResultSummary" class="text-xs text-[#666660] dark:text-zinc-400 leading-relaxed"></p>
-                                                </div>
-                                            </div>
-
-                                            <!-- 4 Category Progress Bars -->
-                                            <div class="space-y-3 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
-                                                <div>
-                                                    <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
-                                                        <span>Technical Hard Skills</span>
-                                                        <span id="atsCatTechVal" class="font-mono">0%</span>
-                                                    </div>
-                                                    <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                                                        <div id="atsCatTechBar" class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
-                                                        <span>Experience Relevance</span>
-                                                        <span id="atsCatExpVal" class="font-mono">0%</span>
-                                                    </div>
-                                                    <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                                                        <div id="atsCatExpBar" class="h-full bg-indigo-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
-                                                        <span>Tools & Frameworks</span>
-                                                        <span id="atsCatToolsVal" class="font-mono">0%</span>
-                                                    </div>
-                                                    <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                                                        <div id="atsCatToolsBar" class="h-full bg-teal-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="flex justify-between text-[11px] font-semibold text-[#444440] dark:text-zinc-300 mb-1">
-                                                        <span>Formatting & Parser Readability</span>
-                                                        <span id="atsCatFormatVal" class="font-mono">85%</span>
-                                                    </div>
-                                                    <div class="w-full h-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-                                                        <div id="atsCatFormatBar" class="h-full bg-amber-500 rounded-full transition-all duration-700" style="width: 85%;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <h3 class="text-sm font-bold text-[#111111] dark:text-white">No Cover Letter Generated Yet</h3>
+                                            <p class="text-xs text-[#666660] dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">Enter the target company and role, then click Generate to produce a tailored, interview-winning cover letter.</p>
                                         </div>
 
-                                        <!-- Matched vs Missing Keywords -->
-                                        <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
-                                            <div>
-                                                <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-2">
-                                                    <i class="fa-solid fa-circle-check"></i> Verified Matched Keywords from JD:
-                                                </h4>
-                                                <div id="atsMatchedKeywordsBox" class="flex flex-wrap gap-1.5"></div>
+                                        <div id="clResultCard" class="hidden p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
+                                            <div class="flex items-center justify-between pb-2.5 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                                <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
+                                                    <i class="fa-solid fa-circle-check text-emerald-500"></i> Generated Cover Letter
+                                                </span>
+                                                <div class="flex items-center gap-2">
+                                                    <button type="button" onclick="copyCoverLetterToClipboard()" class="py-1 px-2.5 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold text-[#111111] dark:text-zinc-200 hover:border-emerald-500 transition-all flex items-center gap-1.5 shadow-2xs" title="Copy Text">
+                                                        <i class="fa-regular fa-copy"></i>
+                                                        <span>Copy</span>
+                                                    </button>
+                                                    <button type="button" onclick="downloadCoverLetterDocx()" class="py-1 px-2.5 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs" title="Download Word DOCX">
+                                                        <i class="fa-solid fa-file-word text-blue-300"></i>
+                                                        <span>Download DOCX</span>
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <div class="pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
-                                                <h4 class="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-400 mb-2 flex items-center gap-2">
-                                                    <i class="fa-solid fa-triangle-exclamation"></i> Missing High-Priority Keywords (Add to Resume):
-                                                </h4>
-                                                <div id="atsMissingKeywordsBox" class="flex flex-wrap gap-1.5"></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Actionable Improvement Checklist -->
-                                        <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
-                                            <h4 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 mb-3 flex items-center gap-2">
-                                                <i class="fa-solid fa-list-check text-emerald-500"></i> Actionable ATS Optimization Steps
-                                            </h4>
-                                            <ul id="atsImprovementsChecklist" class="space-y-2.5"></ul>
+                                            <textarea id="clOutputText" rows="14" class="form-input w-full p-3.5 text-xs leading-relaxed rounded-xl border font-sans bg-[#FAFAF8] dark:bg-zinc-900/80 text-[#111111] dark:text-zinc-100 shadow-inner" spellcheck="false"></textarea>
+                                            <p class="text-[11px] text-[#666660] dark:text-zinc-400 italic">Feel free to edit directly above before exporting!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -8712,121 +8817,26 @@ body.dark-theme .resume-tip-box,
                         </div>
                     </div>
 
-                    <!-- ─── TAB: AI COVER LETTER GENERATOR ─── -->
-                    <div class="tab-content" id="tab-cover-letter" style="display:none;">
-                        <div class="max-w-5xl mx-auto space-y-6">
-                            <!-- Banner -->
-                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
-                                        <i class="fa-solid fa-envelope-open-text"></i>
-                                    </div>
-                                    <div>
-                                        <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">AI Tailored Cover Letter Generator</h2>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Generate a high-converting, personalized executive cover letter customized to your target company and role in seconds.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                                <!-- Form Inputs -->
-                                <div class="lg:col-span-5 space-y-4">
-                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
-                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 border-b border-[#E5E5DF] dark:border-zinc-800 pb-2">Target Opportunity</h3>
-                                        
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Target Company Name *</label>
-                                            <input type="text" id="clCompanyName" class="form-input w-full px-3.5 py-2.5 text-xs rounded-xl border" placeholder="e.g. Google, Microsoft, Stripe" />
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Target Role / Position</label>
-                                            <input type="text" id="clTargetRole" class="form-input w-full px-3.5 py-2.5 text-xs rounded-xl border" placeholder="e.g. Senior Software Engineer" value="Software Engineer" />
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Your Full Name</label>
-                                            <input type="text" id="clCandidateName" class="form-input w-full px-3.5 py-2.5 text-xs rounded-xl border" placeholder="Enter full name" />
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Tone & Style</label>
-                                            <select id="clTone" class="form-input w-full px-3.5 py-2.5 text-xs rounded-xl border">
-                                                <option value="professional">Professional & Polished (Corporate / Enterprise)</option>
-                                                <option value="modern and dynamic">Modern & Dynamic (High-Growth Tech / Fintech)</option>
-                                                <option value="executive and leadership focused">Executive & Leadership Focused (Staff / Principal / Lead)</option>
-                                                <option value="passionate and product-focused">Passionate & Product-Focused (Startups / Innovation)</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Key Achievements / Resume Excerpt</label>
-                                            <textarea id="clResumeContext" rows="3" class="form-input w-full p-3 text-xs rounded-xl border" placeholder="Optional: Mention key accomplishments, years of experience, or technical stack to feature..."></textarea>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1 text-[#444440] dark:text-zinc-300">Job Description Highlights</label>
-                                            <textarea id="clJobDescription" rows="2" class="form-input w-full p-3 text-xs rounded-xl border" placeholder="Optional: Paste snippets of what the team is looking for..."></textarea>
-                                        </div>
-
-                                        <button type="button" id="generateCoverLetterBtn" onclick="generateAiCoverLetter()" class="w-full py-3 px-4 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                            <i class="fa-solid fa-wand-magic-sparkles text-[#81E4DA]"></i>
-                                            <span>Generate Tailored Cover Letter</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Output Panel -->
-                                <div class="lg:col-span-7 space-y-4">
-                                    <div id="clEmptyState" class="p-12 text-center rounded-2xl border-2 border-dashed border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3">
-                                        <div class="w-14 h-14 mx-auto rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl">
-                                            <i class="fa-regular fa-file-lines"></i>
-                                        </div>
-                                        <h3 class="text-sm font-bold text-[#111111] dark:text-white">No Cover Letter Generated Yet</h3>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">Enter the company and role details on the left, then click Generate to produce a tailored, interview-winning cover letter.</p>
-                                    </div>
-
-                                    <div id="clResultCard" class="hidden p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
-                                        <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
-                                            <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
-                                                <i class="fa-solid fa-circle-check text-emerald-500"></i> Generated Cover Letter
-                                            </span>
-                                            <div class="flex items-center gap-2">
-                                                <button type="button" onclick="copyCoverLetterToClipboard()" class="py-1.5 px-3 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold text-[#111111] dark:text-zinc-200 hover:border-emerald-500 transition-all flex items-center gap-1.5 shadow-2xs" title="Copy Text">
-                                                    <i class="fa-regular fa-copy"></i>
-                                                    <span>Copy</span>
-                                                </button>
-                                                <button type="button" onclick="downloadCoverLetterDocx()" class="py-1.5 px-3 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs" title="Download Word DOCX">
-                                                    <i class="fa-solid fa-file-word text-blue-300"></i>
-                                                    <span>Download DOCX</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <textarea id="clOutputText" rows="16" class="form-input w-full p-4 text-xs leading-relaxed rounded-xl border font-sans bg-[#FAFAF8] dark:bg-zinc-900/80 text-[#111111] dark:text-zinc-100 shadow-inner" spellcheck="false"></textarea>
-                                        <p class="text-[11px] text-[#666660] dark:text-zinc-400 italic">Feel free to make quick adjustments directly in the box above before exporting!</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Legacy tab placeholder for cover-letter -->
+                    <div class="tab-content" id="tab-cover-letter" style="display:none;"></div>
 
                     <!-- ─── TAB: INTERACTIVE SKILL GAP & BADGES ─── -->
                     <div class="tab-content" id="tab-skill-gap" style="display:none;">
-                        <div class="max-w-6xl mx-auto space-y-6">
+                        <div class="max-w-6xl mx-auto space-y-5">
                             <!-- Banner -->
-                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
+                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg shadow-2xs flex-shrink-0">
                                         <i class="fa-solid fa-chart-pie"></i>
                                     </div>
                                     <div>
-                                        <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">Interactive Skill Gap & Badge Finder</h2>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Benchmark your technical competencies against enterprise job standards and unlock verified skill achievement badges.</p>
+                                        <h2 class="text-base font-extrabold text-[#111111] dark:text-white tracking-tight">Interactive Skill Gap & Badge Finder</h2>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Benchmark your real profile competencies against enterprise job standards and unlock verified skill achievement badges.</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <select id="skillGapRoleSelect" onchange="loadSkillGapAnalysis(this.value)" class="form-input text-xs font-semibold py-2 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-xs font-semibold text-gray-500 dark:text-zinc-400">Target Role:</span>
+                                    <select id="skillGapRoleSelect" onchange="loadSkillGapAnalysis(this.value)" class="form-input text-xs font-semibold py-1.5 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800">
                                         <option value="software-engineer">Software Engineer</option>
                                         <option value="frontend-developer">Frontend Developer</option>
                                         <option value="ai-ml-engineer">AI / Machine Learning Engineer</option>
@@ -8836,36 +8846,60 @@ body.dark-theme .resume-tip-box,
                                 </div>
                             </div>
 
+                            <!-- Real Candidate Skills Sync Strip -->
+                            <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+                                <div class="flex-1 space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-code text-indigo-500"></i> Your Evaluated Skills (Live from Profile)
+                                        </span>
+                                        <button type="button" onclick="syncSkillsFromCandidateProfile()" class="py-1 px-2.5 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[11px] font-semibold text-gray-600 dark:text-zinc-300 hover:border-indigo-500 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                                            <i class="fa-solid fa-arrows-rotate text-indigo-500"></i>
+                                            <span>Sync from Profile</span>
+                                        </button>
+                                    </div>
+                                    <div id="skillGapCandidateSkillsList" class="flex flex-wrap items-center gap-1.5 pt-1">
+                                        <!-- Real Candidate skills tags rendered dynamically -->
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 flex-shrink-0 pt-2 md:pt-0">
+                                    <input type="text" id="skillGapCustomInput" placeholder="Add skill (e.g. Docker)..." class="form-input text-xs py-1.5 px-2.5 rounded-lg border w-40" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomSkillToGap();}" />
+                                    <button type="button" onclick="addCustomSkillToGap()" class="py-1.5 px-3 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold cursor-pointer shadow-2xs">
+                                        <i class="fa-solid fa-plus mr-1"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+
                             <!-- Readiness Overview Card -->
-                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
-                                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Target Benchmark</span>
-                                    <h3 class="text-2xl font-black text-[#111111] dark:text-white mt-0.5" id="skillGapRoleTitle">Software Engineer</h3>
-                                    <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Skills evaluated against top 100 enterprise recruiting job specifications.</p>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Target Benchmark</span>
+                                    <h3 class="text-xl font-black text-[#111111] dark:text-white mt-0.5" id="skillGapRoleTitle">Software Engineer</h3>
+                                    <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Skills evaluated against top 100 enterprise recruiting specifications.</p>
                                 </div>
                                 <div class="flex items-center gap-4">
                                     <div class="text-right">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Role Readiness</span>
-                                        <div id="skillGapReadinessVal" class="text-3xl font-black font-mono text-[#111111] dark:text-white leading-none mt-0.5">85%</div>
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Calculated Readiness</span>
+                                        <div id="skillGapReadinessVal" class="text-2xl font-black font-mono text-[#111111] dark:text-white leading-none mt-0.5">--%</div>
                                     </div>
-                                    <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">
+                                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
                                         <i class="fa-solid fa-bullseye"></i>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 2-Column Split: Progress Bars vs Badges -->
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                                 <!-- Left: Skill Benchmark Progress Bars -->
                                 <div class="lg:col-span-7 space-y-4">
-                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
-                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3">
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
+                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-2.5">
                                             <h4 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
                                                 <i class="fa-solid fa-sliders text-indigo-500"></i> Competency Benchmark vs Your Profile
                                             </h4>
-                                            <span class="text-[11px] text-gray-400 font-mono">Target Markers</span>
+                                            <span class="text-[11px] text-gray-400 font-mono">Real Gap Detection</span>
                                         </div>
-                                        <div id="skillGapBarsList" class="space-y-3">
+                                        <div id="skillGapBarsList" class="space-y-2.5">
                                             <!-- Dynamically injected -->
                                         </div>
                                     </div>
@@ -8873,14 +8907,14 @@ body.dark-theme .resume-tip-box,
 
                                 <!-- Right: Gamified Skill Badges -->
                                 <div class="lg:col-span-5 space-y-4">
-                                    <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
-                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-3">
+                                    <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3.5">
+                                        <div class="flex items-center justify-between border-b border-[#E5E5DF] dark:border-zinc-800 pb-2.5">
                                             <h4 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-zinc-200 flex items-center gap-2">
                                                 <i class="fa-solid fa-award text-emerald-500"></i> Earnable Skill Badges
                                             </h4>
-                                            <span class="text-[11px] text-emerald-600 font-bold">Gamified Achievements</span>
+                                            <span class="text-[11px] text-emerald-600 font-bold">Progressive Unlocks</span>
                                         </div>
-                                        <div id="skillGapBadgesGrid" class="space-y-3">
+                                        <div id="skillGapBadgesGrid" class="space-y-2.5">
                                             <!-- Dynamically injected -->
                                         </div>
                                     </div>
@@ -8985,9 +9019,9 @@ body.dark-theme .resume-tip-box,
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-end gap-3 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
-                                <button type="button" onclick="closeAddApplicationModal()" class="py-2 px-4 rounded-xl border text-xs font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800">Cancel</button>
-                                <button type="button" onclick="saveNewCandidateApplication()" class="py-2 px-5 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold shadow-md">Add to Pipeline</button>
+                            <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                <button type="button" onclick="closeAddApplicationModal()" class="py-1.5 px-3 rounded-lg border text-xs font-medium text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800">Cancel</button>
+                                <button type="button" onclick="saveNewCandidateApplication()" class="py-1.5 px-3.5 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-2xs">Add to Pipeline</button>
                             </div>
                         </div>
                     </div>
@@ -9029,7 +9063,7 @@ body.dark-theme .resume-tip-box,
                                             <span class="text-[11px] text-gray-600 dark:text-zinc-400 font-medium">ATS High Visibility</span>
                                         </div>
                                     </div>
-                                    <button type="button" onclick="saveCandidateProfile()" id="saveProfileTopBtn" class="py-2.5 px-5 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                    <button type="button" onclick="saveCandidateProfile()" id="saveProfileTopBtn" class="py-1.5 px-3.5 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
                                         <i class="fa-solid fa-floppy-disk"></i>
                                         <span>Save Changes</span>
                                     </button>
@@ -9251,8 +9285,8 @@ body.dark-theme .resume-tip-box,
                                         </div>
 
                                         <!-- Save Profile Bottom Button -->
-                                        <div class="flex items-center justify-end pt-4 border-t border-[#E5E5DF] dark:border-zinc-800">
-                                            <button type="button" onclick="saveCandidateProfile()" id="saveProfileBottomBtn" class="py-2.5 px-6 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                        <div class="flex items-center justify-end pt-3.5 border-t border-[#E5E5DF] dark:border-zinc-800">
+                                            <button type="button" onclick="saveCandidateProfile()" id="saveProfileBottomBtn" class="py-2 px-4 rounded-lg bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all flex items-center gap-2 cursor-pointer">
                                                 <i class="fa-solid fa-floppy-disk"></i>
                                                 <span>Save Candidate Profile</span>
                                             </button>
@@ -9265,45 +9299,57 @@ body.dark-theme .resume-tip-box,
 
                     <!-- ─── TAB: CANDIDATE JOB LISTINGS & DIRECT APPLY ─── -->
                     <div class="tab-content" id="tab-jobs" style="display:none;">
-                        <div class="max-w-7xl mx-auto space-y-6">
+                        <div class="max-w-7xl mx-auto space-y-5">
                             <!-- Banner -->
-                            <div class="p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
+                            <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-2xs flex-shrink-0">
                                         <i class="fa-solid fa-briefcase"></i>
                                     </div>
                                     <div>
-                                        <h2 class="text-lg font-extrabold text-[#111111] dark:text-white tracking-tight">Curated Tech Job Openings</h2>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Explore verified roles matching your profile. 1-Click apply directly updates your live Application Tracker.</p>
+                                        <h2 class="text-base font-extrabold text-[#111111] dark:text-white tracking-tight">Curated Tech Job Openings</h2>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Explore verified roles matching your profile. 1-Click apply directly updates your live Application Tracker.</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <button type="button" onclick="switchTab('applications')" class="py-2.5 px-4 rounded-xl border border-[#243E36] dark:border-emerald-500/40 text-[#243E36] dark:text-emerald-400 hover:bg-[#243E36]/5 text-xs font-bold tracking-wider transition-all flex items-center gap-2 cursor-pointer">
-                                        <i class="fa-solid fa-list-check"></i>
+                                <div class="flex items-center gap-2.5">
+                                    <button type="button" onclick="switchTab('applications')" class="py-1.5 px-3 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#111111] dark:text-zinc-200 hover:border-emerald-500 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                                        <i class="fa-solid fa-list-check text-emerald-500"></i>
                                         <span>View My Tracker</span>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Filter & Search Bar -->
-                            <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
-                                <div class="flex-1 flex items-center gap-3">
+                            <div class="p-3.5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                                <div class="flex-1 flex items-center gap-2.5">
                                     <div class="relative flex-1">
-                                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                        <input type="text" id="jobSearchInput" oninput="filterJobListings()" placeholder="Search by role title, company or skill keyword (e.g. React, Nemotron, DevOps)..." class="form-input w-full pl-9 pr-3 py-2 rounded-xl border" />
+                                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                        <input type="text" id="jobSearchInput" oninput="filterJobListings()" placeholder="Search by role title, company, or keyword (e.g. React, Nemotron, DevOps)..." class="form-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border" />
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2.5">
-                                    <span class="text-gray-500 font-medium">Department:</span>
-                                    <select id="jobDeptFilter" onchange="filterJobListings()" class="form-input py-2 px-3 rounded-xl border">
-                                        <option value="all">All Departments</option>
-                                        <option value="Engineering">Engineering</option>
-                                        <option value="Artificial Intelligence">Artificial Intelligence</option>
-                                        <option value="Infrastructure">Infrastructure / DevOps</option>
-                                        <option value="Design & Frontend">Frontend & Design</option>
-                                        <option value="Product">Product</option>
-                                        <option value="Data & Analytics">Data & Analytics</option>
-                                    </select>
+                                <div class="flex items-center gap-2.5 flex-wrap">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-gray-500 font-medium">Department:</span>
+                                        <select id="jobDeptFilter" onchange="filterJobListings()" class="form-input py-1.5 px-2.5 text-xs rounded-lg border">
+                                            <option value="all">All Departments</option>
+                                            <option value="Engineering">Engineering</option>
+                                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                            <option value="Infrastructure">Infrastructure / DevOps</option>
+                                            <option value="Design & Frontend">Frontend & Design</option>
+                                            <option value="Product">Product</option>
+                                            <option value="Data & Analytics">Data & Analytics</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- View Toggle -->
+                                    <div class="inline-flex items-center p-0.5 rounded-lg bg-gray-100 dark:bg-zinc-800 border border-[#E5E5DF] dark:border-zinc-700">
+                                        <button type="button" id="jobViewCardsBtn" onclick="setJobViewMode('cards')" class="py-1 px-2.5 rounded-md text-xs font-semibold bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs cursor-pointer">
+                                            <i class="fa-solid fa-table-cells-large mr-1"></i> Cards
+                                        </button>
+                                        <button type="button" id="jobViewListBtn" onclick="setJobViewMode('list')" class="py-1 px-2.5 rounded-md text-xs font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer">
+                                            <i class="fa-solid fa-list mr-1"></i> Compact
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -10619,8 +10665,7 @@ body.dark-theme .resume-tip-box,
                         { id: 'jobs', label: 'Job Listings & Apply', target: 'jobs' },
                         { id: 'applications', label: 'Application Tracker', target: 'applications' },
                         { id: 'resume', label: 'AI Resume & ATS Studio', target: 'resume' },
-                        { id: 'ats-checker', label: 'ATS Score & JD Matcher', target: 'ats-checker' },
-                        { id: 'cover-letter', label: 'AI Cover Letter Generator', target: 'cover-letter' },
+                        { id: 'ats-checker', label: 'ATS & Cover Letter AI', target: 'ats-checker' },
                         { id: 'skill-gap', label: 'Skill Gap & Badges', target: 'skill-gap' },
                         { id: 'chatbot', label: 'Career AI Coach', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
@@ -10652,6 +10697,15 @@ body.dark-theme .resume-tip-box,
             window.setupDashboardForRole = setupDashboardForRole;
 
             function switchTab(tabId) {
+                if (tabId === 'cover-letter') {
+                    tabId = 'ats-checker';
+                    setTimeout(() => {
+                        if (typeof window.switchAtsSuiteSubTab === 'function') {
+                            window.switchAtsSuiteSubTab('cover');
+                        }
+                    }, 50);
+                }
+
                 const activeUser = window.currentUser || currentUser;
                 const userRole = (activeUser ? (activeUser.role || 'normal') : 'normal').toLowerCase();
                 const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (activeUser && activeUser.accountType === 'employee');

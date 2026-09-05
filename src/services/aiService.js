@@ -885,28 +885,54 @@ function calculateSkillGap(candidateSkills = [], roleKey = 'software-engineer') 
 
   const candidateSkillsSet = new Set(skillsArray.map(s => s.toLowerCase()));
 
-  // Analyze each skill benchmark
+  // Analyze each skill benchmark accurately without fake random data
+  const hasProvidedSkills = candidateSkillsSet.size > 0;
+  
   const skillsAnalysis = roleConfig.skills.map(item => {
     const itemNameLower = item.name.toLowerCase();
+    const itemTokens = itemNameLower.split(/[\s/,&-]+/).filter(Boolean);
     
-    // Check if candidate matches this skill directly or via substring
     let matched = false;
-    let score = 0;
+    let matchStrength = 0; // 0 to 1
 
-    for (const userSkill of candidateSkillsSet) {
-      if (itemNameLower.includes(userSkill) || userSkill.includes(itemNameLower.split(' ')[0])) {
-        matched = true;
-        score = Math.min(100, Math.round(item.required * (0.85 + Math.random() * 0.2)));
-        break;
+    if (hasProvidedSkills) {
+      for (const userSkill of candidateSkillsSet) {
+        if (!userSkill) continue;
+        const uLower = userSkill.toLowerCase();
+        
+        // Exact match
+        if (itemNameLower === uLower || uLower.includes(itemNameLower)) {
+          matched = true;
+          matchStrength = 1.0;
+          break;
+        }
+        
+        // Sub-token match (e.g. "React" in "React / Modern UI")
+        const uTokens = uLower.split(/[\s/,&-]+/).filter(Boolean);
+        const commonTokens = itemTokens.filter(t => uTokens.includes(t) || uLower.includes(t));
+        if (commonTokens.length > 0) {
+          matched = true;
+          matchStrength = Math.max(matchStrength, 0.85);
+        }
       }
     }
 
-    if (!matched) {
-      // Partial credit if candidate has related skills
-      score = Math.round(Math.random() * 35);
+    let score = 0;
+    if (matched) {
+      score = Math.min(100, Math.round(item.required * matchStrength));
+    } else {
+      score = 0; // Honest: 0 if skill is missing, no fake random inflation
     }
 
     const gap = Math.max(0, item.required - score);
+    let status = 'Missing Skill';
+    if (score >= item.required) {
+      status = 'Exceeds';
+    } else if (score >= Math.round(item.required * 0.8)) {
+      status = 'Target Met';
+    } else if (score > 0) {
+      status = 'Partial Competency';
+    }
 
     return {
       skill: item.name,
@@ -914,14 +940,14 @@ function calculateSkillGap(candidateSkills = [], roleKey = 'software-engineer') 
       requiredLevel: item.required,
       currentLevel: score,
       gap,
-      status: gap === 0 ? 'Exceeds' : gap <= 15 ? 'Target Met' : 'Gap Detected'
+      status
     };
   });
 
   // Calculate Overall Role Readiness Score
-  const avgCurrent = Math.round(skillsAnalysis.reduce((acc, s) => acc + s.currentLevel, 0) / skillsAnalysis.length);
-  const avgRequired = Math.round(skillsAnalysis.reduce((acc, s) => acc + s.requiredLevel, 0) / skillsAnalysis.length);
-  const roleReadiness = Math.min(100, Math.round((avgCurrent / avgRequired) * 100));
+  const avgCurrent = skillsAnalysis.reduce((acc, s) => acc + s.currentLevel, 0);
+  const avgRequired = skillsAnalysis.reduce((acc, s) => acc + s.requiredLevel, 0);
+  const roleReadiness = avgRequired > 0 ? Math.min(100, Math.round((avgCurrent / avgRequired) * 100)) : 0;
 
   // Determine Badges (Earned vs In-Progress)
   const badges = roleConfig.badges.map(b => {
