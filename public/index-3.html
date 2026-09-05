@@ -13483,7 +13483,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
-                                showToast('An account with this email already exists. Please sign in.', 'warning');
+                                if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                    showEmailAlreadyExistsPopup(email);
+                                } else {
+                                    showToast('An account with this email already exists. Please sign in.', 'warning');
+                                }
                                 setTimeout(() => {
                                     if (typeof window.switchAuthTab === 'function') window.switchAuthTab('login');
                                     const loginInput = document.getElementById('loginIdentifier') || document.getElementById('candLoginEmail');
@@ -13977,7 +13981,11 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
                         if (!res.ok || !data.success) {
                             if (res.status === 409 || data.code === 'EMAIL_ALREADY_EXISTS' || (data.message && data.message.toLowerCase().includes('already exists'))) {
-                                showToast('An account with this email already exists. Please sign in.', 'warning');
+                                if (typeof showEmailAlreadyExistsPopup === 'function') {
+                                    showEmailAlreadyExistsPopup(email);
+                                } else {
+                                    showToast('An account with this email already exists. Please sign in.', 'warning');
+                                }
                                 setTimeout(() => {
                                     if (typeof switchOrgPortalTab === 'function') switchOrgPortalTab('login');
                                     const orgLoginInput = document.getElementById('orgLoginIdentifier');
