@@ -28,9 +28,28 @@ async function runTest() {
   }
 
   // -------------------------------------------------------------
+  // Step 0: Authenticate as HR Admin for Protected Routes
+  // -------------------------------------------------------------
+  console.log('🔑 STEP 0: Authenticating as HR Admin (test.hr.admin@company.com)...');
+  let adminCookie = '';
+  try {
+    const loginRes = await axios.post(`${BASE_URL}/api/auth/login`, {
+      email: 'test.hr.admin@company.com',
+      password: 'Password123!'
+    });
+    const setCookie = loginRes.headers['set-cookie'];
+    if (setCookie && setCookie.length > 0) {
+      adminCookie = setCookie.map(c => c.split(';')[0]).join('; ');
+    }
+    assert(loginRes.status === 200 && loginRes.data.success, 'HR Admin authenticated successfully');
+  } catch (loginErr) {
+    assert(false, `HR Admin login failed: ${loginErr.message}`);
+  }
+
+  // -------------------------------------------------------------
   // Step 1: Direct Document Parser Unit Test
   // -------------------------------------------------------------
-  console.log('📝 STEP 1: Testing Document Parser Service (Text Extraction)...');
+  console.log('\n📝 STEP 1: Testing Document Parser Service (Text Extraction)...');
   const samplePolicyText = `
 RANKLY.AI CORPORATE LEAVE & CONFIDENTIALITY POLICY 2026
 
@@ -70,6 +89,8 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
       content: samplePolicyText,
       department: 'Human Resources',
       uploadedBy: 'admin@rankly.ai'
+    }, {
+      headers: { Cookie: adminCookie }
     });
 
     assert(uploadRes.status === 201 && uploadRes.data.success, 'Document upload & text extraction API returned 201 Created');
@@ -84,7 +105,9 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
   // -------------------------------------------------------------
   console.log('\n🔍 STEP 3: Verifying Document Retrieval from Supabase...');
   try {
-    const listRes = await axios.get(`${BASE_URL}/api/documents/internal`);
+    const listRes = await axios.get(`${BASE_URL}/api/documents/internal`, {
+      headers: { Cookie: adminCookie }
+    });
     assert(listRes.status === 200 && listRes.data.success, `List internal documents returned ${listRes.data.count} items`);
   } catch (err) {
     assert(false, `List internal documents failed: ${err.response?.data?.error || err.message}`);
@@ -92,7 +115,9 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
 
   if (insertedDocId) {
     try {
-      const getRes = await axios.get(`${BASE_URL}/api/documents/internal/${insertedDocId}`);
+      const getRes = await axios.get(`${BASE_URL}/api/documents/internal/${insertedDocId}`, {
+        headers: { Cookie: adminCookie }
+      });
       assert(getRes.status === 200 && getRes.data.data.extracted_text, `Single document fetched: "${getRes.data.data.title}"`);
       assert(getRes.data.data.extracted_text.includes('18 Annual Vacation Days'), 'Extracted text verified in Supabase payload');
     } catch (err) {
@@ -109,7 +134,10 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
     const processRes = await axios.post(`${BASE_URL}/api/documents/internal/process`, {
       documentId: insertedDocId,
       promptText
-    }, { timeout: 20000 });
+    }, {
+      headers: { Cookie: adminCookie },
+      timeout: 20000
+    });
 
     assert(processRes.status === 200 && processRes.data.success, 'Document AI processing endpoint returned 200 OK');
     assert(processRes.data.result && processRes.data.result.length > 50, `Nemotron model generated response (${processRes.data.result.length} chars)`);
@@ -143,7 +171,9 @@ are classified as STRICTLY CONFIDENTIAL. Zero export to external personal drives
   if (insertedDocId) {
     console.log('\n🧹 STEP 6: Cleaning up temporary test document...');
     try {
-      const delRes = await axios.delete(`${BASE_URL}/api/documents/internal/${insertedDocId}`);
+      const delRes = await axios.delete(`${BASE_URL}/api/documents/internal/${insertedDocId}`, {
+        headers: { Cookie: adminCookie }
+      });
       assert(delRes.status === 200 && delRes.data.success, `Temporary document #${insertedDocId} cleanly deleted from Supabase`);
     } catch (err) {
       console.warn('Cleanup notice:', err.message);

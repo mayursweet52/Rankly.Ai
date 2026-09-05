@@ -8,22 +8,22 @@
     <meta name="keywords" content="AI recruitment, ATS resume parser, candidate screening, automated interview, talent intelligence, hiring software, candidate ranking, Rankly AI" />
     <meta name="author" content="Rankly.ai Team" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="http://localhost:3000/" />
+    <link rel="canonical" href="https://ranklyai-production.up.railway.app/" />
 
     <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Rankly.ai" />
     <meta property="og:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
     <meta property="og:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
-    <meta property="og:url" content="http://localhost:3000/" />
-    <meta property="og:image" content="http://localhost:3000/assets/backgrounds/login-art.png" />
+    <meta property="og:url" content="https://ranklyai-production.up.railway.app/" />
+    <meta property="og:image" content="https://ranklyai-production.up.railway.app/assets/backgrounds/login-art.png" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@RanklyAI" />
     <meta name="twitter:title" content="Rankly.ai — Enterprise AI Recruitment Platform" />
     <meta name="twitter:description" content="AI-powered automated recruitment intelligence, ATS calibration, and interactive candidate screening platform." />
-    <meta name="twitter:image" content="http://localhost:3000/assets/backgrounds/login-art.png" />
+    <meta name="twitter:image" content="https://ranklyai-production.up.railway.app/assets/backgrounds/login-art.png" />
 
     <title>Rankly.ai — Enterprise AI Recruitment Platform</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -47,6 +47,8 @@
             }
         };
     </script>
+    <!-- Google Identity Services Client SDK (Popup & One-Tap Auth) -->
+    <script src="https://accounts.google.com/gsi/client" async defer onload="if(window.initGoogleGSI) window.initGoogleGSI();"></script>
     
     <!-- Performance Preloads for Instant Asset Delivery -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2212,6 +2214,94 @@
         }
         .otp-row .form-input { flex: 1; }
 
+        /* ─── Executive Calendar & DatePicker Modern UI ─── */
+        .rankly-cal-popover {
+            position: fixed;
+            z-index: 100005;
+            width: 320px;
+            background: var(--bg-card, #ffffff);
+            border: 1px solid var(--border-color, #E5E5DF);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            user-select: none;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .rankly-cal-popover.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.96) translateY(-4px);
+            pointer-events: none;
+        }
+        .rankly-cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary, #111111);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+        .rankly-cal-day-cell:hover:not(.empty):not(.disabled) {
+            background-color: var(--bg-input, #F3F3EF);
+            color: #183B33;
+            transform: scale(1.08);
+        }
+        .dark-theme .rankly-cal-day-cell:hover:not(.empty):not(.disabled),
+        #loginPage.dark-mode .rankly-cal-day-cell:hover:not(.empty):not(.disabled) {
+            color: #81E4DA;
+        }
+        .rankly-cal-day-cell.selected {
+            background: #183B33 !important;
+            color: #FFFFFF !important;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(24, 59, 51, 0.35);
+        }
+        .dark-theme .rankly-cal-day-cell.selected,
+        #loginPage.dark-mode .rankly-cal-day-cell.selected {
+            background: #5B998C !important;
+            color: #0E1017 !important;
+            box-shadow: 0 4px 12px rgba(91, 153, 140, 0.4);
+        }
+        .rankly-cal-day-cell.today {
+            border-color: #D95D39;
+            color: #D95D39;
+            font-weight: 700;
+        }
+        .rankly-cal-day-cell.empty,
+        .rankly-cal-day-cell.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        /* Custom styled date inputs */
+        input[type="date"] {
+            position: relative;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 2px;
+            opacity: 0.75;
+            filter: invert(0.25);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        .dark-theme input[type="date"]::-webkit-calendar-picker-indicator,
+        #loginPage.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.85);
+        }
+
         #toast-container {
             position: fixed;
             top: 24px;
@@ -2597,6 +2687,42 @@
                 max-width: 500px !important;
                 padding: 44px 40px !important;
             }
+        }
+        /* ─── HRMS DOCUMENT CATEGORY PILLS ─── */
+        .doc-cat-pill {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border: 1px solid #E5E5DF;
+            background: #FFFFFF;
+            color: #666660;
+        }
+        .doc-cat-pill:hover {
+            border-color: #D95D39;
+            color: #D95D39;
+        }
+        .doc-cat-pill.active {
+            background: #D95D39;
+            border-color: #D95D39;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .doc-cat-pill {
+            background: #18181B;
+            border-color: #27272A;
+            color: #A1A1AA;
+        }
+        body.dark-theme .doc-cat-pill:hover {
+            border-color: #EA580C;
+            color: #EA580C;
+        }
+        body.dark-theme .doc-cat-pill.active {
+            background: #EA580C;
+            border-color: #EA580C;
+            color: #FFFFFF !important;
         }
 
         /* ─── RANKLY LUXURY HIGH-VISIBILITY THEME TOGGLE PILL ─── */
@@ -5414,7 +5540,7 @@ body.dark-theme .resume-tip-box,
                                         <div>
                                             <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email Address *</label>
                                             <div class="flex gap-2">
-                                                <input type="email" id="slideRegEmail" class="login-input flex-1" placeholder="Enter email address" required />
+                                                <input type="email" id="slideRegEmail" name="candidate_signup_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" placeholder="Enter email address" required />
                                                 <button type="button" id="sendCandOtpBtn" onclick="handleSendCandidateOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[#E5E5DF] dark:border-gray-700 bg-[#FAFAF8] dark:bg-gray-800 text-[#111111] dark:text-white hover:border-[#183B33] hover:text-[#183B33] whitespace-nowrap transition-all cursor-pointer">
                                                     Send OTP
                                                 </button>
@@ -5580,7 +5706,7 @@ body.dark-theme .resume-tip-box,
                                             </button>
                                         </div>
 
-                                        <div class="mt-3 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
+                                        <div class="mt-4 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
                                             <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400">Don't have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign Up</strong></button>
                                             <!-- Switch to Company Full Card 3D Flip -->
                                             <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all cursor-pointer ml-auto inline-flex items-center gap-1.5 group">
@@ -5619,7 +5745,7 @@ body.dark-theme .resume-tip-box,
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Registered Account Email *</label>
                                                 <div class="relative w-full">
-                                                    <input type="email" id="inlineResetEmail" class="login-input pr-9" placeholder="Enter email address" required />
+                                                    <input type="email" id="inlineResetEmail" name="inline_reset_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input pr-9" placeholder="Enter email address" required />
                                                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#888880] pointer-events-none"><i class="fa-regular fa-envelope"></i></span>
                                                 </div>
                                             </div>
@@ -5818,97 +5944,35 @@ body.dark-theme .resume-tip-box,
                             <!-- VIEW 2: Organization Registration Form -->
                             <div id="orgPortalRegisterView" class="w-full hidden">
                                 <div class="mb-3 text-left">
-                                    <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Register Organization Workspace</h3>
-                                    <p class="text-[11px] text-[var(--text-muted)]">Verify corporate email to provision a secure AI recruitment environment.</p>
+                                    <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Register Workspace</h3>
+                                    <p class="text-[11px] text-[var(--text-muted)]">Verify your email to setup your organization workspace.</p>
                                 </div>
-                                <form id="orgForm" class="w-full" onsubmit="event.preventDefault(); handleOrgRegistration();">
-                                    <!-- Corporate Email & OTP Verification Box -->
-                                    <div class="border border-[var(--border-color)] bg-[var(--bg-input)] rounded-xl p-3 mb-3">
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email Address *</label>
-                                        <div class="flex gap-2 mb-2">
-                                            <input id="orgWorkEmailInput" class="login-input flex-1" required type="email" placeholder="admin@company.com" />
-                                            <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
+                                <form id="orgForm" class="w-full" autocomplete="off" onsubmit="event.preventDefault(); handleOrgRegistration();">
+                                    <!-- Email & OTP Verification -->
+                                    <div class="mb-3">
+                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Email *</label>
+                                        <div class="flex gap-2 mb-1">
+                                            <input id="orgWorkEmailInput" name="org_workspace_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" required type="email" placeholder="name@company.com" />
+                                            <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
                                         </div>
+                                    </div>
 
-                                        <!-- Dynamic Enterprise OTP Verification Box (Hidden until Send OTP clicked) -->
-                                        <div id="orgOtpContainer" class="hidden mt-2 pt-2 border-t border-[var(--border-color)]">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP</label>
-                                            <div class="flex gap-2 mb-2">
-                                                <input id="orgOtpInput" name="org_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="Enter 6-digit OTP" type="text" value="" />
-                                                <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
-                                                    Verify OTP
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div id="orgSecurityBanner" class="mt-1.5 p-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                                            <i class="fa-solid fa-shield-halved text-amber-500 text-xs"></i>
-                                            <span>Security verification required to unlock profile fields.</span>
+                                    <!-- OTP Verification Box (Hidden until Send OTP clicked) -->
+                                    <div id="orgOtpContainer" class="hidden mb-3">
+                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP *</label>
+                                        <div class="flex gap-2">
+                                            <input id="orgOtpInput" name="org_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="000000" type="text" value="" />
+                                            <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
+                                                Verify OTP
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <!-- 2-Column Responsive Grid for Organization Profile Fields -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-3">
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
-                                            <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
-                                            <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
-                                            <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
-                                            <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
-                                            <select id="orgRole" class="login-select">
-                                                <option value="admin">Administrator / Lead</option>
-                                                <option value="hr" selected>HR / Recruiter</option>
-                                                <option value="hiring_manager">Hiring Manager</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
-                                            <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
-                                            <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
-                                        </div>
-
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
-                                            <div class="login-phone-wrapper">
-                                                <span class="login-phone-prefix">+91</span>
-                                                <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
-                                            </div>
-                                        </div>
-
-                                        <div class="md:col-span-2">
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
-                                            <div class="password-toggle w-full">
-                                                <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
-                                                <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Submit Button & Switcher -->
-                                    <div class="flex items-center gap-2.5 pb-2">
-                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
+                                    <!-- Back to Sign In button shown before verification -->
+                                    <div id="orgLockedBackBtn" class="flex items-center justify-center pt-2">
+                                        <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
                                             <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
                                                 <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                                 <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
@@ -5916,14 +5980,86 @@ body.dark-theme .resume-tip-box,
                                             </svg>
                                             <span>Back to Sign In</span>
                                         </button>
-                                        <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                            <span>REGISTER WORKSPACE</span>
-                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            </svg>
-                                        </button>
+                                    </div>
+
+                                    <!-- Profile Fields (Revealed once email OTP is verified) -->
+                                    <div id="orgProfileUnlockedFields" class="hidden transition-all duration-300">
+                                        <!-- 2-Column Responsive Grid for Organization Profile Fields -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-3">
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
+                                                <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
+                                                <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
+                                                <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
+                                                <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
+                                                <select id="orgRole" class="login-select">
+                                                    <option value="admin">Administrator / Lead</option>
+                                                    <option value="hr" selected>HR / Recruiter</option>
+                                                    <option value="hiring_manager">Hiring Manager</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
+                                                <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
+                                                <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
+                                            </div>
+
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
+                                                <div class="login-phone-wrapper">
+                                                    <span class="login-phone-prefix">+91</span>
+                                                    <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
+                                                </div>
+                                            </div>
+
+                                            <div class="md:col-span-2">
+                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
+                                                <div class="password-toggle w-full">
+                                                    <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/>
+                                                    <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button & Switcher -->
+                                        <div class="flex items-center gap-2.5 pb-2">
+                                            <button type="button" onclick="switchOrgPortalTab('login')" class="px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-white hover:bg-[var(--bg-input)] transition-all cursor-pointer inline-flex items-center gap-1.5 group">
+                                                <svg class="transition-transform duration-200 group-hover:-translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                                                    <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                </svg>
+                                                <span>Back to Sign In</span>
+                                            </button>
+                                            <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
+                                                <span>REGISTER WORKSPACE</span>
+                                                <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                    <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -5967,7 +6103,7 @@ body.dark-theme .resume-tip-box,
                     <div id="fpResetStep1">
                         <div class="mb-3">
                             <label class="form-label font-bold text-[var(--text-primary)]">Registered Account Email Address *</label>
-                            <input type="email" id="fpResetEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <input type="email" id="fpResetEmail" name="fp_reset_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="yourname@gmail.com" />
                             <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send a 6-digit verification code to this Gmail address.</span>
                         </div>
                         <button type="button" onclick="handleSendResetOtp()" class="btn-primary w-full mt-2" id="fpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send Verification Code</button>
@@ -6019,12 +6155,12 @@ body.dark-theme .resume-tip-box,
 
             <!-- OPTION 2: CHANGE PASSWORD (EMAIL -> OTP + CURRENT PASSWORD -> DIRECTLY UNLOCK NEW PASSWORD FIELDS) -->
             <div id="modalChangeSection" class="hidden">
-                <form id="changePasswordForm" onsubmit="event.preventDefault();">
+                <form id="changePasswordForm" autocomplete="off" onsubmit="event.preventDefault();">
                     <!-- Change Step 1: Email & Send OTP -->
                     <div id="cpStep1">
                         <div class="mb-3">
                             <label class="form-label font-bold text-[var(--text-primary)]">Your Account Email Address *</label>
-                            <input type="email" id="cpEmail" class="form-input" required placeholder="yourname@gmail.com" />
+                            <input type="email" id="cpEmail" name="cp_account_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="yourname@gmail.com" />
                             <span class="block text-[11px] text-[var(--text-muted)] mt-1">We will send an OTP code to verify your authorization to change password.</span>
                         </div>
                         <button type="button" onclick="handleSendChangeOtp()" class="btn-primary w-full mt-2" id="cpSendOtpBtn" style="padding: 10px 16px; font-weight:600;">Send OTP Code</button>
@@ -6168,7 +6304,7 @@ body.dark-theme .resume-tip-box,
                 <div class="mb-4">
                     <label class="form-label">Email Address *</label>
                     <div class="otp-row">
-                        <input type="email" id="signupEmail" class="form-input" required placeholder="example123@gmail.com" />
+                        <input type="email" id="signupEmail" name="cand_modal_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input" required placeholder="example123@gmail.com" />
                         <button type="button" onclick="sendOTP('email')" class="btn-secondary whitespace-nowrap" id="emailOtpBtn">Send OTP</button>
                     </div>
                     <div id="emailOtpRow" style="display:none; margin-top:8px;">
@@ -6265,12 +6401,12 @@ body.dark-theme .resume-tip-box,
             <h3>Register Organization</h3>
             <p class="text-sm text-[#666660] mb-4">Provision enterprise recruitment workspace (Admin, HR, Hiring Manager, Employee).</p>
             
-            <form id="employeeSignupForm" novalidate>
+            <form id="employeeSignupForm" autocomplete="off" novalidate>
                 <!-- Corporate Email with OTP (Step 1: Verify first) -->
                 <div class="mb-4 p-3.5 bg-[#FAFAF8] border border-[#E5E5DF] rounded-2xl">
                     <label class="form-label font-bold text-[#111111]">Corporate Email (Verify to unlock workspace) *</label>
                     <div class="otp-row">
-                        <input type="email" id="empEmail" class="form-input bg-white" required placeholder="you@company.com" />
+                        <input type="email" id="empEmail" name="emp_modal_email_field" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-input bg-white" required placeholder="you@company.com" />
                         <button type="button" onclick="sendEmpOTP('email')" class="btn-secondary whitespace-nowrap" id="empEmailOtpBtn">Send OTP</button>
                     </div>
                     <div id="empEmailOtpRow" style="display:none; margin-top:8px;">
@@ -6536,6 +6672,416 @@ body.dark-theme .resume-tip-box,
         </div>
     </div>
 
+    <!-- ─── HRMS ADD EMPLOYEE MODAL ─── -->
+    <div id="addEmployeeModal" class="modal-overlay" onclick="if(event.target===this) closeModal('addEmployeeModal')">
+        <div class="modal-box" style="max-width:540px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-amber-500"></i> Add New Employee
+                </h3>
+                <button type="button" onclick="closeModal('addEmployeeModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[#666660] dark:text-zinc-400 mb-5">
+                Register an internal workforce member into the HRMS database and organigram.
+            </p>
+            <form id="addEmployeeForm" onsubmit="saveEmployeeRecord(event)">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Employee Code *</label>
+                        <input type="text" id="newEmpCode" class="form-input" required placeholder="EMP-001" />
+                    </div>
+                    <div>
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" id="newEmpFullName" class="form-input" required placeholder="Jane Doe" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Work Email *</label>
+                        <input type="email" id="newEmpWorkEmail" class="form-input" required placeholder="jane.doe@company.com" />
+                    </div>
+                    <div>
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" id="newEmpPhone" class="form-input" placeholder="+1-555-0199" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Department *</label>
+                        <select id="newEmpDepartment" class="form-input" required>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Product">Product</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Finance">Finance</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Designation *</label>
+                        <input type="text" id="newEmpDesignation" class="form-input" required placeholder="Senior Engineer" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="form-label">Employment Type</label>
+                        <select id="newEmpType" class="form-input">
+                            <option value="full_time">Full Time</option>
+                            <option value="part_time">Part Time</option>
+                            <option value="contract">Contract</option>
+                            <option value="intern">Intern</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Status</label>
+                        <select id="newEmpStatus" class="form-input">
+                            <option value="active">Active</option>
+                            <option value="probation">Probation</option>
+                            <option value="notice_period">Notice Period</option>
+                            <option value="on_leave">On Leave</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions flex justify-end gap-2 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addEmployeeModal')">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveEmployeeBtn">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── HRMS PUBLISH COMPANY DOCUMENT MODAL ─── -->
+    <div id="publishDocModal" class="modal-overlay" onclick="if(event.target===this) closeModal('publishDocModal')">
+        <div class="modal-box" style="max-width:560px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="flex items-center gap-2">
+                    <i class="fa-solid fa-file-circle-plus text-amber-500"></i> Publish Company Document
+                </h3>
+                <button type="button" onclick="closeModal('publishDocModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[#666660] dark:text-zinc-400 mb-5">
+                Upload or author an official corporate policy, handbook, NDA, or compliance standard.
+            </p>
+            <form id="publishDocForm" onsubmit="publishCompanyDocument(event)">
+                <div class="mb-3">
+                    <label class="form-label">Document Title *</label>
+                    <input type="text" id="docTitle" class="form-input" required placeholder="e.g. Remote Work & Travel Policy 2026" />
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="form-label">Category *</label>
+                        <select id="docCategory" class="form-input" required>
+                            <option value="policy">Policy</option>
+                            <option value="handbook">Handbook</option>
+                            <option value="nda">NDA</option>
+                            <option value="compliance">Compliance</option>
+                            <option value="contract">Contract</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">File Attachment Name</label>
+                        <input type="text" id="docFileName" class="form-input" placeholder="e.g. Remote_Work_2026.pdf" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Summary / Description</label>
+                    <input type="text" id="docDescription" class="form-input" placeholder="Brief summary of what this document covers..." />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Document Text & Guidelines</label>
+                    <textarea id="docContent" rows="4" class="form-input" placeholder="Enter complete policy articles, standard guidelines, or terms..."></textarea>
+                </div>
+                <div class="modal-actions flex justify-end gap-2 pt-3 border-t border-[#E5E5DF] dark:border-zinc-800">
+                    <button type="button" class="btn-secondary" onclick="closeModal('publishDocModal')">Cancel</button>
+                    <button type="submit" class="btn-primary" id="publishDocBtn">Publish Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── HRMS READ DOCUMENT MODAL ─── -->
+    <div id="readDocModal" class="modal-overlay" onclick="if(event.target===this) closeModal('readDocModal')">
+        <div class="modal-box" style="max-width:640px;">
+            <div class="flex justify-between items-start mb-4 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="readDocBadge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200">Policy</span>
+                        <span id="readDocDate" class="text-xs text-gray-400">2026-09-04</span>
+                    </div>
+                    <h3 id="readDocTitle" class="text-lg font-bold text-[#111111] dark:text-white">Document Title</h3>
+                </div>
+                <button type="button" onclick="closeModal('readDocModal')" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p id="readDocDescription" class="text-xs italic text-[#666660] dark:text-zinc-400 bg-[#FAFAF8] dark:bg-zinc-800/50 p-3 rounded-lg border border-[#E5E5DF] dark:border-zinc-800"></p>
+                <div id="readDocContent" class="text-xs text-[#222220] dark:text-zinc-300 leading-relaxed max-h-96 overflow-y-auto whitespace-pre-wrap p-4 bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 rounded-xl font-mono"></div>
+            </div>
+            <div class="modal-actions flex justify-between items-center pt-4 mt-4 border-t border-[#E5E5DF] dark:border-zinc-800">
+                <span id="readDocAuthor" class="text-[11px] text-gray-400 font-mono">Published by Admin</span>
+                <div class="flex gap-2">
+                    <button type="button" class="btn-secondary text-xs" onclick="closeModal('readDocModal')">Close</button>
+                    <button type="button" class="btn-primary text-xs" onclick="window.printDocumentText()">
+                        <i class="fa-solid fa-print mr-1"></i> Print / Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── HRMS NEMOTRON AI DOCUMENT & POLICY ASSISTANT MODAL ─── -->
+    <div id="aiDocAssistantModal" class="modal-overlay" onclick="if(event.target===this) closeModal('aiDocAssistantModal')">
+        <div class="modal-box" style="max-width:680px;">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start mb-3 pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
+                            <i class="fa-solid fa-shield-halved mr-1"></i> HRMS Isolated
+                        </span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60">
+                            Nemotron 111B Local
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-black text-[#111111] dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-robot text-amber-500"></i>
+                        <span>AI Policy & Document Assistant</span>
+                    </h3>
+                </div>
+                <button type="button" onclick="closeModal('aiDocAssistantModal')" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Scope Bar -->
+            <div class="flex items-center justify-between p-2.5 mb-3 bg-[#FAFAF8] dark:bg-zinc-800/60 border border-[#E5E5DF] dark:border-zinc-700/60 rounded-xl text-xs">
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <i class="fa-solid fa-file-contract text-amber-500 flex-shrink-0"></i>
+                    <span class="text-gray-400">Target Scope:</span>
+                    <span id="aiDocScopeLabel" class="font-bold text-[#111111] dark:text-white truncate">All Corporate Policies & Handbooks</span>
+                </div>
+                <button type="button" id="aiDocResetScopeBtn" onclick="resetAiDocScope()" class="text-[11px] text-gray-500 hover:text-gray-800 dark:hover:text-zinc-200 underline hidden flex-shrink-0 ml-2">
+                    Query All Policies
+                </button>
+            </div>
+
+            <!-- Quick Query Presets -->
+            <div class="mb-3">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 block">Quick Policy Queries</label>
+                <div class="flex flex-wrap gap-1.5">
+                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('Summarize the primary guidelines, obligations, and key clauses of this policy.')">
+                        📋 Summarize Clauses
+                    </button>
+                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the working hours, PTO annual quota, and holiday rules specified here?')">
+                        🏖️ Working Hours & PTO
+                    </button>
+                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the non-disclosure, IP ownership, and data confidentiality restrictions?')">
+                        🔒 NDA & IP Rules
+                    </button>
+                    <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-amber-500/10 hover:border-amber-500/40 hover:text-amber-600 border border-transparent transition-all font-medium" onclick="setAiDocPreset('What are the workplace ethics, compliance requirements, and disciplinary procedures?')">
+                        ⚖️ Ethics & Compliance
+                    </button>
+                </div>
+            </div>
+
+            <!-- Query Input -->
+            <form id="aiDocQueryForm" onsubmit="submitAiDocQuery(event)" class="mb-4">
+                <div class="relative">
+                    <textarea id="aiDocQueryInput" rows="3" class="form-input text-xs leading-relaxed" placeholder="Ask Nemotron anything regarding company policy, vacation leaves, compliance clauses, or employee regulations..." required></textarea>
+                </div>
+                <div class="flex justify-between items-center mt-2.5">
+                    <span class="text-[10px] text-gray-400 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-lock text-emerald-500"></i> Zero web queries • Corporate data only
+                    </span>
+                    <button type="submit" id="aiDocSubmitBtn" class="btn-primary text-xs py-2 px-4 flex items-center gap-2 bg-[#183B33] hover:bg-[#122e28] text-white">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400" id="aiDocSubmitIcon"></i>
+                        <span id="aiDocSubmitText">Ask Nemotron</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Result Box -->
+            <div id="aiDocResultContainer" class="hidden">
+                <div class="border border-[#E5E5DF] dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+                    <div class="flex justify-between items-center px-4 py-2.5 bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[11px]">
+                        <span class="font-bold text-[#111111] dark:text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i> Nemotron Analysis
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="copyAiDocResponse()" class="text-gray-400 hover:text-gray-700 dark:hover:text-zinc-200 text-xs px-2 py-0.5 rounded border border-transparent hover:border-gray-300 cursor-pointer" title="Copy response">
+                                <i class="fa-regular fa-copy mr-1"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    <div id="aiDocResponseContent" class="p-4 text-xs text-[#222220] dark:text-zinc-200 leading-relaxed max-h-72 overflow-y-auto whitespace-pre-wrap font-sans"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── RANKLY EXECUTIVE CALENDAR & DATEPICKER POPOVER ─── -->
+    <div id="ranklyExecutiveDatePicker" class="rankly-cal-popover hidden select-none">
+        <!-- Header: Month, Year Controls and Jumpers -->
+        <div class="flex items-center justify-between gap-1 mb-2.5 pb-2 border-b border-[var(--border-color)]">
+            <button type="button" onclick="ranklyCalendarPrevMonth()" class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-[var(--bg-input)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer" title="Previous Month">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            
+            <div class="flex items-center gap-1 font-bold">
+                <select id="ranklyCalMonthSelect" onchange="ranklyCalendarOnSelectChange()" class="bg-[var(--bg-input)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none cursor-pointer">
+                    <!-- Populated dynamically via JS -->
+                </select>
+                <select id="ranklyCalYearSelect" onchange="ranklyCalendarOnSelectChange()" class="bg-[var(--bg-input)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none cursor-pointer">
+                    <!-- Populated dynamically via JS -->
+                </select>
+            </div>
+            
+            <button type="button" onclick="ranklyCalendarNextMonth()" class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-[var(--bg-input)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer" title="Next Month">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+
+        <!-- Quick DOB & Age Preset Chips -->
+        <div class="flex items-center gap-1 mb-2.5 overflow-x-auto pb-1 scrollbar-none text-[10px]">
+            <button type="button" onclick="ranklyCalendarSelectPreset(18)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                18 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(21)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                21 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(25)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                25 yrs ago
+            </button>
+            <button type="button" onclick="ranklyCalendarSelectPreset(30)" class="px-2 py-1 rounded-md font-bold bg-[var(--bg-input)] hover:bg-[#183B33] hover:text-white border border-[var(--border-color)] transition-all whitespace-nowrap cursor-pointer">
+                30 yrs ago
+            </button>
+        </div>
+
+        <!-- Weekday Headers -->
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">
+            <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        </div>
+
+        <!-- Days Grid -->
+        <div id="ranklyCalDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs mb-2.5">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Live Age Indicator Pill -->
+        <div id="ranklyCalAgeBadge" class="p-1.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] text-center text-[11px] font-semibold text-[var(--text-primary)] mb-2 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-cake-candles text-amber-500 text-xs"></i>
+            <span id="ranklyCalAgeText">Pick Date of Birth</span>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-between pt-2 border-t border-[var(--border-color)] text-xs">
+            <button type="button" onclick="ranklyCalendarSetToday()" class="text-[11px] font-semibold text-[var(--text-muted)] hover:text-[#183B33] dark:hover:text-[#81E4DA] transition-colors cursor-pointer">
+                Today
+            </button>
+            <div class="flex gap-1.5">
+                <button type="button" onclick="closeRanklyCalendar()" class="px-2.5 py-1 rounded-lg border border-[var(--border-color)] hover:bg-[var(--bg-input)] text-[var(--text-muted)] font-medium text-xs transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="ranklyCalendarApply()" class="px-3 py-1 rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
+                    Apply Date
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── RANKLY EXECUTIVE INTERVIEW SCHEDULING CALENDAR MODAL ─── -->
+    <div id="interviewCalendarModal" class="modal-overlay" onclick="if(event.target===this) closeModal('interviewCalendarModal')" style="display:none;">
+        <div class="modal-box" style="max-width: 600px;">
+            <div class="flex justify-between items-center pb-3 mb-3 border-b border-[var(--border-color)]">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base border border-emerald-500/20">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-[var(--text-primary)] m-0">Executive Interview Calendar</h3>
+                        <p class="text-xs text-[var(--text-muted)] m-0">Schedule technical & behavioral evaluation sessions.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('interviewCalendarModal')" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] text-lg" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Candidate Context Badge -->
+            <div id="scheduleCandidateInfo" class="p-2.5 mb-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-tie text-emerald-600"></i>
+                    <span>Candidate: <strong id="scheduleCandName" class="text-[var(--text-primary)]">Selected Candidate</strong></span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 text-[10px]">Interview Stage</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <!-- Date Selection -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interview Date *</label>
+                    <input type="date" id="scheduleDateInput" class="form-input" required />
+                </div>
+                <!-- Time Slot Selection -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Select Time Slot *</label>
+                    <select id="scheduleTimeSelect" class="form-input">
+                        <option value="10:00 AM">10:00 AM - 10:45 AM (Morning)</option>
+                        <option value="11:30 AM">11:30 AM - 12:15 PM (Pre-Lunch)</option>
+                        <option value="02:00 PM" selected>02:00 PM - 02:45 PM (Afternoon)</option>
+                        <option value="04:00 PM">04:00 PM - 04:45 PM (Late Afternoon)</option>
+                        <option value="05:30 PM">05:30 PM - 06:15 PM (Evening)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <!-- Meeting Platform -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Meeting Platform</label>
+                    <select id="schedulePlatformSelect" class="form-input">
+                        <option value="Google Meet">📹 Google Meet (Direct Link)</option>
+                        <option value="Zoom">🎥 Zoom Video Conference</option>
+                        <option value="Microsoft Teams">💼 Microsoft Teams</option>
+                        <option value="In-Person Office">🏢 On-Site Office Round</option>
+                    </select>
+                </div>
+                <!-- Interview Round Type -->
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Evaluation Round</label>
+                    <select id="scheduleRoundSelect" class="form-input">
+                        <option value="Technical Screening">💻 Round 1: Technical & Code Screening</option>
+                        <option value="System Architecture">🏛️ Round 2: System Design & Scalability</option>
+                        <option value="Hiring Manager Discussion" selected>🤝 Round 3: Hiring Manager Review</option>
+                        <option value="Executive HR Fit">🌟 Round 4: Executive Culture & HR</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Meeting Notes -->
+            <div class="mb-4">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interviewer Notes & Focus Areas</label>
+                <textarea id="scheduleNotesInput" class="form-input h-16 text-xs resize-none" placeholder="e.g. Focus on candidate's experience in full-stack architecture, React 19, and Node.js microservices."></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-2 pt-3 border-t border-[var(--border-color)]">
+                <button type="button" onclick="closeModal('interviewCalendarModal')" class="px-4 py-2 text-xs font-semibold rounded-lg border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmInterviewSchedule()" class="px-5 py-2 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Confirm & Schedule</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ─── DASHBOARD WORKSPACE (Rankly.ai Branded) ─── -->
     <div class="page" id="dashboardPage" style="display:none;">
         <div class="dash-layout">
@@ -6597,6 +7143,7 @@ body.dark-theme .resume-tip-box,
                             </svg>
                         </button>
                         <h1 class="text-base font-bold text-[#111111] dark:text-white" id="dashPageTitle">Dashboard</h1>
+                        <span id="portalBadge" class="ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold border"></span>
                     </div>
 
                     <!-- ─── 1. GLOBAL NAVIGATION & FEATURE SEARCH BAR (NO CANDIDATES) ─── -->
@@ -6708,6 +7255,191 @@ body.dark-theme .resume-tip-box,
                                     Provision Access
                                 </button>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── HRMS TAB: EMPLOYEE DIRECTORY ─── -->
+                    <div class="tab-content" id="tab-employees" style="display:none;">
+                        <!-- Header Bar -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <div>
+                                <h2 class="text-2xl font-black tracking-tight text-[#111111] dark:text-white flex items-center gap-2 mb-1">
+                                    <i class="fa-solid fa-users-gear text-amber-500"></i> Employee Directory & Roster
+                                </h2>
+                                <p class="text-xs text-[#666660] dark:text-zinc-400">
+                                    Manage corporate staff profiles, monitor active headcounts, and track departmental assignments.
+                                </p>
+                            </div>
+                            <button type="button" onclick="openModal('addEmployeeModal')" class="btn-primary flex items-center gap-2 text-xs py-2.5 px-4 font-bold bg-[#183B33] hover:bg-[#122e28] text-white rounded-xl shadow-xs cursor-pointer">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <span>Add New Employee</span>
+                            </button>
+                        </div>
+
+                        <!-- 4 Stat Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Total Headcount</span>
+                                <div class="text-2xl font-black text-[#111111] dark:text-white mt-1" id="empStatTotal">0</div>
+                                <span class="text-[10px] text-gray-400 font-mono mt-0.5 block">Recorded in HRMS</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Active Staff</span>
+                                <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1" id="empStatActive">0</div>
+                                <span class="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-mono mt-0.5 block">Full-Time & Contractors</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Probation & Leaves</span>
+                                <div class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1" id="empStatProbation">0</div>
+                                <span class="text-[10px] text-amber-600/70 dark:text-amber-400/70 font-mono mt-0.5 block">Under HR Review</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Departments</span>
+                                <div class="text-2xl font-black text-[#183B33] dark:text-teal-400 mt-1" id="empStatDepts">0</div>
+                                <span class="text-[10px] text-gray-400 font-mono mt-0.5 block">Cross-functional units</span>
+                            </div>
+                        </div>
+
+                        <!-- Filter & Search Toolbar -->
+                        <div class="card p-4 mb-6 border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs">
+                            <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                                <div class="relative w-full md:w-80">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="searchEmployeeInput" oninput="filterEmployeesTable()" placeholder="Search staff name, code, email..." class="form-input pl-9 text-xs py-2 w-full rounded-xl" />
+                                </div>
+                                <div class="flex items-center gap-2.5 w-full md:w-auto">
+                                    <select id="filterEmployeeDept" onchange="filterEmployeesTable()" class="form-input text-xs py-2 rounded-xl">
+                                        <option value="all">All Departments</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Product">Product</option>
+                                        <option value="Design">Design</option>
+                                        <option value="Human Resources">Human Resources</option>
+                                        <option value="Operations">Operations</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Sales">Sales</option>
+                                    </select>
+                                    <select id="filterEmployeeStatus" onchange="filterEmployeesTable()" class="form-input text-xs py-2 rounded-xl">
+                                        <option value="all">All Statuses</option>
+                                        <option value="active">Active</option>
+                                        <option value="probation">Probation</option>
+                                        <option value="on_leave">On Leave</option>
+                                        <option value="terminated">Terminated</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employees Roster Table -->
+                        <div class="card p-0 border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow-xs mb-8">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[11px] font-bold text-[#666660] dark:text-zinc-400 uppercase tracking-wider">
+                                        <tr>
+                                            <th class="py-3 px-4">Employee</th>
+                                            <th class="py-3 px-4">ID Code</th>
+                                            <th class="py-3 px-4">Department & Role</th>
+                                            <th class="py-3 px-4">Type</th>
+                                            <th class="py-3 px-4">Status</th>
+                                            <th class="py-3 px-4 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="employeesTableBody" class="divide-y divide-[#E5E5DF] dark:divide-zinc-800/60 text-xs">
+                                        <tr>
+                                            <td colspan="6" class="p-8 text-center text-xs text-gray-400 font-mono">
+                                                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading employee directory...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="employeesEmptyState" class="hidden p-12 text-center text-xs text-gray-400">
+                                <i class="fa-solid fa-user-slash text-3xl mb-2 text-gray-300 dark:text-zinc-600 block"></i>
+                                <span class="font-bold text-sm text-[#111111] dark:text-white block mb-1">No employees found</span>
+                                <span>No staff records match your selected filter criteria.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── HRMS TAB: COMPANY DOCUMENTS & POLICIES ─── -->
+                    <div class="tab-content" id="tab-documents" style="display:none;">
+                        <!-- Header Bar -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <div>
+                                <h2 class="text-2xl font-black tracking-tight text-[#111111] dark:text-white flex items-center gap-2 mb-1">
+                                    <i class="fa-solid fa-folder-open text-amber-500"></i> Company Documents & Policy Engine
+                                </h2>
+                                <p class="text-xs text-[#666660] dark:text-zinc-400">
+                                    Corporate policy vault with local Nemotron AI extraction, automated compliance checks, and instant Q&A.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <button type="button" onclick="openAiDocAssistant(null, 'All Corporate Policies')" class="btn-primary flex items-center gap-2 text-xs py-2.5 px-4 font-bold bg-[#183B33] hover:bg-[#122e28] text-white rounded-xl shadow-xs cursor-pointer">
+                                    <i class="fa-solid fa-robot text-amber-400"></i>
+                                    <span>Ask Nemotron (AI)</span>
+                                </button>
+                                <button type="button" onclick="openModal('publishDocModal')" class="btn-secondary flex items-center gap-2 text-xs py-2.5 px-3.5 font-bold rounded-xl cursor-pointer">
+                                    <i class="fa-solid fa-file-circle-plus text-amber-500"></i>
+                                    <span>Publish Document</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4 Stat Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Published Documents</span>
+                                <div class="text-2xl font-black text-[#111111] dark:text-white mt-1" id="docStatTotal">0</div>
+                                <span class="text-[10px] text-gray-400 font-mono mt-0.5 block">Active Policies & Handbooks</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">Policies & Handbooks</span>
+                                <div class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1" id="docStatPolicies">0</div>
+                                <span class="text-[10px] text-amber-600/70 dark:text-amber-400/70 font-mono mt-0.5 block">PTO, Code of Conduct, Ethics</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">NDAs & Legal Contracts</span>
+                                <div class="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1" id="docStatNdas">0</div>
+                                <span class="text-[10px] text-purple-600/70 dark:text-purple-400/70 font-mono mt-0.5 block">IP & Confidentiality</span>
+                            </div>
+                            <div class="stat-card p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-[#FAFAF8] dark:bg-zinc-900/60 shadow-2xs">
+                                <span class="stat-label text-[10px] font-bold uppercase tracking-wider text-[#888880] dark:text-zinc-400">AI Document Engine</span>
+                                <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Nemotron Local
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono mt-0.5 block">Isolated Ollama Processing</span>
+                            </div>
+                        </div>
+
+                        <!-- Filter Toolbar -->
+                        <div class="card p-4 mb-6 border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs">
+                            <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                                <div id="docCategoryTabs" class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+                                    <button type="button" class="doc-cat-pill active" data-cat="all" onclick="setDocCategoryFilter('all')">All</button>
+                                    <button type="button" class="doc-cat-pill" data-cat="policy" onclick="setDocCategoryFilter('policy')">Policies</button>
+                                    <button type="button" class="doc-cat-pill" data-cat="handbook" onclick="setDocCategoryFilter('handbook')">Handbooks</button>
+                                    <button type="button" class="doc-cat-pill" data-cat="nda" onclick="setDocCategoryFilter('nda')">NDAs</button>
+                                    <button type="button" class="doc-cat-pill" data-cat="compliance" onclick="setDocCategoryFilter('compliance')">Compliance</button>
+                                    <button type="button" class="doc-cat-pill" data-cat="contract" onclick="setDocCategoryFilter('contract')">Contracts</button>
+                                </div>
+                                <div class="relative w-full md:w-72">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="searchDocInput" oninput="filterDocumentsGrid()" placeholder="Filter document title, text..." class="form-input pl-9 text-xs py-2 w-full rounded-xl" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Document Cards Grid -->
+                        <div id="documentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                            <div class="col-span-full p-8 text-center text-xs text-gray-400 font-mono">
+                                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading company documents...
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="documentsEmptyState" class="hidden p-12 text-center text-xs text-gray-400 border border-dashed border-[#E5E5DF] dark:border-zinc-800 rounded-2xl mb-8">
+                            <i class="fa-solid fa-folder-minus text-3xl mb-2 text-gray-300 dark:text-zinc-600 block"></i>
+                            <span class="font-bold text-sm text-[#111111] dark:text-white block mb-1">No documents in this category</span>
+                            <span>Click "Publish Document" to add official policies or handbooks.</span>
                         </div>
                     </div>
 
@@ -7161,13 +7893,19 @@ body.dark-theme .resume-tip-box,
                     </div>
 
                     <div class="tab-content" id="tab-pipeline" style="display:none;">
-                        <div class="flex justify-between items-end mb-8">
+                        <div class="flex flex-wrap justify-between items-end gap-4 mb-8">
                             <div class="max-w-xs flex-1">
                                 <label class="form-label">Add Candidate to Kanban</label>
                                 <div class="flex gap-2">
                                     <input class="form-input" id="candidateName" placeholder="Candidate Full Name" type="text"/>
                                     <button class="btn-primary whitespace-nowrap" onclick="addCandidateToPipeline()">Add</button>
                                 </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="openInterviewScheduleModal()" class="px-4 py-2.5 text-xs font-bold rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[#183B33] hover:text-[#183B33] dark:hover:text-[#81E4DA] text-[var(--text-primary)] transition-all shadow-xs flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-regular fa-calendar-days text-emerald-600 dark:text-emerald-400 text-sm"></i>
+                                    <span>Schedule Interview</span>
+                                </button>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="pipelineStages">
@@ -7633,7 +8371,15 @@ body.dark-theme .resume-tip-box,
             let empOtpStore = { email: null, phone: null };
             let empOtpVerified = { email: false, phone: false };
             let pipeline = getStoredData('rankly_pipeline', []);
+            window.pipeline = pipeline;
             let allResumes = getStoredData('rankly_allResumes', []);
+
+            window.escapeHtml = function(str) {
+                return String(str || '').replace(/[&<>"']/g, function(m) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+                });
+            };
+            const escapeHtml = window.escapeHtml;
 
             window.togglePassword = function(inputId, btn) {
                 const input = document.getElementById(inputId);
@@ -7866,7 +8612,6 @@ body.dark-theme .resume-tip-box,
                     return false;
                 }
                 const clean = email.trim().toLowerCase();
-                // Basic format check: user@domain.extension
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
                 if (!emailRegex.test(clean)) {
                     showToast('Invalid email format. Please enter a valid email.', 'error');
@@ -7885,72 +8630,39 @@ body.dark-theme .resume-tip-box,
                     return false;
                 }
 
-                // Check for non-existent / fake test domains
                 const fakeDomains = ['fakedomain123.com', 'test.com', 'example.com', 'fake.com', 'tempmail.com', 'mailinator.com', 'throwaway.com'];
                 if (fakeDomains.includes(domain)) {
                     showToast('This email domain is not accepted. Please use a real email address.', 'error');
                     return false;
                 }
 
-                // Check if candidate signup is strictly Gmail
-                if (!isCorporate) {
-                    if (domain !== 'gmail.com') {
-                        showToast('Only Gmail addresses are allowed. Please use @gmail.com.', 'error');
-                        return false;
-                    }
-                }
-
                 return true;
             }
             window.validateEmail = validateEmail;
 
-            let otpCountdownTimer = null;
-            let empOtpCountdownTimer = null;
-
-            function startOtpCountdown(btnId, type) {
+            const otpCountdownMap = {};
+            function startOtpCountdown(btnId, defaultText = 'Resend OTP') {
                 let timeLeft = 30;
                 const btn = document.getElementById(btnId);
                 if (!btn) return;
 
                 btn.disabled = true;
-                btn.textContent = `Resend in ${timeLeft}s`;
+                btn.innerHTML = `<i class="fa-solid fa-clock"></i> Resend (${timeLeft}s)`;
 
-                if (type === 'signup') {
-                    if (otpCountdownTimer) clearInterval(otpCountdownTimer);
-                    otpCountdownTimer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            if (!otpVerified.email) {
-                                btn.textContent = `Resend in ${timeLeft}s`;
-                            }
-                        } else {
-                            clearInterval(otpCountdownTimer);
-                            otpCountdownTimer = null;
-                            if (!otpVerified.email) {
-                                btn.disabled = false;
-                                btn.textContent = 'Resend OTP';
-                            }
-                        }
-                    }, 1000);
-                } else if (type === 'emp') {
-                    if (empOtpCountdownTimer) clearInterval(empOtpCountdownTimer);
-                    empOtpCountdownTimer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            if (!empOtpVerified.email) {
-                                btn.textContent = `Resend in ${timeLeft}s`;
-                            }
-                        } else {
-                            clearInterval(empOtpCountdownTimer);
-                            empOtpCountdownTimer = null;
-                            if (!empOtpVerified.email) {
-                                btn.disabled = false;
-                                btn.textContent = 'Resend OTP';
-                            }
-                        }
-                    }, 1000);
-                }
+                if (otpCountdownMap[btnId]) clearInterval(otpCountdownMap[btnId]);
+                otpCountdownMap[btnId] = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        btn.innerHTML = `<i class="fa-solid fa-clock"></i> Resend (${timeLeft}s)`;
+                    } else {
+                        clearInterval(otpCountdownMap[btnId]);
+                        delete otpCountdownMap[btnId];
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> ${defaultText}`;
+                    }
+                }, 1000);
             }
+            window.startOtpCountdown = startOtpCountdown;
 
             function toggleSecurityVerification(el) {
                 const box = el.querySelector('.security-checkbox');
@@ -7993,18 +8705,21 @@ body.dark-theme .resume-tip-box,
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send verification code. Please try again.', 'error');
+                        showToast(data.message || data.error || 'Failed to send OTP to Gmail', 'error');
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
                     const row = document.getElementById('emailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('signupEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your inbox or spam folder.`, 'success');
-                    startOtpCountdown('emailOtpBtn', 'signup');
+                    if (otpInput) {
+                        otpInput.value = '';
+                        otpInput.focus();
+                    }
+                    showToast(`Verification code sent to ${value}. Please check your inbox and spam folder.`, 'success');
+                    startOtpCountdown('emailOtpBtn', 'Send OTP');
                 } catch (err) {
-                    showToast('Failed to send verification code: ' + err.message, 'error');
+                    showToast('Error sending OTP: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                 }
             }
@@ -8018,7 +8733,7 @@ body.dark-theme .resume-tip-box,
 
                 if (!input) return;
                 const entered = (input.value || '').replace(/\D/g, '').trim();
-                if (!entered) { showToast('Please enter the 6-digit verification code sent to your email.', 'error'); return; }
+                if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
 
                 if (emailInput) {
                     if (verifyBtn) { verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...'; }
@@ -8031,7 +8746,7 @@ body.dark-theme .resume-tip-box,
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
+                            showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
                             if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
                             return;
                         }
@@ -8091,18 +8806,21 @@ body.dark-theme .resume-tip-box,
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Failed to send verification code to corporate email.', 'error');
+                        showToast(data.message || data.error || 'Failed to send OTP to corporate email', 'error');
                         if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                         return;
                     }
                     const row = document.getElementById('empEmailOtpRow');
                     if (row) row.style.display = 'flex';
                     const otpInput = document.getElementById('empEmailOtp');
-                    if (otpInput) otpInput.value = '';
-                    showToast(`Verification code sent to ${value}. Please check your corporate inbox or spam folder.`, 'success');
-                    startOtpCountdown('empEmailOtpBtn', 'emp');
+                    if (otpInput) {
+                        otpInput.value = '';
+                        otpInput.focus();
+                    }
+                    showToast(`Verification code sent to ${value}. Please check your inbox and spam folder.`, 'success');
+                    startOtpCountdown('empEmailOtpBtn', 'Send OTP');
                 } catch (err) {
-                    showToast('Failed to send verification code: ' + err.message, 'error');
+                    showToast('Error sending OTP: ' + err.message, 'error');
                     if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
                 }
             }
@@ -8116,7 +8834,7 @@ body.dark-theme .resume-tip-box,
 
                 if (!input) return;
                 const entered = (input.value || '').replace(/\D/g, '').trim();
-                if (!entered) { showToast('Please enter the 6-digit verification code sent to your email.', 'error'); return; }
+                if (!entered) { showToast('Please enter OTP code from your email', 'error'); return; }
 
                 if (emailInput) {
                     if (verifyBtn) { verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...'; }
@@ -8129,7 +8847,7 @@ body.dark-theme .resume-tip-box,
                         });
                         const data = await res.json();
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
+                            showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
                             if (verifyBtn) { verifyBtn.disabled = false; verifyBtn.textContent = 'Verify'; }
                             return;
                         }
@@ -8286,7 +9004,7 @@ body.dark-theme .resume-tip-box,
 
                     const otpInput = document.getElementById('fpResetOtp');
                     if (otpInput) { otpInput.value = ''; otpInput.focus(); }
-                    showToast('A 6-digit password reset code has been sent to your email. Please check your inbox or spam folder.', 'success');
+                    showToast('6-digit reset code sent to your Gmail inbox / spam folder!', 'success');
                 } catch (err) {
                     showToast('Connection error: ' + err.message, 'error');
                 } finally {
@@ -8314,7 +9032,7 @@ body.dark-theme .resume-tip-box,
                     });
                     const data = await res.json();
                     if (!res.ok || !data.success) {
-                        showToast(data.message || data.error || 'Invalid or expired verification code.', 'error');
+                        showToast(data.message || data.error || 'Invalid or expired OTP code.', 'error');
                         return;
                     }
 
@@ -8326,7 +9044,7 @@ body.dark-theme .resume-tip-box,
                     const finalEmailEl = document.getElementById('fpResetFinalEmail');
                     if (finalEmailEl) finalEmailEl.textContent = fpTargetEmail;
 
-                    showToast('Identity verified successfully. A password reset link has been sent to your email.', 'success');
+                    showToast('Identity verified! Reset link sent to your Gmail.', 'success');
                 } catch (err) {
                     showToast('Verification failed: ' + err.message, 'error');
                 } finally {
@@ -8624,11 +9342,13 @@ body.dark-theme .resume-tip-box,
             function getTabIcon(tabId) {
                 switch (tabId) {
                     case 'dashboard': return 'fa-solid fa-table-columns';
+                    case 'employees': return 'fa-solid fa-users-gear';
+                    case 'documents': return 'fa-solid fa-folder-open';
                     case 'chatbot': return 'fa-solid fa-robot';
                     case 'screening': return 'fa-solid fa-file-invoice';
                     case 'pipeline': return 'fa-solid fa-users';
                     case 'analytics': return 'fa-solid fa-chart-line';
-                    case 'resume': return 'fa-solid fa-file-lines';
+                    case 'resume': return 'fa-solid fa-wand-magic-sparkles text-[#D95D39]';
                     case 'settings': return 'fa-solid fa-gear';
                     case 'feedback': return 'fa-solid fa-comment-dots';
                     case 'health': return 'fa-solid fa-heart-pulse text-emerald-500';
@@ -8669,13 +9389,19 @@ body.dark-theme .resume-tip-box,
                 const isAdmin = ['admin', 'administrator'].includes(r);
                 const isHr = ['hr', 'human_resources'].includes(r);
                 const isHM = ['hiring', 'hiring_manager', 'hm'].includes(r);
-                const isEnterprise = isAdmin || isHr || isHM || ['employee'].includes(r);
+                const isEnterprise = isAdmin || isHr || isHM || ['employee'].includes(r) || (window.currentUser && window.currentUser.accountType === 'employee');
+
+                const portalBadge = document.getElementById('portalBadge');
 
                 if (isEnterprise) {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1 text-amber-500"></i> Internal HRMS Portal (Protected Zone)';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30';
+                    }
                     currentTabsList = [
-                        { id: 'dashboard', label: 'Dashboard', target: 'dashboard' },
-                        { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
-                        { id: 'screening', label: 'Screening Matrix', target: 'screening' },
+                        { id: 'dashboard', label: 'HRMS Overview', target: 'dashboard' },
+                        { id: 'employees', label: 'Employee Directory', target: 'employees' },
+                        { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
                         { id: 'health', label: 'System Health', target: 'health' },
@@ -8683,12 +9409,14 @@ body.dark-theme .resume-tip-box,
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
                 } else {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-user-astronaut mr-1 text-emerald-500"></i> Candidate Portal (Applicant Zone)';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+                    }
                     currentTabsList = [
-                        { id: 'dashboard', label: 'Dashboard', target: 'dashboard' },
-                        { id: 'chatbot', label: 'Chatbot', target: 'chatbot' },
+                        { id: 'resume', label: 'AI Resume Builder & CV Optimizer', target: 'resume' },
+                        { id: 'chatbot', label: 'Career AI Coach', target: 'chatbot' },
                         { id: 'screening', label: 'Screening Matrix', target: 'screening' },
-                        { id: 'resume', label: 'Resume Builder', target: 'resume' },
-                        { id: 'health', label: 'System Health', target: 'health' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
@@ -8717,6 +9445,15 @@ body.dark-theme .resume-tip-box,
             window.setupDashboardForRole = setupDashboardForRole;
 
             function switchTab(tabId) {
+                const userRole = (window.currentUser ? (window.currentUser.role || 'normal') : 'normal').toLowerCase();
+                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (window.currentUser && window.currentUser.accountType === 'employee');
+                
+                const hrmsOnlyTabs = ['dashboard', 'employees', 'documents', 'pipeline', 'analytics', 'health'];
+                if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
+                    showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
+                    tabId = 'resume';
+                }
+
                 const matched = currentTabsList.find(t => t.id === tabId || t.target === tabId) || { id: tabId, target: tabId, label: tabId.toUpperCase() };
                 const actualTarget = matched.target || matched.id;
 
@@ -8742,6 +9479,12 @@ body.dark-theme .resume-tip-box,
                 const targetEl = document.getElementById(`tab-${actualTarget}`);
                 if (targetEl) targetEl.style.display = 'block';
 
+                if (actualTarget === 'employees' && typeof window.loadEmployeesDirectory === 'function') {
+                    window.loadEmployeesDirectory();
+                }
+                if (actualTarget === 'documents' && typeof window.loadCompanyDocuments === 'function') {
+                    window.loadCompanyDocuments();
+                }
                 if (actualTarget === 'screening' && typeof window.loadEvaluationsHistory === 'function') {
                     window.loadEvaluationsHistory();
                 }
@@ -8811,11 +9554,18 @@ body.dark-theme .resume-tip-box,
                     }
                     el.innerHTML = items.map(c => `
                         <div class="pipeline-card">
-                            <div>
-                                <p class="font-bold text-sm text-[#111111]">${c.name}</p>
-                                <span class="font-mono text-xs text-[#666660]">${c.score}% Match</span>
+                            <div class="flex-1 min-w-0 pr-2">
+                                <p class="font-bold text-sm text-[var(--text-primary)] truncate">${escapeHtml(c.name)}</p>
+                                <span class="font-mono text-xs text-[var(--text-muted)]">${c.score || 85}% Match</span>
+                                ${c.scheduledDate ? `
+                                    <div class="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
+                                        <i class="fa-regular fa-calendar-check text-[11px] text-emerald-600 dark:text-emerald-400"></i>
+                                        <span class="truncate">${c.scheduledDate} ${c.scheduledTime ? '• ' + c.scheduledTime : ''}</span>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div class="actions flex gap-1">
+                            <div class="actions flex items-center gap-1">
+                                <button onclick="openInterviewScheduleModal('${c.id}', '${escapeHtml(c.name)}')" aria-label="Schedule Interview" title="Schedule / Reschedule Interview" class="hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"><i class="fa-regular fa-calendar-plus text-xs"></i></button>
                                 ${stage !== 'hired' ? `<button onclick="advanceStage('${c.id}')" aria-label="Advance candidate stage" title="Move to next stage"><i class="fas fa-chevron-right text-xs"></i></button>` : ''}
                                 <button onclick="removeCandidate('${c.id}')" aria-label="Remove candidate" title="Remove"><i class="fas fa-trash-can text-xs text-red-500"></i></button>
                             </div>
@@ -8843,6 +9593,7 @@ body.dark-theme .resume-tip-box,
 
             window.removeCandidate = function(id) {
                 pipeline = pipeline.filter(c => c.id !== id);
+                window.pipeline = pipeline;
                 setStoredData('rankly_pipeline', pipeline);
                 renderPipeline();
                 renderAnalytics();
@@ -8860,6 +9611,7 @@ body.dark-theme .resume-tip-box,
                     score: 85,
                     stage: 'screening'
                 });
+                window.pipeline = pipeline;
                 setStoredData('rankly_pipeline', pipeline);
                 input.value = '';
                 renderPipeline();
@@ -8902,7 +9654,15 @@ body.dark-theme .resume-tip-box,
                 const userRole = currentUser ? (currentUser.role || 'normal') : 'normal';
                 setupDashboardForRole(userRole);
                 updateDashboard();
-                switchTab('dashboard');
+
+                const isEnterprise = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes((userRole || '').toLowerCase()) || (currentUser && currentUser.accountType === 'employee');
+                if (isEnterprise) {
+                    try { window.history.replaceState({}, '', '/hrms/dashboard'); } catch(e){}
+                    switchTab('dashboard');
+                } else {
+                    try { window.history.replaceState({}, '', '/candidate/dashboard'); } catch(e){}
+                    switchTab('resume');
+                }
             }
 
             window.openFeedbackModal = function() {
@@ -9176,6 +9936,48 @@ body.dark-theme .resume-tip-box,
                 }
             };
 
+            // ─── UNIVERSAL MULTI-TIER GOOGLE AUTH ENGINE (GSI Popup + Relay Bridge + OAuth) ───
+            const GOOGLE_CLIENT_ID = '297396891792-cia4kjguid6dpbe4vmmpmt16nomh50uh.apps.googleusercontent.com';
+
+            window.handleGoogleCredentialResponse = async function(response) {
+                try {
+                    showToast('🔐 Verifying Google credentials...', 'info');
+                    const res = await fetch('/api/auth/google/credential', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ credential: response.credential })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.user) {
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        showToast('✅ Google login successful!', 'success');
+                        setTimeout(() => {
+                            window.location.href = data.redirectUrl || '/candidate/dashboard';
+                        }, 250);
+                    } else {
+                        showToast(data.error || 'Google login failed.', 'error');
+                    }
+                } catch (err) {
+                    console.error('Google Credential Error:', err);
+                    showToast('Error connecting to authentication service.', 'error');
+                }
+            };
+
+            window.initGoogleGSI = function() {
+                if (window.google && window.google.accounts && window.google.accounts.id) {
+                    try {
+                        window.google.accounts.id.initialize({
+                            client_id: GOOGLE_CLIENT_ID,
+                            callback: window.handleGoogleCredentialResponse,
+                            auto_select: false,
+                            cancel_on_tap_outside: true
+                        });
+                    } catch (e) {
+                        console.warn('GSI Init Warning:', e);
+                    }
+                }
+            };
+
             window.oauthLogin = function(provider, event) {
                 let btn = null;
                 if (event && event.currentTarget) {
@@ -9188,11 +9990,33 @@ body.dark-theme .resume-tip-box,
                 if (btn) {
                     setButtonLoading(btn, true, 'CONNECTING TO GOOGLE...');
                 }
+
+                // Tier 1: Try Google Identity Services Popup / Prompt (Zero redirect_uri_mismatch!)
+                if (provider === 'Google' && window.google && window.google.accounts && window.google.accounts.id) {
+                    try {
+                        window.initGoogleGSI();
+                        window.google.accounts.id.prompt((notification) => {
+                            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                                // Fallback to standard OAuth redirect
+                                showToast('Opening Google sign-in window...', 'info');
+                                setTimeout(() => {
+                                    window.location.href = '/auth/google';
+                                }, 200);
+                            }
+                        });
+                        return;
+                    } catch (gsiErr) {
+                        console.warn('GSI prompt error, falling back to OAuth redirect:', gsiErr);
+                    }
+                }
+
+                // Tier 2 Fallback: Standard OAuth redirect via smart resolver
                 showToast('Initiating Google authentication...', 'info');
                 setTimeout(() => {
                     window.location.href = '/auth/google';
                 }, 250);
             };
+
 
 
             // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
@@ -10335,10 +11159,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (otpContainer) {
                         otpContainer.classList.remove('hidden');
                     }
-                    const otpInput = document.getElementById('slideRegOtpInput');
-                    if (otpInput) {
-                        otpInput.value = '';
-                    }
 
                     try {
                         const res = await fetch('/api/auth/send-otp', {
@@ -10348,29 +11168,26 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('Verification code sent to ' + email + '. Please check your inbox or spam folder.', 'success');
-                            if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                                sendBtn.disabled = false;
-                            }
                             const otpInput = document.getElementById('slideRegOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
                                 otpInput.focus();
                             }
+                            showToast(`Verification code sent to ${email}. Please check your inbox and spam folder.`, 'success');
+                            startOtpCountdown('sendCandOtpBtn', 'Resend OTP');
                         } else {
                             showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
                             if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                                 sendBtn.disabled = false;
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                             }
                         }
                     } catch (err) {
                         console.error('Send OTP error:', err);
                         showToast('Error connecting to OTP server. Please retry.', 'error');
                         if (sendBtn) {
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                             sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                         }
                     }
                 };
@@ -10806,7 +11623,14 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
                 window.handleSendOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
-                    if (!email) { showToast('Please enter corporate email', 'error'); return; }
+                    if (!email) { showToast('Please enter your email address', 'error'); return; }
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        showToast('Please enter a valid email address', 'error');
+                        return;
+                    }
+
                     const sendBtn = document.getElementById('sendOrgOtpBtn');
                     if (sendBtn) {
                         sendBtn.disabled = true;
@@ -10821,41 +11645,75 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const res = await fetch('/api/auth/send-otp', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email, type: 'corporate_email_verification' })
+                            body: JSON.stringify({ email, isEmployee: true, type: 'corporate_email_verification' })
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('Corporate verification code sent to ' + email + '. Please check your inbox or spam folder.', 'success');
-                            if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
-                                sendBtn.disabled = false;
-                            }
                             const otpInput = document.getElementById('orgOtpInput');
                             if (otpInput) {
                                 otpInput.value = '';
                                 otpInput.focus();
                             }
+                            showToast('Verification code sent to ' + email + '! Please check your inbox and spam folder.', 'success');
+                            startOtpCountdown('sendOrgOtpBtn', 'Resend OTP');
                         } else {
-                            showToast(data.message || data.error || 'Failed to send corporate OTP', 'error');
+                            showToast(data.message || data.error || 'Failed to send OTP', 'error');
                             if (sendBtn) {
-                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                                 sendBtn.disabled = false;
+                                sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                             }
                         }
                     } catch (err) {
                         showToast('Network error while sending OTP', 'error');
                         if (sendBtn) {
-                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
                             sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
                         }
+                    }
+                };
+
+                window.orgEmailVerified = false;
+                window.verifiedOrgEmail = null;
+
+                window.resetOrgEmailVerification = function() {
+                    window.orgEmailVerified = false;
+                    window.verifiedOrgEmail = null;
+                    window.orgVerificationToken = null;
+                    sessionStorage.removeItem('org_verified_token');
+                    sessionStorage.removeItem('org_verified_email');
+
+                    const unlockedFields = document.getElementById('orgProfileUnlockedFields');
+                    if (unlockedFields) unlockedFields.classList.add('hidden');
+
+                    const lockedBackBtn = document.getElementById('orgLockedBackBtn');
+                    if (lockedBackBtn) lockedBackBtn.classList.remove('hidden');
+
+                    const workEmailInput = document.getElementById('orgWorkEmailInput');
+                    if (workEmailInput) {
+                        workEmailInput.readOnly = false;
+                        workEmailInput.classList.remove('opacity-80', 'bg-gray-100', 'dark:bg-gray-800');
+                        workEmailInput.focus();
+                    }
+
+                    const verifyBtn = document.getElementById('verifyOrgOtpBtn');
+                    if (verifyBtn) {
+                        verifyBtn.disabled = false;
+                        verifyBtn.className = 'px-4 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer';
+                        verifyBtn.innerText = 'Verify OTP';
+                    }
+
+                    const sendBtn = document.getElementById('sendOrgOtpBtn');
+                    if (sendBtn) {
+                        sendBtn.disabled = false;
+                        sendBtn.innerText = 'Send OTP';
                     }
                 };
 
                 window.handleVerifyOrgOtp = async function() {
                     const email = document.getElementById('orgWorkEmailInput')?.value.trim();
                     const otp = (document.getElementById('orgOtpInput')?.value || '').replace(/\D/g, '').trim();
-                    if (!email) { showToast('Please enter corporate email first', 'error'); return; }
-                    if (!otp || otp.length < 4) { showToast('Please enter valid 6-digit OTP', 'error'); return; }
+                    if (!email) { showToast('Please enter your email first', 'error'); return; }
+                    if (!otp || otp.length < 4) { showToast('Please enter the 6-digit OTP', 'error'); return; }
 
                     const verifyBtn = document.getElementById('verifyOrgOtpBtn');
                     if (verifyBtn) {
@@ -10871,12 +11729,34 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            const banner = document.getElementById('orgSecurityBanner');
-                            if (banner) {
-                                banner.className = 'mt-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300';
-                                banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i><span>Corporate Email & OTP Verified! Profile registration unlocked.</span>';
+                            window.orgEmailVerified = true;
+                            window.verifiedOrgEmail = email;
+                            window.orgVerificationToken = data.token || '';
+                            sessionStorage.setItem('org_verified_token', data.token || '');
+                            sessionStorage.setItem('org_verified_email', email);
+
+                            const lockedBackBtn = document.getElementById('orgLockedBackBtn');
+                            if (lockedBackBtn) lockedBackBtn.classList.add('hidden');
+
+                            const unlockedFields = document.getElementById('orgProfileUnlockedFields');
+                            if (unlockedFields) unlockedFields.classList.remove('hidden');
+
+                            const workEmailInput = document.getElementById('orgWorkEmailInput');
+                            if (workEmailInput) {
+                                workEmailInput.readOnly = true;
+                                workEmailInput.classList.add('opacity-80', 'bg-gray-100', 'dark:bg-gray-800');
                             }
-                            showToast('✅ Corporate Email Verified Successfully!', 'success');
+
+                            if (verifyBtn) {
+                                verifyBtn.disabled = true;
+                                verifyBtn.className = 'px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white whitespace-nowrap shadow-xs cursor-default';
+                                verifyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verified';
+                            }
+
+                            showToast('✅ Email verified! Workspace form unlocked.', 'success');
+                            setTimeout(() => {
+                                document.getElementById('orgNameInput')?.focus();
+                            }, 150);
                         } else {
                             showToast(data.message || data.error || 'Invalid or expired OTP', 'error');
                             if (verifyBtn) {
@@ -10921,6 +11801,13 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     const phone = document.getElementById('orgPhone')?.value.trim();
                     const role = document.getElementById('orgRole')?.value || 'HR / Recruiter';
                     const password = document.getElementById('orgAdminPasswordInput')?.value.trim();
+
+                    // Security Gate: Ensure workmail was verified via OTP
+                    if (!window.orgEmailVerified || window.verifiedOrgEmail !== email) {
+                        showToast('Please verify your email via OTP before registering workspace.', 'error');
+                        document.getElementById('orgWorkEmailInput')?.focus();
+                        return;
+                    }
 
                     if (!orgName || !email || !firstName || !password) {
                         showToast('Please fill all required fields', 'error');
@@ -12509,6 +13396,970 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 });
             }
         });
+
+        // ─── INTERNAL HRMS WORKFORCE & EMPLOYEE DIRECTORY CONTROLLER ───
+        let hrmsEmployeesList = [];
+
+        async function loadEmployeesDirectory() {
+            const tbody = document.getElementById('employeesTableBody');
+            const emptyEl = document.getElementById('employeesEmptyState');
+            if (!tbody) return;
+
+            tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-gray-400 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading workforce roster...</td></tr>';
+
+            try {
+                const res = await fetch('/api/employees', { credentials: 'include' });
+                if (res.status === 403 || res.status === 401) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-red-500 font-bold">🔒 Access Restricted: Internal HRMS authorization required.</td></tr>';
+                    return;
+                }
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.data)) {
+                    hrmsEmployeesList = data.data;
+                    renderEmployeesTable(hrmsEmployeesList);
+                    updateEmployeeMetrics(hrmsEmployeesList);
+                } else {
+                    hrmsEmployeesList = [];
+                    renderEmployeesTable([]);
+                    updateEmployeeMetrics([]);
+                }
+            } catch (err) {
+                console.error('Error fetching employees:', err);
+                tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-xs text-red-500 font-mono">Failed to load employee records: ' + err.message + '</td></tr>';
+            }
+        }
+        window.loadEmployeesDirectory = loadEmployeesDirectory;
+
+        function updateEmployeeMetrics(list) {
+            const totalEl = document.getElementById('empStatTotal');
+            const activeEl = document.getElementById('empStatActive');
+            const probationEl = document.getElementById('empStatProbation');
+            const deptsEl = document.getElementById('empStatDepts');
+
+            if (totalEl) totalEl.textContent = list.length;
+            if (activeEl) activeEl.textContent = list.filter(e => (e.employment_details?.status || 'active').toLowerCase() === 'active').length;
+            if (probationEl) probationEl.textContent = list.filter(e => {
+                const st = (e.employment_details?.status || '').toLowerCase();
+                return st === 'probation' || st === 'on_leave';
+            }).length;
+            
+            const uniqueDepts = new Set(list.map(e => e.employment_details?.department).filter(Boolean));
+            if (deptsEl) deptsEl.textContent = uniqueDepts.size || 0;
+        }
+
+        function renderEmployeesTable(list) {
+            const tbody = document.getElementById('employeesTableBody');
+            const emptyEl = document.getElementById('employeesEmptyState');
+            if (!tbody) return;
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyEl) emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyEl) emptyEl.classList.add('hidden');
+
+            tbody.innerHTML = list.map(emp => {
+                const empId = emp.employee_id || emp.id || 'N/A';
+                const name = emp.full_name || 'Staff Member';
+                const email = emp.email || emp.contact_details?.work_email || '—';
+                const dept = emp.employment_details?.department || 'General';
+                const designation = emp.employment_details?.designation || 'Specialist';
+                const type = (emp.employment_details?.employment_type || 'full_time').replace('_', ' ');
+                const status = (emp.employment_details?.status || 'active').toLowerCase();
+
+                let statusClass = 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60';
+                if (status === 'probation') statusClass = 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border-amber-200 dark:border-amber-800/60';
+                if (status === 'on_leave') statusClass = 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-800/60';
+                if (status === 'terminated') statusClass = 'bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400 border-red-200 dark:border-red-800/60';
+
+                const initial = (name[0] || 'E').toUpperCase();
+
+                return '<tr class="hover:bg-[#FAFAF8] dark:hover:bg-zinc-800/40 transition-colors">' +
+                    '<td class="py-3 px-4 flex items-center gap-2.5">' +
+                        '<div class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 font-bold flex items-center justify-center text-xs flex-shrink-0">' +
+                            initial +
+                        '</div>' +
+                        '<div class="overflow-hidden">' +
+                            '<p class="font-bold text-xs text-[#111111] dark:text-white truncate">' + name + '</p>' +
+                            '<p class="text-[11px] text-gray-500 dark:text-zinc-400 truncate">' + email + '</p>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 font-mono text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">' + empId + '</td>' +
+                    '<td class="py-3 px-4">' +
+                        '<span class="font-medium text-xs text-zinc-800 dark:text-zinc-200">' + dept + '</span>' +
+                        '<span class="text-[10px] text-gray-400 block">' + designation + '</span>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 capitalize text-zinc-600 dark:text-zinc-400 text-xs">' + type + '</td>' +
+                    '<td class="py-3 px-4">' +
+                        '<span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ' + statusClass + '">' + status + '</span>' +
+                    '</td>' +
+                    '<td class="py-3 px-4 text-right">' +
+                        '<div class="inline-flex items-center gap-1.5">' +
+                            '<button onclick="deleteEmployeeRecord(\'' + empId + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1" title="Delete record">' +
+                                '<i class="fa-solid fa-trash-can text-xs"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        window.filterEmployeesTable = function() {
+            const search = (document.getElementById('searchEmployeeInput')?.value || '').toLowerCase().trim();
+            const dept = document.getElementById('filterEmployeeDept')?.value || 'all';
+            const status = document.getElementById('filterEmployeeStatus')?.value || 'all';
+
+            const filtered = hrmsEmployeesList.filter(emp => {
+                const name = (emp.full_name || '').toLowerCase();
+                const id = (emp.employee_id || emp.id || '').toLowerCase();
+                const email = (emp.email || emp.contact_details?.work_email || '').toLowerCase();
+                const empDept = (emp.employment_details?.department || '').toLowerCase();
+                const empStatus = (emp.employment_details?.status || 'active').toLowerCase();
+
+                const matchesSearch = !search || name.includes(search) || id.includes(search) || email.includes(search);
+                const matchesDept = dept === 'all' || empDept.toLowerCase() === dept.toLowerCase();
+                const matchesStatus = status === 'all' || empStatus === status.toLowerCase();
+
+                return matchesSearch && matchesDept && matchesStatus;
+            });
+
+            renderEmployeesTable(filtered);
+        };
+
+        window.saveEmployeeRecord = async function(e) {
+            if (e) e.preventDefault();
+            const code = document.getElementById('newEmpCode')?.value?.trim();
+            const name = document.getElementById('newEmpFullName')?.value?.trim();
+            const email = document.getElementById('newEmpWorkEmail')?.value?.trim();
+            const phone = document.getElementById('newEmpPhone')?.value?.trim();
+            const dept = document.getElementById('newEmpDepartment')?.value;
+            const desig = document.getElementById('newEmpDesignation')?.value?.trim();
+            const type = document.getElementById('newEmpType')?.value || 'full_time';
+            const status = document.getElementById('newEmpStatus')?.value || 'active';
+
+            if (!code || !name || !email) {
+                showToast('Please enter Employee Code, Full Name, and Work Email.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('saveEmployeeBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+            }
+
+            try {
+                const payload = {
+                    employee_id: code,
+                    full_name: name,
+                    email: email,
+                    phone: phone || undefined,
+                    employment_details: {
+                        department: dept,
+                        designation: desig,
+                        employment_type: type,
+                        status: status,
+                        date_of_joining: new Date().toISOString().split('T')[0]
+                    }
+                };
+
+                const res = await fetch('/api/employees', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    showToast(data.error || data.message || 'Failed to save employee record.', 'error');
+                    return;
+                }
+
+                showToast('Employee ' + code + ' recorded successfully.', 'success');
+                closeModal('addEmployeeModal');
+                document.getElementById('addEmployeeForm')?.reset();
+                loadEmployeesDirectory();
+            } catch (err) {
+                showToast('Save failed: ' + err.message, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Save Employee';
+                }
+            }
+        };
+
+        // Prompt 04 Optimization: Optimistic UI update with graceful rollback
+        window.deleteEmployeeRecord = async function(id) {
+            if (!confirm('Are you sure you want to delete employee ' + id + ' from the roster?')) return;
+
+            // 1. Snapshot state for potential rollback
+            const backupRoster = [...hrmsEmployeesList];
+
+            // 2. Optimistically update local data & UI immediately (0ms reaction)
+            hrmsEmployeesList = hrmsEmployeesList.filter(e => (e.employee_id || e.id) !== id);
+            renderEmployeesRoster(hrmsEmployeesList);
+            showToast('Employee removed from directory.', 'info');
+
+            // 3. Reconcile with server in the background
+            try {
+                const res = await fetch('/api/employees/' + encodeURIComponent(id), {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    // Roll back state on server failure
+                    hrmsEmployeesList = backupRoster;
+                    renderEmployeesRoster(hrmsEmployeesList);
+                    showToast('Failed to delete on server: ' + (data.error || data.message || 'Error') + '. Record restored.', 'error');
+                    return;
+                }
+                showToast('Employee record permanently deleted.', 'success');
+            } catch (err) {
+                // Roll back state on network error
+                hrmsEmployeesList = backupRoster;
+                renderEmployeesRoster(hrmsEmployeesList);
+                showToast('Network error: ' + err.message + '. Record restored.', 'error');
+            }
+        };
+
+        // ─── INTERNAL HRMS COMPANY DOCUMENTS & POLICIES CONTROLLER ───
+        let hrmsDocumentsList = [];
+        let activeDocCategory = 'all';
+
+        async function loadCompanyDocuments(category) {
+            if (category) activeDocCategory = category;
+            const grid = document.getElementById('documentsGrid');
+            const emptyEl = document.getElementById('documentsEmptyState');
+            if (!grid) return;
+
+            grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-gray-400 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading company documents...</div>';
+
+            try {
+                const catParam = activeDocCategory !== 'all' ? '?category=' + encodeURIComponent(activeDocCategory) : '';
+                const res = await fetch('/api/documents' + catParam, { credentials: 'include' });
+                if (res.status === 403 || res.status === 401) {
+                    grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-red-500 font-bold">🔒 Access Restricted: Internal HRMS authorization required to view company policies.</div>';
+                    return;
+                }
+
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.data)) {
+                    hrmsDocumentsList = data.data;
+                    renderDocumentsGrid(hrmsDocumentsList);
+                    updateDocumentMetrics(hrmsDocumentsList);
+                } else {
+                    hrmsDocumentsList = [];
+                    renderDocumentsGrid([]);
+                    updateDocumentMetrics([]);
+                }
+            } catch (err) {
+                console.error('Error fetching documents:', err);
+                grid.innerHTML = '<div class="col-span-full p-8 text-center text-xs text-red-500 font-mono">Failed to load company documents: ' + err.message + '</div>';
+            }
+        }
+        window.loadCompanyDocuments = loadCompanyDocuments;
+
+        function updateDocumentMetrics(list) {
+            const totalEl = document.getElementById('docStatTotal');
+            const policiesEl = document.getElementById('docStatPolicies');
+            const ndasEl = document.getElementById('docStatNdas');
+
+            if (totalEl) totalEl.textContent = list.length;
+            if (policiesEl) policiesEl.textContent = list.filter(d => ['policy', 'handbook'].includes((d.category || '').toLowerCase())).length;
+            if (ndasEl) ndasEl.textContent = list.filter(d => ['nda', 'compliance', 'contract'].includes((d.category || '').toLowerCase())).length;
+        }
+
+        window.setDocCategoryFilter = function(category) {
+            activeDocCategory = category;
+            document.querySelectorAll('#docCategoryTabs .doc-cat-pill').forEach(pill => {
+                if (pill.dataset.cat === category) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadCompanyDocuments(category);
+        };
+
+        function renderDocumentsGrid(list) {
+            const grid = document.getElementById('documentsGrid');
+            const emptyEl = document.getElementById('documentsEmptyState');
+            if (!grid) return;
+
+            if (!list || list.length === 0) {
+                grid.innerHTML = '';
+                if (emptyEl) emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyEl) emptyEl.classList.add('hidden');
+
+            grid.innerHTML = list.map(doc => {
+                const cat = (doc.category || 'policy').toLowerCase();
+                let catIcon = 'fa-solid fa-scale-balanced text-amber-500';
+                let catBadgeClass = 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/60';
+                if (cat === 'handbook') {
+                    catIcon = 'fa-solid fa-book-bookmark text-blue-500';
+                    catBadgeClass = 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/60';
+                } else if (cat === 'nda') {
+                    catIcon = 'fa-solid fa-file-signature text-purple-500';
+                    catBadgeClass = 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/60';
+                } else if (cat === 'compliance') {
+                    catIcon = 'fa-solid fa-shield-halved text-emerald-500';
+                    catBadgeClass = 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60';
+                }
+
+                const dateStr = doc.createdAt ? new Date(doc.createdAt).toISOString().split('T')[0] : '2026-09-04';
+                const author = doc.uploadedBy ? (doc.uploadedBy.name || doc.uploadedBy.email || 'HR Dept') : 'HR Dept';
+                const size = doc.fileSize || '380 KB';
+
+                return '<div class="card p-5 flex flex-col justify-between hover:border-amber-500/40 transition-all border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-xs group">' +
+                    '<div>' +
+                        '<div class="flex justify-between items-start mb-3">' +
+                            '<div class="w-9 h-9 rounded-xl bg-[#FAFAF8] dark:bg-zinc-800 flex items-center justify-center border border-[#E5E5DF] dark:border-zinc-700/60 shadow-2xs">' +
+                                '<i class="' + catIcon + ' text-sm"></i>' +
+                            '</div>' +
+                            '<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ' + catBadgeClass + '">' +
+                                cat +
+                            '</span>' +
+                        '</div>' +
+                        '<h4 class="font-bold text-sm text-[#111111] dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-2 mb-1.5">' +
+                            doc.title +
+                        '</h4>' +
+                        '<p class="text-xs text-[#666660] dark:text-zinc-400 line-clamp-2 mb-4 leading-relaxed">' +
+                            (doc.description || doc.content || 'Official internal documentation for employees and contractors.') +
+                        '</p>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="flex items-center justify-between text-[11px] text-gray-400 pb-3 border-t border-[#E5E5DF] dark:border-zinc-800/60 pt-3">' +
+                            '<span><i class="fa-regular fa-calendar mr-1"></i> ' + dateStr + '</span>' +
+                            '<span><i class="fa-solid fa-file-pdf mr-1 text-red-400"></i> ' + size + '</span>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between gap-1.5 pt-1">' +
+                            '<button onclick="openAiDocAssistant(\'' + doc.id + '\', \'' + doc.title.replace(/'/g, "\\'") + '\')" class="btn-primary text-xs py-1.5 px-2.5 flex items-center gap-1.5 bg-[#183B33] hover:bg-[#122e28] text-white rounded-lg transition-all" title="Ask Nemotron AI">' +
+                                '<i class="fa-solid fa-robot text-amber-400"></i> <span>Ask AI</span>' +
+                            '</button>' +
+                            '<button onclick="readDocument(\'' + doc.id + '\')" class="btn-secondary text-xs flex-1 py-1.5 text-center justify-center">' +
+                                '<i class="fa-regular fa-eye mr-1"></i> View' +
+                            '</button>' +
+                            '<button onclick="downloadDocPrompt(\'' + doc.title.replace(/'/g, "\\'") + '\', \'' + (doc.fileName || '') + '\')" class="btn-secondary text-xs px-2.5 py-1.5" title="Download Document">' +
+                                '<i class="fa-solid fa-download"></i>' +
+                            '</button>' +
+                            '<button onclick="deleteDocumentRecord(\'' + doc.id + '\')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5" title="Remove Document">' +
+                                '<i class="fa-solid fa-trash-can text-xs"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        window.filterDocumentsGrid = function() {
+            const q = (document.getElementById('searchDocInput')?.value || '').toLowerCase().trim();
+            const filtered = hrmsDocumentsList.filter(doc => {
+                const title = (doc.title || '').toLowerCase();
+                const desc = (doc.description || '').toLowerCase();
+                const content = (doc.content || '').toLowerCase();
+                return !q || title.includes(q) || desc.includes(q) || content.includes(q);
+            });
+            renderDocumentsGrid(filtered);
+        };
+
+        window.publishCompanyDocument = async function(e) {
+            if (e) e.preventDefault();
+            const title = document.getElementById('docTitle')?.value?.trim();
+            const category = document.getElementById('docCategory')?.value || 'policy';
+            const fileName = document.getElementById('docFileName')?.value?.trim();
+            const desc = document.getElementById('docDescription')?.value?.trim();
+            const content = document.getElementById('docContent')?.value?.trim();
+
+            if (!title) {
+                showToast('Document Title is required.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('publishDocBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Publishing...';
+            }
+
+            try {
+                const payload = {
+                    title,
+                    category,
+                    fileName: fileName || (title.replace(/\s+/g, '_') + '.pdf'),
+                    description: desc || null,
+                    content: content || null
+                };
+
+                const res = await fetch('/api/documents', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    showToast(data.error || data.message || 'Failed to publish document.', 'error');
+                    return;
+                }
+
+                // Ingest into Supabase internal_documents for Nemotron AI
+                try {
+                    await fetch('/api/documents/internal/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            title,
+                            category,
+                            fileName: payload.fileName,
+                            content: content || desc || title
+                        })
+                    });
+                } catch (supaIngestErr) {}
+
+                showToast('Document published successfully.', 'success');
+                closeModal('publishDocModal');
+                document.getElementById('publishDocForm')?.reset();
+                loadCompanyDocuments(activeDocCategory);
+            } catch (err) {
+                showToast('Publish failed: ' + err.message, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Publish Document';
+                }
+            }
+        };
+
+        // ─── NEMOTRON AI DOCUMENT & POLICY ASSISTANT CONTROLLER ───
+        let activeAiDocId = null;
+        let activeAiDocTitle = '';
+
+        window.openAiDocAssistant = function(docId, docTitle) {
+            activeAiDocId = docId || null;
+            activeAiDocTitle = docTitle || '';
+
+            const scopeLabel = document.getElementById('aiDocScopeLabel');
+            const resetBtn = document.getElementById('aiDocResetScopeBtn');
+            if (scopeLabel) {
+                scopeLabel.textContent = activeAiDocTitle ? `Document: ${activeAiDocTitle}` : 'All Corporate Policies & Handbooks';
+            }
+            if (resetBtn) {
+                resetBtn.classList.toggle('hidden', !activeAiDocTitle);
+            }
+
+            const input = document.getElementById('aiDocQueryInput');
+            if (input) input.value = '';
+            const resContainer = document.getElementById('aiDocResultContainer');
+            if (resContainer) resContainer.classList.add('hidden');
+
+            openModal('aiDocAssistantModal');
+            if (input) input.focus();
+        };
+
+        window.resetAiDocScope = function() {
+            activeAiDocId = null;
+            activeAiDocTitle = '';
+            const scopeLabel = document.getElementById('aiDocScopeLabel');
+            const resetBtn = document.getElementById('aiDocResetScopeBtn');
+            if (scopeLabel) scopeLabel.textContent = 'All Corporate Policies & Handbooks';
+            if (resetBtn) resetBtn.classList.add('hidden');
+        };
+
+        window.setAiDocPreset = function(text) {
+            const input = document.getElementById('aiDocQueryInput');
+            if (input) {
+                input.value = text;
+                input.focus();
+            }
+        };
+
+        window.submitAiDocQuery = async function(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('aiDocQueryInput');
+            const promptText = (input?.value || '').trim();
+            if (!promptText) {
+                showToast('Please enter a policy query or select a preset.', 'warning');
+                return;
+            }
+
+            const submitBtn = document.getElementById('aiDocSubmitBtn');
+            const icon = document.getElementById('aiDocSubmitIcon');
+            const textEl = document.getElementById('aiDocSubmitText');
+            const resContainer = document.getElementById('aiDocResultContainer');
+            const resContent = document.getElementById('aiDocResponseContent');
+
+            if (submitBtn) submitBtn.disabled = true;
+            if (icon) icon.className = 'fa-solid fa-spinner fa-spin mr-1';
+            if (textEl) textEl.textContent = 'Analyzing with Nemotron...';
+
+            try {
+                const payload = {
+                    promptText,
+                    documentId: activeAiDocId || undefined
+                };
+
+                const res = await fetch('/api/documents/internal/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    showToast(data.error || data.message || 'AI processing request failed.', 'error');
+                    return;
+                }
+
+                if (resContainer && resContent) {
+                    resContent.textContent = data.result || 'No response returned from model.';
+                    resContainer.classList.remove('hidden');
+                    resContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                showToast('Policy analysis completed by Nemotron.', 'success');
+            } catch (err) {
+                showToast('Network error querying AI engine: ' + err.message, 'error');
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+                if (icon) icon.className = 'fa-solid fa-wand-magic-sparkles text-amber-400';
+                if (textEl) textEl.textContent = 'Ask Nemotron';
+            }
+        };
+
+        window.copyAiDocResponse = function() {
+            const resContent = document.getElementById('aiDocResponseContent');
+            if (!resContent || !resContent.textContent) return;
+            navigator.clipboard?.writeText(resContent.textContent);
+            showToast('Nemotron analysis copied to clipboard!', 'info');
+        };
+
+        window.readDocument = function(id) {
+            const doc = hrmsDocumentsList.find(d => d.id === id);
+            if (!doc) {
+                showToast('Document details not found.', 'error');
+                return;
+            }
+
+            const titleEl = document.getElementById('readDocTitle');
+            const badgeEl = document.getElementById('readDocBadge');
+            const dateEl = document.getElementById('readDocDate');
+            const descEl = document.getElementById('readDocDescription');
+            const contentEl = document.getElementById('readDocContent');
+            const authorEl = document.getElementById('readDocAuthor');
+
+            if (titleEl) titleEl.textContent = doc.title;
+            if (badgeEl) badgeEl.textContent = (doc.category || 'policy').toUpperCase();
+            if (dateEl) dateEl.textContent = doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : '2026-09-04';
+            if (descEl) descEl.textContent = doc.description || 'Corporate HRMS standard reference document.';
+            if (contentEl) contentEl.textContent = doc.content || 'Detailed policy clauses and specifications are archived in official corporate files.';
+            if (authorEl) authorEl.textContent = 'Uploaded by: ' + (doc.uploadedBy?.name || doc.uploadedBy?.email || 'HR Administration') + ' (' + (doc.fileName || 'PDF Document') + ')';
+
+            openModal('readDocModal');
+        };
+
+        // Prompt 04 Optimization: Optimistic UI update with graceful rollback
+        window.deleteDocumentRecord = async function(id) {
+            if (!confirm('Are you sure you want to permanently delete this company document?')) return;
+
+            // 1. Snapshot state for potential rollback
+            const backupDocs = [...hrmsDocumentsList];
+
+            // 2. Optimistically update local data & UI immediately (0ms reaction)
+            hrmsDocumentsList = hrmsDocumentsList.filter(d => d.id !== id);
+            renderCompanyDocuments(hrmsDocumentsList);
+            showToast('Document removed from directory.', 'info');
+
+            // 3. Reconcile with server in the background
+            try {
+                const res = await fetch('/api/documents/' + encodeURIComponent(id), {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    // Roll back state on server failure
+                    hrmsDocumentsList = backupDocs;
+                    renderCompanyDocuments(hrmsDocumentsList);
+                    showToast('Server error: ' + (data.error || data.message || 'Error') + '. Document restored.', 'error');
+                    return;
+                }
+                showToast('Document permanently deleted.', 'success');
+            } catch (err) {
+                // Roll back state on network error
+                hrmsDocumentsList = backupDocs;
+                renderCompanyDocuments(hrmsDocumentsList);
+                showToast('Network error: ' + err.message + '. Document restored.', 'error');
+            }
+        };
+
+        window.downloadDocPrompt = function(title, fileName) {
+            showToast('📄 Downloading ' + (fileName || title) + '...', 'success');
+        };
+
+        window.printDocumentText = function() {
+            const title = document.getElementById('readDocTitle')?.textContent || 'Company Document';
+            const text = document.getElementById('readDocContent')?.textContent || '';
+            const printWin = window.open('', '_blank');
+            if (printWin) {
+                printWin.document.write('<html><head><title>' + title + '</title><style>body{font-family:sans-serif;padding:40px;line-height:1.6;}h1{border-bottom:2px solid #333;padding-bottom:10px;}</style></head><body><h1>' + title + '</h1><pre style="white-space:pre-wrap;font-family:inherit;">' + text + '</pre></body></html>');
+                printWin.document.close();
+                printWin.print();
+            }
+        };
+
+        // ─────────────────────────────────────────────────────────────
+        // ─── RANKLY EXECUTIVE CALENDAR & MODERN DATEPICKER ENGINE ───
+        // ─────────────────────────────────────────────────────────────
+        let ranklyCalCurrentDate = new Date();
+        let ranklyCalSelectedDate = null;
+        let ranklyCalTargetInput = null;
+
+        const ranklyMonthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        window.initRanklyCalendar = function() {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (!popover) return;
+
+            // Populate Months dropdown
+            const monthSelect = document.getElementById('ranklyCalMonthSelect');
+            if (monthSelect && monthSelect.options.length === 0) {
+                ranklyMonthNames.forEach((name, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = name;
+                    monthSelect.appendChild(opt);
+                });
+            }
+
+            // Populate Years dropdown (1950 to current year + 2)
+            const yearSelect = document.getElementById('ranklyCalYearSelect');
+            if (yearSelect && yearSelect.options.length === 0) {
+                const curYear = new Date().getFullYear();
+                for (let y = curYear + 2; y >= 1950; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    yearSelect.appendChild(opt);
+                }
+            }
+
+            // Bind handlers to date inputs across registration & portals
+            const selector = 'input[type="date"], #orgDob, #slideRegDob, #signupDob, #empDob, #scheduleDateInput';
+            const bindInputs = () => {
+                document.querySelectorAll(selector).forEach(input => {
+                    if (input.dataset.ranklyCalBound) return;
+                    input.dataset.ranklyCalBound = 'true';
+                    input.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.openRanklyCalendar(input);
+                    });
+                    input.addEventListener('focus', () => {
+                        window.openRanklyCalendar(input);
+                    });
+                });
+            };
+
+            bindInputs();
+            // Rebind dynamically if views switch
+            document.addEventListener('click', () => setTimeout(bindInputs, 200));
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                const cal = document.getElementById('ranklyExecutiveDatePicker');
+                if (!cal || cal.classList.contains('hidden')) return;
+                if (!cal.contains(e.target) && ranklyCalTargetInput !== e.target && !ranklyCalTargetInput?.contains(e.target)) {
+                    window.closeRanklyCalendar();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    window.closeRanklyCalendar();
+                }
+            });
+        };
+
+        window.openRanklyCalendar = function(inputEl) {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (!popover || !inputEl) return;
+            ranklyCalTargetInput = inputEl;
+
+            // Position popover relative to input
+            const rect = inputEl.getBoundingClientRect();
+            const popWidth = 320;
+            const popHeight = 360;
+
+            let top = rect.bottom + window.scrollY + 6;
+            let left = rect.left + window.scrollX;
+
+            // Flip above if not enough vertical space below
+            if (rect.bottom + popHeight > window.innerHeight && rect.top > popHeight) {
+                top = rect.top + window.scrollY - popHeight - 6;
+            }
+            // Constrain horizontally within viewport
+            if (left + popWidth > window.innerWidth) {
+                left = window.innerWidth - popWidth - 16;
+            }
+            if (left < 10) left = 10;
+
+            popover.style.top = `${top}px`;
+            popover.style.left = `${left}px`;
+            popover.classList.remove('hidden');
+
+            // Parse initial date from input or default smartly
+            if (inputEl.value) {
+                const parsed = new Date(inputEl.value);
+                if (!isNaN(parsed.getTime())) {
+                    ranklyCalSelectedDate = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+                    ranklyCalCurrentDate = new Date(ranklyCalSelectedDate);
+                }
+            } else {
+                // If this is a DOB input, default year to 22 years ago for instant convenience
+                const isDob = inputEl.id && inputEl.id.toLowerCase().includes('dob');
+                const defaultYear = isDob ? (new Date().getFullYear() - 22) : new Date().getFullYear();
+                ranklyCalSelectedDate = new Date(defaultYear, 0, 15);
+                ranklyCalCurrentDate = new Date(defaultYear, 0, 1);
+            }
+
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.closeRanklyCalendar = function() {
+            const popover = document.getElementById('ranklyExecutiveDatePicker');
+            if (popover) {
+                popover.classList.add('hidden');
+            }
+        };
+
+        window.renderRanklyCalendarGrid = function() {
+            const monthSelect = document.getElementById('ranklyCalMonthSelect');
+            const yearSelect = document.getElementById('ranklyCalYearSelect');
+            const daysGrid = document.getElementById('ranklyCalDaysGrid');
+            const ageBadgeText = document.getElementById('ranklyCalAgeText');
+
+            const year = ranklyCalCurrentDate.getFullYear();
+            const month = ranklyCalCurrentDate.getMonth();
+
+            if (monthSelect) monthSelect.value = month;
+            if (yearSelect) yearSelect.value = year;
+
+            if (!daysGrid) return;
+            daysGrid.innerHTML = '';
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            // Render empty padding cells
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'rankly-cal-day-cell empty';
+                daysGrid.appendChild(emptyCell);
+            }
+
+            // Render day cells
+            for (let d = 1; d <= daysInMonth; d++) {
+                const cell = document.createElement('div');
+                cell.className = 'rankly-cal-day-cell';
+                cell.textContent = d;
+
+                const thisDate = new Date(year, month, d);
+                const isToday = thisDate.toDateString() === today.toDateString();
+                const isSelected = ranklyCalSelectedDate && thisDate.toDateString() === ranklyCalSelectedDate.toDateString();
+
+                if (isToday) cell.classList.add('today');
+                if (isSelected) cell.classList.add('selected');
+
+                cell.onclick = (e) => {
+                    e.stopPropagation();
+                    ranklyCalSelectedDate = new Date(year, month, d);
+                    window.renderRanklyCalendarGrid();
+                    window.ranklyCalendarApply();
+                };
+
+                daysGrid.appendChild(cell);
+            }
+
+            // Update live age indicator badge
+            if (ranklyCalSelectedDate && ageBadgeText) {
+                let age = today.getFullYear() - ranklyCalSelectedDate.getFullYear();
+                const m = today.getMonth() - ranklyCalSelectedDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < ranklyCalSelectedDate.getDate())) {
+                    age--;
+                }
+                const formatted = ranklyCalSelectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                if (age >= 18) {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-emerald-600 dark:text-emerald-400 font-bold">${age} yrs (Eligible 18+)</span>`;
+                } else if (age >= 15) {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-indigo-600 dark:text-indigo-400 font-bold">${age} yrs (Candidate 15+)</span>`;
+                } else {
+                    ageBadgeText.innerHTML = `<strong>${formatted}</strong> • <span class="text-amber-600 font-bold">${age} yrs old</span>`;
+                }
+            } else if (ageBadgeText) {
+                ageBadgeText.textContent = 'Pick Date of Birth';
+            }
+        };
+
+        window.ranklyCalendarPrevMonth = function() {
+            ranklyCalCurrentDate.setMonth(ranklyCalCurrentDate.getMonth() - 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarNextMonth = function() {
+            ranklyCalCurrentDate.setMonth(ranklyCalCurrentDate.getMonth() + 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarOnSelectChange = function() {
+            const m = parseInt(document.getElementById('ranklyCalMonthSelect').value, 10);
+            const y = parseInt(document.getElementById('ranklyCalYearSelect').value, 10);
+            ranklyCalCurrentDate = new Date(y, m, 1);
+            window.renderRanklyCalendarGrid();
+        };
+
+        window.ranklyCalendarSelectPreset = function(yearsAgo) {
+            const now = new Date();
+            const targetYear = now.getFullYear() - yearsAgo;
+            ranklyCalSelectedDate = new Date(targetYear, now.getMonth(), now.getDate());
+            ranklyCalCurrentDate = new Date(targetYear, now.getMonth(), 1);
+            window.renderRanklyCalendarGrid();
+            window.ranklyCalendarApply();
+        };
+
+        window.ranklyCalendarSetToday = function() {
+            const now = new Date();
+            ranklyCalSelectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            ranklyCalCurrentDate = new Date(now.getFullYear(), now.getMonth(), 1);
+            window.renderRanklyCalendarGrid();
+            window.ranklyCalendarApply();
+        };
+
+        window.ranklyCalendarApply = function() {
+            if (!ranklyCalTargetInput || !ranklyCalSelectedDate) return;
+            const y = ranklyCalSelectedDate.getFullYear();
+            const m = String(ranklyCalSelectedDate.getMonth() + 1).padStart(2, '0');
+            const d = String(ranklyCalSelectedDate.getDate()).padStart(2, '0');
+            const dateVal = `${y}-${m}-${d}`;
+
+            ranklyCalTargetInput.value = dateVal;
+
+            // Trigger change & input events so any age calculation functions trigger
+            ranklyCalTargetInput.dispatchEvent(new Event('change', { bubbles: true }));
+            ranklyCalTargetInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            // Explicitly call candidate / org age helpers
+            if (ranklyCalTargetInput.id === 'orgDob' && typeof window.calculateOrgAge === 'function') {
+                window.calculateOrgAge(dateVal);
+            }
+            if (ranklyCalTargetInput.id === 'slideRegDob' && typeof window.calculateCandidateAge === 'function') {
+                window.calculateCandidateAge(dateVal);
+            }
+
+            window.closeRanklyCalendar();
+        };
+
+        // ─────────────────────────────────────────────────────────────
+        // ─── EXECUTIVE INTERVIEW SCHEDULING CALENDAR CONTROLLER ───
+        // ─────────────────────────────────────────────────────────────
+        let activeSchedulingCandidateId = null;
+
+        window.openInterviewScheduleModal = function(candId = null, candName = null) {
+            activeSchedulingCandidateId = candId;
+            const modal = document.getElementById('interviewCalendarModal');
+            if (!modal) return;
+
+            const nameEl = document.getElementById('scheduleCandName');
+            if (candName && nameEl) {
+                nameEl.textContent = candName;
+            } else if (!candId) {
+                const interviewCand = (window.pipeline || []).find(c => c.stage === 'interview') || (window.pipeline || [])[0];
+                if (interviewCand && nameEl) {
+                    nameEl.textContent = interviewCand.name;
+                    activeSchedulingCandidateId = interviewCand.id;
+                } else if (nameEl) {
+                    nameEl.textContent = 'Selected Candidate';
+                }
+            }
+
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const y = tomorrow.getFullYear();
+            const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const d = String(tomorrow.getDate()).padStart(2, '0');
+            const dateInput = document.getElementById('scheduleDateInput');
+            if (dateInput) dateInput.value = `${y}-${m}-${d}`;
+
+            modal.style.display = 'flex';
+        };
+
+        window.confirmInterviewSchedule = function() {
+            const date = document.getElementById('scheduleDateInput')?.value;
+            const time = document.getElementById('scheduleTimeSelect')?.value || '02:00 PM';
+            const platform = document.getElementById('schedulePlatformSelect')?.value || 'Google Meet';
+            const round = document.getElementById('scheduleRoundSelect')?.value || 'Technical Round';
+
+            if (!date) {
+                showToast('Please select an interview date', 'error');
+                return;
+            }
+
+            if (activeSchedulingCandidateId && window.pipeline) {
+                const cand = window.pipeline.find(c => c.id === activeSchedulingCandidateId);
+                if (cand) {
+                    cand.stage = 'interview';
+                    cand.scheduledDate = date;
+                    cand.scheduledTime = time;
+                    cand.scheduledPlatform = platform;
+                    cand.scheduledRound = round;
+                    if (window.setStoredData) window.setStoredData('rankly_pipeline', window.pipeline);
+                    if (window.renderPipeline) window.renderPipeline();
+                    if (window.renderAnalytics) window.renderAnalytics();
+                }
+            }
+
+            closeModal('interviewCalendarModal');
+            showToast(`📅 Interview booked for ${date} at ${time} via ${platform}!`, 'success');
+        };
+
+        // Initialize Calendar when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => window.initRanklyCalendar());
+        } else {
+            window.initRanklyCalendar();
+        }
+
+        // Dual-Portal Path & Error Handler on Load
+        (function checkDualPortalPath() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const portalError = urlParams.get('error');
+                if (portalError) {
+                    window.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(() => {
+                            if (window.showToast) {
+                                showToast(decodeURIComponent(portalError), 'error');
+                            }
+                        }, 400);
+                    });
+                }
+            } catch (e) {
+                console.warn('Dual portal URL check error:', e);
+            }
+        })();
 
         // Auto-detect Password Reset Link clicked from Gmail (?action=reset-password&token=...&email=...)
         (function checkPasswordResetUrl() {

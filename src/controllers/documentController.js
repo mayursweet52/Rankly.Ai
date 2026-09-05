@@ -473,18 +473,45 @@ async function processDocumentWithAi(req, res) {
 
     let documentContext = inlineContext || '';
 
-    // If documentId provided, fetch context directly from Supabase internal_documents
+    // If documentId provided, fetch context directly from Supabase internal_documents or SQLite companyDocument
     if (documentId) {
       const { data, error } = await supabase.from('internal_documents').select('*').eq('id', documentId).single();
       if (!error && data && data.extracted_text) {
         documentContext = `Document: ${data.title} (${data.file_name})\n\n${data.extracted_text}`;
-      } else if (!documentContext) {
-        return res.status(404).json({ success: false, error: `Document #${documentId} not found or contains no text.` });
+      } else {
+        // Fallback: Check local SQLite prisma.companyDocument
+        try {
+          const localDoc = await prisma.companyDocument.findUnique({
+            where: { id: String(documentId) }
+          });
+          if (localDoc && (localDoc.content || localDoc.description)) {
+            documentContext = `Document: ${localDoc.title} (${localDoc.fileName || 'document.pdf'})\n\n${localDoc.content || localDoc.description}`;
+          }
+        } catch (localErr) {}
+
+        if (!documentContext && !inlineContext) {
+          return res.status(404).json({ success: false, error: `Document #${documentId} not found or contains no text.` });
+        }
       }
     }
 
+    // If no specific document context was provided, aggregate top company policies
     if (!documentContext || !documentContext.trim()) {
-      return res.status(400).json({ success: false, error: 'No document context available to process.' });
+      try {
+        const { data: supaDocs } = await supabase.from('internal_documents').select('title, category, extracted_text').limit(4);
+        if (supaDocs && supaDocs.length > 0) {
+          documentContext = supaDocs.map(d => `=== Policy: ${d.title} (${d.category}) ===\n${d.extracted_text}`).join('\n\n');
+        } else {
+          const localDocs = await prisma.companyDocument.findMany({ take: 4 });
+          if (localDocs && localDocs.length > 0) {
+            documentContext = localDocs.map(d => `=== Policy: ${d.title} (${d.category}) ===\n${d.content || d.description}`).join('\n\n');
+          }
+        }
+      } catch (aggErr) {}
+    }
+
+    if (!documentContext || !documentContext.trim()) {
+      return res.status(400).json({ success: false, error: 'No company policy document context available to process.' });
     }
 
     const aiResult = await processInternalDocument(promptText.trim(), documentContext.trim());
