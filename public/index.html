@@ -8834,15 +8834,19 @@ body.dark-theme .resume-tip-box,
                                         <p class="text-xs text-[#666660] dark:text-zinc-400 mt-0.5">Benchmark your real profile competencies against enterprise job standards and unlock verified skill achievement badges.</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2.5">
+                                <div class="flex flex-wrap items-center gap-2.5">
                                     <span class="text-xs font-semibold text-gray-500 dark:text-zinc-400">Target Role:</span>
-                                    <select id="skillGapRoleSelect" onchange="loadSkillGapAnalysis(this.value)" class="form-input text-xs font-semibold py-1.5 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800">
+                                    <select id="skillGapRoleSelect" onchange="onSkillGapRoleChanged(this.value)" class="form-input text-xs font-semibold py-1.5 px-3 rounded-xl border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800">
                                         <option value="software-engineer">Software Engineer</option>
                                         <option value="frontend-developer">Frontend Developer</option>
                                         <option value="ai-ml-engineer">AI / Machine Learning Engineer</option>
                                         <option value="cloud-devops">Cloud & DevOps Engineer</option>
                                         <option value="product-manager">Product Manager</option>
                                     </select>
+                                    <button type="button" id="btnRunSkillScan" onclick="runSkillGapScan()" class="py-1.5 px-3.5 rounded-xl bg-[#243E36] hover:bg-[#1b302a] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer">
+                                        <i class="fa-solid fa-radar"></i>
+                                        <span>Scan Skills & Benchmark</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -8900,7 +8904,13 @@ body.dark-theme .resume-tip-box,
                                             <span class="text-[11px] text-gray-400 font-mono">Real Gap Detection</span>
                                         </div>
                                         <div id="skillGapBarsList" class="space-y-2.5">
-                                            <!-- Dynamically injected -->
+                                            <div class="py-12 px-6 text-center space-y-3">
+                                                <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shadow-2xs">
+                                                    <i class="fa-solid fa-sliders"></i>
+                                                </div>
+                                                <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">No Benchmark Data Yet</div>
+                                                <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-sm mx-auto">Select your target role and click <strong>"Scan Skills & Benchmark"</strong> to evaluate your profile competencies against market requirements.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -8915,7 +8925,13 @@ body.dark-theme .resume-tip-box,
                                             <span class="text-[11px] text-emerald-600 font-bold">Progressive Unlocks</span>
                                         </div>
                                         <div id="skillGapBadgesGrid" class="space-y-2.5">
-                                            <!-- Dynamically injected -->
+                                            <div class="py-12 px-6 text-center space-y-3">
+                                                <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-2xs">
+                                                    <i class="fa-solid fa-award"></i>
+                                                </div>
+                                                <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">No Badges Evaluated Yet</div>
+                                                <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-xs mx-auto">Run a skill scan to assess your earned credentials and unlock progress on enterprise badges.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -10772,8 +10788,8 @@ body.dark-theme .resume-tip-box,
                     window.loadCandidateApplications();
                 }
 
-                if (actualTarget === 'skill-gap' && typeof window.loadSkillGapAnalysis === 'function') {
-                    window.loadSkillGapAnalysis();
+                if (actualTarget === 'skill-gap' && typeof window.initSkillGapView === 'function') {
+                    window.initSkillGapView();
                 }
 
                 const title = document.getElementById('dashPageTitle');

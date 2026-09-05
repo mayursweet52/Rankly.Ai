@@ -466,6 +466,76 @@
     // 4. INTERACTIVE SKILL GAP & BADGE FINDER (REAL DATA ENGINE)
     // ─────────────────────────────────────────────────────────────────────────
     let activeSkillGapSkills = [];
+    let hasSkillGapScanned = false;
+
+    window.initSkillGapView = function() {
+        if (activeSkillGapSkills.length === 0) {
+            if (currentProfileSkills && currentProfileSkills.length > 0) {
+                activeSkillGapSkills = [...currentProfileSkills];
+            } else {
+                const saved = localStorage.getItem('candidate_profile');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (parsed.skills && Array.isArray(parsed.skills)) activeSkillGapSkills = [...parsed.skills];
+                    } catch(e) {}
+                }
+            }
+        }
+        renderSkillGapCandidateChips();
+
+        if (!hasSkillGapScanned) {
+            window.resetSkillGapState();
+        }
+    };
+
+    window.resetSkillGapState = function() {
+        hasSkillGapScanned = false;
+        const meterVal = document.getElementById('skillGapReadinessVal');
+        if (meterVal) meterVal.textContent = '--%';
+        
+        const barsList = document.getElementById('skillGapBarsList');
+        if (barsList) {
+            barsList.innerHTML = `
+                <div class="py-12 px-6 text-center space-y-3">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shadow-2xs">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">No Benchmark Data Yet</div>
+                    <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-sm mx-auto">Select your target role and click <strong>"Scan Skills & Benchmark"</strong> to evaluate your profile competencies against market requirements.</p>
+                </div>
+            `;
+        }
+
+        const badgesGrid = document.getElementById('skillGapBadgesGrid');
+        if (badgesGrid) {
+            badgesGrid.innerHTML = `
+                <div class="py-12 px-6 text-center space-y-3">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-2xs">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">No Badges Evaluated Yet</div>
+                    <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-xs mx-auto">Run a skill scan to assess your earned credentials and unlock progress on enterprise badges.</p>
+                </div>
+            `;
+        }
+
+        const btn = document.getElementById('btnRunSkillScan');
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-radar"></i> <span>Scan Skills & Benchmark</span>';
+        }
+    };
+
+    window.onSkillGapRoleChanged = function(roleVal) {
+        const select = document.getElementById('skillGapRoleSelect');
+        const roleText = select ? select.options[select.selectedIndex].text : 'Selected Role';
+        const title = document.getElementById('skillGapRoleTitle');
+        if (title) title.textContent = roleText;
+        
+        // Reset benchmark and badges to awaiting scan
+        window.resetSkillGapState();
+    };
 
     window.syncSkillsFromCandidateProfile = function() {
         if (currentProfileSkills && currentProfileSkills.length > 0) {
@@ -483,7 +553,9 @@
         }
 
         renderSkillGapCandidateChips();
-        window.loadSkillGapAnalysis();
+        if (hasSkillGapScanned) {
+            window.runSkillGapScan();
+        }
         if (typeof window.showToast === 'function') {
             window.showToast(`Synced ${activeSkillGapSkills.length} skills from your Candidate Profile!`, 'info');
         }
@@ -498,7 +570,9 @@
         if (!activeSkillGapSkills.some(s => s.toLowerCase() === val.toLowerCase())) {
             activeSkillGapSkills.push(val);
             renderSkillGapCandidateChips();
-            window.loadSkillGapAnalysis();
+            if (hasSkillGapScanned) {
+                window.runSkillGapScan();
+            }
         }
         inp.value = '';
     };
@@ -506,7 +580,9 @@
     window.removeSkillFromGap = function(skillName) {
         activeSkillGapSkills = activeSkillGapSkills.filter(s => s.toLowerCase() !== skillName.toLowerCase());
         renderSkillGapCandidateChips();
-        window.loadSkillGapAnalysis();
+        if (hasSkillGapScanned) {
+            window.runSkillGapScan();
+        }
     };
 
     function renderSkillGapCandidateChips() {
@@ -526,25 +602,60 @@
         `).join('');
     }
 
-    window.loadSkillGapAnalysis = async function(roleKey = null) {
+    window.runSkillGapScan = async function() {
         const select = document.getElementById('skillGapRoleSelect');
-        const selectedRole = roleKey || (select ? select.value : 'software-engineer');
+        const selectedRole = select ? select.value : 'software-engineer';
+        const roleText = select ? select.options[select.selectedIndex].text : 'Software Engineer';
 
-        // Initial setup of activeSkillGapSkills if empty
         if (activeSkillGapSkills.length === 0) {
             if (currentProfileSkills && currentProfileSkills.length > 0) {
                 activeSkillGapSkills = [...currentProfileSkills];
+                renderSkillGapCandidateChips();
             } else {
                 const saved = localStorage.getItem('candidate_profile');
                 if (saved) {
                     try {
                         const parsed = JSON.parse(saved);
-                        if (parsed.skills && Array.isArray(parsed.skills)) activeSkillGapSkills = [...parsed.skills];
+                        if (parsed.skills && Array.isArray(parsed.skills)) {
+                            activeSkillGapSkills = [...parsed.skills];
+                            renderSkillGapCandidateChips();
+                        }
                     } catch(e) {}
                 }
             }
         }
-        renderSkillGapCandidateChips();
+
+        const btn = document.getElementById('btnRunSkillScan');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> <span>Scanning Skills...</span>';
+        }
+
+        const barsList = document.getElementById('skillGapBarsList');
+        if (barsList) {
+            barsList.innerHTML = `
+                <div class="py-12 px-6 text-center space-y-3">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shadow-2xs">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </div>
+                    <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">Scanning Competencies...</div>
+                    <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-sm mx-auto">Evaluating profile skills against enterprise benchmarks for <strong>${escapeHtml(roleText)}</strong>...</p>
+                </div>
+            `;
+        }
+
+        const badgesGrid = document.getElementById('skillGapBadgesGrid');
+        if (badgesGrid) {
+            badgesGrid.innerHTML = `
+                <div class="py-12 px-6 text-center space-y-3">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-2xs">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </div>
+                    <div class="text-xs font-bold text-[#111111] dark:text-zinc-100">Evaluating Badges...</div>
+                    <p class="text-[11px] text-gray-500 dark:text-zinc-400 max-w-xs mx-auto">Calibrating earned achievements & unlock progression...</p>
+                </div>
+            `;
+        }
 
         try {
             const res = await fetch('/api/candidate/skill-gap', {
@@ -559,11 +670,31 @@
             const data = await res.json();
             if (!res.ok || !data.success) throw new Error(data.message || 'Failed to analyze skill gaps');
 
+            hasSkillGapScanned = true;
             renderSkillGapDashboard(data);
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-arrows-rotate mr-1"></i> <span>Re-Scan Benchmark</span>';
+            }
+
+            if (typeof window.showToast === 'function') {
+                window.showToast(`Skill benchmark & badge scan completed for ${data.roleTitle}!`, 'success');
+            }
         } catch (err) {
             console.error('Skill Gap Error:', err);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-radar mr-1"></i> <span>Scan Skills & Benchmark</span>';
+            }
+            if (typeof window.showToast === 'function') {
+                window.showToast('Failed to scan skill gaps: ' + err.message, 'error');
+            }
         }
     };
+
+    // Keep backwards compatible alias
+    window.loadSkillGapAnalysis = window.runSkillGapScan;
 
     function renderSkillGapDashboard(data) {
         // Overall Readiness Score
