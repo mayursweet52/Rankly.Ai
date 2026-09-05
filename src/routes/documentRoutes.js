@@ -7,9 +7,22 @@
 const express = require('express');
 const router = express.Router();
 const documentController = require('../controllers/documentController');
-const { isAuthenticated, requireHRMS, requireRole } = require('../middleware/auth');
-const { publicLimiter } = require('../middleware/rateLimit');
+const upload = require('../middleware/upload');
+const { optionalAuth, isAuthenticated, requireHRMS, requireRole } = require('../middleware/auth');
+const { publicLimiter, aiLimiter } = require('../middleware/rateLimit');
 
+// ---------------------------------------------------------
+// Internal HRMS Document Engine (Supabase + Local Ollama Nemotron)
+// ---------------------------------------------------------
+router.post('/internal/upload', optionalAuth, publicLimiter, upload.single('document'), documentController.uploadInternalDocument);
+router.post('/internal/process', optionalAuth, aiLimiter, documentController.processDocumentWithAi);
+router.get('/internal', optionalAuth, publicLimiter, documentController.listInternalDocuments);
+router.get('/internal/:id', optionalAuth, publicLimiter, documentController.getInternalDocumentById);
+router.delete('/internal/:id', optionalAuth, publicLimiter, documentController.deleteInternalDocument);
+
+// ---------------------------------------------------------
+// Core Company Document CRUD (Locked behind HRMS Auth)
+// ---------------------------------------------------------
 // GET all company documents (HRMS personnel only)
 router.get('/', isAuthenticated, requireHRMS, publicLimiter, documentController.listDocuments);
 

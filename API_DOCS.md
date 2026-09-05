@@ -129,9 +129,27 @@ print("Recommended Trainings:", trainings.data)
 | `GET`  | `/api/skills` | List all tracked technical skills in the marketplace. |
 | `GET`  | `/api/skills/recommendations` | Get AI-driven upskilling courses for employees. |
 
+### D. Internal HRMS Document Engine (Supabase + Local Ollama Nemotron)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/documents/internal/upload` | Upload & ingest internal corporate documents (PDF, DOCX, TXT) with automatic text extraction to Supabase `internal_documents`. |
+| `POST` | `/api/documents/internal/process` | Query document context with Local Ollama Nemotron model (`temperature: 0.1`) under strict internal HRMS domain rules. |
+| `GET`  | `/api/documents/internal` | List all ingested corporate documents from Supabase. |
+| `GET`  | `/api/documents/internal/:id` | Fetch single document payload and extracted text from Supabase. |
+| `DELETE`| `/api/documents/internal/:id` | Delete an internal document from Supabase. |
+
+#### Sample Document AI Processing Request (`POST /api/documents/internal/process`):
+```json
+{
+  "documentId": 1,
+  "promptText": "Summarize the core PTO allowance, hybrid working hours, and medical leave guidelines."
+}
+```
+
 ---
 
 ## 🏥 4. Health & Status Checks
 
 - **Server Health:** `GET /api/health` -> `{"status": "HEALTHY", "issuesFound": 0}`
 - **Supabase Connectivity:** `GET /api/supabase/status` -> Live count and verification.
+

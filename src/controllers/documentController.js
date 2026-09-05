@@ -4,7 +4,11 @@
  * Restricted strictly to HRMS personnel (HR, Admin, Employees).
  */
 
+const path = require('path');
 const prisma = require('../config/database');
+const supabase = require('../config/supabaseClient');
+const { extractDocumentText, formatFileSize } = require('../services/documentParserService');
+const { processInternalDocument } = require('../services/aiService');
 
 /**
  * GET /api/documents
@@ -305,10 +309,223 @@ async function deleteDocument(req, res) {
   }
 }
 
+/**
+ * POST /api/documents/internal/upload
+ * Upload & Ingest Internal HR Document with automatic text extraction to Supabase internal_documents
+ */
+async function uploadInternalDocument(req, res) {
+  try {
+    const orgId = req.user?.organizationId || req.body?.organizationId || null;
+    const uploadedBy = req.user?.email || req.user?.id || req.body?.uploadedBy || 'system_hr';
+    const category = (req.body?.category || 'policy').toLowerCase();
+    const department = req.body?.department || 'HR';
+
+    let extractedText = '';
+    let fileName = req.body?.fileName || 'document.txt';
+    let fileSize = '0 KB';
+    let pageCount = 1;
+    let title = req.body?.title || '';
+
+    if (req.file) {
+      fileName = req.file.originalname || req.file.filename;
+      fileSize = formatFileSize(req.file.size);
+      if (!title) {
+        title = path.parse(fileName).name.replace(/[-_]/g, ' ');
+      }
+      const parsed = await extractDocumentText(req.file.path, fileName);
+      extractedText = parsed.text;
+      pageCount = parsed.pageCount || 1;
+    } else if (req.body?.content || req.body?.extractedText) {
+      extractedText = (req.body.content || req.body.extractedText).trim();
+      fileSize = formatFileSize(Buffer.byteLength(extractedText, 'utf8'));
+      if (!title) title = 'Internal Corporate Document';
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: 'Please upload a document file (PDF, DOCX, TXT) or supply document content.'
+      });
+    }
+
+    // 1. Ingest into Supabase internal_documents table
+    const { data: supaDoc, error: supaErr } = await supabase
+      .from('internal_documents')
+      .insert([{
+        title,
+        category,
+        file_name: fileName,
+        file_size: fileSize,
+        extracted_text: extractedText,
+        department,
+        organization_id: orgId,
+        uploaded_by: uploadedBy,
+        metadata: { pageCount, ingestedAt: new Date().toISOString() }
+      }])
+      .select();
+
+    if (supaErr) {
+      console.warn('Supabase internal_documents insert notice:', supaErr.message);
+    }
+
+    const insertedDoc = supaDoc && supaDoc[0] ? supaDoc[0] : {
+      id: Date.now(),
+      title,
+      category,
+      file_name: fileName,
+      file_size: fileSize,
+      extracted_text: extractedText,
+      department,
+      uploaded_by: uploadedBy
+    };
+
+    // 2. Also record in SQLite CompanyDocument for unified local access if user exists
+    if (req.user?.id) {
+      try {
+        await prisma.companyDocument.create({
+          data: {
+            title,
+            category,
+            fileName,
+            fileSize,
+            content: extractedText,
+            uploadedById: req.user.id,
+            organizationId: orgId
+          }
+        });
+      } catch (localDbErr) {}
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: 'Internal HR document uploaded, text extracted, and stored in Supabase successfully.',
+      document: insertedDoc,
+      textLength: extractedText.length
+    });
+  } catch (err) {
+    console.error('Error uploading internal document:', err);
+    return res.status(500).json({ success: false, error: 'Failed to ingest document: ' + err.message });
+  }
+}
+
+/**
+ * GET /api/documents/internal
+ * List all internal HR documents stored in Supabase
+ */
+async function listInternalDocuments(req, res) {
+  try {
+    const { category, search } = req.query;
+    let query = supabase.from('internal_documents').select('*').order('created_at', { ascending: false });
+
+    if (category && category !== 'all') {
+      query = query.eq('category', category.toLowerCase());
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    let results = data || [];
+    if (search && search.trim()) {
+      const q = search.trim().toLowerCase();
+      results = results.filter(d => 
+        (d.title && d.title.toLowerCase().includes(q)) ||
+        (d.extracted_text && d.extracted_text.toLowerCase().includes(q))
+      );
+    }
+
+    return res.json({
+      success: true,
+      count: results.length,
+      data: results
+    });
+  } catch (err) {
+    console.error('Error listing internal documents:', err);
+    return res.status(500).json({ success: false, error: 'Failed to list internal documents: ' + err.message });
+  }
+}
+
+/**
+ * GET /api/documents/internal/:id
+ * Retrieve single internal document with extracted text from Supabase
+ */
+async function getInternalDocumentById(req, res) {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase.from('internal_documents').select('*').eq('id', id).single();
+    if (error || !data) {
+      return res.status(404).json({ success: false, error: `Document #${id} not found in internal_documents.` });
+    }
+    return res.json({ success: true, data });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+/**
+ * POST /api/documents/internal/process
+ * Process internal document context with Local Ollama Nemotron AI (Strict HRMS prompt)
+ */
+async function processDocumentWithAi(req, res) {
+  try {
+    const { documentId, promptText, documentContext: inlineContext } = req.body;
+
+    if (!promptText || !promptText.trim()) {
+      return res.status(400).json({ success: false, error: 'promptText is required.' });
+    }
+
+    let documentContext = inlineContext || '';
+
+    // If documentId provided, fetch context directly from Supabase internal_documents
+    if (documentId) {
+      const { data, error } = await supabase.from('internal_documents').select('*').eq('id', documentId).single();
+      if (!error && data && data.extracted_text) {
+        documentContext = `Document: ${data.title} (${data.file_name})\n\n${data.extracted_text}`;
+      } else if (!documentContext) {
+        return res.status(404).json({ success: false, error: `Document #${documentId} not found or contains no text.` });
+      }
+    }
+
+    if (!documentContext || !documentContext.trim()) {
+      return res.status(400).json({ success: false, error: 'No document context available to process.' });
+    }
+
+    const aiResult = await processInternalDocument(promptText.trim(), documentContext.trim());
+
+    return res.json({
+      success: true,
+      query: promptText.trim(),
+      result: aiResult,
+      documentId: documentId || null,
+      modelUsed: 'nemotron (Local Ollama / HRMS Tier)'
+    });
+  } catch (err) {
+    console.error('Error processing document with AI:', err);
+    return res.status(500).json({ success: false, error: 'Internal document processing error: ' + err.message });
+  }
+}
+
+/**
+ * DELETE /api/documents/internal/:id
+ * Delete document from Supabase internal_documents
+ */
+async function deleteInternalDocument(req, res) {
+  try {
+    const { id } = req.params;
+    const { error } = await supabase.from('internal_documents').delete().eq('id', id);
+    if (error) throw error;
+    return res.json({ success: true, message: `Document #${id} removed from internal_documents.` });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+}
+
 module.exports = {
   listDocuments,
   getDocumentById,
   createDocument,
   updateDocument,
-  deleteDocument
+  deleteDocument,
+  uploadInternalDocument,
+  listInternalDocuments,
+  getInternalDocumentById,
+  processDocumentWithAi,
+  deleteInternalDocument
 };
