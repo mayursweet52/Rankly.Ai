@@ -61,11 +61,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
-    <!--  Ultra-Modern Physics & 3D Interactive Engines (Dark Mode Enhanced) -->
+    <!-- Performance & Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+
     
     <style>
         /* ─── RANKLY.AI MODERN PRECISION STYLING ─── */
@@ -7463,10 +7462,6 @@ body.dark-theme .resume-tip-box,
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="command-a-badge text-[11px] tracking-wider px-2.5 py-1 rounded">111B PARAMETERS</span>
-                                    <button type="button" id="chatSoundToggleBtn" onclick="toggleChatSound()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all items-center gap-1.5" title="Toggle Sound">
-                                        <i class="fas fa-volume-high text-[10px]" id="chatSoundIcon"></i>
-                                        <span id="chatSoundLabel">Sound ON</span>
-                                    </button>
                                     <button type="button" onclick="clearChatMessages()" class="hidden md:inline-flex command-a-pill px-2.5 py-1 rounded-md text-[11px] font-semibold hover:text-red-500 transition-all items-center gap-1.5" title="Reset Chat" aria-label="Reset chat history">
                                         <i class="fas fa-rotate-left text-[10px]"></i>
                                     </button>
@@ -12062,102 +12057,11 @@ body.dark-theme .resume-tip-box,
 
 
 
-            // ─── HIGH-TECH SYNTHESIZED CHAT SOUND ENGINE (use-sound Equivalent) ───
-            let chatSoundEnabled = localStorage.getItem('rankly_chat_sound') !== 'false';
+            // Silent Lightweight Audio Handlers (Zero-CPU Overhead)
+            window.playChatSendSound = function() {};
+            window.playChatReceiveSound = function() {};
+            window.toggleChatSound = function() {};
 
-            function getAudioContext() {
-                try {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (!AudioCtx) return null;
-                    if (!window._ranklyAudioCtx) {
-                        window._ranklyAudioCtx = new AudioCtx();
-                    }
-                    if (window._ranklyAudioCtx.state === 'suspended') {
-                        window._ranklyAudioCtx.resume();
-                    }
-                    return window._ranklyAudioCtx;
-                } catch (e) {
-                    return null;
-                }
-            }
-
-            window.playChatSendSound = function() {
-                if (!chatSoundEnabled) return;
-                const ctx = getAudioContext();
-                if (!ctx) return;
-
-                const now = ctx.currentTime;
-                // Dual-tone high-tech pop chime
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                // Frequency glide (620Hz -> 1080Hz for futuristic pop chime)
-                osc.frequency.setValueAtTime(620, now);
-                osc.frequency.exponentialRampToValueAtTime(1080, now + 0.08);
-
-                // Smooth attack and release envelope
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.15);
-            };
-
-            window.playChatReceiveSound = function() {
-                if (!chatSoundEnabled) return;
-                const ctx = getAudioContext();
-                if (!ctx) return;
-
-                const now = ctx.currentTime;
-                // Harmonic 2-tone pleasant arrival ding
-                const osc1 = ctx.createOscillator();
-                const osc2 = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc1.type = 'triangle';
-                osc2.type = 'sine';
-
-                osc1.frequency.setValueAtTime(587.33, now); // D5
-                osc2.frequency.setValueAtTime(880, now + 0.04); // A5
-
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.exponentialRampToValueAtTime(0.18, now + 0.03);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-
-                osc1.connect(gain);
-                osc2.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc1.start(now);
-                osc2.start(now + 0.04);
-                osc1.stop(now + 0.23);
-                osc2.stop(now + 0.23);
-            };
-
-            window.toggleChatSound = function() {
-                chatSoundEnabled = !chatSoundEnabled;
-                localStorage.setItem('rankly_chat_sound', chatSoundEnabled ? 'true' : 'false');
-                const btn = document.getElementById('chatSoundToggleBtn');
-                const icon = document.getElementById('chatSoundIcon');
-                const label = document.getElementById('chatSoundLabel');
-                if (chatSoundEnabled) {
-                    if (btn) btn.classList.add('active');
-                    if (icon) icon.className = 'fas fa-volume-high';
-                    if (label) label.textContent = 'Sound ON';
-                    playChatSendSound();
-                    showToast('Chat Audio Chimes Enabled', 'info');
-                } else {
-                    if (btn) btn.classList.remove('active');
-                    if (icon) icon.className = 'fas fa-volume-xmark';
-                    if (label) label.textContent = 'Mute';
-                    showToast('Chat Audio Muted', 'info');
-                }
-            };
 
             // ─── SMART @MENTION POPUP & AUTOCOMPLETE ENGINE ───
             let selectedMentionIndex = 0;

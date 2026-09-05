@@ -36,9 +36,19 @@ router.put('/profile', optionalAuth, apiLimiter, candidateFeatureController.upda
 router.get('/jobs', optionalAuth, apiLimiter, candidateFeatureController.getJobListingsHandler);
 router.post('/jobs/apply', optionalAuth, apiLimiter, candidateFeatureController.applyToJobHandler);
 
+const pipelineController = require('../controllers/pipelineController');
+
 // 8. Candidate CV Upload & Application Form Submission
 router.post('/upload-application', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
 router.post('/upload-resume-form', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
 
+// 9. AI-Sorted Candidate Queue & Cheat Sheet Aliases
+router.get('/ai-queue', optionalAuth, pipelineController.getAiCandidateQueue);
+router.get('/audit-logs', optionalAuth, pipelineController.getCandidateAuditLogs);
+router.get('/:id/cheat-sheet', optionalAuth, pipelineController.getCandidateCheatSheet);
+router.post('/:id/action', optionalAuth, pipelineController.performCandidateAction);
+router.post('/action', optionalAuth, pipelineController.performCandidateAction);
+
 module.exports = router;
+
 
