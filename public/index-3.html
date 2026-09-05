@@ -11434,21 +11434,20 @@ body.dark-theme .resume-tip-box,
 
             function setupDashboardForRole(role) {
                 const r = (role || 'normal').toLowerCase();
-                const isAdmin = ['admin', 'administrator'].includes(r);
-                const isHr = ['hr', 'human_resources'].includes(r);
+                const isAdmin = ['admin', 'administrator', 'super_admin'].includes(r);
+                const isHr = ['hr', 'human_resources', 'hr_manager'].includes(r);
                 const isHM = ['hiring', 'hiring_manager', 'hm'].includes(r);
-                const isHrAdmin = isAdmin || isHr || isHM;
-                const isNormalEmployee = ['employee'].includes(r) || (window.currentUser && window.currentUser.accountType === 'employee' && !isHrAdmin);
+                const isNormalEmployee = ['employee'].includes(r) || (window.currentUser && window.currentUser.accountType === 'employee' && !isAdmin && !isHr && !isHM);
 
                 const portalBadge = document.getElementById('portalBadge');
 
-                if (isHrAdmin) {
+                if (isAdmin) {
                     if (portalBadge) {
-                        portalBadge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1 text-emerald-500"></i> HR & Admin Recruitment Portal (Active)';
-                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+                        portalBadge.innerHTML = '<i class="fa-solid fa-crown mr-1 text-amber-500"></i> Executive Administrator Portal';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30';
                     }
                     currentTabsList = [
-                        { id: 'dashboard', label: 'HRMS Overview', target: 'dashboard' },
+                        { id: 'dashboard', label: 'Executive HRMS', target: 'dashboard' },
                         { id: 'ai-candidates', label: 'AI Candidate Queue', target: 'ai-candidates' },
                         { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
                         { id: 'hr-ai-intelligence', label: 'AI Talent & Policy Hub', target: 'hr-ai-intelligence' },
@@ -11456,8 +11455,40 @@ body.dark-theme .resume-tip-box,
                         { id: 'attendance', label: 'Attendance & Leaves', target: 'attendance' },
                         { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'analytics', label: 'Analytics Hub', target: 'analytics' },
-                        { id: 'grievance', label: isAdmin ? 'Admin Grievance Inbox' : 'Confidential Grievance', target: 'grievance' },
+                        { id: 'grievance', label: 'Admin Grievance Inbox', target: 'grievance' },
                         { id: 'health', label: 'System Health', target: 'health' },
+                        { id: 'settings', label: 'Settings', target: 'settings' },
+                        { id: 'feedback', label: 'Feedback', target: 'feedback' }
+                    ];
+                } else if (isHr) {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-user-tie mr-1 text-emerald-500"></i> HR Recruitment Workspace';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+                    }
+                    currentTabsList = [
+                        { id: 'dashboard', label: 'HR Overview', target: 'dashboard' },
+                        { id: 'ai-candidates', label: 'AI Candidate Queue', target: 'ai-candidates' },
+                        { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
+                        { id: 'hr-ai-intelligence', label: 'AI Talent & Policy Hub', target: 'hr-ai-intelligence' },
+                        { id: 'employees', label: 'Employee Directory', target: 'employees' },
+                        { id: 'attendance', label: 'Attendance & Leaves', target: 'attendance' },
+                        { id: 'documents', label: 'Company Documents', target: 'documents' },
+                        { id: 'analytics', label: 'Recruitment Analytics', target: 'analytics' },
+                        { id: 'grievance', label: 'Confidential Grievance', target: 'grievance' },
+                        { id: 'settings', label: 'Settings', target: 'settings' },
+                        { id: 'feedback', label: 'Feedback', target: 'feedback' }
+                    ];
+                } else if (isHM) {
+                    if (portalBadge) {
+                        portalBadge.innerHTML = '<i class="fa-solid fa-users-gear mr-1 text-sky-500"></i> Hiring Manager Portal';
+                        portalBadge.className = 'ml-2 hidden sm:inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-semibold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30';
+                    }
+                    currentTabsList = [
+                        { id: 'dashboard', label: 'HM Overview', target: 'dashboard' },
+                        { id: 'ai-candidates', label: 'AI Candidate Queue', target: 'ai-candidates' },
+                        { id: 'pipeline', label: 'Talent Pipeline', target: 'pipeline' },
+                        { id: 'attendance', label: 'Team Attendance', target: 'attendance' },
+                        { id: 'documents', label: 'Company Documents', target: 'documents' },
                         { id: 'settings', label: 'Settings', target: 'settings' },
                         { id: 'feedback', label: 'Feedback', target: 'feedback' }
                     ];
@@ -11504,12 +11535,17 @@ body.dark-theme .resume-tip-box,
                 }
 
                 // Render Sidebar Dock Items (Dark Mode)
-                initSidebarDock();
-                updateSidebarMode();
+                if (typeof initSidebarDock === 'function') initSidebarDock();
+                if (typeof updateSidebarMode === 'function') updateSidebarMode();
 
-                // Show Admin Provisioning & Referral Code ONLY to Admin
-                document.querySelectorAll('.admin-only-card').forEach(card => {
-                    card.style.display = isAdmin ? 'block' : 'none';
+                // Clean UI: Strictly show Admin-only cards and controls only to Admin
+                document.querySelectorAll('.admin-only-card, .admin-only, [data-role="admin-only"]').forEach(card => {
+                    card.style.display = isAdmin ? '' : 'none';
+                });
+
+                // Clean UI: Strictly show HR-only cards only to HR and Admin
+                document.querySelectorAll('.hr-only, [data-role="hr-only"]').forEach(card => {
+                    card.style.display = (isAdmin || isHr) ? '' : 'none';
                 });
             }
             window.setupDashboardForRole = setupDashboardForRole;
