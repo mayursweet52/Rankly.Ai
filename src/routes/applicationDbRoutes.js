@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const appService = require('../services/applicationDbService');
 const { isAuthenticated } = require('../middleware/auth');
+const realtimeNotificationService = require('../services/realtimeNotificationService');
 
 // -----------------------------------------------------------------------------
 // Applications CRUD & Lifecycle
@@ -43,6 +44,14 @@ router.post('/', async (req, res) => {
       actorEmail,
       actorId
     });
+
+    // Trigger Supabase Realtime Broadcast for live HRMS notification
+    realtimeNotificationService.notifyCandidateApplied({
+      name: application.candidate?.name || actorEmail || 'Candidate',
+      email: actorEmail,
+      jobTitle,
+      score: matchScore || 0
+    }).catch(e => console.warn('Candidate applied realtime notice warning:', e.message));
 
     return res.status(201).json({
       success: true,

@@ -371,4 +371,162 @@ router.get('/employees', optionalAuth, async (req, res) => {
   }
 });
 
+/**
+ * GET /api/export/attendance
+ * 1-Click Excel (.xlsx), CSV, and PDF Attendance Export using ExcelJS
+ */
+router.get('/attendance', optionalAuth, async (req, res) => {
+  try {
+    const format = (req.query.format || 'xlsx').toLowerCase().trim();
+    const dateFilter = req.query.date || null;
+    const empFilter = req.query.employee_id || null;
+    const statusFilter = req.query.status || null;
+
+    let records = [];
+    try {
+      let q = `
+        SELECT a.*, e.full_name, e.department, e.role as job_title, e.email
+        FROM attendance a
+        LEFT JOIN employees e ON a.employee_id = e.employee_id
+      `;
+      const conds = [];
+      const params = [];
+
+      if (dateFilter) {
+        params.push(dateFilter);
+        conds.push(`a.date = $${params.length}`);
+      }
+      if (empFilter) {
+        params.push(parseInt(empFilter, 10));
+        conds.push(`a.employee_id = $${params.length}`);
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        params.push(statusFilter);
+        conds.push(`a.status = $${params.length}`);
+      }
+
+      if (conds.length > 0) {
+        q += ' WHERE ' + conds.join(' AND ');
+      }
+      q += ' ORDER BY a.date DESC, a.check_in DESC LIMIT 500;';
+
+      const pgRes = await pgDb.query(q, params);
+      records = pgRes.rows || [];
+    } catch (e) {
+      console.warn('PG attendance export fallback:', e.message);
+    }
+
+    const rows = records.map(r => ({
+      code: `EMP-${String(r.employee_id).padStart(3, '0')}`,
+      fullName: r.full_name || 'Staff Member',
+      department: r.department || 'Operations',
+      jobTitle: r.job_title || 'Specialist',
+      date: r.date ? new Date(r.date).toISOString().split('T')[0] : 'N/A',
+      checkIn: r.check_in ? new Date(r.check_in).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--',
+      checkOut: r.check_out ? new Date(r.check_out).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--',
+      workHours: r.work_hours ? `${parseFloat(r.work_hours).toFixed(1)} hrs` : (r.check_out ? '8.0 hrs' : 'In Progress'),
+      status: (r.status || 'present').toUpperCase(),
+      notes: (r.notes || 'Routine check-in').replace(/[\r\n]+/g, ' ')
+    }));
+
+    if (format === 'pdf') {
+      const pdfBytes = await generateSimplePdfReport({
+        title: 'Workforce Daily & Monthly Attendance Report',
+        subtitle: `Total Attendance Logs: ${rows.length} records`,
+        columns: [
+          { key: 'code', label: 'Emp ID' },
+          { key: 'fullName', label: 'Employee Name' },
+          { key: 'department', label: 'Department' },
+          { key: 'date', label: 'Shift Date' },
+          { key: 'checkIn', label: 'Punch In' },
+          { key: 'checkOut', label: 'Punch Out' },
+          { key: 'workHours', label: 'Hours' },
+          { key: 'status', label: 'Status' }
+        ],
+        rows
+      });
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="Rankly_Attendance_Report.pdf"');
+      return res.send(Buffer.from(pdfBytes));
+    }
+
+    if (format === 'csv') {
+      const headers = ['Employee ID', 'Full Name', 'Department', 'Job Title', 'Date', 'Punch In', 'Punch Out', 'Work Hours', 'Status', 'Notes'];
+      const csvLines = [headers.join(',')];
+      rows.forEach(r => {
+        csvLines.push([
+          `"${r.code}"`,
+          `"${r.fullName.replace(/"/g, '""')}"`,
+          `"${r.department.replace(/"/g, '""')}"`,
+          `"${r.jobTitle.replace(/"/g, '""')}"`,
+          `"${r.date}"`,
+          `"${r.checkIn}"`,
+          `"${r.checkOut}"`,
+          `"${r.workHours}"`,
+          `"${r.status}"`,
+          `"${r.notes.replace(/"/g, '""')}"`
+        ].join(','));
+      });
+      const csvContent = '\uFEFF' + csvLines.join('\n');
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', 'attachment; filename="Rankly_Attendance_Export.csv"');
+      return res.send(csvContent);
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'Rankly.ai HRMS Intelligence';
+    workbook.created = new Date();
+
+    const sheet = workbook.addWorksheet('Attendance Logs', {
+      views: [{ state: 'frozen', ySplit: 1 }]
+    });
+
+    sheet.columns = [
+      { header: 'Employee ID', key: 'code', width: 16 },
+      { header: 'Full Name', key: 'fullName', width: 24 },
+      { header: 'Department', key: 'department', width: 20 },
+      { header: 'Job Title', key: 'jobTitle', width: 22 },
+      { header: 'Date', key: 'date', width: 14 },
+      { header: 'Punch In', key: 'checkIn', width: 15 },
+      { header: 'Punch Out', key: 'checkOut', width: 15 },
+      { header: 'Work Hours', key: 'workHours', width: 14 },
+      { header: 'Status', key: 'status', width: 14 },
+      { header: 'Notes & Location', key: 'notes', width: 28 }
+    ];
+
+    const headerRow = sheet.getRow(1);
+    headerRow.height = 28;
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+    headerRow.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF183B33' }
+    };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    rows.forEach((r, idx) => {
+      const row = sheet.addRow(r);
+      row.height = 22;
+      row.alignment = { vertical: 'middle' };
+      if (idx % 2 === 1) {
+        row.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFF9FAF8' }
+        };
+      }
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename="Rankly_Attendance_Log.xlsx"');
+
+    await workbook.xlsx.write(res);
+    return res.end();
+  } catch (err) {
+    console.error('Attendance Export Error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to export attendance: ' + err.message });
+  }
+});
+
 module.exports = router;

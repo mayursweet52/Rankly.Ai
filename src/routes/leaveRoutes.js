@@ -3,6 +3,40 @@ const router = express.Router();
 const db = require('../config/pgDatabase');
 const { optionalAuth, isAuthenticated } = require('../middleware/auth');
 const { authorizeRoles } = require('../middleware/rbac');
+const realtimeNotificationService = require('../services/realtimeNotificationService');
+
+/**
+ * Smart Leave Calculator (Weekend Exclusion Logic)
+ * Excludes Saturdays (Day 6) and Sundays (Day 0) automatically.
+ * E.g., Thursday to Tuesday -> Thu, Fri, Mon, Tue = 4 working days (Sat & Sun excluded).
+ */
+function calculateWorkingDays(startDateStr, endDateStr) {
+  if (!startDateStr || !endDateStr) return 0;
+  
+  const start = new Date(startDateStr);
+  const end = new Date(endDateStr);
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
+  if (start > end) return 0;
+
+  let count = 0;
+  let cur = new Date(start);
+  
+  // Set to midnight UTC for consistent day step
+  cur.setHours(0, 0, 0, 0);
+  const endMid = new Date(end);
+  endMid.setHours(0, 0, 0, 0);
+
+  while (cur <= endMid) {
+    const dayOfWeek = cur.getDay(); // 0 = Sunday, 6 = Saturday
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      count++;
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  return count;
+}
 
 async function resolveEmployeeId(req) {
   if (req.user && req.user.employeeId) return parseInt(req.user.employeeId, 10);
@@ -20,6 +54,37 @@ async function resolveEmployeeId(req) {
   } catch(e) {}
   return 101;
 }
+
+/**
+ * GET /api/leaves/calculate-days
+ * Smart Leave Calculator API: Preview working days excluding weekends
+ */
+router.get('/calculate-days', optionalAuth, (req, res) => {
+  try {
+    const { start_date, end_date } = req.query;
+    if (!start_date || !end_date) {
+      return res.status(400).json({ success: false, message: 'start_date and end_date query parameters are required.' });
+    }
+
+    const workingDays = calculateWorkingDays(start_date, end_date);
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+    const totalCalendarDays = Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    const weekendDaysExcluded = Math.max(0, totalCalendarDays - workingDays);
+
+    return res.json({
+      success: true,
+      startDate: start_date,
+      endDate: end_date,
+      workingDays,
+      totalCalendarDays: Math.max(0, totalCalendarDays),
+      weekendDaysExcluded,
+      logic: 'Excludes Saturdays and Sundays automatically'
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 /**
  * GET /api/leaves/summary
@@ -56,7 +121,7 @@ router.get('/summary', optionalAuth, async (req, res) => {
 
 /**
  * POST /api/leaves/apply
- * Employee applies for leave
+ * Employee applies for leave with Smart Weekend Exclusion
  */
 router.post('/apply', optionalAuth, async (req, res) => {
   try {
@@ -70,6 +135,10 @@ router.post('/apply', optionalAuth, async (req, res) => {
       });
     }
 
+    // Smart Weekend Exclusion: calculate actual working days
+    const computedWorkingDays = calculateWorkingDays(start_date, end_date);
+    const finalDaysCount = computedWorkingDays > 0 ? computedWorkingDays : (parseFloat(days_count) || 1.0);
+
     const query = `
       INSERT INTO leave_requests (
         employee_id, leave_type, start_date, end_date, days_count, reason, status, created_at, updated_at
@@ -82,14 +151,30 @@ router.post('/apply', optionalAuth, async (req, res) => {
       leave_type || 'casual',
       start_date,
       end_date,
-      days_count || 1.0,
+      finalDaysCount,
       reason
     ]);
 
+    const createdLeave = result.rows[0];
+
+    // Fetch employee name for live Supabase notification
+    let empName = 'Staff Member';
+    try {
+      const empRes = await db.query('SELECT full_name FROM employees WHERE employee_id = $1 LIMIT 1;', [employeeId]);
+      if (empRes.rows.length > 0) empName = empRes.rows[0].full_name;
+    } catch(e) {}
+
+    // Trigger Supabase Realtime Notification
+    realtimeNotificationService.notifyLeaveRequested({
+      ...createdLeave,
+      employeeName: empName
+    }).catch(e => console.warn('Realtime notify failed:', e.message));
+
     return res.status(201).json({
       success: true,
-      message: '✅ Leave request submitted successfully.',
-      data: result.rows[0]
+      message: `✅ Leave request submitted successfully (${finalDaysCount} working day(s) counted, weekends excluded).`,
+      data: createdLeave,
+      workingDays: finalDaysCount
     });
   } catch (err) {
     console.error('Leave apply error:', err);
@@ -183,10 +268,16 @@ router.patch('/:id/review', isAuthenticated, authorizeRoles('admin', 'hr', 'hr_m
       return res.status(404).json({ success: false, message: 'Leave request not found.' });
     }
 
+    const updatedLeave = result.rows[0];
+
+    // Trigger Supabase Realtime Event
+    realtimeNotificationService.notifyLeaveReviewed(updatedLeave)
+      .catch(e => console.warn('Realtime notify failed:', e.message));
+
     return res.json({
       success: true,
       message: `✅ Leave request ${status} successfully.`,
-      data: result.rows[0]
+      data: updatedLeave
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });

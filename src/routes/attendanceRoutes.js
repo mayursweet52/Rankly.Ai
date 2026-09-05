@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../config/pgDatabase');
 const { optionalAuth, isAuthenticated } = require('../middleware/auth');
 const { authorizeRoles } = require('../middleware/rbac');
+const realtimeNotificationService = require('../services/realtimeNotificationService');
 
 async function resolveEmployeeId(req) {
   if (req.user && req.user.employeeId) return parseInt(req.user.employeeId, 10);
@@ -89,10 +90,18 @@ router.post('/check-in', optionalAuth, async (req, res) => {
     `;
 
     const result = await db.query(query, [employeeId, notes || 'Live Shift Check-in', ipAddress]);
+    const checkInData = result.rows[0];
+
+    realtimeNotificationService.notifyAttendanceEvent({
+      employee_id: employeeId,
+      type: 'check_in',
+      data: checkInData
+    }).catch(e => console.warn('Attendance notice warning:', e.message));
+
     return res.status(201).json({
       success: true,
       message: '✅ Punch In recorded successfully.',
-      data: result.rows[0]
+      data: checkInData
     });
   } catch (err) {
     console.error('Check-in error:', err);
@@ -126,11 +135,18 @@ router.post('/check-out', optionalAuth, async (req, res) => {
     `;
 
     const result = await db.query(query, [employeeId, notes || 'Shift Checkout', ipAddress]);
+    const checkOutData = result.rows[0];
+
+    realtimeNotificationService.notifyAttendanceEvent({
+      employee_id: employeeId,
+      type: 'check_out',
+      data: checkOutData
+    }).catch(e => console.warn('Attendance checkout notice warning:', e.message));
 
     return res.json({
       success: true,
       message: '✅ Punch Out recorded successfully.',
-      data: result.rows[0]
+      data: checkOutData
     });
   } catch (err) {
     console.error('Check-out error:', err);
