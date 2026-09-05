@@ -9994,9 +9994,19 @@ body.dark-theme .resume-tip-box,
             }
             window.enableCompanyProfileFields = enableCompanyProfileFields;
 
+            let _lastToastMsg = '';
+            let _lastToastTime = 0;
+
             function showToast(message, type = 'info') {
                 const container = document.getElementById('toast-container');
                 if (!container || !message) return;
+
+                const now = Date.now();
+                if (message === _lastToastMsg && (now - _lastToastTime) < 3000) {
+                    return;
+                }
+                _lastToastMsg = message;
+                _lastToastTime = now;
 
                 function dismissToast(el) {
                     if (!el || el.dataset.dismissing === 'true') return;
@@ -10960,13 +10970,27 @@ body.dark-theme .resume-tip-box,
                     }, 50);
                 }
 
-                const activeUser = window.currentUser || currentUser;
+                let activeUser = window.currentUser || currentUser;
+                if (!activeUser) {
+                    try {
+                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('user');
+                        if (stored) {
+                            activeUser = JSON.parse(stored);
+                            currentUser = activeUser;
+                            window.currentUser = activeUser;
+                        }
+                    } catch(e) {}
+                }
+
                 const userRole = (activeUser ? (activeUser.role || 'normal') : 'normal').toLowerCase();
-                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || (activeUser && activeUser.accountType === 'employee');
+                const isEmp = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes(userRole) || 
+                              (activeUser && (activeUser.accountType === 'employee' || activeUser.isEmployee));
                 
                 const hrmsOnlyTabs = ['dashboard', 'hr-ai-intelligence', 'employees', 'attendance', 'documents', 'pipeline', 'analytics', 'health', 'grievance'];
                 if (!isEmp && hrmsOnlyTabs.includes(tabId)) {
-                    showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
+                    if (activeUser && (activeUser.email || activeUser.username)) {
+                        showToast('Access denied: Internal HRMS is strictly restricted to company HR and Admin personnel.', 'warning');
+                    }
                     tabId = 'candidate-profile';
                 }
 
@@ -11039,25 +11063,40 @@ body.dark-theme .resume-tip-box,
             window.switchTab = switchTab;
 
             function updateDashboard() {
-                if (!currentUser) return;
+                let activeUser = currentUser || window.currentUser;
+                if (!activeUser) {
+                    try {
+                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('user');
+                        if (stored) {
+                            activeUser = JSON.parse(stored);
+                            currentUser = activeUser;
+                            window.currentUser = activeUser;
+                        }
+                    } catch(e) {}
+                }
+                if (!activeUser) return;
+                currentUser = activeUser;
+                window.currentUser = activeUser;
+
                 const nameEl = document.getElementById('dashUserName');
                 const welcomeNameEl = document.getElementById('welcomeUserName');
                 const avatarEl = document.getElementById('dashAvatar');
                 const roleBadge = document.getElementById('dashRoleBadge');
 
-                const name = currentUser.fname ? `${currentUser.fname} ${currentUser.lname || ''}`.trim() : (currentUser.username || 'Google User');
+                const name = activeUser.fname ? `${activeUser.fname} ${activeUser.lname || ''}`.trim() : (activeUser.username || 'Google User');
                 if (nameEl) nameEl.textContent = name;
-                if (welcomeNameEl) welcomeNameEl.textContent = (currentUser.fname || currentUser.username || 'mayur').toLowerCase();
-                if (avatarEl) avatarEl.textContent = (currentUser.fname ? currentUser.fname[0] : (currentUser.username ? currentUser.username[0] : 'G')).toUpperCase();
+                if (welcomeNameEl) welcomeNameEl.textContent = (activeUser.fname || activeUser.username || 'user').toLowerCase();
+                if (avatarEl) avatarEl.textContent = (activeUser.fname ? activeUser.fname[0] : (activeUser.username ? activeUser.username[0] : 'G')).toUpperCase();
 
                 if (roleBadge) {
-                    roleBadge.textContent = (currentUser.role || 'NORMAL').toUpperCase();
+                    roleBadge.textContent = (activeUser.role || 'NORMAL').toUpperCase();
                     roleBadge.style.display = 'inline-block';
                 }
 
                 const adminRes = document.getElementById('adminResumeList');
                 const adminQuick = document.getElementById('adminQuickCreate');
-                if (currentUser.role === 'admin' || currentUser.role === 'hr') {
+                const roleLower = (activeUser.role || '').toLowerCase();
+                if (roleLower === 'admin' || roleLower === 'hr' || roleLower === 'administrator' || activeUser.accountType === 'employee') {
                     if (adminRes) adminRes.style.display = 'block';
                     if (adminQuick) adminQuick.style.display = 'block';
                 } else {
@@ -11177,24 +11216,44 @@ body.dark-theme .resume-tip-box,
                 }
             }
 
-            function loginUser() {
-                window.currentUser = currentUser;
-                if (currentUser && currentUser.isEmailVerified === false) {
+            function loginUser(userObj) {
+                if (userObj) {
+                    currentUser = userObj;
+                    window.currentUser = userObj;
+                } else if (window.currentUser && !currentUser) {
+                    currentUser = window.currentUser;
+                } else if (currentUser && !window.currentUser) {
+                    window.currentUser = currentUser;
+                } else if (!currentUser && !window.currentUser) {
+                    try {
+                        const saved = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('user');
+                        if (saved) {
+                            currentUser = JSON.parse(saved);
+                            window.currentUser = currentUser;
+                        }
+                    } catch(e) {}
+                }
+
+                const activeUser = currentUser || window.currentUser;
+                if (activeUser && activeUser.isEmailVerified === false) {
                     showToast('Please verify your email via the link sent to your Gmail inbox first.', 'warning');
                     if (typeof window.showEmailVerificationNotice === 'function') {
-                        window.showEmailVerificationNotice(currentUser.email);
+                        window.showEmailVerificationNotice(activeUser.email);
                     }
                     return;
                 }
+
                 const loginPage = document.getElementById('loginPage');
                 const dashPage = document.getElementById('dashboardPage');
                 if (loginPage) { loginPage.style.display = 'none'; loginPage.classList.remove('active'); }
                 if (dashPage) { dashPage.style.display = 'block'; dashPage.classList.add('active'); }
-                const userRole = currentUser ? (currentUser.role || 'normal') : 'normal';
+
+                const userRole = activeUser ? (activeUser.role || 'normal') : 'normal';
                 setupDashboardForRole(userRole);
                 updateDashboard();
 
-                const isEnterprise = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes((userRole || '').toLowerCase()) || (currentUser && currentUser.accountType === 'employee');
+                const isEnterprise = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager', 'hm', 'employee'].includes((userRole || '').toLowerCase()) || 
+                                     (activeUser && (activeUser.accountType === 'employee' || activeUser.isEmployee));
                 if (isEnterprise) {
                     try { window.history.replaceState({}, '', '/hrms/dashboard'); } catch(e){}
                     switchTab('dashboard');
@@ -11203,6 +11262,7 @@ body.dark-theme .resume-tip-box,
                     switchTab('resume');
                 }
             }
+            window.loginUser = loginUser;
 
             window.openFeedbackModal = function() {
                 const modal = document.getElementById('feedbackModal');

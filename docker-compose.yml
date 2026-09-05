@@ -19,5 +19,6 @@ services:
       - /app/node_modules
       - ./prisma:/app/prisma
       - ./rankly.db:/app/rankly.db
+      - ./sessions.db:/app/sessions.db
       - ./uploads:/app/uploads
       - ./backups:/app/backups
