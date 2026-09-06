@@ -6,11 +6,11 @@ This file is the live collaborative communication channel between **Antigravity-
 
 ## 📡 Active Agent States & Lock Board
 
-| Agent Identity | Role | Current Status | Active Focus / Workstream | Locked Files |
-| :--- | :--- | :--- | :--- | :--- |
-| **Antigravity-Agent-Mayur** | Primary Architect & Frontend | 🟢 `online_active` | System E2E Tested, Location Filters, Candidate Portal UI | `None (Open)` |
-| **Antigravity-Agent-Sumit** | Developer 2 (AI Engine & Docs) | 🟢 `online_active` | AI Match Score, Document Intelligence, Candidate Assessment Matrix | `None (Open)` |
-| **Antigravity-Agent-Vaibhav** | Developer 3 (HRMS & DB) | 🟢 `online_active` | HRMS Core, Realtime WebSockets, ExcelJS, Leave Math, RBAC 403 | `None (Open)` |
+| Agent Identity | Developer | Primary Engineering Scope & Core Modules | Locked Files |
+| :--- | :--- | :--- | :--- |
+| **Antigravity-Agent-Mayur** | **Mayur Jadhav** | NVIDIA Nemotron 70B AI Engine, ATS Clamping [0, 100], Supabase Realtime Service, Smart Leave Algorithm, Enterprise Job Filters | `None (Open)` |
+| **Antigravity-Agent-Sumit** | **Sumit Khomne** | Candidate Portal & 4-Stage Stepper, HRMS Dual Punch In/Out, HR Recruiter AI Queue, Auth Verification Modals | `None (Open)` |
+| **Antigravity-Agent-Vaibhav** | **Vaibhav Aakhade** | Zero-OTP Duplicate Block (409), 2-Minute Demo Player (demo.html), ExcelJS 1-Click Exports, RBAC 403 Guards, Self-Healing System | `None (Open)` |
 
 ---
 

@@ -4,23 +4,23 @@
   "channel": "rankly-ai-pair-programming",
   "lastUpdated": "2026-09-07T00:13:00.000Z",
   "agentMayur": {
-    "identity": "Antigravity-Agent-Mayur (Primary Architect & Frontend Lead)",
+    "identity": "Antigravity-Agent-Mayur (Primary AI & Core Architect - Mayur Jadhav)",
     "status": "online_active",
-    "currentFocus": "Full System Verified, Candidate Portal, Location Filters, Enterprise Branding",
-    "lastCommit": "3eb2f35",
+    "currentFocus": "NVIDIA Nemotron AI Engine, ATS Score Clamping [0, 100], Supabase Realtime Service, Smart Weekend Leave Algorithm, Enterprise Job Filters",
+    "lastCommit": "073f9de",
     "lockedFiles": []
   },
   "agentSumit": {
-    "identity": "Antigravity-Agent-Sumit (Developer 2 - AI Talent Matching Engine, Document Intelligence & Candidate Assessment)",
+    "identity": "Antigravity-Agent-Sumit (Frontend & Candidate Portal Lead - Sumit Khomne)",
     "status": "online_active",
-    "currentFocus": "AI Match Score Algorithm, Document Parsing, Candidate Evaluation Matrix & Skill Graph",
-    "lastCommit": "3eb2f35",
+    "currentFocus": "Candidate Portal & 4-Stage Stepper, HRMS Dual Punch In/Out Architecture, HR Recruiter AI-Sorted Queue, Auth Verification Modals",
+    "lastCommit": "073f9de",
     "lockedFiles": []
   },
   "agentVaibhav": {
-    "identity": "Antigravity-Agent-Vaibhav (Developer 3 - HRMS Core, DB & Backend)",
+    "identity": "Antigravity-Agent-Vaibhav (HRMS Core, Security & DB Lead - Vaibhav Aakhade)",
     "status": "online_active",
-    "currentFocus": "HRMS Core, Realtime WebSockets, ExcelJS Exports, Smart Weekend Leaves, RBAC 403, Self-Healing System Verified",
+    "currentFocus": "Zero-OTP Duplicate Account Hard-Block (409), 2-Minute Demo Player (demo.html), 1-Click ExcelJS Exports, RBAC 403 Guards, Self-Healing Daemon",
     "lastCommit": "e551325",
     "lockedFiles": []
   },
