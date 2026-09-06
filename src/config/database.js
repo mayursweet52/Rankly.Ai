@@ -207,6 +207,54 @@ async function connectDatabase() {
       );
     `);
 
+    // Auto-seed Corporate Referral Code RNK-CORP-9842 so enterprise password recovery and referrals are functional
+    try {
+      const existingRef = await prisma.referralCode.findUnique({ where: { code: 'RNK-CORP-9842' } });
+      if (!existingRef) {
+        let defaultOrg = await prisma.organization.findFirst();
+        if (!defaultOrg) {
+          defaultOrg = await prisma.organization.create({
+            data: {
+              name: 'Rankly AI Technologies Inc.',
+              adminId: 'org-admin-root'
+            }
+          });
+        }
+        let defaultUser = await prisma.user.findFirst();
+        if (!defaultUser) {
+          defaultUser = await prisma.user.create({
+            data: {
+              firstName: 'System',
+              lastName: 'Administrator',
+              email: 'admin@rankly.ai',
+              password: '$2a$10$abcdefghijklmnopqrstuv',
+              accountType: 'employee',
+              role: 'admin'
+            }
+          });
+        }
+        const creatorId = defaultUser.id;
+        const tenYearsLater = new Date();
+        tenYearsLater.setFullYear(tenYearsLater.getFullYear() + 10);
+
+        await prisma.referralCode.create({
+          data: {
+            code: 'RNK-CORP-9842',
+            organizationId: defaultOrg.id,
+            assignedRole: 'hr',
+            createdById: creatorId,
+            expiresAt: tenYearsLater,
+            maxUses: 9999,
+            usedCount: 0,
+            isUsed: false
+          }
+        });
+        console.log('✅ Default Corporate Referral Code RNK-CORP-9842 seeded successfully.');
+      }
+    } catch (seedErr) {
+      console.warn('⚠️ [Referral Seed Notice]:', seedErr.message);
+    }
+
     console.log('✅ SQLite Schema Tables (User, OTP, Evaluation, Candidate, Feedback, etc.) initialized & verified.');
   } catch (error) {
     console.error('❌ Failed to connect/initialize SQLite database:', error.message);

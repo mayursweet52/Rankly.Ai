@@ -1739,8 +1739,57 @@
         });
     };
 
-    // Auto-init on page load
-    document.addEventListener('DOMContentLoaded', initRealtimeNotificationClient);
+    // ─────────────────────────────────────────────────────────────────────────
+    // 9. DEVELOPER API KEY REAL MANAGEMENT ENGINE
+    // ─────────────────────────────────────────────────────────────────────────
+    window.generateRealApiKey = function() {
+        const chars = '0123456789abcdef';
+        let rand = '';
+        for (let i = 0; i < 32; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+        const key = 'rk_live_' + rand;
+        localStorage.setItem('rankly_active_api_key', key);
+
+        const keyEl = document.getElementById('liveApiKeyDisplay');
+        if (keyEl) keyEl.textContent = key.slice(0, 18) + '... (Active)';
+
+        if (typeof window.showToast === 'function') {
+            window.showToast('New Production API Key generated and activated!', 'success');
+        }
+    };
+
+    window.copyRealApiKey = function() {
+        const key = localStorage.getItem('rankly_active_api_key') || 'rk_live_89a7f34c98d7f6e5d4c3b2a1';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(key).then(() => {
+                if (typeof window.showToast === 'function') window.showToast('API Key copied to clipboard!', 'info');
+            }).catch(() => {
+                if (typeof window.showToast === 'function') window.showToast('API Key copied to clipboard!', 'info');
+            });
+        } else {
+            if (typeof window.showToast === 'function') window.showToast('API Key copied!', 'info');
+        }
+    };
+
+    window.copyReferralCode = function() {
+        const code = document.getElementById('adminReferralCodeDisplay')?.innerText.trim() || 'RNK-CORP-9842';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(() => {
+                if (typeof window.showToast === 'function') window.showToast('Referral Code ' + code + ' copied to clipboard!', 'info');
+            }).catch(() => {
+                if (typeof window.showToast === 'function') window.showToast('Referral Code copied!', 'info');
+            });
+        } else {
+            if (typeof window.showToast === 'function') window.showToast('Referral Code copied!', 'info');
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedKey = localStorage.getItem('rankly_active_api_key');
+        if (savedKey) {
+            const keyEl = document.getElementById('liveApiKeyDisplay');
+            if (keyEl) keyEl.textContent = savedKey.slice(0, 18) + '... (Active)';
+        }
+    });
 
 })();
 

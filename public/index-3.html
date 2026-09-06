@@ -8099,16 +8099,16 @@ body.dark-theme .resume-tip-box,
                                     <h3 class="card-title mb-1">Production API Keys</h3>
                                     <p class="text-xs text-[#888880] font-mono">Use keys to integrate Rankly Command A with your ATS pipelines</p>
                                 </div>
-                                <button class="btn-primary" onclick="showToast('Generated new API Key: rk_live_7k89d2...', 'success')">
+                                <button class="btn-primary cursor-pointer" onclick="generateRealApiKey()">
                                     <i class="fas fa-plus mr-1"></i> Generate Key
                                 </button>
                             </div>
-                            <div class="border border-[#E5E5DF] rounded-lg p-4 bg-[#FAFAFA] flex justify-between items-center font-mono text-xs">
+                            <div class="border border-[#E5E5DF] dark:border-zinc-800 rounded-xl p-4 bg-[#FAFAFA] dark:bg-zinc-900/60 flex justify-between items-center font-mono text-xs">
                                 <div>
-                                    <p class="font-bold text-[#111111]">Default Production Key</p>
-                                    <p class="text-[#888880] mt-1">rk_live_89a7f34c98d7... (Active)</p>
+                                    <p class="font-bold text-[#111111] dark:text-white">Active Production Key</p>
+                                    <p class="text-emerald-600 dark:text-emerald-400 mt-1 font-mono select-all" id="liveApiKeyDisplay">rk_live_89a7f34c98d7f6e5... (Active)</p>
                                 </div>
-                                <button onclick="navigator.clipboard?.writeText('rk_live_89a7f34c98d7'); showToast('Copied API Key to clipboard!', 'info')" class="btn-secondary text-xs py-1.5 px-3">
+                                <button onclick="copyRealApiKey()" class="btn-secondary text-xs py-1.5 px-3 cursor-pointer">
                                     <i class="fas fa-copy mr-1"></i> Copy
                                 </button>
                             </div>
@@ -8252,7 +8252,7 @@ body.dark-theme .resume-tip-box,
                                             <p class="text-xs font-bold text-[#111111] mb-0">Corporate Referral Code</p>
                                             <p class="text-[11px] text-[#666660] font-mono mb-0" id="adminReferralCodeDisplay">RNK-CORP-9842</p>
                                         </div>
-                                        <button class="btn-secondary text-xs py-1 px-3 rounded-lg" onclick="navigator.clipboard?.writeText('RNK-CORP-9842'); showToast('Referral Code Copied!', 'info');">
+                                        <button class="btn-secondary text-xs py-1 px-3 rounded-lg cursor-pointer" onclick="copyReferralCode()">
                                             <i class="fas fa-copy mr-1"></i> Copy Code
                                         </button>
                                     </div>
