@@ -8,7 +8,7 @@ const getNotifications = async (req, res) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
-            return res.status(401).json({ success: false, error: 'Unauthorized' });
+            return res.json({ success: true, notifications: [], authenticated: false });
         }
         const notifications = await prisma.notification.findMany({
             where: { userId },
@@ -26,7 +26,7 @@ const getUnreadCount = async (req, res) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
-            return res.status(401).json({ success: false, error: 'Unauthorized', count: 0 });
+            return res.json({ success: true, count: 0, authenticated: false });
         }
         const count = await prisma.notification.count({
             where: { userId, isRead: false }

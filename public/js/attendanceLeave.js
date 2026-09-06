@@ -498,7 +498,7 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        if (typeof window.showToast === 'function') window.showToast(`📊 Downloading attendance export (${format.toUpperCase()})...`, 'info');
+        if (typeof window.showToast === 'function') window.showToast(`Downloading attendance export (${format.toUpperCase()})...`, 'info');
     };
 
     window.exportLeaves = function(format = 'xlsx') {
@@ -510,7 +510,7 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        if (typeof window.showToast === 'function') window.showToast(`🏖️ Downloading leaves export (${format.toUpperCase()})...`, 'info');
+        if (typeof window.showToast === 'function') window.showToast(`Downloading leaves export (${format.toUpperCase()})...`, 'info');
     };
 
     window.exportCandidates = function(format = 'xlsx') {

@@ -1102,7 +1102,7 @@
         const fullUrl = formatUrl(raw);
         window.open(fullUrl, '_blank', 'noopener,noreferrer');
         if (typeof window.showToast === 'function') {
-            window.showToast(`🚀 Opening ${fullUrl}...`, 'info');
+            window.showToast(`Opening ${fullUrl}...`, 'info');
         }
     };
 
@@ -1211,7 +1211,7 @@
             const data = await res.json();
             localStorage.setItem('candidate_profile', JSON.stringify(profileData));
             renderCandidateProfile(profileData);
-            if (typeof window.showToast === 'function') window.showToast('🎉 Candidate Profile saved successfully!', 'success');
+            if (typeof window.showToast === 'function') window.showToast('Candidate Profile saved successfully!', 'success');
         } catch (e) {
             localStorage.setItem('candidate_profile', JSON.stringify(profileData));
             renderCandidateProfile(profileData);
@@ -1245,7 +1245,7 @@
             if (polished && bioEl) {
                 bioEl.value = polished.trim();
                 updateProfileCompletenessMeter();
-                if (typeof window.showToast === 'function') window.showToast('✨ Bio polished with AI!', 'success');
+                if (typeof window.showToast === 'function') window.showToast('Bio polished with AI!', 'success');
             }
         } catch (e) {
             if (bioEl && !bioEl.value.trim()) {
@@ -1436,7 +1436,7 @@
             }
 
             if (typeof window.showToast === 'function') {
-                window.showToast(`🎉 Applied for ${jobTitle} at ${company}! Added to your live tracker.`, 'success');
+                window.showToast(`Applied for ${jobTitle} at ${company}! Added to your live tracker.`, 'success');
             }
             if (typeof window.switchTab === 'function') {
                 window.switchTab('applications');

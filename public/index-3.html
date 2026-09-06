@@ -10767,7 +10767,7 @@ body.dark-theme .resume-tip-box,
                             if (typeof showEmailAlreadyExistsPopup === 'function') {
                                 showEmailAlreadyExistsPopup(value);
                             } else {
-                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                showToast('️ An account with this email already exists. Please sign in.', 'warning');
                             }
                             const row = document.getElementById('emailOtpRow');
                             if (row) row.style.display = 'none';
@@ -10823,7 +10823,7 @@ body.dark-theme .resume-tip-box,
                     }
 
                     otpVerified.email = true;
-                    showToast('Gmail verified successfully! ✨', 'success');
+                    showToast('Gmail verified successfully!', 'success');
                     if (sendBtn) {
                         sendBtn.textContent = 'Verified ✓';
                         sendBtn.disabled = true;
@@ -10889,7 +10889,7 @@ body.dark-theme .resume-tip-box,
                             if (typeof showEmailAlreadyExistsPopup === 'function') {
                                 showEmailAlreadyExistsPopup(value);
                             } else {
-                                showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                showToast('️ An account with this email already exists. Please sign in.', 'warning');
                             }
                             const row = document.getElementById('empEmailOtpRow');
                             if (row) row.style.display = 'none';
@@ -11280,7 +11280,7 @@ body.dark-theme .resume-tip-box,
                         return;
                     }
 
-                    showToast('🎉 Password updated successfully! Please sign in with your new password.', 'success');
+                    showToast('Password updated successfully! Please sign in with your new password.', 'success');
                     closeModal('forgotPasswordModal');
                     resetCpModalToStep1();
 
@@ -11351,7 +11351,7 @@ body.dark-theme .resume-tip-box,
                         return;
                     }
 
-                    showToast('🎉 Password reset successfully! You can now log in.', 'success');
+                    showToast('Password reset successfully! You can now log in.', 'success');
                     closeModal('resetPasswordFromLinkModal');
 
                     // Pre-fill login input
@@ -11409,7 +11409,7 @@ body.dark-theme .resume-tip-box,
                         return;
                     }
 
-                    showToast(data.message || '🎉 Company Portal password reset successfully. You can now log in.', 'success');
+                    showToast(data.message || 'Company Portal password reset successfully. You can now log in.', 'success');
                     if (submitBtn) setButtonLoading(submitBtn, false);
                     closeModal('forgotPasswordModal');
 
@@ -12247,7 +12247,7 @@ body.dark-theme .resume-tip-box,
 
             window.handleGoogleCredentialResponse = async function(response) {
                 try {
-                    showToast('🔐 Verifying Google credentials...', 'info');
+                    showToast('Verifying Google credentials...', 'info');
                     const res = await fetch('/api/auth/google/credential', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -12256,7 +12256,7 @@ body.dark-theme .resume-tip-box,
                     const data = await res.json();
                     if (data.success && data.user) {
                         localStorage.setItem('user', JSON.stringify(data.user));
-                        showToast('✅ Google login successful!', 'success');
+                        showToast('Google login successful!', 'success');
                         setTimeout(() => {
                             window.location.href = data.redirectUrl || '/candidate/dashboard';
                         }, 250);
@@ -13527,7 +13527,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 if (typeof showEmailAlreadyExistsPopup === 'function') {
                                     showEmailAlreadyExistsPopup(email);
                                 } else {
-                                    showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                    showToast('️ An account with this email already exists. Please sign in.', 'warning');
                                 }
                             } else {
                                 showToast(data.message || data.error || 'Failed to send OTP. Please retry.', 'error');
@@ -13579,7 +13579,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             if (otpContainer) {
                                 otpContainer.innerHTML = '<div class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 py-2"><i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i> OTP Verified Successfully! Now complete profile & click Create Account.</div>';
                             }
-                            showToast('✅ OTP Verified Successfully! Please complete profile details.', 'success');
+                            showToast('OTP Verified Successfully! Please complete profile details.', 'success');
                         } else {
                             showToast(data.message || data.error || 'Invalid or expired OTP. Please check or click Resend OTP.', 'error');
                             if (verifyBtn) {
@@ -13709,7 +13709,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                     }
                                     sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                                     localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                                    showToast('🎉 Email verified! Redirecting to your dashboard...', 'success');
+                                    showToast('Email verified! Redirecting to your dashboard...', 'success');
                                     loginUser();
                                 }
                             } catch (e) {}
@@ -13738,7 +13738,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             }
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
                             localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            showToast('🎉 Email verified! Redirecting to your dashboard...', 'success');
+                            showToast('Email verified! Redirecting to your dashboard...', 'success');
                             loginUser();
                         }
                     } catch (e) {}
@@ -13760,7 +13760,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         });
                         const data = await res.json();
                         if (res.ok && data.success) {
-                            showToast('🔄 New verification link resent to your Gmail!', 'success');
+                            showToast('New verification link resent to your Gmail!', 'success');
                         } else {
                             showToast(data.message || data.error || 'Failed to resend link', 'error');
                         }
@@ -13966,7 +13966,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         const data = await res.json();
 
                         if (!res.ok || !data.success) {
-                            showToast(data.message || data.error || '❌ Invalid referral code. Password reset attempt denied.', 'error');
+                            showToast(data.message || data.error || 'Invalid referral code. Password reset attempt denied.', 'error');
                             const refInput = document.getElementById('orgForgotReferralCode');
                             if (refInput) {
                                 refInput.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-950/30');
@@ -13976,7 +13976,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             return;
                         }
 
-                        showToast(data.message || '🎉 Company Portal password reset successfully! You can now sign in.', 'success');
+                        showToast(data.message || 'Company Portal password reset successfully! You can now sign in.', 'success');
                         
                         // Clear form
                         const orgForgotForm = document.getElementById('orgForgotForm');
@@ -14156,7 +14156,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 if (typeof showEmailAlreadyExistsPopup === 'function') {
                                     showEmailAlreadyExistsPopup(email);
                                 } else {
-                                    showToast('⚠️ An account with this email already exists. Please sign in.', 'warning');
+                                    showToast('️ An account with this email already exists. Please sign in.', 'warning');
                                 }
                             } else {
                                 showToast(data.message || data.error || 'Failed to send OTP', 'error');
@@ -14256,7 +14256,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                                 verifyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verified';
                             }
 
-                            showToast('✅ Email verified! Workspace form unlocked.', 'success');
+                            showToast('Email verified! Workspace form unlocked.', 'success');
                             setTimeout(() => {
                                 document.getElementById('orgNameInput')?.focus();
                             }, 150);
@@ -14319,7 +14319,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                     const domain = (email || '').split('@')[1]?.toLowerCase();
                     if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
-                        showToast('❌ Workspace registration requires an official work email (e.g. name@company.com). Personal accounts like @' + domain + ' are not allowed.', 'error');
+                        showToast('Workspace registration requires an official work email (e.g. name@company.com). Personal accounts like @' + domain + 'are not allowed.', 'error');
                         return;
                     }
 
@@ -15809,7 +15809,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (typeof showAccountVerifiedPopup === 'function') {
                         showAccountVerifiedPopup(verifiedEmail);
                     } else if (typeof showToast === 'function') {
-                        showToast('🎉 Email verified successfully! Please sign in to continue.', 'success');
+                        showToast('Email verified successfully! Please sign in to continue.', 'success');
                     }
                     if (verifiedEmail) {
                         const loginInput = document.getElementById('loginUsername');
@@ -16503,7 +16503,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
         };
 
         window.downloadDocPrompt = function(title, fileName) {
-            showToast('📄 Downloading ' + (fileName || title) + '...', 'success');
+            showToast('Downloading ' + (fileName || title) + '...', 'success');
         };
 
         window.printDocumentText = function() {
@@ -16832,7 +16832,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
             }
 
             closeModal('interviewCalendarModal');
-            showToast(`📅 Interview booked for ${date} at ${time} via ${platform}!`, 'success');
+            showToast(`Interview booked for ${date} at ${time} via ${platform}!`, 'success');
         };
 
         // Initialize Calendar when DOM is ready
@@ -16880,7 +16880,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             if (tokenInput) tokenInput.value = resetToken;
                             if (linkModal) linkModal.classList.remove('hidden');
                             if (window.showToast) {
-                                showToast('🔗 Reset link verified! Please enter your new password below.', 'success');
+                                showToast('Reset link verified! Please enter your new password below.', 'success');
                             }
                         }, 250);
                     });
@@ -16995,7 +16995,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (window.showToast) {
-                        showToast(data.message || '🔒 Complaint securely dispatched directly to Organization Admin.', 'success');
+                        showToast(data.message || 'Complaint securely dispatched directly to Organization Admin.', 'success');
                     }
 
                     const form = document.getElementById('grievanceForm');
