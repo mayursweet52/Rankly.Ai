@@ -67,6 +67,11 @@ router.get('/today', optionalAuth, async (req, res) => {
   }
 });
 
+// Alias for status check
+router.get('/status', optionalAuth, (req, res, next) => {
+  return router.handle({ ...req, url: '/today' }, res, next);
+});
+
 /**
  * POST /api/attendance/check-in
  * Employee daily check-in / Punch In
@@ -154,10 +159,16 @@ router.post('/check-out', optionalAuth, async (req, res) => {
   }
 });
 
-/**
- * GET /api/attendance/my
- * View own attendance history
- */
+// Route aliases for /punch-in and /punch-out
+router.post('/punch-in', optionalAuth, (req, res, next) => {
+  req.url = '/check-in';
+  return router.handle(req, res, next);
+});
+
+router.post('/punch-out', optionalAuth, (req, res, next) => {
+  req.url = '/check-out';
+  return router.handle(req, res, next);
+});
 router.get('/my', optionalAuth, async (req, res) => {
   try {
     const employeeId = await resolveEmployeeId(req);

@@ -129,9 +129,21 @@ router.get('/summary', optionalAuth, async (req, res) => {
 router.post('/apply', optionalAuth, async (req, res) => {
   try {
     const employeeId = await resolveEmployeeId(req);
-    const { leave_type, start_date, end_date, days_count, reason } = req.body;
+    const body = req.body || {};
+    const startDate = body.start_date || body.startDate;
+    const endDate = body.end_date || body.endDate;
+    const validTypes = ['casual', 'sick', 'earned', 'maternity', 'paternity', 'unpaid'];
+    let normalizedLeaveType = String(body.leave_type || body.leaveType || 'casual').toLowerCase().trim();
+    if (normalizedLeaveType === 'annual' || normalizedLeaveType === 'paid' || normalizedLeaveType === 'vacation') {
+      normalizedLeaveType = 'earned';
+    } else if (!validTypes.includes(normalizedLeaveType)) {
+      normalizedLeaveType = 'casual';
+    }
 
-    if (!employeeId || !start_date || !end_date || !reason) {
+    const reason = body.reason || body.notes;
+    const daysCount = body.days_count || body.daysCount;
+
+    if (!employeeId || !startDate || !endDate || !reason) {
       return res.status(400).json({
         success: false,
         message: 'start_date, end_date, and reason are required.'
@@ -139,8 +151,8 @@ router.post('/apply', optionalAuth, async (req, res) => {
     }
 
     // Smart Weekend Exclusion: calculate actual working days
-    const computedWorkingDays = calculateWorkingDays(start_date, end_date);
-    const finalDaysCount = computedWorkingDays > 0 ? computedWorkingDays : (parseFloat(days_count) || 1.0);
+    const computedWorkingDays = calculateWorkingDays(startDate, endDate);
+    const finalDaysCount = computedWorkingDays > 0 ? computedWorkingDays : (parseFloat(daysCount) || 1.0);
 
     const query = `
       INSERT INTO leave_requests (
@@ -151,9 +163,9 @@ router.post('/apply', optionalAuth, async (req, res) => {
 
     const result = await db.query(query, [
       employeeId,
-      leave_type || 'casual',
-      start_date,
-      end_date,
+      normalizedLeaveType,
+      startDate,
+      endDate,
       finalDaysCount,
       reason
     ]);

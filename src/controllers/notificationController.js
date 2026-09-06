@@ -26,15 +26,15 @@ const getUnreadCount = async (req, res) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
-            return res.json({ success: true, count: 0, authenticated: false });
+            return res.json({ success: true, count: 0, unreadCount: 0, authenticated: false });
         }
         const count = await prisma.notification.count({
             where: { userId, isRead: false }
         });
-        res.json({ success: true, count });
+        res.json({ success: true, count, unreadCount: count, authenticated: true });
     } catch (error) {
         console.error('getUnreadCount error:', error);
-        res.status(500).json({ success: false, error: 'Internal server error', count: 0 });
+        res.status(500).json({ success: false, error: 'Internal server error', count: 0, unreadCount: 0 });
     }
 };
 
