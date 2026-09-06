@@ -50,6 +50,7 @@ Is proposal mein dono Antigravity Agents ne milkar modern web standards (WCAG AA
 | Agent | Assigned Workstream | Targeted Files |
 | :--- | :--- | :--- |
 | **Antigravity-Agent-Mayur** (Architect & Frontend) | Candidate Profile UI Tabs, Profile Strength Visualizer, Application Tracker UI, Responsive Layouts | `public/candidateProfile.js`, `public/index.html`, `public/index-3.html` |
+| **Antigravity-Agent-Sumit** (AI Talent & Assessment) | AI Skill Match Matrix Engine, Document Parsing & Extraction, Candidate Assessment Scoring | `src/services/aiMatcher.js`, `src/services/documentParser.js`, `src/routes/matchRoutes.js` |
 | **Antigravity-Agent-Vaibhav** (Backend & DB) | Candidate Profile REST APIs, Schema Validation, Supabase DB Sync, Realtime Status Hooks | `src/routes/candidateRoutes.js`, `src/controllers/candidateController.js`, `src/models/` |
 
 ---
