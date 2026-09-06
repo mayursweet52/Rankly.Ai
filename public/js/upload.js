@@ -258,10 +258,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 try {
                     if (payload && Array.isArray(payload.candidates)) {
                         renderCandidates(payload.candidates);
-                        showToast(`✅ Evaluated & ranked ${payload.candidates.length} candidate(s)!`, 'success');
+                        if (payload.candidates.length > 0) {
+                            autoFillParsedCandidateForm(payload.candidates[0]);
+                        }
+                        showToast(`✅ Evaluated & auto-filled ${payload.candidates.length} candidate(s)!`, 'success');
                         uploadStatus.textContent = `🧠 Ollama AI evaluation complete – ${payload.candidates.length} processed`;
                         progressBar.style.width = '100%';
-                        progressText.textContent = '✅ All candidates ranked!';
+                        progressText.textContent = '✅ All candidates ranked & form auto-filled!';
                         setTimeout(() => {
                             uploadProgress.classList.remove('active');
                             progressText.style.display = 'none';
@@ -271,6 +274,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch (e) { console.error(e); }
             });
         }
+
+    /**
+     * Auto-Parsed Form Auto-Fill UI (Developer 1 Core Feature)
+     * Auto-populates candidate registration/profile forms from AI-parsed resume data.
+     */
+    function autoFillParsedCandidateForm(candidate) {
+        if (!candidate || typeof candidate !== 'object') return;
+
+        const name = candidate.name || candidate.fullName || '';
+        const email = candidate.email || candidate.candidateEmail || '';
+        const phone = candidate.phone || candidate.contactNumber || '';
+        const role = candidate.targetRole || candidate.title || '';
+        
+        let skills = [];
+        try {
+            if (Array.isArray(candidate.skills)) skills = candidate.skills;
+            else if (Array.isArray(candidate.keyStrengths)) skills = candidate.keyStrengths;
+            else if (typeof candidate.skills === 'string') skills = JSON.parse(candidate.skills || '[]');
+        } catch (_) {
+            if (typeof candidate.skills === 'string') skills = candidate.skills.split(',').map(s => s.trim());
+        }
+
+        const skillsStr = skills.filter(Boolean).join(', ');
+
+        // Auto-fill form inputs across Candidate Portal & Profile tabs
+        const fieldMappings = [
+            { selectors: ['#profileName', '#candidateName', '#atsCandidateName', '#applicantName', '#regFirstName', '#name'], value: name },
+            { selectors: ['#profileEmail', '#candidateEmail', '#atsCandidateEmail', '#applicantEmail', '#regEmail', '#email'], value: email },
+            { selectors: ['#profilePhone', '#candidatePhone', '#atsCandidatePhone', '#applicantPhone', '#regPhone', '#phone'], value: phone },
+            { selectors: ['#profileRole', '#atsTargetRole', '#targetRole', '#jobTitle'], value: role },
+            { selectors: ['#profileSkills', '#candidateSkills', '#skillsInput', '#atsSkills'], value: skillsStr }
+        ];
+
+        let filledCount = 0;
+        fieldMappings.forEach(m => {
+            if (m.value) {
+                m.selectors.forEach(sel => {
+                    const el = document.querySelector(sel);
+                    if (el && !el.value) {
+                        el.value = m.value;
+                        el.classList.add('ring-2', 'ring-emerald-500/50', 'bg-emerald-50/10');
+                        setTimeout(() => el.classList.remove('ring-2', 'ring-emerald-500/50', 'bg-emerald-50/10'), 2500);
+                        filledCount++;
+                    }
+                });
+            }
+        });
+
+        // If skill tags container exists, render visual pill badges
+        const tagsContainer = document.getElementById('parsedSkillTagsContainer') || document.getElementById('candidateSkillsPills');
+        if (tagsContainer && skills.length > 0) {
+            tagsContainer.innerHTML = skills.map(s => 
+                `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 animate-fade-in"><i class="fa-solid fa-check text-[10px]"></i> ${s}</span>`
+            ).join(' ');
+        }
+
+        if (filledCount > 0 && typeof showToast === 'function') {
+            showToast(`✨ Auto-filled profile details from parsed resume!`, 'success');
+        }
+    }
+    window.autoFillParsedCandidateForm = autoFillParsedCandidateForm;
 
         // Send API upload request
         fetch("/api/upload?apiKey=rankly-secret-key", {

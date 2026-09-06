@@ -1567,5 +1567,77 @@
         if (typeof window.showToast === 'function') window.showToast('Copied policy summary to clipboard!', 'success');
     };
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // 8. REAL-TIME NOTIFICATION UI (WEBSOCKETS & SUPABASE CLIENT)
+    // ─────────────────────────────────────────────────────────────────────────
+    let unreadNotificationCount = 0;
+
+    function initRealtimeNotificationClient() {
+        // 1. Socket.io Client listener
+        if (typeof io !== 'undefined') {
+            try {
+                const socket = io();
+                socket.on('connect', () => {
+                    console.log('📡 [Candidate Realtime] Connected to live notification channel.');
+                });
+
+                socket.on('application_status_changed', (data) => {
+                    handleLiveNotification({
+                        title: '🔔 Application Status Updated',
+                        message: `Your application for ${data.jobTitle || 'Role'} moved to stage: ${(data.newStatus || 'Review').toUpperCase()}`,
+                        type: 'info'
+                    });
+                    if (typeof window.loadCandidateApplications === 'function') {
+                        window.loadCandidateApplications();
+                    }
+                });
+
+                socket.on('leave_status_updated', (data) => {
+                    handleLiveNotification({
+                        title: '📅 Leave Request Update',
+                        message: `Leave request status changed to: ${String(data.status).toUpperCase()}`,
+                        type: data.status === 'approved' ? 'success' : 'warning'
+                    });
+                    if (typeof window.loadLeavesHistory === 'function') {
+                        window.loadLeavesHistory();
+                    }
+                });
+            } catch (err) {
+                console.debug('Realtime socket init note:', err);
+            }
+        }
+    }
+
+    function handleLiveNotification(notif) {
+        unreadNotificationCount++;
+        
+        // Update bell badge
+        const badgeEls = document.querySelectorAll('#notificationBadge, .notification-bell-badge, #unreadNoticeCount');
+        badgeEls.forEach(b => {
+            b.textContent = unreadNotificationCount;
+            b.classList.remove('hidden');
+            b.style.display = 'inline-flex';
+            b.classList.add('animate-bounce');
+            setTimeout(() => b.classList.remove('animate-bounce'), 1200);
+        });
+
+        // Trigger dynamic Toast alert
+        if (typeof window.showToast === 'function') {
+            window.showToast(`${notif.title}: ${notif.message}`, notif.type || 'info');
+        }
+    }
+
+    window.clearNotificationBadge = function() {
+        unreadNotificationCount = 0;
+        const badgeEls = document.querySelectorAll('#notificationBadge, .notification-bell-badge, #unreadNoticeCount');
+        badgeEls.forEach(b => {
+            b.textContent = '0';
+            b.style.display = 'none';
+        });
+    };
+
+    // Auto-init on page load
+    document.addEventListener('DOMContentLoaded', initRealtimeNotificationClient);
+
 })();
 

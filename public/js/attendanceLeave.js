@@ -360,18 +360,42 @@
         }
     };
 
-    window.calculateLeaveDays = function() {
+    window.calculateLeaveDays = async function() {
         const sInp = document.getElementById('leaveStartDate');
         const eInp = document.getElementById('leaveEndDate');
         const display = document.getElementById('calculatedLeaveDays');
         if (!sInp || !eInp || !display) return;
 
         if (sInp.value && eInp.value) {
+            try {
+                // Call backend Smart Leave Calculator API
+                const res = await fetch(`/api/leaves/calculate-days?start_date=${encodeURIComponent(sInp.value)}&end_date=${encodeURIComponent(eInp.value)}`);
+                const data = await res.json();
+                if (data && data.success) {
+                    const excluded = data.weekendDaysExcluded || 0;
+                    if (excluded > 0) {
+                        display.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400 font-bold">${data.workingDays}.0 Working Day(s)</span> <span class="text-[10px] text-gray-400">(${excluded} weekend day${excluded > 1 ? 's' : ''} excluded)</span>`;
+                    } else {
+                        display.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400 font-bold">${data.workingDays}.0 Working Day(s)</span>`;
+                    }
+                    return;
+                }
+            } catch (_) {}
+
+            // Client-side instant fallback calculation
             const start = new Date(sInp.value);
             const end = new Date(eInp.value);
-            const diffTime = end - start;
-            const diffDays = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1);
-            display.textContent = `${diffDays}.0 Day(s)`;
+            let count = 0;
+            let cur = new Date(start);
+            cur.setHours(0,0,0,0);
+            const endMid = new Date(end);
+            endMid.setHours(0,0,0,0);
+            while (cur <= endMid) {
+                const day = cur.getDay();
+                if (day !== 0 && day !== 6) count++;
+                cur.setDate(cur.getDate() + 1);
+            }
+            display.textContent = `${count}.0 Working Day(s)`;
         }
     };
 
@@ -392,10 +416,6 @@
             return;
         }
 
-        const start = new Date(startEl.value);
-        const end = new Date(endEl.value);
-        const diffDays = Math.max(1, Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1);
-
         if (btn) {
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Submitting...';
@@ -410,7 +430,6 @@
                     leave_type: typeEl.value,
                     start_date: startEl.value,
                     end_date: endEl.value,
-                    days_count: diffDays,
                     reason: reasonEl.value.trim()
                 })
             });
@@ -419,29 +438,37 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Leave application failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast('Leave request submitted successfully for approval!', 'success');
+                window.showToast(data.message || '✅ Leave request submitted successfully!', 'success');
             }
-
-            reasonEl.value = '';
             window.closeApplyLeaveModal();
-            await fetchLeaveSummary();
-            await loadLeavesHistory();
+            reasonEl.value = '';
+            await Promise.all([window.loadLeavesHistory(), fetchLeaveSummary()]);
         } catch (err) {
             console.error('Leave submit error:', err);
-            if (typeof window.showToast === 'function') {
-                window.showToast('Submission Error: ' + err.message, 'error');
-            }
+            if (typeof window.showToast === 'function') window.showToast('Failed to submit leave: ' + err.message, 'error');
         } finally {
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = 'Submit Request';
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-1"></i> Submit Request';
             }
         }
     };
 
     // ─────────────────────────────────────────────────────────────────────────
-    // DATA EXPORT HANDLERS (Excel .xlsx and PDF)
+    // DATA EXPORT HANDLERS (Excel .xlsx, CSV, and PDF)
     // ─────────────────────────────────────────────────────────────────────────
+    window.exportAttendance = function(format = 'xlsx') {
+        const url = `/api/export/attendance?format=${format}`;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.download = `Rankly_Attendance_Log.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        if (typeof window.showToast === 'function') window.showToast(`📊 Downloading attendance export (${format.toUpperCase()})...`, 'info');
+    };
+
     window.exportCandidates = function(format = 'xlsx') {
         const role = document.getElementById('targetScreeningRole')?.value || 'all';
         const url = `/api/export/candidates?format=${format}&role=${encodeURIComponent(role)}`;
