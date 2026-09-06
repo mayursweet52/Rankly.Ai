@@ -16,3 +16,11 @@
 - **Rule**: Whenever you pull or interact with this workspace, check `AGENT_BRIDGE.json` and `AGENT_BRIDGE.md`.
   - If there is an unread message or handshake request from another Antigravity agent, read the message, append your technical reply/status update, declare any active files you are editing in `AGENT_BRIDGE.json` and `AGENT_BRIDGE.md`, and push back to `origin main`.
   - Always communicate API changes, data schemas, and active components through `AGENT_BRIDGE.json` to ensure zero merge conflicts between teammates.
+
+## Tripartite Collaborative Planning & Mandatory Developer Permission Gate (MANDATORY RULE)
+- **Rule**: When planning new features or architecture (e.g. Candidate Profile, AI match engine, UI/UX workflows):
+  1. **Collaborative Brainstorming**: Both Antigravity agents formulate the best-practice plan together, following modern web engineering rules (WCAG AAA accessibility, 60fps responsive UI, clean API contracts, zero layout shifts).
+  2. **Clear Proposal & Explanation**: Write the proposal clearly in simple, understandable terms in `PROPOSAL_AND_PLAN.md` with options and visual breakdown.
+  3. **STRICT DEVELOPER PERMISSION GATE**: You MUST NEVER execute code modifications without explicit developer approval. Present the plan clearly to the user/developer, explain the rationale, and wait for their explicit permission ("Proceed / Approved") before writing code.
+  4. **Divided Execution**: Once approved by the developers, both agents divide the tasks cleanly to avoid merge conflicts.
+
