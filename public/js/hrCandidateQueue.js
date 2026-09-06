@@ -1,6 +1,6 @@
 /**
- * Rankly.ai - HR AI-Sorted Candidate Queue, AI Cheat Sheet, Fast Actions & Audit Logs
- * Component: Sumit Work - HR UI & Candidate Portal Integration
+ * Rankly.ai - HR AI-Sorted Candidate Queue, Candidate Evaluation Brief, Fast Actions & Audit Logs
+ * Enterprise Realtime Candidate Triage & Audit Engine
  */
 
 (function() {
@@ -292,7 +292,7 @@
     };
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 3. AI CHEAT SHEET PANEL MODAL
+    // 3. CANDIDATE EVALUATION BRIEF PANEL MODAL
     // ─────────────────────────────────────────────────────────────────────────
     window.openAiCheatSheet = async function(candidateId) {
         const modal = document.getElementById('aiCheatSheetModal');

@@ -78,7 +78,7 @@ http://localhost:3000/demo.html
 | **0:00 – 0:25** | **1. Candidate Ingestion** | Resume PDF parsed; contact info extracted; candidate profile auto-filled; live stepper initialized. |
 | **0:25 – 0:50** | **2. Neural OCR & Parsing** | 18+ technical skills recognized; metrics analyzed (`120k req/s`, `42% latency drop`); GPA & credentials verified. |
 | **0:50 – 1:20** | **3. NVIDIA Nemotron AI Evaluation** | High-fidelity reward evaluation; semantic JD cross-match; strict 0-100 clamping applied (`Score: 94`). |
-| **1:20 – 1:40** | **4. ATS Scoring & Cheat Sheet** | Recruiter cheat sheet generated; top strengths, weaknesses, and 3 custom technical interview questions formulated. |
+| **1:20 – 1:40** | **4. ATS Scoring & Evaluation Brief** | Candidate Evaluation Dossier generated; top strengths, fit radar, and 3 custom technical interview questions formulated. |
 | **1:40 – 2:00** | **5. HR Decision & HRMS Sync** | HR 1-click shortlist; Supabase realtime candidate notification; HRMS staged with dual punch & weekend-excluded leave. |
 
 ---
@@ -186,7 +186,7 @@ sequenceDiagram
         Server->>RT: Broadcast 'APPLICATION_PROCESSED'
         RT-->>Frontend: Live Stepper Updates to "AI Screened (Score 94)"
         RT-->>HR: Instant Notification in Recruiter Queue
-        HR->>Frontend: Opens Candidate Cheat Sheet
+        HR->>Frontend: Opens Candidate Evaluation Brief
         HR->>Server: POST /api/hr/decision (Action: SHORTLIST)
         Server->>DB: Update Application Status & Audit Log
         Server->>RT: Broadcast 'CANDIDATE_SHORTLISTED'
@@ -216,7 +216,7 @@ sequenceDiagram
 
 ### 3. HR Recruiter AI Queue & Decisioning Engine
 - **Automated Ranking**: Candidates are automatically ordered by overall ATS score and role fit.
-- **Recruiter Cheat Sheet**: Instant digest summarizing Top 3 Strengths, Critical Gaps, and 3 dynamically generated technical interview questions.
+- **Candidate Evaluation Brief & Dossier**: Instant digest summarizing Top 3 Strengths, Critical Gaps, and 3 dynamically generated technical interview questions.
 - **Fast Actions**: 1-click `Shortlist`, `Reject`, or `Schedule Interview` with automatic audit log tracking.
 
 ### 4. Enterprise HRMS (Attendance & Smart Leave)
@@ -348,7 +348,7 @@ The application will be live at:
 | Method | Endpoint | Description |
 |:---|:---|:---|
 | `GET` | `/api/hr/candidates` | Returns AI-ranked candidate list with scores and tags. |
-| `GET` | `/api/evaluations/:id` | Detailed candidate evaluation breakdown & cheat sheet. |
+| `GET` | `/api/evaluations/:id` | Detailed candidate evaluation breakdown, dossier & evaluation brief. |
 | `POST` | `/api/hr/decision` | Executes recruiter action (`SHORTLIST`, `REJECT`, `INTERVIEW`). |
 | `GET` | `/api/audit-logs` | Chronological audit trail of all candidate state changes. |
 

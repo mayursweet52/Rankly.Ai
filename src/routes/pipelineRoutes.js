@@ -25,8 +25,9 @@ router.patch('/candidate/:id/notes', optionalAuth, validate({ params: candidateI
 router.post('/candidate/:id/notify', isAuthenticated, validate({ params: candidateIdParamSchema, body: notifyCandidateBodySchema }), pipelineController.notifyCandidate);
 router.delete('/candidate/:id', optionalAuth, validate({ params: candidateIdParamSchema }), pipelineController.deleteCandidate);
 
-// 3. Candidate AI Cheat Sheet & Fast Actions
+// 3. Candidate AI Evaluation Brief / Dossier & Fast Actions
 router.get('/:id/cheat-sheet', optionalAuth, pipelineController.getCandidateCheatSheet);
+router.get('/:id/evaluation-brief', optionalAuth, pipelineController.getCandidateCheatSheet);
 router.post('/:id/action', optionalAuth, pipelineController.performCandidateAction);
 
 // 4. API_DOCS Spec Aliases

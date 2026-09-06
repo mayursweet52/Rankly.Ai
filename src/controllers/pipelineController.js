@@ -185,7 +185,7 @@ async function getAiCandidateQueue(req, res) {
 }
 
 /**
- * 3. AI Cheat Sheet Panel Details for a Candidate
+ * 3. Candidate Evaluation Brief / Dossier Details for a Candidate
  */
 async function getCandidateCheatSheet(req, res) {
   try {
@@ -204,8 +204,8 @@ async function getCandidateCheatSheet(req, res) {
       cheatSheet
     });
   } catch (error) {
-    console.error('Candidate Cheat Sheet Error:', error);
-    return res.status(500).json({ success: false, message: 'Failed to retrieve AI cheat sheet.' });
+    console.error('Candidate Evaluation Brief Error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to retrieve Candidate Evaluation Brief.' });
   }
 }
 
