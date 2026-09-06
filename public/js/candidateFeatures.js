@@ -1284,18 +1284,52 @@
     window.filterJobListings = function() {
         const q = (document.getElementById('jobSearchInput')?.value || '').toLowerCase().trim();
         const dept = document.getElementById('jobDeptFilter')?.value || 'all';
+        const loc = document.getElementById('jobLocationFilter')?.value || 'all';
+        const workType = document.getElementById('jobWorkTypeFilter')?.value || 'all';
 
         let filtered = [...allLoadedJobs];
+
         if (dept !== 'all') {
-            filtered = filtered.filter(j => j.department.toLowerCase().includes(dept.toLowerCase()));
+            filtered = filtered.filter(j => (j.department || '').toLowerCase().includes(dept.toLowerCase()));
         }
+
+        if (loc !== 'all') {
+            const locKey = loc.toLowerCase().trim();
+            filtered = filtered.filter(j => {
+                const jLoc = (j.location || '').toLowerCase();
+                const jWt = (j.workType || '').toLowerCase();
+                if (locKey === 'remote') return jLoc.includes('remote') || jWt.includes('remote');
+                if (locKey === 'bengaluru') return jLoc.includes('bengaluru') || jLoc.includes('bangalore');
+                if (locKey === 'hyderabad') return jLoc.includes('hyderabad');
+                if (locKey === 'mumbai_pune') return jLoc.includes('mumbai') || jLoc.includes('pune');
+                if (locKey === 'delhi_ncr') return jLoc.includes('delhi') || jLoc.includes('gurgaon') || jLoc.includes('noida');
+                if (locKey === 'chennai') return jLoc.includes('chennai');
+                if (locKey === 'international') return jLoc.includes('san francisco') || jLoc.includes('london') || jLoc.includes('worldwide') || jLoc.includes('us') || jLoc.includes('uk');
+                return jLoc.includes(locKey);
+            });
+        }
+
+        if (workType !== 'all') {
+            const wtKey = workType.toLowerCase().trim();
+            filtered = filtered.filter(j => {
+                const jWt = (j.workType || '').toLowerCase();
+                const jLoc = (j.location || '').toLowerCase();
+                if (wtKey === 'remote') return jWt.includes('remote') || jLoc.includes('remote');
+                if (wtKey === 'hybrid') return jWt.includes('hybrid') || jLoc.includes('hybrid');
+                if (wtKey === 'onsite') return jWt.includes('onsite') || (!jWt.includes('remote') && !jWt.includes('hybrid'));
+                return jWt.includes(wtKey);
+            });
+        }
+
         if (q) {
             filtered = filtered.filter(j => 
-                j.title.toLowerCase().includes(q) || 
-                j.company.toLowerCase().includes(q) || 
+                (j.title || '').toLowerCase().includes(q) || 
+                (j.company || '').toLowerCase().includes(q) || 
+                (j.location || '').toLowerCase().includes(q) || 
                 (j.skills && j.skills.some(s => s.toLowerCase().includes(q)))
             );
         }
+
         renderJobListings(filtered);
     };
 
@@ -1312,7 +1346,7 @@
             if (cardsBtn) cardsBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold bg-white dark:bg-zinc-900 text-[#111111] dark:text-white shadow-2xs cursor-pointer';
             if (listBtn) listBtn.className = 'py-1 px-2.5 rounded-md text-xs font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer';
         }
-        renderJobListings(allLoadedJobs);
+        window.filterJobListings();
     };
 
     function renderJobListings(jobs) {
@@ -1321,7 +1355,7 @@
 
         if (!jobs || jobs.length === 0) {
             grid.className = 'col-span-full';
-            grid.innerHTML = '<div class="p-8 rounded-xl border text-center text-xs text-gray-500 bg-white dark:bg-zinc-900">No matching jobs found. Try adjusting your search keywords or department filter.</div>';
+            grid.innerHTML = '<div class="p-8 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 text-center text-xs text-gray-500 bg-white dark:bg-zinc-900 shadow-2xs"><i class="fa-solid fa-location-crosshairs text-2xl text-gray-400 mb-2 block"></i>No matching jobs found for this location or filter. Try broadening your location or department criteria.</div>';
             return;
         }
 
@@ -1334,21 +1368,31 @@
                             <tr>
                                 <th class="py-2.5 px-3.5">Position & Company</th>
                                 <th class="py-2.5 px-3">Department</th>
-                                <th class="py-2.5 px-3">Location</th>
+                                <th class="py-2.5 px-3">Location & Mode</th>
                                 <th class="py-2.5 px-3">Salary Benchmark</th>
                                 <th class="py-2.5 px-3">Match</th>
                                 <th class="py-2.5 px-3.5 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-[#E5E5DF] dark:divide-zinc-800">
-                            ${jobs.map(j => `
+                            ${jobs.map(j => {
+                                const wt = (j.workType || '').toLowerCase();
+                                const wtBadgeClass = wt.includes('remote') 
+                                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' 
+                                    : (wt.includes('hybrid') 
+                                        ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800' 
+                                        : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800');
+                                return `
                                 <tr class="hover:bg-slate-50/70 dark:hover:bg-zinc-800/40 transition-colors">
                                     <td class="py-3 px-3.5">
                                         <div class="font-bold text-[#111111] dark:text-white">${escapeHtml(j.title)}</div>
                                         <div class="text-[11px] text-blue-600 dark:text-blue-400 font-medium">${escapeHtml(j.company)}</div>
                                     </td>
                                     <td class="py-3 px-3 text-[11px] text-gray-600 dark:text-zinc-300">${escapeHtml(j.department)}</td>
-                                    <td class="py-3 px-3 text-[11px] text-gray-500 dark:text-zinc-400"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</td>
+                                    <td class="py-3 px-3 text-[11px]">
+                                        <div class="text-gray-600 dark:text-zinc-300 flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400 text-[10px]"></i>${escapeHtml(j.location)}</div>
+                                        <span class="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[9px] font-semibold border ${wtBadgeClass}">${escapeHtml(j.workType || 'Full-time')}</span>
+                                    </td>
                                     <td class="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">${escapeHtml(j.salaryRange)}</td>
                                     <td class="py-3 px-3">
                                         <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -1362,7 +1406,8 @@
                                         </button>
                                     </td>
                                 </tr>
-                            `).join('')}
+                                `;
+                            }).join('')}
                         </tbody>
                     </table>
                 </div>
@@ -1372,7 +1417,15 @@
 
         // Default 'cards' view: sleek, compact 3-column grid
         grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
-        grid.innerHTML = jobs.map(j => `
+        grid.innerHTML = jobs.map(j => {
+            const wt = (j.workType || '').toLowerCase();
+            const wtBadgeClass = wt.includes('remote') 
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' 
+                : (wt.includes('hybrid') 
+                    ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800' 
+                    : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800');
+
+            return `
             <div class="p-4 rounded-xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:border-emerald-500/40 hover:shadow-xs transition-all flex flex-col justify-between space-y-3">
                 <div class="space-y-2">
                     <div class="flex items-start justify-between gap-2">
@@ -1387,15 +1440,18 @@
 
                     <p class="text-xs text-gray-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">${escapeHtml(j.description)}</p>
 
-                    <div class="flex flex-wrap gap-1 pt-0.5">
-                        ${(j.skills || []).slice(0, 4).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-medium">${escapeHtml(s)}</span>`).join('')}
-                        ${(j.skills || []).length > 4 ? `<span class="px-1 py-0.5 text-[10px] text-gray-400 font-mono">+${j.skills.length - 4}</span>` : ''}
+                    <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold border ${wtBadgeClass}">
+                            <i class="fa-solid ${wt.includes('remote') ? 'fa-house-laptop' : (wt.includes('hybrid') ? 'fa-building-columns' : 'fa-building')} mr-1"></i>${escapeHtml(j.workType || 'Full-time')}
+                        </span>
+                        ${(j.skills || []).slice(0, 3).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-medium">${escapeHtml(s)}</span>`).join('')}
+                        ${(j.skills || []).length > 3 ? `<span class="px-1 py-0.5 text-[10px] text-gray-400 font-mono">+${j.skills.length - 3}</span>` : ''}
                     </div>
                 </div>
 
                 <div class="space-y-2.5 pt-2.5 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
                     <div class="flex justify-between items-center text-gray-500 dark:text-zinc-400 text-[11px]">
-                        <span class="truncate max-w-[140px]"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</span>
+                        <span class="truncate max-w-[150px] font-medium"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${escapeHtml(j.location)}</span>
                         <span class="font-bold font-mono text-emerald-600 dark:text-emerald-400 flex-shrink-0">${escapeHtml(j.salaryRange)}</span>
                     </div>
 
@@ -1405,7 +1461,8 @@
                     </button>
                 </div>
             </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     window.applyToJobQuick = async function(jobId, jobTitle, company, location, salaryRange) {

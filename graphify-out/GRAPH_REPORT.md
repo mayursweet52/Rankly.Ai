@@ -1,7 +1,7 @@
 # Graph Report - Rankly.ai  (2026-09-06)
 
 ## Corpus Check
-- 193 files · ~671,600 words
+- 193 files · ~672,883 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e5513259`
+- Built from commit: `af15d805`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

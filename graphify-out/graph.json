@@ -556,7 +556,7 @@
       "file_type": "code",
       "norm_label": "parseresumehandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L856"
+      "source_location": "L944"
     },
     {
       "id": "src_controllers_resumecontroller_batchuploadhandler",
@@ -760,7 +760,7 @@
       "file_type": "code",
       "norm_label": "applytojobhandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L647"
+      "source_location": "L735"
     },
     {
       "id": "src_controllers_candidatefeaturecontroller_createapplicationhandler",
@@ -820,7 +820,7 @@
       "file_type": "code",
       "norm_label": "getjoblistingshandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L615"
+      "source_location": "L675"
     },
     {
       "id": "src_controllers_candidatefeaturecontroller_getskillgaphandler",
@@ -952,7 +952,7 @@
       "file_type": "code",
       "norm_label": "handlelivenotification()",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1714"
+      "source_location": "L1771"
     },
     {
       "id": "public_js_candidatefeatures_initrealtimenotificationclient",
@@ -964,7 +964,7 @@
       "file_type": "code",
       "norm_label": "initrealtimenotificationclient()",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1612"
+      "source_location": "L1669"
     },
     {
       "id": "public_js_candidatefeatures_renderaitalentreport",
@@ -976,7 +976,7 @@
       "file_type": "code",
       "norm_label": "renderaitalentreport()",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1475"
+      "source_location": "L1532"
     },
     {
       "id": "public_js_candidatefeatures_renderatsresults",
@@ -1024,7 +1024,7 @@
       "file_type": "code",
       "norm_label": "renderjoblistings()",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1318"
+      "source_location": "L1352"
     },
     {
       "id": "public_js_candidatefeatures_renderpolicysummary",
@@ -1036,7 +1036,7 @@
       "file_type": "code",
       "norm_label": "renderpolicysummary()",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1572"
+      "source_location": "L1629"
     },
     {
       "id": "public_js_candidatefeatures_renderprofileskillchips",
@@ -3100,7 +3100,7 @@
       "file_type": "code",
       "norm_label": "uploadapplicationhandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L702"
+      "source_location": "L790"
     },
     {
       "id": "src_services_aiservice_calculateatsscorewithjd",
@@ -15970,7 +15970,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1622",
+      "source_location": "L1679",
       "weight": 1.0
     },
     {
@@ -15982,7 +15982,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1511",
+      "source_location": "L1568",
       "weight": 1.0
     },
     {
@@ -16066,7 +16066,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1347",
+      "source_location": "L1388",
       "weight": 1.0
     },
     {
@@ -16078,7 +16078,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1584",
+      "source_location": "L1641",
       "weight": 1.0
     },
     {
@@ -17038,7 +17038,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L864",
+      "source_location": "L952",
       "weight": 1.0
     },
     {
@@ -17050,7 +17050,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L738",
+      "source_location": "L826",
       "weight": 1.0
     },
     {
@@ -17062,7 +17062,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L758",
+      "source_location": "L846",
       "weight": 1.0
     },
     {
@@ -19630,7 +19630,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L869",
+      "source_location": "L957",
       "weight": 1.0
     },
     {
@@ -19642,7 +19642,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L888",
+      "source_location": "L976",
       "weight": 1.0
     },
     {
@@ -19654,7 +19654,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L741",
+      "source_location": "L829",
       "weight": 1.0
     },
     {
@@ -19666,7 +19666,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L825",
+      "source_location": "L913",
       "weight": 1.0
     },
     {
@@ -22390,7 +22390,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L869",
+      "source_location": "L957",
       "weight": 1.0
     },
     {
@@ -22402,7 +22402,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L888",
+      "source_location": "L976",
       "weight": 1.0
     },
     {
@@ -22414,7 +22414,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L741",
+      "source_location": "L829",
       "weight": 1.0
     },
     {
@@ -22426,7 +22426,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L825",
+      "source_location": "L913",
       "weight": 1.0
     },
     {
@@ -27822,7 +27822,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1318",
+      "source_location": "L1352",
       "weight": 1.0
     },
     {
@@ -27833,7 +27833,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1475",
+      "source_location": "L1532",
       "weight": 1.0
     },
     {
@@ -27844,7 +27844,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1572",
+      "source_location": "L1629",
       "weight": 1.0
     },
     {
@@ -27855,7 +27855,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1612",
+      "source_location": "L1669",
       "weight": 1.0
     },
     {
@@ -27866,7 +27866,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "public/js/candidateFeatures.js",
-      "source_location": "L1714",
+      "source_location": "L1771",
       "weight": 1.0
     },
     {
@@ -34983,7 +34983,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L913",
+      "source_location": "L1001",
       "weight": 1.0
     },
     {
@@ -34995,7 +34995,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L914",
+      "source_location": "L1002",
       "weight": 1.0
     },
     {
@@ -35007,7 +35007,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L915",
+      "source_location": "L1003",
       "weight": 1.0
     },
     {
@@ -35019,7 +35019,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L916",
+      "source_location": "L1004",
       "weight": 1.0
     },
     {
@@ -35031,7 +35031,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L917",
+      "source_location": "L1005",
       "weight": 1.0
     },
     {
@@ -35043,7 +35043,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L918",
+      "source_location": "L1006",
       "weight": 1.0
     },
     {
@@ -35055,7 +35055,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L919",
+      "source_location": "L1007",
       "weight": 1.0
     },
     {
@@ -35067,7 +35067,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L920",
+      "source_location": "L1008",
       "weight": 1.0
     },
     {
@@ -35079,7 +35079,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L921",
+      "source_location": "L1009",
       "weight": 1.0
     },
     {
@@ -35091,7 +35091,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L922",
+      "source_location": "L1010",
       "weight": 1.0
     },
     {
@@ -35103,7 +35103,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L923",
+      "source_location": "L1011",
       "weight": 1.0
     },
     {
@@ -35115,7 +35115,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L924",
+      "source_location": "L1012",
       "weight": 1.0
     },
     {
@@ -35127,7 +35127,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L925",
+      "source_location": "L1013",
       "weight": 1.0
     },
     {
@@ -35139,7 +35139,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L926",
+      "source_location": "L1014",
       "weight": 1.0
     },
     {
@@ -35151,7 +35151,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L927",
+      "source_location": "L1015",
       "weight": 1.0
     },
     {
@@ -37076,5 +37076,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e5513259137a2dc1bf75af534456ac3a80919f23"
+  "built_at_commit": "af15d8058137c205c608718619a499fc431dd06b"
 }

@@ -9659,6 +9659,7 @@ body.dark-theme .resume-tip-box,
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2.5 flex-wrap">
+                                    <!-- Department Filter -->
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-gray-500 font-medium">Department:</span>
                                         <select id="jobDeptFilter" onchange="filterJobListings()" class="form-input py-1.5 px-2.5 text-xs rounded-lg border">
@@ -9669,6 +9670,32 @@ body.dark-theme .resume-tip-box,
                                             <option value="Design & Frontend">Frontend & Design</option>
                                             <option value="Product">Product</option>
                                             <option value="Data & Analytics">Data & Analytics</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Location Filter -->
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Location:</span>
+                                        <select id="jobLocationFilter" onchange="filterJobListings()" class="form-input py-1.5 px-2.5 text-xs rounded-lg border">
+                                            <option value="all">All Locations</option>
+                                            <option value="remote">Remote (Worldwide / India)</option>
+                                            <option value="bengaluru">Bengaluru, India</option>
+                                            <option value="hyderabad">Hyderabad, India</option>
+                                            <option value="mumbai_pune">Mumbai & Pune, India</option>
+                                            <option value="delhi_ncr">Delhi NCR / Gurgaon</option>
+                                            <option value="chennai">Chennai, India</option>
+                                            <option value="international">US / UK / International</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Work Mode Filter -->
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-gray-500 font-medium"><i class="fa-solid fa-briefcase text-slate-400 mr-1"></i>Mode:</span>
+                                        <select id="jobWorkTypeFilter" onchange="filterJobListings()" class="form-input py-1.5 px-2.5 text-xs rounded-lg border">
+                                            <option value="all">All Modes</option>
+                                            <option value="remote">Remote Only</option>
+                                            <option value="hybrid">Hybrid</option>
+                                            <option value="onsite">On-site</option>
                                         </select>
                                     </div>
 

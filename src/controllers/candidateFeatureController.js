@@ -525,8 +525,8 @@ const CURATED_JOB_LISTINGS = [
     title: 'Senior Full Stack Engineer',
     company: 'TechCorp Solutions',
     department: 'Engineering',
-    location: 'Bengaluru / Remote',
-    workType: 'Full-time (Remote / Hybrid)',
+    location: 'Bengaluru, India',
+    workType: 'Hybrid',
     experience: '3 - 6 Years',
     salaryRange: '₹22 - 28 LPA',
     description: 'Looking for a Senior Full Stack Engineer to lead web portal architecture, React state management, and high-throughput Node.js microservices.',
@@ -541,7 +541,7 @@ const CURATED_JOB_LISTINGS = [
     company: 'NeuralScale AI Systems',
     department: 'Artificial Intelligence',
     location: 'Remote (Worldwide / India)',
-    workType: 'Full-time (Remote)',
+    workType: 'Remote',
     experience: '2 - 5 Years',
     salaryRange: '₹25 - 35 LPA',
     description: 'Design and deploy production-grade LLM inference engines, RAG pipelines with vector databases, and high-concurrency model endpoints.',
@@ -555,8 +555,8 @@ const CURATED_JOB_LISTINGS = [
     title: 'Cloud & DevOps Architect',
     company: 'CloudPulse Networks',
     department: 'Infrastructure',
-    location: 'Hyderabad / Hybrid',
-    workType: 'Full-time (Hybrid)',
+    location: 'Hyderabad, India',
+    workType: 'Hybrid',
     experience: '4 - 8 Years',
     salaryRange: '₹24 - 32 LPA',
     description: 'Lead Kubernetes cluster orchestration, multi-region CI/CD pipelines, Terraform infrastructure-as-code, and AWS/GCP security hardening.',
@@ -570,8 +570,8 @@ const CURATED_JOB_LISTINGS = [
     title: 'Frontend Architect (React & Next.js)',
     company: 'HyperGrowth Labs',
     department: 'Design & Frontend',
-    location: 'Mumbai / Remote',
-    workType: 'Full-time (Remote)',
+    location: 'Mumbai, India',
+    workType: 'Remote',
     experience: '3 - 5 Years',
     salaryRange: '₹18 - 25 LPA',
     description: 'Craft ultra-fluid, accessible, and responsive enterprise dashboards using React 18, Tailwind CSS, micro-frontends, and WebSocket streaming.',
@@ -585,8 +585,8 @@ const CURATED_JOB_LISTINGS = [
     title: 'Technical Product Manager',
     company: 'NextGen AI Ventures',
     department: 'Product',
-    location: 'Delhi NCR / Hybrid',
-    workType: 'Full-time (Hybrid)',
+    location: 'Delhi NCR / Gurgaon, India',
+    workType: 'Hybrid',
     experience: '3 - 7 Years',
     salaryRange: '₹26 - 34 LPA',
     description: 'Own the product roadmap for AI-driven workflow automation. Define PRDs, run sprint backlogs, and drive candidate engagement metrics.',
@@ -600,8 +600,8 @@ const CURATED_JOB_LISTINGS = [
     title: 'Data Platform & Analytics Engineer',
     company: 'FinFlow Global',
     department: 'Data & Analytics',
-    location: 'Bengaluru / Hybrid',
-    workType: 'Full-time (Hybrid)',
+    location: 'Bengaluru, India',
+    workType: 'Hybrid',
     experience: '2 - 5 Years',
     salaryRange: '₹20 - 27 LPA',
     description: 'Build real-time ETL pipelines, data lakes, and executive metrics dashboards serving Fortune 500 financial institutions.',
@@ -609,16 +609,103 @@ const CURATED_JOB_LISTINGS = [
     postedAgo: 'Just now',
     applicantsCount: 16,
     matchScore: 78
+  },
+  {
+    id: 'job_rankly_007',
+    title: 'Backend Systems Engineer (Go & Distributed Systems)',
+    company: 'Vortex Data Mesh',
+    department: 'Engineering',
+    location: 'Pune, India',
+    workType: 'Onsite',
+    experience: '2 - 5 Years',
+    salaryRange: '₹19 - 26 LPA',
+    description: 'Build low-latency streaming pipelines with Apache Kafka, gRPC microservices in Golang, and multi-tenant transactional backends.',
+    skills: ['Golang', 'Kafka', 'gRPC', 'PostgreSQL', 'Microservices', 'Distributed Systems'],
+    postedAgo: '1 day ago',
+    applicantsCount: 23,
+    matchScore: 89
+  },
+  {
+    id: 'job_rankly_008',
+    title: 'Staff Security & DevSecOps Engineer',
+    company: 'SentinelGuard AI',
+    department: 'Infrastructure',
+    location: 'Chennai, India',
+    workType: 'Hybrid',
+    experience: '5 - 9 Years',
+    salaryRange: '₹28 - 38 LPA',
+    description: 'Lead enterprise SOC2 / ISO compliance auditing, automated vulnerability scanning, container security, and IAM zero-trust policies.',
+    skills: ['Security Auditing', 'Vault', 'Kubernetes Security', 'AWS IAM', 'Penetration Testing'],
+    postedAgo: '2 days ago',
+    applicantsCount: 19,
+    matchScore: 86
+  },
+  {
+    id: 'job_rankly_009',
+    title: 'Senior AI Research Scientist (LLMs & Vision)',
+    company: 'CognitiveCore Labs',
+    department: 'Artificial Intelligence',
+    location: 'San Francisco, CA / Remote',
+    workType: 'Remote',
+    experience: '4 - 8 Years',
+    salaryRange: '$140k - $180k USD',
+    description: 'Train cutting-edge multimodal vision-language architectures, model distillation, and quantitative alignment algorithms.',
+    skills: ['PyTorch', 'CUDA', 'Transformer Architecture', 'Model Quantization', 'Deep Learning'],
+    postedAgo: '3 days ago',
+    applicantsCount: 77,
+    matchScore: 91
+  },
+  {
+    id: 'job_rankly_010',
+    title: 'Lead Site Reliability Engineer (SRE)',
+    company: 'ScaleMetric Global',
+    department: 'Infrastructure',
+    location: 'London, UK / Remote',
+    workType: 'Remote',
+    experience: '5 - 10 Years',
+    salaryRange: '£85k - £110k GBP',
+    description: 'Ensure 99.99% availability for multi-region financial platforms. Automate incident mitigation, SLI/SLO tracking, and chaos engineering.',
+    skills: ['Terraform', 'Prometheus', 'Grafana', 'Kubernetes', 'Python', 'Incident Management'],
+    postedAgo: '5 days ago',
+    applicantsCount: 35,
+    matchScore: 87
   }
 ];
 
 async function getJobListingsHandler(req, res) {
   try {
-    const { department, search } = req.query || {};
+    const { department, location, workType, search } = req.query || {};
     let filtered = [...CURATED_JOB_LISTINGS];
 
     if (department && department !== 'all') {
       filtered = filtered.filter(j => j.department.toLowerCase().includes(department.toLowerCase()));
+    }
+
+    if (location && location !== 'all') {
+      const locKey = location.toLowerCase().trim();
+      filtered = filtered.filter(j => {
+        const jLoc = (j.location || '').toLowerCase();
+        if (locKey === 'remote') return jLoc.includes('remote') || (j.workType && j.workType.toLowerCase().includes('remote'));
+        if (locKey === 'bengaluru' || locKey === 'bangalore') return jLoc.includes('bengaluru') || jLoc.includes('bangalore');
+        if (locKey === 'hyderabad') return jLoc.includes('hyderabad');
+        if (locKey === 'mumbai' || locKey === 'pune') return jLoc.includes('mumbai') || jLoc.includes('pune');
+        if (locKey === 'delhi' || locKey === 'gurgaon' || locKey === 'noida') return jLoc.includes('delhi') || jLoc.includes('gurgaon') || jLoc.includes('noida');
+        if (locKey === 'chennai') return jLoc.includes('chennai');
+        if (locKey === 'international' || locKey === 'us' || locKey === 'uk') return jLoc.includes('san francisco') || jLoc.includes('london') || jLoc.includes('worldwide');
+        return jLoc.includes(locKey);
+      });
+    }
+
+    if (workType && workType !== 'all') {
+      const wtKey = workType.toLowerCase().trim();
+      filtered = filtered.filter(j => {
+        const wt = (j.workType || '').toLowerCase();
+        const loc = (j.location || '').toLowerCase();
+        if (wtKey === 'remote') return wt.includes('remote') || loc.includes('remote');
+        if (wtKey === 'hybrid') return wt.includes('hybrid') || loc.includes('hybrid');
+        if (wtKey === 'onsite') return wt.includes('onsite') || (!wt.includes('remote') && !wt.includes('hybrid'));
+        return wt.includes(wtKey);
+      });
     }
 
     if (search) {
@@ -626,7 +713,8 @@ async function getJobListingsHandler(req, res) {
       filtered = filtered.filter(j => 
         j.title.toLowerCase().includes(q) || 
         j.company.toLowerCase().includes(q) || 
-        j.skills.some(s => s.toLowerCase().includes(q))
+        (j.location && j.location.toLowerCase().includes(q)) ||
+        (j.skills && j.skills.some(s => s.toLowerCase().includes(q)))
       );
     }
 
