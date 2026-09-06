@@ -13,26 +13,29 @@ const realtimeNotificationService = require('../services/realtimeNotificationSer
 function calculateWorkingDays(startDateStr, endDateStr) {
   if (!startDateStr || !endDateStr) return 0;
   
-  const start = new Date(startDateStr);
-  const end = new Date(endDateStr);
+  // Clean YYYY-MM-DD parsing to avoid timezone-induced date shifts
+  const cleanStart = String(startDateStr).split('T')[0].trim();
+  const cleanEnd = String(endDateStr).split('T')[0].trim();
 
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
-  if (start > end) return 0;
+  const [sY, sM, sD] = cleanStart.split('-').map(Number);
+  const [eY, eM, eD] = cleanEnd.split('-').map(Number);
+
+  if (!sY || !sM || !sD || !eY || !eM || !eD) return 0;
+
+  const start = new Date(Date.UTC(sY, sM - 1, sD));
+  const end = new Date(Date.UTC(eY, eM - 1, eD));
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime()) || start > end) return 0;
 
   let count = 0;
   let cur = new Date(start);
-  
-  // Set to midnight UTC for consistent day step
-  cur.setHours(0, 0, 0, 0);
-  const endMid = new Date(end);
-  endMid.setHours(0, 0, 0, 0);
 
-  while (cur <= endMid) {
-    const dayOfWeek = cur.getDay(); // 0 = Sunday, 6 = Saturday
+  while (cur <= end) {
+    const dayOfWeek = cur.getUTCDay(); // 0 = Sunday, 6 = Saturday
     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
       count++;
     }
-    cur.setDate(cur.getDate() + 1);
+    cur.setUTCDate(cur.getUTCDate() + 1);
   }
 
   return count;

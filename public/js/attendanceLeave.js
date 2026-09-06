@@ -469,6 +469,18 @@
         if (typeof window.showToast === 'function') window.showToast(`📊 Downloading attendance export (${format.toUpperCase()})...`, 'info');
     };
 
+    window.exportLeaves = function(format = 'xlsx') {
+        const url = `/api/export/leaves?format=${format}`;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.download = `Rankly_Leaves_Report.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        if (typeof window.showToast === 'function') window.showToast(`🏖️ Downloading leaves export (${format.toUpperCase()})...`, 'info');
+    };
+
     window.exportCandidates = function(format = 'xlsx') {
         const role = document.getElementById('targetScreeningRole')?.value || 'all';
         const url = `/api/export/candidates?format=${format}&role=${encodeURIComponent(role)}`;

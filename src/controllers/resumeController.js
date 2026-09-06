@@ -2,6 +2,7 @@ const fs = require('fs');
 const prisma = require('../config/database');
 const { extractTextFromDocument, extractCandidateInfoFromText } = require('../utils/helpers');
 const { screenResume, detectRole } = require('../services/aiService');
+const realtimeNotificationService = require('../services/realtimeNotificationService');
 
 /**
  * Screen Resume (Single Candidate Upload)
@@ -108,6 +109,14 @@ async function screenResumeHandler(req, res) {
       });
     }
 
+    // 📡 Trigger Real-Time Notification for Admin / HR Dashboard (Supabase Realtime & WebSockets)
+    realtimeNotificationService.notifyCandidateApplied({
+      name: candidateName,
+      email: candidateEmail,
+      targetRole,
+      score: finalMatchScore,
+      fitVerdict: evaluation.fitVerdict
+    }).catch(e => console.warn('[Realtime Candidate Alert Notice]:', e.message));
 
     // Optional async trigger for n8n Candidates Google Sheet Webhook
     const n8nCandidateWebhook = process.env.N8N_CANDIDATE_WEBHOOK_URL;
@@ -272,6 +281,15 @@ async function batchUploadHandler(req, res) {
           fitVerdict: evaluation.fitVerdict,
           status: 'success'
         });
+
+        // 📡 Trigger Real-Time Notification for Admin / HR Dashboard
+        realtimeNotificationService.notifyCandidateApplied({
+          name: extracted.name,
+          email: extracted.email,
+          targetRole,
+          score: evaluation.matchScore || 0,
+          fitVerdict: evaluation.fitVerdict
+        }).catch(() => {});
       } catch (fileErr) {
         results.push({
           fileName: file.originalname,

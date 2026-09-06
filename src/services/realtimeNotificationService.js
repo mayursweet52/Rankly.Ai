@@ -30,8 +30,12 @@ class RealtimeNotificationService extends EventEmitter {
     }
   }
 
+  setSocketIo(io) {
+    this.io = io;
+  }
+
   /**
-   * Broadcast an event to both Supabase Realtime and internal EventEmitters
+   * Broadcast an event to Supabase Realtime, Socket.IO, and internal EventEmitters
    * @param {string} event - Event name (e.g. 'candidate_applied', 'leave_requested')
    * @param {Object} payload - Notification payload
    */
@@ -46,7 +50,17 @@ class RealtimeNotificationService extends EventEmitter {
     this.emit(event, notification);
     this.emit('*', notification);
 
-    // 2. Broadcast over Supabase Realtime WebSocket channel if available
+    // 2. Broadcast via Socket.IO if attached (for instant local / cloud web clients)
+    try {
+      if (this.io && typeof this.io.emit === 'function') {
+        this.io.emit(event, notification.payload);
+        this.io.emit('notification', notification);
+      }
+    } catch (ioErr) {
+      console.warn(`⚠️ [Realtime] Socket.IO broadcast warning for "${event}":`, ioErr.message);
+    }
+
+    // 3. Broadcast over Supabase Realtime WebSocket channel if available
     try {
       if (this.supabaseChannel && typeof this.supabaseChannel.send === 'function') {
         await this.supabaseChannel.send({

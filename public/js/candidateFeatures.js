@@ -1592,6 +1592,34 @@
                     }
                 });
 
+                socket.on('candidate_applied', (data) => {
+                    handleLiveNotification({
+                        title: '🎯 New Candidate Applied',
+                        message: `${data.candidateName || data.name || 'Candidate'} applied for ${data.targetRole || 'Role'} (Score: ${data.score || 0}%)`,
+                        type: 'success'
+                    });
+                    if (typeof window.loadCandidates === 'function') {
+                        window.loadCandidates();
+                    }
+                    if (typeof window.loadEvaluations === 'function') {
+                        window.loadEvaluations();
+                    }
+                });
+
+                socket.on('leave_requested', (data) => {
+                    handleLiveNotification({
+                        title: '📅 New Leave Request',
+                        message: `${data.employeeName || 'Staff Member'} requested ${data.leaveType || 'casual'} leave (${data.workingDays || 1} working days, weekends excluded)`,
+                        type: 'info'
+                    });
+                    if (typeof window.loadLeavesHistory === 'function') {
+                        window.loadLeavesHistory();
+                    }
+                    if (typeof window.fetchLeaveSummary === 'function') {
+                        window.fetchLeaveSummary();
+                    }
+                });
+
                 socket.on('leave_status_updated', (data) => {
                     handleLiveNotification({
                         title: '📅 Leave Request Update',
@@ -1602,8 +1630,46 @@
                         window.loadLeavesHistory();
                     }
                 });
+
+                socket.on('attendance_punched', (data) => {
+                    handleLiveNotification({
+                        title: '⏱️ Attendance Update',
+                        message: `Employee #${data.employeeId} punched ${data.type === 'check_in' ? 'IN' : 'OUT'}`,
+                        type: 'info'
+                    });
+                    if (typeof window.loadAttendanceHistory === 'function') {
+                        window.loadAttendanceHistory();
+                    }
+                });
             } catch (err) {
                 console.debug('Realtime socket init note:', err);
+            }
+        }
+
+        // 2. Supabase Realtime Browser Channel (if Supabase client is present in window)
+        if (window.supabase && typeof window.supabase.channel === 'function') {
+            try {
+                const sbChannel = window.supabase.channel('rankly-hrms-notifications');
+                sbChannel
+                    .on('broadcast', { event: 'candidate_applied' }, ({ payload }) => {
+                        const d = payload?.payload || payload || {};
+                        handleLiveNotification({
+                            title: '🎯 New Candidate Application',
+                            message: `${d.candidateName || 'Candidate'} applied for ${d.targetRole || 'Role'}`,
+                            type: 'success'
+                        });
+                    })
+                    .on('broadcast', { event: 'leave_requested' }, ({ payload }) => {
+                        const d = payload?.payload || payload || {};
+                        handleLiveNotification({
+                            title: '📅 New Leave Request',
+                            message: `${d.employeeName || 'Staff'} applied for leave (${d.workingDays || 1} working days)`,
+                            type: 'info'
+                        });
+                    })
+                    .subscribe();
+            } catch (sbErr) {
+                console.debug('Supabase client channel note:', sbErr.message);
             }
         }
     }

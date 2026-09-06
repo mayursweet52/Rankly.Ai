@@ -56,6 +56,25 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
+// Initialize Socket.IO and link to Realtime Notification Service
+let io = null;
+try {
+  const { Server } = require('socket.io');
+  io = new Server(server, {
+    cors: { origin: '*', methods: ['GET', 'POST'] }
+  });
+  app.set('io', io);
+  const realtimeNotificationService = require('./src/services/realtimeNotificationService');
+  realtimeNotificationService.setSocketIo(io);
+  io.on('connection', (socket) => {
+    socket.on('join_upload', (room) => {
+      socket.join(room);
+    });
+  });
+} catch (sockErr) {
+  console.warn('⚠️ [Socket.IO] Initialization notice:', sockErr.message);
+}
+
 // Security 1: Disable fingerprinting header
 app.disable('x-powered-by');
 
