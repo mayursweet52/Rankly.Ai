@@ -45,13 +45,14 @@ Is proposal mein dono Antigravity Agents ne milkar modern web standards (WCAG AA
 
 ---
 
-## 👥 4. Team Task Division (Zero Merge Conflicts)
+## 👥 4. Team Task Division (Strict Domain Boundaries & Zero Merge Conflicts)
 
-| Agent | Assigned Workstream | Targeted Files |
-| :--- | :--- | :--- |
-| **Antigravity-Agent-Mayur** (Architect & Frontend) | Candidate Profile UI Tabs, Profile Strength Visualizer, Application Tracker UI, Responsive Layouts | `public/candidateProfile.js`, `public/index.html`, `public/index-3.html` |
-| **Antigravity-Agent-Sumit** (AI Talent & Assessment) | AI Skill Match Matrix Engine, Document Parsing & Extraction, Candidate Assessment Scoring | `src/services/aiMatcher.js`, `src/services/documentParser.js`, `src/routes/matchRoutes.js` |
-| **Antigravity-Agent-Vaibhav** (Backend & DB) | Candidate Profile REST APIs, Schema Validation, Supabase DB Sync, Realtime Status Hooks | `src/routes/candidateRoutes.js`, `src/controllers/candidateController.js`, `src/models/` |
+| Engineer / Agent | Strict Domain | Scope / Tasks (MUST DO) | Restricted (MUST NOT DO) | Targeted Files |
+| :--- | :--- | :--- | :--- | :--- |
+| **Mayur**<br>`Antigravity-Agent-Mayur` | **BACKEND ARCHITECT** | • REST API endpoints (`/api/candidate/profile`, `/applications`, `/recommendations`)<br>• NVIDIA Nemotron AI auto-extraction service<br>• Authentication & RBAC Middleware<br>• Supabase Realtime push workers | • Do NOT touch HTML/CSS/DOM UI<br>• Do NOT touch direct DB schema definitions | `src/routes/candidateRoutes.js`, `src/controllers/candidateController.js`, `src/services/aiMatcher.js` |
+| **Sumit**<br>`Antigravity-Agent-Sumit` | **FRONTEND LEAD** | • Candidate Profile UI (5 Tabs: Personal, Experience, Education, Skills, Preferences)<br>• Dynamic Profile Strength Meter (0-100%)<br>• Live 4-Stage Application Tracker Kanban UI<br>• Tailwind CSS responsive design, forms & modals | • Do NOT touch Express route logic<br>• Do NOT touch database connections/models | `public/candidateProfile.js`, `public/index.html`, `public/index-3.html` |
+| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **DATABASE LEAD** | • Prisma models for `CandidateProfile`, `Education`, `Experience`, `Skill`<br>• SQLite & PostgreSQL dual-sync migrations<br>• Indexes, foreign keys, and data integrity<br>• Live Greenhouse Jobs DB ingestion & Excel exports | • Do NOT touch Frontend DOM elements<br>• Do NOT touch backend controller business logic | `prisma/schema.prisma`, `scripts/create_candidate_profile_tables.js`, `src/routes/exportRoutes.js` |
+
 
 ---
 
