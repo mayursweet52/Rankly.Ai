@@ -211,12 +211,14 @@ app.use('/api/grievances', grievanceRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/candidate', candidateRoutes);
+app.use('/api/candidate/v2', require('./src/routes/candidateProfileRoutes'));
 app.use('/api/export', exportRoutes);
 app.use('/api/pg/applications', applicationDbRoutes);
 app.use('/api/applications', applicationDbRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/health', healthRoutes);
+
 
 // Supabase JS Client live connectivity check
 const supabaseClient = require('./src/config/supabaseClient');
