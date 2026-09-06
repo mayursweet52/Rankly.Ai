@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankly.ai — 2-Minute End-to-End Pipeline & AI Nemotron Live Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#F4F8F6',
+                            100: '#E6F0EC',
+                            500: '#2E6F5E',
+                            600: '#183B33',
+                            700: '#112923',
+                            800: '#0B1C18',
+                            900: '#050D0B',
+                        },
+                        accent: '#D95D39',
+                        nemotron: '#76B900', // NVIDIA Green
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0a0f0d; color: #e2e8f0; }
+        .glass-card { background: rgba(18, 28, 25, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-nemotron { box-shadow: 0 0 25px rgba(118, 185, 0, 0.25); }
+        .glow-brand { box-shadow: 0 0 25px rgba(24, 59, 51, 0.4); }
+        .terminal-scroll::-webkit-scrollbar { width: 6px; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        .anim-pulse-subtle { animation: pulseGlow 3s infinite ease-in-out; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Demo Header Bar -->
+    <header class="border-b border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center font-bold text-white shadow-lg">
+                    R
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-lg tracking-tight text-white">Rankly<span class="text-emerald-400">.ai</span></span>
+                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-nemotron/20 text-nemotron border border-nemotron/40 flex items-center gap-1">
+                            <i class="fa-solid fa-microchip text-[9px]"></i> NVIDIA Nemotron Pipeline
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-400">2-Minute Interactive Executive Walkthrough</p>
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-1.5 rounded-2xl">
+                <button id="playPauseBtn" onclick="togglePlayPause()" class="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition-all cursor-pointer">
+                    <i id="playIcon" class="fa-solid fa-play text-xs"></i>
+                </button>
+                <button onclick="resetDemo()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 flex items-center justify-center transition-all cursor-pointer" title="Reset Demo">
+                    <i class="fa-solid fa-rotate-left text-xs"></i>
+                </button>
+                <div class="h-4 w-px bg-white/20"></div>
+                <div class="text-xs font-mono font-semibold text-emerald-400 flex items-center gap-1">
+                    <span id="currentTime">00:00</span>
+                    <span class="text-gray-500">/</span>
+                    <span class="text-gray-400">02:00</span>
+                </div>
+                <div class="h-4 w-px bg-white/20"></div>
+                <div class="flex items-center gap-1 text-xs">
+                    <button onclick="setSpeed(1)" id="spd1" class="px-2 py-0.5 rounded bg-brand-600 font-bold text-white">1x</button>
+                    <button onclick="setSpeed(2)" id="spd2" class="px-2 py-0.5 rounded hover:bg-white/10 text-gray-400">2x</button>
+                    <button onclick="setSpeed(4)" id="spd4" class="px-2 py-0.5 rounded hover:bg-white/10 text-gray-400">4x</button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="/" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i> Open App
+                </a>
+                <a href="https://github.com/mayursweet52/Rankly.Ai" target="_blank" class="text-xs font-semibold bg-white text-black px-3 py-1.5 rounded-lg hover:bg-gray-200 transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub Repo
+                </a>
+            </div>
+        </div>
+
+        <!-- Progress Timeline Scrubber -->
+        <div class="w-full bg-black/60 h-1.5 relative cursor-pointer" onclick="seekFromBar(event)">
+            <div id="demoProgressBar" class="h-full bg-gradient-to-r from-emerald-500 via-nemotron to-accent w-0 transition-all duration-100"></div>
+        </div>
+    </header>
+
+    <!-- Stage Indicators Nav -->
+    <section class="bg-black/30 border-b border-white/5 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto text-xs font-medium scrollbar-none">
+            <button onclick="jumpToStage(0)" id="stepTab0" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 transition whitespace-nowrap">
+                <span class="w-5 h-5 rounded-full bg-emerald-500 text-black font-bold flex items-center justify-center text-[10px]">1</span>
+                <span>Candidate Ingestion</span>
+            </button>
+            <div class="h-px w-6 bg-white/20 hidden md:block"></div>
+            <button onclick="jumpToStage(1)" id="stepTab1" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
+                <span class="w-5 h-5 rounded-full bg-white/10 text-gray-300 font-bold flex items-center justify-center text-[10px]">2</span>
+                <span>Neural OCR & Parsing</span>
+            </button>
+            <div class="h-px w-6 bg-white/20 hidden md:block"></div>
+            <button onclick="jumpToStage(2)" id="stepTab2" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
+                <span class="w-5 h-5 rounded-full bg-white/10 text-gray-300 font-bold flex items-center justify-center text-[10px]">3</span>
+                <span>NVIDIA Nemotron 70B AI</span>
+            </button>
+            <div class="h-px w-6 bg-white/20 hidden md:block"></div>
+            <button onclick="jumpToStage(3)" id="stepTab3" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
+                <span class="w-5 h-5 rounded-full bg-white/10 text-gray-300 font-bold flex items-center justify-center text-[10px]">4</span>
+                <span>ATS Scoring & Cheat Sheet</span>
+            </button>
+            <div class="h-px w-6 bg-white/20 hidden md:block"></div>
+            <button onclick="jumpToStage(4)" id="stepTab4" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
+                <span class="w-5 h-5 rounded-full bg-white/10 text-gray-300 font-bold flex items-center justify-center text-[10px]">5</span>
+                <span>HR Decision & HRMS Sync</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Interactive Demo Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left 7 Cols: Interactive Live Component View -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+            
+            <!-- Stage Header Card -->
+            <div class="glass-card rounded-2xl p-5 border border-white/10 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span id="stageBadge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        STAGE 1 OF 5
+                    </span>
+                    <span id="stageDuration" class="text-xs font-mono text-gray-400">0:00 - 0:25</span>
+                </div>
+                <h2 id="stageTitle" class="text-xl md:text-2xl font-extrabold text-white mb-1.5">
+                    Candidate Resume Ingestion & Live Stepper Tracker
+                </h2>
+                <p id="stageDesc" class="text-sm text-gray-300 leading-relaxed">
+                    The candidate uploads their PDF/DOCX resume. Rankly automatically extracts profile fields, validates contact integrity, and starts the real-time application tracking pipeline.
+                </p>
+            </div>
+
+            <!-- Dynamic Interactive Component Display -->
+            <div id="dynamicStageContainer" class="glass-card rounded-2xl p-6 border border-white/10 flex-1 min-h-[380px] flex flex-col justify-center">
+                <!-- Dynamically injected via JavaScript based on current stage -->
+            </div>
+
+        </div>
+
+        <!-- Right 5 Cols: NVIDIA Nemotron AI Neural Console -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+            <div class="glass-card rounded-2xl p-4 border border-white/10 flex-1 flex flex-col min-h-[460px]">
+                
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div class="flex items-center gap-2">
+                        <div class="flex gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                        </div>
+                        <span class="text-xs font-mono text-gray-400 ml-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-terminal text-[10px] text-emerald-400"></i> nemotron-70b-stream.log
+                        </span>
+                    </div>
+                    <span class="flex items-center gap-1.5 text-[11px] font-mono text-nemotron font-bold bg-nemotron/10 px-2 py-0.5 rounded border border-nemotron/30">
+                        <span class="w-2 h-2 rounded-full bg-nemotron animate-ping"></span> LIVE INFERENCE
+                    </span>
+                </div>
+
+                <!-- Live Streaming Log Box -->
+                <div id="terminalBody" class="font-mono text-[11px] leading-relaxed text-emerald-300/90 flex-1 overflow-y-auto terminal-scroll py-3 space-y-1.5 select-text">
+                    <!-- Logs stream in real-time -->
+                </div>
+
+                <!-- Hardware & Telemetry Bar -->
+                <div class="pt-3 border-t border-white/10 grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                    <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+                        <div class="text-gray-400">ENGINE</div>
+                        <div class="font-bold text-nemotron">NVIDIA Nemotron</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+                        <div class="text-gray-400">TOKENS/SEC</div>
+                        <div id="telemetryTokens" class="font-bold text-white">142.8 t/s</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+                        <div class="text-gray-400">LATENCY</div>
+                        <div id="telemetryLatency" class="font-bold text-emerald-400">184ms</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Key Metric Mini-Panel -->
+            <div class="glass-card rounded-xl p-3 border border-white/10 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2 text-gray-300">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>RBAC Security & Duplicate Prevention:</span>
+                </div>
+                <span class="font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded border border-emerald-500/30">ACTIVE</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive Simulation Script -->
+    <script>
+        const TOTAL_DURATION = 120; // 120 seconds (2 minutes)
+        let elapsed = 0;
+        let isPlaying = false;
+        let speed = 1;
+        let interval = null;
+
+        const stages = [
+            {
+                name: "Stage 1: Candidate Ingestion",
+                duration: "0:00 - 0:25",
+                badge: "STAGE 1 OF 5",
+                title: "Candidate Resume Ingestion & Live Stepper Tracker",
+                desc: "The candidate uploads Aarav_Sharma_Lead_FullStack.pdf. Rankly parses the file, extracts contact info, validates format, and connects to the live Supabase realtime stepper.",
+                render: () => `
+                    <div class="space-y-5">
+                        <!-- Uploaded File Card -->
+                        <div class="p-4 rounded-xl bg-black/40 border border-emerald-500/30 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Aarav_Sharma_Lead_FullStack_Resume.pdf</h4>
+                                    <p class="text-xs text-gray-400">2.4 MB • PDF Document • Parsed via pdf-parse & mammoth</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-check"></i> Ingested
+                            </span>
+                        </div>
+
+                        <!-- Live Stepper Tracker -->
+                        <div>
+                            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Live Application Tracker (Supabase Realtime)</div>
+                            <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                                <div class="p-2.5 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+                                    <i class="fa-solid fa-circle-check mb-1 block text-sm"></i>
+                                    <span>Submitted</span>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-yellow-500/20 border border-yellow-500/40 text-yellow-300 font-bold anim-pulse-subtle">
+                                    <i class="fa-solid fa-gear fa-spin mb-1 block text-sm"></i>
+                                    <span>AI Screening</span>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-black/30 border border-white/5 text-gray-500">
+                                    <i class="fa-regular fa-clock mb-1 block text-sm"></i>
+                                    <span>Shortlisted</span>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-black/30 border border-white/5 text-gray-500">
+                                    <i class="fa-regular fa-calendar mb-1 block text-sm"></i>
+                                    <span>Interview</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-filled Candidate Details -->
+                        <div class="grid grid-cols-2 gap-3 bg-black/30 p-3.5 rounded-xl border border-white/5 text-xs">
+                            <div><span class="text-gray-400">Candidate:</span> <span class="font-semibold text-white">Aarav Sharma</span></div>
+                            <div><span class="text-gray-400">Target Role:</span> <span class="font-semibold text-emerald-300">Staff Full-Stack Architect</span></div>
+                            <div><span class="text-gray-400">Experience:</span> <span class="font-semibold text-white">6.5 Years</span></div>
+                            <div><span class="text-gray-400">Core Stack:</span> <span class="font-semibold text-white">React, Node, Prisma, PostgreSQL</span></div>
+                        </div>
+                    </div>
+                `,
+                logs: [
+                    "🚀 [Ingest] POST /api/upload - Received Aarav_Sharma_Lead_FullStack.pdf (2,411,820 bytes)",
+                    "📄 [Parser] Initializing PDF stream buffer extraction via pdf-lib...",
+                    "✅ [Parser] 3 pages parsed successfully. Character count: 7,890 chars.",
+                    "🔍 [ContactExtractor] Extracted candidate: Aarav Sharma (aarav.sharma@example.com, +91-98765-43210)",
+                    "🔒 [AuthSecurity] findExistingUserByEmail check -> OK (No duplicate conflict)",
+                    "📡 [SupabaseRealtime] Broadcasted event 'APPLICATION_SUBMITTED' to candidate session."
+                ]
+            },
+            {
+                name: "Stage 2: Neural Parsing & OCR",
+                duration: "0:25 - 0:50",
+                badge: "STAGE 2 OF 5",
+                title: "Neural OCR, Section Chunking & Tech Ontology Extraction",
+                desc: "The raw text is chunked into Semantic Units: Work History, Technical Stack, Open-Source Contributions, Education, and Impact Metrics.",
+                render: () => `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between text-xs font-semibold text-gray-400 mb-1">
+                            <span>SEMANTIC EXTRACTION ACCURACY</span>
+                            <span class="text-emerald-400 font-mono font-bold">99.4% Confidence</span>
+                        </div>
+                        <div class="w-full bg-black/50 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-emerald-500 to-nemotron h-2 rounded-full w-[99%]"></div>
+                        </div>
+
+                        <!-- Extracted Tech Tags -->
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-white/10 space-y-2">
+                            <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-code"></i> Verified Technical Skills (18 Found)
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Node.js</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">React 19</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">TypeScript</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Prisma ORM</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">PostgreSQL</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Docker</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Kubernetes</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Redis</span>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium">Microservices</span>
+                            </div>
+                        </div>
+
+                        <!-- Work History Breakdown -->
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-white/10 space-y-1.5 text-xs">
+                            <div class="text-xs font-bold text-gray-300 flex items-center justify-between">
+                                <span>Senior Software Engineer • Unicorn Fintech Ltd.</span>
+                                <span class="text-emerald-400 font-mono">2023 - Present</span>
+                            </div>
+                            <p class="text-gray-400 text-[11px] leading-relaxed">
+                                Architected high-throughput payment settlement engine handling 120,000 req/sec with 99.99% uptime on AWS EKS. Reduced p99 latency by 42%.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                logs: [
+                    "🧠 [Chunker] Splitting document into 5 semantic sections...",
+                    "📊 [NER] Named Entity Recognition: Extracted 18 verified hard technical skills.",
+                    "📈 [MetricAudit] Quantified impact statements detected: '120k req/sec', '42% latency drop'.",
+                    "🔍 [EducationParser] B.Tech Computer Science (IIT Bombay) - Verified Honors GPA 9.1/10.",
+                    "✅ [PreProcessing] JSON payload compiled for NVIDIA Nemotron-70B model."
+                ]
+            },
+            {
+                name: "Stage 3: NVIDIA Nemotron AI Evaluation",
+                duration: "0:50 - 1:20",
+                badge: "STAGE 3 OF 5",
+                title: "NVIDIA Nemotron 70B Deep ATS Screening & Scoring",
+                desc: "The resume representation is processed by NVIDIA Nemotron 70B. It conducts semantic matching, detects skill gaps, checks project authenticity, and guarantees clamped 0-100 normalization.",
+                render: () => `
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl bg-nemotron/10 border border-nemotron/30 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-nemotron text-black font-extrabold flex items-center justify-center text-lg shadow-lg">
+                                    <i class="fa-solid fa-brain"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">nvidia/nemotron-4-340b-reward / 70b-instruct</h4>
+                                    <p class="text-xs text-nemotron">High-Fidelity Reward Model & Tiered Evaluation Active</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-nemotron bg-nemotron/20 px-2.5 py-1 rounded-full border border-nemotron/40">
+                                0-100 Normalization
+                            </span>
+                        </div>
+
+                        <!-- Neural Criteria Breakdown -->
+                        <div class="space-y-2.5 text-xs">
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span class="text-gray-300">Technical Competence & Architecture Depth</span>
+                                    <span class="text-emerald-400 font-mono">96 / 100</span>
+                                </div>
+                                <div class="w-full bg-black/40 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full w-[96%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span class="text-gray-300">Job Description Semantic Alignment</span>
+                                    <span class="text-emerald-400 font-mono">94 / 100</span>
+                                </div>
+                                <div class="w-full bg-black/40 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-nemotron h-full w-[94%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span class="text-gray-300">Quantifiable Production Impact</span>
+                                    <span class="text-emerald-400 font-mono">92 / 100</span>
+                                </div>
+                                <div class="w-full bg-black/40 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-teal-400 h-full w-[92%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span class="text-gray-300">ATS Structure & Readability Standard</span>
+                                    <span class="text-emerald-400 font-mono">98 / 100</span>
+                                </div>
+                                <div class="w-full bg-black/40 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-400 h-full w-[98%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                logs: [
+                    "⚡ [AI_ENGINE] Dispatching evaluation payload to NVIDIA Nemotron 70B...",
+                    "🟢 [Inference] Prompt tokens: 1,842 | Target Role: 'Senior Full Stack Lead'",
+                    "🤖 [Nemotron] Evaluating system design experience against enterprise requirements...",
+                    "🎯 [Scoring] Tech score: 96.2, Semantic match: 94.1, Impact: 92.0, Structure: 98.4",
+                    "🛡️ [ClampGuard] Applied clamp(round(normalized_score), 0, 100) -> Final Score: 94",
+                    "✅ [AI_ENGINE] Evaluation generated in 1.48s without fallback trigger."
+                ]
+            },
+            {
+                name: "Stage 4: ATS Scoring & Cheat Sheet",
+                duration: "1:20 - 1:40",
+                badge: "STAGE 4 OF 5",
+                title: "Overall ATS Fit Score (94%) & Recruiter Cheat Sheet",
+                desc: "Instant breakdown for recruiters: Candidate Fit Radar, Top Strengths, Red Flag Auditing, and customized technical interview questions.",
+                render: () => `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-emerald-500/30">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex flex-col items-center justify-center text-white shadow-xl">
+                                <span class="text-2xl font-extrabold leading-none">94</span>
+                                <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-200">ATS Score</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-bold text-white text-base">Exceptional Top Tier Match</h4>
+                                    <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-xs">Top 2%</span>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Recommended for immediate technical interview fast-track.</p>
+                            </div>
+                        </div>
+
+                        <!-- Strengths & Questions -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/20">
+                                <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-thumbs-up"></i> Key Strengths
+                                </div>
+                                <ul class="text-gray-300 space-y-1 text-[11px] list-disc list-inside">
+                                    <li>Extensive scale with Node & PostgreSQL</li>
+                                    <li>Proven distributed systems experience</li>
+                                    <li>Consistent tenure and rapid promotions</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 rounded-xl bg-purple-950/30 border border-purple-500/20">
+                                <div class="font-bold text-purple-400 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-clipboard-question"></i> Interview Questions
+                                </div>
+                                <ul class="text-gray-300 space-y-1 text-[11px] list-disc list-inside">
+                                    <li>How did you optimize p99 latency in payment systems?</li>
+                                    <li>Describe zero-downtime PostgreSQL schema migrations.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                logs: [
+                    "📋 [CheatSheet] Formatted recruiter cheat sheet for HR dashboard.",
+                    "🎯 [Strengths] Identified 4 core technical pillars.",
+                    "❓ [InterviewGen] Formulated 3 targeted system design questions.",
+                    "💾 [Database] Stored evaluation record in SQLite & PostgreSQL evaluations table.",
+                    "📡 [SupabaseRealtime] Emitted event 'EVALUATION_COMPLETED' (Score: 94)."
+                ]
+            },
+            {
+                name: "Stage 5: HR Decision & HRMS Sync",
+                duration: "1:40 - 2:00",
+                badge: "STAGE 5 OF 5",
+                title: "1-Click HR Queue Decision, Real-Time Alert & HRMS Sync",
+                desc: "HR recruiter shortlists candidate with 1 click. Supabase alerts candidate in real-time. Employee profile is provisioned in the Enterprise HRMS with dual-punch attendance & smart leave calculator.",
+                render: () => `
+                    <div class="space-y-4">
+                        <!-- HR Queue Action -->
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
+                            <div>
+                                <h4 class="font-bold text-white text-xs">Aarav Sharma • Staff Full-Stack Lead</h4>
+                                <p class="text-[11px] text-emerald-400 font-semibold">Rank #1 in Recruiter AI Queue (Score 94)</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition flex items-center gap-1">
+                                    <i class="fa-solid fa-check"></i> Shortlist
+                                </button>
+                                <button class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 text-xs transition">
+                                    Schedule Call
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Enterprise HRMS Sync Highlights -->
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-white/10 space-y-2 text-xs">
+                            <div class="text-xs font-bold text-gray-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-building-user text-emerald-400"></i> Enterprise HRMS & Attendance Sync
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+                                <div class="bg-white/5 p-2 rounded-lg border border-white/5">
+                                    <span class="text-gray-400 block text-[10px]">ATTENDANCE</span>
+                                    <span class="font-bold text-emerald-300">Dual Punch In/Out</span>
+                                </div>
+                                <div class="bg-white/5 p-2 rounded-lg border border-white/5">
+                                    <span class="text-gray-400 block text-[10px]">SMART LEAVE</span>
+                                    <span class="font-bold text-emerald-300">Weekend Excluded</span>
+                                </div>
+                                <div class="bg-white/5 p-2 rounded-lg border border-white/5">
+                                    <span class="text-gray-400 block text-[10px]">EXPORT</span>
+                                    <span class="font-bold text-emerald-300">1-Click Excel / CSV</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pipeline Completed Badge -->
+                        <div class="text-center py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                            <span class="text-xs font-bold text-emerald-300 flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Complete 2-Minute End-to-End Pipeline Verified
+                            </span>
+                        </div>
+                    </div>
+                `,
+                logs: [
+                    "👤 [HRQueue] Recruiter marked Aarav Sharma as 'SHORTLISTED'.",
+                    "📡 [SupabaseRealtime] Broadcasted notification to candidate mobile & desktop portal.",
+                    "🏢 [HRMS] Employee profile staged in HRMS portal.",
+                    "⏱️ [Attendance] Dedicated Punch In / Out triggers armed.",
+                    "🏖️ [SmartLeave] Weekend exclusion filter active (Sat/Sun excluded from deductions).",
+                    "🎉 [System] Full Hiring Pipeline Cycle Executed Successfully!"
+                ]
+            }
+        ];
+
+        let currentStageIdx = 0;
+
+        function updateDisplay() {
+            // Calculate which stage we are on
+            let stageIdx = 0;
+            if (elapsed < 25) stageIdx = 0;
+            else if (elapsed < 50) stageIdx = 1;
+            else if (elapsed < 80) stageIdx = 2;
+            else if (elapsed < 100) stageIdx = 3;
+            else stageIdx = 4;
+
+            if (stageIdx !== currentStageIdx) {
+                currentStageIdx = stageIdx;
+                renderStage(currentStageIdx);
+            }
+
+            // Update Progress Bar
+            const percent = (elapsed / TOTAL_DURATION) * 100;
+            document.getElementById('demoProgressBar').style.width = percent + '%';
+
+            // Update Timer Display
+            const mins = Math.floor(elapsed / 60);
+            const secs = Math.floor(elapsed % 60);
+            document.getElementById('currentTime').textContent = 
+                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function renderStage(idx) {
+            const s = stages[idx];
+            document.getElementById('stageBadge').textContent = s.badge;
+            document.getElementById('stageDuration').textContent = s.duration;
+            document.getElementById('stageTitle').textContent = s.title;
+            document.getElementById('stageDesc').textContent = s.desc;
+            document.getElementById('dynamicStageContainer').innerHTML = s.render();
+
+            // Highlight Tab
+            for (let i = 0; i < 5; i++) {
+                const tab = document.getElementById('stepTab' + i);
+                if (tab) {
+                    if (i === idx) {
+                        tab.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 transition whitespace-nowrap shadow-sm';
+                    } else {
+                        tab.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap';
+                    }
+                }
+            }
+
+            // Stream logs
+            const term = document.getElementById('terminalBody');
+            term.innerHTML = '';
+            s.logs.forEach((line, lineIdx) => {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'py-0.5';
+                    el.textContent = line;
+                    term.appendChild(el);
+                    term.scrollTop = term.scrollHeight;
+                }, lineIdx * 150);
+            });
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playPauseBtn');
+            const icon = document.getElementById('playIcon');
+            if (isPlaying) {
+                icon.className = 'fa-solid fa-pause text-xs';
+                btn.className = 'w-8 h-8 rounded-lg bg-amber-600 hover:bg-amber-500 text-white flex items-center justify-center transition-all cursor-pointer';
+                if (!interval) {
+                    interval = setInterval(() => {
+                        elapsed += 1;
+                        if (elapsed >= TOTAL_DURATION) {
+                            elapsed = TOTAL_DURATION;
+                            togglePlayPause();
+                        }
+                        updateDisplay();
+                    }, 1000 / speed);
+                }
+            } else {
+                icon.className = 'fa-solid fa-play text-xs';
+                btn.className = 'w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition-all cursor-pointer';
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+
+        function resetDemo() {
+            if (isPlaying) togglePlayPause();
+            elapsed = 0;
+            currentStageIdx = 0;
+            updateDisplay();
+            renderStage(0);
+        }
+
+        function setSpeed(s) {
+            speed = s;
+            ['spd1', 'spd2', 'spd4'].forEach(id => {
+                const b = document.getElementById(id);
+                if (b) b.className = 'px-2 py-0.5 rounded hover:bg-white/10 text-gray-400';
+            });
+            const active = document.getElementById('spd' + s);
+            if (active) active.className = 'px-2 py-0.5 rounded bg-brand-600 font-bold text-white';
+
+            if (isPlaying) {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    elapsed += 1;
+                    if (elapsed >= TOTAL_DURATION) {
+                        elapsed = TOTAL_DURATION;
+                        togglePlayPause();
+                    }
+                    updateDisplay();
+                }, 1000 / speed);
+            }
+        }
+
+        function jumpToStage(idx) {
+            const startTimes = [0, 25, 50, 80, 100];
+            elapsed = startTimes[idx];
+            currentStageIdx = idx;
+            updateDisplay();
+            renderStage(idx);
+        }
+
+        function seekFromBar(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, clickX / rect.width));
+            elapsed = Math.floor(pct * TOTAL_DURATION);
+            updateDisplay();
+        }
+
+        // Initialize stage 0 on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderStage(0);
+            updateDisplay();
+            // Start auto-play after 1 second
+            setTimeout(() => {
+                togglePlayPause();
+            }, 800);
+        });
+    </script>
+</body>
+</html>
