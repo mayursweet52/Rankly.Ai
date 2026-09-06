@@ -56,12 +56,12 @@ function buildAiCheatSheet(candidate) {
       : `Moderate fit; recommend verifying depth in ${missingStr || 'secondary domain tools'} during interview.`
   ];
 
-  const coreStrengths = matched.length > 0 
-    ? matched.slice(0, 3).map(s => `Demonstrated hands-on competence with ${s} in production environments`)
+  const coreStrengths = matched.length > 0 ?
+    matched.slice(0, 3).map(s => `Demonstrated hands-on competence with ${s} in production environments`)
     : [`Solid grasp of ${role} core methodologies`, 'Adaptable engineering problem-solving mindset'];
 
-  const potentialRisks = missing.length > 0
-    ? missing.slice(0, 2).map(m => `May require ramp-up or targeted onboarding on ${m}`)
+  const potentialRisks = missing.length > 0 ?
+    missing.slice(0, 2).map(m => `May require ramp-up or targeted onboarding on ${m}`)
     : ['Verify practical breadth of edge-case error recovery mechanisms'];
 
   const interviewQuestions = [
@@ -241,8 +241,8 @@ async function performCandidateAction(req, res) {
       }
     }
 
-    const hrNotes = notes || (action === 'shortlist' 
-      ? 'Shortlisted by HR based on high AI Fit Score calibration.' 
+    const hrNotes = notes || (action === 'shortlist' ?
+      'Shortlisted by HR based on high AI Fit Score calibration.' 
       : (action === 'reject' ? 'Rejected after HR screening review.' : `Stage moved to ${newStage}.`));
 
     // 1. Update candidate record

@@ -94,15 +94,33 @@ const checks = {
 
     // 4. Missing Semicolons & Dangerous Patterns in Target Code
     semicolons: async (filePath) => {
-        if (!fs.existsSync(filePath)) return { error: false, message: null };
         try {
             const content = fs.readFileSync(filePath, 'utf-8');
             const lines = content.split('\n');
             const issues = [];
+            let inTemplateLiteral = false;
             lines.forEach((line, index) => {
                 let trimmed = line.trim();
                 // Strip trailing single-line comments so inline comments don't break check
                 trimmed = trimmed.replace(/\/\/.*$/, '').trim();
+                if (!trimmed) return;
+
+                // Count unescaped backticks for template literals
+                const backtickMatches = trimmed.match(/(?<!\\)`/g) || [];
+                const hasOddBackticks = (backtickMatches.length % 2 !== 0);
+
+                if (inTemplateLiteral) {
+                    if (hasOddBackticks) {
+                        inTemplateLiteral = false;
+                    }
+                    return;
+                }
+
+                if (hasOddBackticks) {
+                    inTemplateLiteral = true;
+                    return;
+                }
+
                 if (
                     trimmed &&
                     !trimmed.startsWith('//') &&
