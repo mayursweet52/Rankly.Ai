@@ -124,7 +124,7 @@
             <div class="h-px w-6 bg-white/20 hidden md:block"></div>
             <button onclick="jumpToStage(3)" id="stepTab3" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
                 <span class="w-5 h-5 rounded-full bg-white/10 text-gray-300 font-bold flex items-center justify-center text-[10px]">4</span>
-                <span>ATS Scoring & Cheat Sheet</span>
+                <span>ATS Scoring & Evaluation Brief</span>
             </button>
             <div class="h-px w-6 bg-white/20 hidden md:block"></div>
             <button onclick="jumpToStage(4)" id="stepTab4" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition whitespace-nowrap">
@@ -421,10 +421,10 @@
                 ]
             },
             {
-                name: "Stage 4: ATS Scoring & Cheat Sheet",
+                name: "Stage 4: ATS Scoring & Evaluation Brief",
                 duration: "1:20 - 1:40",
                 badge: "STAGE 4 OF 5",
-                title: "Overall ATS Fit Score (94%) & Recruiter Cheat Sheet",
+                title: "Overall ATS Fit Score (94%) & Evaluation Dossier",
                 desc: "Instant breakdown for recruiters: Candidate Fit Radar, Top Strengths, Red Flag Auditing, and customized technical interview questions.",
                 render: () => `
                     <div class="space-y-4">
@@ -467,7 +467,7 @@
                     </div>
                 `,
                 logs: [
-                    "📋 [CheatSheet] Formatted recruiter cheat sheet for HR dashboard.",
+                    "📄 [EvaluationDossier] Formatted candidate evaluation brief for HR dashboard.",
                     "🎯 [Strengths] Identified 4 core technical pillars.",
                     "❓ [InterviewGen] Formulated 3 targeted system design questions.",
                     "💾 [Database] Stored evaluation record in SQLite & PostgreSQL evaluations table.",

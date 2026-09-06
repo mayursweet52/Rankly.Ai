@@ -1,16 +1,16 @@
 # Graph Report - Rankly.ai  (2026-09-06)
 
 ## Corpus Check
-- 186 files · ~483,409 words
+- 186 files · ~485,281 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 - 1271 nodes · 1715 edges · 140 communities (86 shown, 48 thin omitted)
-- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 202 edges (avg confidence: 0.85)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 203 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `dadb0feb`
+- Built from commit: `d182aa79`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

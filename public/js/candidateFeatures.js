@@ -1783,10 +1783,15 @@
         }
     };
 
+    // Backwards-compatible aliases for Enterprise API & Corporate Invite
+    window.generateEnterpriseApiKey = window.generateRealApiKey;
+    window.copyEnterpriseApiKey = window.copyRealApiKey;
+    window.copyCorporateInviteCode = window.copyReferralCode;
+
     document.addEventListener('DOMContentLoaded', function() {
         const savedKey = localStorage.getItem('rankly_active_api_key');
         if (savedKey) {
-            const keyEl = document.getElementById('liveApiKeyDisplay');
+            const keyEl = document.getElementById('liveApiKeyDisplay') || document.getElementById('prodApiKeyDisplay');
             if (keyEl) keyEl.textContent = savedKey.slice(0, 18) + '... (Active)';
         }
     });

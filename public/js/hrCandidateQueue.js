@@ -189,20 +189,20 @@
                         </span>
                     </td>
 
-                    <!-- AI Cheat Sheet Quick Peek -->
+                    <!-- Candidate Evaluation Brief Quick Peek -->
                     <td class="p-3.5 max-w-xs">
                         <p class="text-[11px] text-[#444440] dark:text-zinc-300 line-clamp-2 leading-relaxed">
                             ${escapeHtml(summaryPreview)}
                         </p>
                     </td>
 
-                    <!-- Fast Action Buttons (HR Shortlist / Reject / Cheat Sheet) -->
+                    <!-- Fast Action Buttons (HR Shortlist / Reject / Evaluation Brief) -->
                     <td class="p-3.5 text-right">
                         <div class="inline-flex items-center gap-1.5">
-                            <!-- View AI Cheat Sheet -->
-                            <button type="button" onclick="openAiCheatSheet('${cand.id}')" class="p-2 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-emerald-500 text-gray-700 dark:text-zinc-200 hover:text-emerald-600 transition-all text-xs font-semibold shadow-2xs cursor-pointer" title="Open AI Recruiter Cheat Sheet">
-                                <i class="fa-solid fa-wand-magic-sparkles text-emerald-500 mr-1"></i>
-                                <span>Cheat Sheet</span>
+                            <!-- View Candidate Evaluation Brief -->
+                            <button type="button" onclick="openAiCheatSheet('${cand.id}')" class="p-2 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-emerald-500 text-gray-700 dark:text-zinc-200 hover:text-emerald-600 transition-all text-xs font-semibold shadow-2xs cursor-pointer" title="Open Candidate Evaluation Brief">
+                                <i class="fa-solid fa-file-lines text-emerald-500 mr-1"></i>
+                                <span>Evaluation Brief</span>
                             </button>
 
                             <!-- Fast Action: Move to HR Shortlist -->
@@ -306,15 +306,15 @@
             const res = await fetch(`/api/candidates/${candidateId}/cheat-sheet`, { credentials: 'include' });
             const data = await res.json();
 
-            if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load cheat sheet');
+            if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load candidate evaluation brief');
 
             activeCheatSheetCandidate = data.candidate;
             renderCheatSheetContent(data.candidate, data.cheatSheet);
         } catch (err) {
-            console.error('Cheat Sheet Load Error:', err);
+            console.error('Candidate Evaluation Brief Load Error:', err);
             const body = document.getElementById('aiCheatSheetBody');
             if (body) {
-                body.innerHTML = `<div class="p-8 text-center text-xs text-red-500">Failed to load AI Cheat Sheet: ${err.message}</div>`;
+                body.innerHTML = `<div class="p-8 text-center text-xs text-red-500">Failed to load Candidate Evaluation Brief: ${err.message}</div>`;
             }
         }
     };
@@ -333,9 +333,9 @@
         if (body) {
             body.innerHTML = `
                 <div class="p-12 text-center text-xs text-gray-400 space-y-3">
-                    <i class="fa-solid fa-wand-magic-sparkles fa-spin text-emerald-500 text-2xl"></i>
-                    <p class="font-bold text-[#111111] dark:text-white">Synthesizing AI Recruiter Cheat Sheet...</p>
-                    <p class="text-gray-400">Extracting 3-line executive summary, core strengths, risks & technical interview questions</p>
+                    <i class="fa-solid fa-file-lines fa-bounce text-emerald-500 text-2xl"></i>
+                    <p class="font-bold text-[#111111] dark:text-white">Synthesizing Candidate Evaluation Brief...</p>
+                    <p class="text-gray-400">Extracting 3-line executive summary, core competencies, risk matrix & structured interview questions</p>
                 </div>
             `;
         }
