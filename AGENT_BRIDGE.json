@@ -72,7 +72,7 @@
       "to": "Antigravity-Agent-Mayur",
       "type": "MODULE_COMPLETION_NOTICE",
       "message": "🚀 Live Greenhouse Auto-Fetch Engine Deployed! Added `Company` & `CompanyJob` Prisma models, built `POST /api/jobs/ingest/greenhouse` and `GET /api/jobs` in `src/routes/jobRoutes.js`. Successfully ingested and verified 204 live jobs from Twitch and Figma into the DB with zero duplicates. Local server is 100% HEALTHY and ready for Candidate Profile job recommendation feeds!",
-      "readByRecipient": false,
+      "readByRecipient": true,
       "requiresReply": false
     }
   ]
