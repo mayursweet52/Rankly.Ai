@@ -43,18 +43,6 @@
       "source_location": "L17"
     },
     {
-      "id": "src_controllers_authcontroller_checkemailavailability",
-      "label": "checkEmailAvailability()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "checkemailavailability()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L2066"
-    },
-    {
       "id": "src_controllers_authcontroller_checkverificationstatus",
       "label": "checkVerificationStatus()",
       "_callable": true,
@@ -65,18 +53,6 @@
       "norm_label": "checkverificationstatus()",
       "source_file": "src/controllers/authController.js",
       "source_location": "L1827"
-    },
-    {
-      "id": "src_controllers_authcontroller_companyresetpassword",
-      "label": "companyResetPassword()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "companyresetpassword()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L1286"
     },
     {
       "id": "src_controllers_authcontroller_createorganization",
@@ -91,78 +67,6 @@
       "source_location": "L1366"
     },
     {
-      "id": "src_controllers_authcontroller_failauth",
-      "label": "failAuth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "failauth()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L87"
-    },
-    {
-      "id": "src_controllers_authcontroller_findexistinguserbyemail",
-      "label": "findExistingUserByEmail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "findexistinguserbyemail()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L14"
-    },
-    {
-      "id": "src_controllers_authcontroller_forgotpassword",
-      "label": "forgotPassword()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "forgotpassword()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L878"
-    },
-    {
-      "id": "src_controllers_authcontroller_formatuserresponse",
-      "label": "formatUserResponse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "formatuserresponse()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L92"
-    },
-    {
-      "id": "src_controllers_authcontroller_getappbaseurl",
-      "label": "getAppBaseUrl()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "getappbaseurl()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L107"
-    },
-    {
-      "id": "src_controllers_authcontroller_getme",
-      "label": "getMe()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "getme()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L608"
-    },
-    {
       "id": "src_controllers_authcontroller_joinorganization",
       "label": "joinOrganization()",
       "_callable": true,
@@ -173,18 +77,6 @@
       "norm_label": "joinorganization()",
       "source_file": "src/controllers/authController.js",
       "source_location": "L1405"
-    },
-    {
-      "id": "src_controllers_authcontroller_login",
-      "label": "login()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "login()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L483"
     },
     {
       "id": "src_controllers_authcontroller_logout",
@@ -199,18 +91,6 @@
       "source_location": "L569"
     },
     {
-      "id": "src_controllers_authcontroller_register",
-      "label": "register()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "register()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L181"
-    },
-    {
       "id": "src_controllers_authcontroller_renderverificationresultpage",
       "label": "renderVerificationResultPage()",
       "_callable": true,
@@ -221,42 +101,6 @@
       "norm_label": "renderverificationresultpage()",
       "source_file": "src/controllers/authController.js",
       "source_location": "L1457"
-    },
-    {
-      "id": "src_controllers_authcontroller_resendlink",
-      "label": "resendLink()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "resendlink()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L1983"
-    },
-    {
-      "id": "src_controllers_authcontroller_resendotp",
-      "label": "resendOtp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "resendotp()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L1917"
-    },
-    {
-      "id": "src_controllers_authcontroller_resetpassword",
-      "label": "resetPassword()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "resetpassword()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L937"
     },
     {
       "id": "src_controllers_authcontroller_resetpasswordwithtoken",
@@ -271,18 +115,6 @@
       "source_location": "L1064"
     },
     {
-      "id": "src_controllers_authcontroller_sendotp",
-      "label": "sendOtp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "sendotp()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L659"
-    },
-    {
       "id": "src_controllers_authcontroller_submitchangepassword",
       "label": "submitChangePassword()",
       "_callable": true,
@@ -293,18 +125,6 @@
       "norm_label": "submitchangepassword()",
       "source_file": "src/controllers/authController.js",
       "source_location": "L1191"
-    },
-    {
-      "id": "src_controllers_authcontroller_validateemailaddress",
-      "label": "validateEmailAddress()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "validateemailaddress()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L144"
     },
     {
       "id": "src_controllers_authcontroller_verifychangepasswordcredentials",
@@ -319,18 +139,6 @@
       "source_location": "L1124"
     },
     {
-      "id": "src_controllers_authcontroller_verifycompanyreferral",
-      "label": "verifyCompanyReferral()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "verifycompanyreferral()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L1251"
-    },
-    {
       "id": "src_controllers_authcontroller_verifyemaillink",
       "label": "verifyEmailLink()",
       "_callable": true,
@@ -341,162 +149,6 @@
       "norm_label": "verifyemaillink()",
       "source_file": "src/controllers/authController.js",
       "source_location": "L1651"
-    },
-    {
-      "id": "src_controllers_authcontroller_verifyforgototpandsendlink",
-      "label": "verifyForgotOtpAndSendLink()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "verifyforgototpandsendlink()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L994"
-    },
-    {
-      "id": "src_controllers_authcontroller_verifyotp",
-      "label": "verifyOtp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "verifyotp()",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L761"
-    },
-    {
-      "id": "src_middleware_authratelimit_authbackofflimiter",
-      "label": "authBackoffLimiter()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "authbackofflimiter()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L126"
-    },
-    {
-      "id": "src_middleware_authratelimit_calculatebackoffdelay",
-      "label": "calculateBackoffDelay()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "calculatebackoffdelay()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L44"
-    },
-    {
-      "id": "src_middleware_authratelimit_checkkeyrestriction",
-      "label": "checkKeyRestriction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "checkkeyrestriction()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L56"
-    },
-    {
-      "id": "src_middleware_authratelimit_getaccountidentifier",
-      "label": "getAccountIdentifier()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "getaccountidentifier()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L20"
-    },
-    {
-      "id": "src_middleware_authratelimit_getclientip",
-      "label": "getClientIp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "getclientip()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_middleware_authratelimit_getconfig",
-      "label": "getConfig()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "getconfig()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L30"
-    },
-    {
-      "id": "src_middleware_authratelimit_recordauthfailure",
-      "label": "recordAuthFailure()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "recordauthfailure()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L82"
-    },
-    {
-      "id": "src_middleware_authratelimit_resetauthfailure",
-      "label": "resetAuthFailure()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "resetauthfailure()",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L115"
-    },
-    {
-      "id": "src_services_emailservice_sendotpemail",
-      "label": "sendOTPEmail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "sendotpemail()",
-      "source_file": "src/services/emailService.js",
-      "source_location": "L326"
-    },
-    {
-      "id": "src_services_emailservice_sendpasswordresetlinkemail",
-      "label": "sendPasswordResetLinkEmail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "sendpasswordresetlinkemail()",
-      "source_file": "src/services/emailService.js",
-      "source_location": "L536"
-    },
-    {
-      "id": "src_services_emailservice_sendverificationlinkemail",
-      "label": "sendVerificationLinkEmail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "sendverificationlinkemail()",
-      "source_file": "src/services/emailService.js",
-      "source_location": "L473"
     },
     {
       "id": "src_utils_apiresponse_senderror",
@@ -523,18 +175,6 @@
       "source_location": "L6"
     },
     {
-      "id": "src_utils_helpers_generateotp",
-      "label": "generateOtp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "generateotp()",
-      "source_file": "src/utils/helpers.js",
-      "source_location": "L141"
-    },
-    {
       "id": "server_gracefulshutdown",
       "label": "gracefulShutdown()",
       "_callable": true,
@@ -557,18 +197,6 @@
       "norm_label": "parseresumehandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
       "source_location": "L944"
-    },
-    {
-      "id": "src_controllers_candidatefeaturecontroller_uploadapplicationhandler",
-      "label": "uploadApplicationHandler()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "resumeController.js",
-      "file_type": "code",
-      "norm_label": "uploadapplicationhandler()",
-      "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L790"
     },
     {
       "id": "src_controllers_resumecontroller_batchuploadhandler",
@@ -715,6 +343,18 @@
       "source_location": "L13"
     },
     {
+      "id": "src_middleware_auth_isauthenticated",
+      "label": "isAuthenticated()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "isauthenticated()",
+      "source_file": "src/middleware/auth.js",
+      "source_location": "L6"
+    },
+    {
       "id": "src_middleware_auth_requirehrms",
       "label": "requireHRMS()",
       "_callable": true,
@@ -737,30 +377,6 @@
       "norm_label": "requirerole()",
       "source_file": "src/middleware/auth.js",
       "source_location": "L65"
-    },
-    {
-      "id": "src_middleware_auth_optionalauth",
-      "label": "optionalAuth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "optionalauth()",
-      "source_file": "src/middleware/auth.js",
-      "source_location": "L114"
-    },
-    {
-      "id": "src_middleware_ratelimit_apilimiter",
-      "label": "apiLimiter()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "apilimiter()",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L85"
     },
     {
       "id": "src_controllers_candidatefeaturecontroller_applytojobhandler",
@@ -821,18 +437,6 @@
       "norm_label": "exportresumehandler()",
       "source_file": "src/controllers/candidateFeatureController.js",
       "source_location": "L69"
-    },
-    {
-      "id": "src_controllers_candidatefeaturecontroller_generatecoverletterhandler",
-      "label": "generateCoverLetterHandler()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "candidateFeatureController.js",
-      "file_type": "code",
-      "norm_label": "generatecoverletterhandler()",
-      "source_file": "src/controllers/candidateFeatureController.js",
-      "source_location": "L97"
     },
     {
       "id": "src_controllers_candidatefeaturecontroller_getapplicationshandler",
@@ -919,18 +523,6 @@
       "source_location": "L877"
     },
     {
-      "id": "src_services_aiservice_generatecoverletterai",
-      "label": "generateCoverLetterAi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "candidateFeatureController.js",
-      "file_type": "code",
-      "norm_label": "generatecoverletterai()",
-      "source_file": "src/services/aiService.js",
-      "source_location": "L699"
-    },
-    {
       "id": "src_services_exportservice_cleantext",
       "label": "cleanText()",
       "_callable": true,
@@ -984,7 +576,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "runtests()",
       "source_file": "scripts/test_developer2_hrms.js",
@@ -996,7 +588,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "testworkingdays()",
       "source_file": "scripts/test_developer2_hrms.js",
@@ -1008,23 +600,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "authorizeroles()",
       "source_file": "src/middleware/rbac.js",
       "source_location": "L6"
-    },
-    {
-      "id": "src_routes_attendanceroutes_resolveemployeeid",
-      "label": "resolveEmployeeId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "attendanceRoutes.js",
-      "file_type": "code",
-      "norm_label": "resolveemployeeid()",
-      "source_file": "src/routes/attendanceRoutes.js",
-      "source_location": "L8"
     },
     {
       "id": "public_js_candidatefeatures_escapehtml",
@@ -1255,6 +835,18 @@
       "source_location": "L19"
     },
     {
+      "id": "src_controllers_candidatefeaturecontroller_generatecoverletterhandler",
+      "label": "generateCoverLetterHandler()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "aiService.js",
+      "file_type": "code",
+      "norm_label": "generatecoverletterhandler()",
+      "source_file": "src/controllers/candidateFeatureController.js",
+      "source_location": "L97"
+    },
+    {
       "id": "src_controllers_chatcontroller_clearchathistory",
       "label": "clearChatHistory()",
       "_callable": true,
@@ -1339,6 +931,18 @@
       "source_location": "L643"
     },
     {
+      "id": "src_services_aiservice_generatecoverletterai",
+      "label": "generateCoverLetterAi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "aiService.js",
+      "file_type": "code",
+      "norm_label": "generatecoverletterai()",
+      "source_file": "src/services/aiService.js",
+      "source_location": "L699"
+    },
+    {
       "id": "src_utils_helpers_safejsonparse",
       "label": "safeJsonParse()",
       "_callable": true,
@@ -1349,6 +953,30 @@
       "norm_label": "safejsonparse()",
       "source_file": "src/utils/helpers.js",
       "source_location": "L161"
+    },
+    {
+      "id": "scripts_cleanup_dummy_data_cleandummydata",
+      "label": "cleanDummyData()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "cleandummydata()",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "scripts_verify_env_verifyenvironment",
+      "label": "verifyEnvironment()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "verifyenvironment()",
+      "source_file": "scripts/verify-env.js",
+      "source_location": "L5"
     },
     {
       "id": "src_config_database_connectdatabase",
@@ -1471,76 +1099,16 @@
       "source_location": "L92"
     },
     {
-      "id": "src_controllers_skillmarketplacecontroller_assignskill",
-      "label": "assignSkill()",
+      "id": "src_routes_exportroutes_generatesimplepdfreport",
+      "label": "generateSimplePdfReport()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
       "community_name": "database.js",
       "file_type": "code",
-      "norm_label": "assignskill()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L26"
-    },
-    {
-      "id": "src_controllers_skillmarketplacecontroller_createskill",
-      "label": "createSkill()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "createskill()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "src_controllers_skillmarketplacecontroller_getemployeemarketplace",
-      "label": "getEmployeeMarketplace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "getemployeemarketplace()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L44"
-    },
-    {
-      "id": "src_controllers_skillmarketplacecontroller_listrecommendations",
-      "label": "listRecommendations()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "listrecommendations()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L57"
-    },
-    {
-      "id": "src_controllers_skillmarketplacecontroller_listskills",
-      "label": "listSkills()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "listskills()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_controllers_skillmarketplacecontroller_recommendtrainingcourse",
-      "label": "recommendTrainingCourse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "recommendtrainingcourse()",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L35"
+      "norm_label": "generatesimplepdfreport()",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L9"
     },
     {
       "id": "src_services_aiagentservice_approveandsenddraft",
@@ -1649,66 +1217,6 @@
       "norm_label": "saveemployeefromjson()",
       "source_file": "src/services/employeeService.js",
       "source_location": "L59"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_assignskilltoemployee",
-      "label": "assignSkillToEmployee()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "assignskilltoemployee()",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L55"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_formatskillbundletojson",
-      "label": "formatSkillBundleToJson()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "formatskillbundletojson()",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L12"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_getemployeemarketplacesnapshot",
-      "label": "getEmployeeMarketplaceSnapshot()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "getemployeemarketplacesnapshot()",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_recommendtraining",
-      "label": "recommendTraining()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "recommendtraining()",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L105"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_registerskill",
-      "label": "registerSkill()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "registerskill()",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L40"
     },
     {
       "id": "src_services_applicationdbservice_createapplication",
@@ -1841,18 +1349,6 @@
       "norm_label": "checkdashboardstatus()",
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L4"
-    },
-    {
-      "id": "scripts_verify_env_verifyenvironment",
-      "label": "verifyEnvironment()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "verifyenvironment()",
-      "source_file": "scripts/verify-env.js",
-      "source_location": "L5"
     },
     {
       "id": "scripts_apply_rls_applyrlspolicies",
@@ -2263,18 +1759,6 @@
       "source_location": "L70"
     },
     {
-      "id": "src_routes_healthroutes_verifyadminsecurity",
-      "label": "verifyAdminSecurity()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "verifyadminsecurity()",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L15"
-    },
-    {
       "id": "src_services_healthchecker_autofixissue",
       "label": "autoFixIssue()",
       "_callable": true,
@@ -2407,15 +1891,15 @@
       "source_location": "L338"
     },
     {
-      "id": "scripts_fix_internal_docs_rls_fixrls",
-      "label": "fixRls()",
+      "id": "scripts_setup_attendance_leave_tables_setuptables",
+      "label": "setupTables()",
       "_callable": true,
       "_origin": "ast",
       "community": 30,
       "community_name": "supabaseClient.js",
       "file_type": "code",
-      "norm_label": "fixrls()",
-      "source_file": "scripts/fix_internal_docs_rls.js",
+      "norm_label": "setuptables()",
+      "source_file": "scripts/setup_attendance_leave_tables.js",
       "source_location": "L5"
     },
     {
@@ -2935,76 +2419,136 @@
       "source_location": "L62"
     },
     {
-      "id": "src_controllers_pipelinecontroller_createcandidate",
-      "label": "createCandidate()",
+      "id": "src_controllers_skillmarketplacecontroller_assignskill",
+      "label": "assignSkill()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "createcandidate()",
-      "source_file": "src/controllers/pipelineController.js",
-      "source_location": "L345"
+      "norm_label": "assignskill()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L26"
     },
     {
-      "id": "src_controllers_pipelinecontroller_deletecandidate",
-      "label": "deleteCandidate()",
+      "id": "src_controllers_skillmarketplacecontroller_createskill",
+      "label": "createSkill()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "deletecandidate()",
-      "source_file": "src/controllers/pipelineController.js",
-      "source_location": "L564"
+      "norm_label": "createskill()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L17"
     },
     {
-      "id": "src_controllers_pipelinecontroller_getcandidateauditlogs",
-      "label": "getCandidateAuditLogs()",
+      "id": "src_controllers_skillmarketplacecontroller_getemployeemarketplace",
+      "label": "getEmployeeMarketplace()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "getcandidateauditlogs()",
-      "source_file": "src/controllers/pipelineController.js",
-      "source_location": "L331"
+      "norm_label": "getemployeemarketplace()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L44"
     },
     {
-      "id": "src_services_auditlogservice_getrecentauditlogs",
-      "label": "getRecentAuditLogs()",
+      "id": "src_controllers_skillmarketplacecontroller_listrecommendations",
+      "label": "listRecommendations()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "getrecentauditlogs()",
-      "source_file": "src/services/auditLogService.js",
-      "source_location": "L86"
+      "norm_label": "listrecommendations()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L57"
     },
     {
-      "id": "src_services_auditlogservice_initaudittable",
-      "label": "initAuditTable()",
+      "id": "src_controllers_skillmarketplacecontroller_listskills",
+      "label": "listSkills()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "initaudittable()",
-      "source_file": "src/services/auditLogService.js",
-      "source_location": "L7"
+      "norm_label": "listskills()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L8"
     },
     {
-      "id": "src_services_auditlogservice_recordauditlog",
-      "label": "recordAuditLog()",
+      "id": "src_controllers_skillmarketplacecontroller_recommendtrainingcourse",
+      "label": "recommendTrainingCourse()",
       "_callable": true,
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "recordauditlog()",
-      "source_file": "src/services/auditLogService.js",
+      "norm_label": "recommendtrainingcourse()",
+      "source_file": "src/controllers/skillMarketplaceController.js",
       "source_location": "L35"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_assignskilltoemployee",
+      "label": "assignSkillToEmployee()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "assignskilltoemployee()",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L55"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_formatskillbundletojson",
+      "label": "formatSkillBundleToJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "formatskillbundletojson()",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_getemployeemarketplacesnapshot",
+      "label": "getEmployeeMarketplaceSnapshot()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "getemployeemarketplacesnapshot()",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L148"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_recommendtraining",
+      "label": "recommendTraining()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "recommendtraining()",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L105"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_registerskill",
+      "label": "registerSkill()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "registerskill()",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L40"
     },
     {
       "id": "scripts_init_notification_table_main",
@@ -3029,6 +2573,90 @@
       "norm_label": "seed()",
       "source_file": "scripts/seed_hr_candidates.js",
       "source_location": "L309"
+    },
+    {
+      "id": "src_middleware_authratelimit_authbackofflimiter",
+      "label": "authBackoffLimiter()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "authbackofflimiter()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L126"
+    },
+    {
+      "id": "src_middleware_authratelimit_calculatebackoffdelay",
+      "label": "calculateBackoffDelay()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "calculatebackoffdelay()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L44"
+    },
+    {
+      "id": "src_middleware_authratelimit_checkkeyrestriction",
+      "label": "checkKeyRestriction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "checkkeyrestriction()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L56"
+    },
+    {
+      "id": "src_middleware_authratelimit_getaccountidentifier",
+      "label": "getAccountIdentifier()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "getaccountidentifier()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_middleware_authratelimit_getclientip",
+      "label": "getClientIp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "getclientip()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_middleware_authratelimit_getconfig",
+      "label": "getConfig()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "getconfig()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L30"
+    },
+    {
+      "id": "src_middleware_ratelimit_apilimiter",
+      "label": "apiLimiter()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "apilimiter()",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L85"
     },
     {
       "id": "public_js_attendanceleave_fetchleavesummary",
@@ -3343,64 +2971,136 @@
       "source_location": "L5"
     },
     {
-      "id": "src_controllers_notificationcontroller_getnotifications",
-      "label": "getNotifications()",
+      "id": "src_controllers_authcontroller_companyresetpassword",
+      "label": "companyResetPassword()",
       "_callable": true,
       "_origin": "ast",
       "community": 57,
-      "community_name": "notificationController.js",
+      "community_name": "recordAuthFailure",
       "file_type": "code",
-      "norm_label": "getnotifications()",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L7"
+      "norm_label": "companyresetpassword()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1286"
     },
     {
-      "id": "src_controllers_notificationcontroller_getunreadcount",
-      "label": "getUnreadCount()",
+      "id": "src_controllers_authcontroller_failauth",
+      "label": "failAuth()",
       "_callable": true,
       "_origin": "ast",
       "community": 57,
-      "community_name": "notificationController.js",
+      "community_name": "recordAuthFailure",
       "file_type": "code",
-      "norm_label": "getunreadcount()",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L25"
+      "norm_label": "failauth()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L87"
     },
     {
-      "id": "src_controllers_notificationcontroller_getuserid",
-      "label": "getUserId()",
+      "id": "src_controllers_authcontroller_formatuserresponse",
+      "label": "formatUserResponse()",
       "_callable": true,
       "_origin": "ast",
       "community": 57,
-      "community_name": "notificationController.js",
+      "community_name": "recordAuthFailure",
       "file_type": "code",
-      "norm_label": "getuserid()",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L3"
+      "norm_label": "formatuserresponse()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L92"
     },
     {
-      "id": "src_controllers_notificationcontroller_markallread",
-      "label": "markAllRead()",
+      "id": "src_controllers_authcontroller_getme",
+      "label": "getMe()",
       "_callable": true,
       "_origin": "ast",
       "community": 57,
-      "community_name": "notificationController.js",
+      "community_name": "recordAuthFailure",
       "file_type": "code",
-      "norm_label": "markallread()",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L58"
+      "norm_label": "getme()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L608"
     },
     {
-      "id": "src_controllers_notificationcontroller_markasread",
-      "label": "markAsRead()",
+      "id": "src_controllers_authcontroller_login",
+      "label": "login()",
       "_callable": true,
       "_origin": "ast",
       "community": 57,
-      "community_name": "notificationController.js",
+      "community_name": "recordAuthFailure",
       "file_type": "code",
-      "norm_label": "markasread()",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L41"
+      "norm_label": "login()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L483"
+    },
+    {
+      "id": "src_controllers_authcontroller_register",
+      "label": "register()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "register()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L181"
+    },
+    {
+      "id": "src_controllers_authcontroller_resetpassword",
+      "label": "resetPassword()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "resetpassword()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L937"
+    },
+    {
+      "id": "src_controllers_authcontroller_verifycompanyreferral",
+      "label": "verifyCompanyReferral()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "verifycompanyreferral()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1251"
+    },
+    {
+      "id": "src_controllers_authcontroller_verifyotp",
+      "label": "verifyOtp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "verifyotp()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L761"
+    },
+    {
+      "id": "src_middleware_authratelimit_recordauthfailure",
+      "label": "recordAuthFailure()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "recordauthfailure()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L82"
+    },
+    {
+      "id": "src_middleware_authratelimit_resetauthfailure",
+      "label": "resetAuthFailure()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "recordAuthFailure",
+      "file_type": "code",
+      "norm_label": "resetauthfailure()",
+      "source_file": "src/middleware/authRateLimit.js",
+      "source_location": "L115"
     },
     {
       "id": "scripts_nvidia_mcp_server_ask_nvidia_nemotron",
@@ -3425,6 +3125,42 @@
       "norm_label": "evaluate_candidate_nemotron()",
       "source_file": "scripts/nvidia_mcp_server.py",
       "source_location": "L79"
+    },
+    {
+      "id": "src_controllers_authcontroller_getappbaseurl",
+      "label": "getAppBaseUrl()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "code",
+      "norm_label": "getappbaseurl()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L107"
+    },
+    {
+      "id": "src_controllers_authcontroller_resendlink",
+      "label": "resendLink()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "code",
+      "norm_label": "resendlink()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1983"
+    },
+    {
+      "id": "src_controllers_authcontroller_verifyforgototpandsendlink",
+      "label": "verifyForgotOtpAndSendLink()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "code",
+      "norm_label": "verifyforgototpandsendlink()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L994"
     },
     {
       "id": "src_controllers_grievancecontroller_getadmingrievances",
@@ -3499,6 +3235,18 @@
       "source_location": "L90"
     },
     {
+      "id": "src_services_emailservice_sendpasswordresetlinkemail",
+      "label": "sendPasswordResetLinkEmail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "code",
+      "norm_label": "sendpasswordresetlinkemail()",
+      "source_file": "src/services/emailService.js",
+      "source_location": "L536"
+    },
+    {
       "id": "src_services_emailservice_sendranklyemail",
       "label": "sendRanklyEmail()",
       "_callable": true,
@@ -3523,6 +3271,18 @@
       "source_location": "L198"
     },
     {
+      "id": "src_services_emailservice_sendverificationlinkemail",
+      "label": "sendVerificationLinkEmail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "code",
+      "norm_label": "sendverificationlinkemail()",
+      "source_file": "src/services/emailService.js",
+      "source_location": "L473"
+    },
+    {
       "id": "src_services_emailservice_sendviapythonsmtp",
       "label": "sendViaPythonSmtp()",
       "_callable": true,
@@ -3535,16 +3295,16 @@
       "source_location": "L28"
     },
     {
-      "id": "scripts_setup_attendance_leave_tables_setuptables",
-      "label": "setupTables()",
+      "id": "src_routes_healthroutes_verifyadminsecurity",
+      "label": "verifyAdminSecurity()",
       "_callable": true,
       "_origin": "ast",
       "community": 60,
-      "community_name": "setup_attendance_leave_tables.js",
+      "community_name": "healthRoutes.js",
       "file_type": "code",
-      "norm_label": "setuptables()",
-      "source_file": "scripts/setup_attendance_leave_tables.js",
-      "source_location": "L5"
+      "norm_label": "verifyadminsecurity()",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L15"
     },
     {
       "id": "scripts_setup_complaints_table_setupcomplaints",
@@ -3643,16 +3403,100 @@
       "source_location": "L4"
     },
     {
-      "id": "src_middleware_auth_isauthenticated",
-      "label": "isAuthenticated()",
+      "id": "src_controllers_authcontroller_checkemailavailability",
+      "label": "checkEmailAvailability()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "isAuthenticated",
+      "community_name": "sendOTPEmail",
       "file_type": "code",
-      "norm_label": "isauthenticated()",
-      "source_file": "src/middleware/auth.js",
-      "source_location": "L6"
+      "norm_label": "checkemailavailability()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L2066"
+    },
+    {
+      "id": "src_controllers_authcontroller_findexistinguserbyemail",
+      "label": "findExistingUserByEmail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "findexistinguserbyemail()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L14"
+    },
+    {
+      "id": "src_controllers_authcontroller_forgotpassword",
+      "label": "forgotPassword()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "forgotpassword()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L878"
+    },
+    {
+      "id": "src_controllers_authcontroller_resendotp",
+      "label": "resendOtp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "resendotp()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1917"
+    },
+    {
+      "id": "src_controllers_authcontroller_sendotp",
+      "label": "sendOtp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "sendotp()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L659"
+    },
+    {
+      "id": "src_controllers_authcontroller_validateemailaddress",
+      "label": "validateEmailAddress()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "validateemailaddress()",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L144"
+    },
+    {
+      "id": "src_services_emailservice_sendotpemail",
+      "label": "sendOTPEmail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "sendotpemail()",
+      "source_file": "src/services/emailService.js",
+      "source_location": "L326"
+    },
+    {
+      "id": "src_utils_helpers_generateotp",
+      "label": "generateOtp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "sendOTPEmail",
+      "file_type": "code",
+      "norm_label": "generateotp()",
+      "source_file": "src/utils/helpers.js",
+      "source_location": "L141"
     },
     {
       "id": "scripts_check_all_working_check",
@@ -3739,6 +3583,18 @@
       "source_location": "L63"
     },
     {
+      "id": "src_routes_attendanceroutes_resolveemployeeid",
+      "label": "resolveEmployeeId()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "resolveemployeeid()",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L8"
+    },
+    {
       "id": "src_components_unlumen_ui_sidebar_toggle_icon_sidebartoggleicon",
       "label": "SidebarToggleIcon()",
       "_callable": true,
@@ -3799,6 +3655,30 @@
       "source_location": "L6"
     },
     {
+      "id": "src_middleware_auth_optionalauth",
+      "label": "optionalAuth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "optionalauth()",
+      "source_file": "src/middleware/auth.js",
+      "source_location": "L114"
+    },
+    {
+      "id": "scripts_fix_internal_docs_rls_fixrls",
+      "label": "fixRls()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "fix_internal_docs_rls.js",
+      "file_type": "code",
+      "norm_label": "fixrls()",
+      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_location": "L5"
+    },
+    {
       "id": "src_config_validateenv_validateenvironment",
       "label": "validateEnvironment()",
       "_callable": true,
@@ -3823,6 +3703,18 @@
       "source_location": "L7"
     },
     {
+      "id": "src_controllers_candidatefeaturecontroller_uploadapplicationhandler",
+      "label": "uploadApplicationHandler()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "uploadapplicationhandler()",
+      "source_file": "src/controllers/candidateFeatureController.js",
+      "source_location": "L790"
+    },
+    {
       "id": "src_controllers_notificationcontroller_createnotification",
       "label": "createNotification()",
       "_callable": true,
@@ -3835,6 +3727,66 @@
       "source_location": "L75"
     },
     {
+      "id": "src_controllers_notificationcontroller_getnotifications",
+      "label": "getNotifications()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "getnotifications()",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_controllers_notificationcontroller_getunreadcount",
+      "label": "getUnreadCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "getunreadcount()",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L25"
+    },
+    {
+      "id": "src_controllers_notificationcontroller_getuserid",
+      "label": "getUserId()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "getuserid()",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_controllers_notificationcontroller_markallread",
+      "label": "markAllRead()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "markallread()",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L58"
+    },
+    {
+      "id": "src_controllers_notificationcontroller_markasread",
+      "label": "markAsRead()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "markasread()",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L41"
+    },
+    {
       "id": "src_controllers_pipelinecontroller_buildaicheatsheet",
       "label": "buildAiCheatSheet()",
       "_callable": true,
@@ -3845,6 +3797,30 @@
       "norm_label": "buildaicheatsheet()",
       "source_file": "src/controllers/pipelineController.js",
       "source_location": "L31"
+    },
+    {
+      "id": "src_controllers_pipelinecontroller_createcandidate",
+      "label": "createCandidate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "createcandidate()",
+      "source_file": "src/controllers/pipelineController.js",
+      "source_location": "L345"
+    },
+    {
+      "id": "src_controllers_pipelinecontroller_deletecandidate",
+      "label": "deleteCandidate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "deletecandidate()",
+      "source_file": "src/controllers/pipelineController.js",
+      "source_location": "L564"
     },
     {
       "id": "src_controllers_pipelinecontroller_formatcandidate",
@@ -3869,6 +3845,18 @@
       "norm_label": "getaicandidatequeue()",
       "source_file": "src/controllers/pipelineController.js",
       "source_location": "L136"
+    },
+    {
+      "id": "src_controllers_pipelinecontroller_getcandidateauditlogs",
+      "label": "getCandidateAuditLogs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "getcandidateauditlogs()",
+      "source_file": "src/controllers/pipelineController.js",
+      "source_location": "L331"
     },
     {
       "id": "src_controllers_pipelinecontroller_getcandidatebyid",
@@ -3967,6 +3955,42 @@
       "source_location": "L430"
     },
     {
+      "id": "src_services_auditlogservice_getrecentauditlogs",
+      "label": "getRecentAuditLogs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "getrecentauditlogs()",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L86"
+    },
+    {
+      "id": "src_services_auditlogservice_initaudittable",
+      "label": "initAuditTable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "initaudittable()",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_services_auditlogservice_recordauditlog",
+      "label": "recordAuditLog()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "recordauditlog()",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L35"
+    },
+    {
       "id": "src_services_emailservice_sendcandidatestatusnotification",
       "label": "sendCandidateStatusNotification()",
       "_callable": true,
@@ -3977,18 +4001,6 @@
       "norm_label": "sendcandidatestatusnotification()",
       "source_file": "src/services/emailService.js",
       "source_location": "L438"
-    },
-    {
-      "id": "src_routes_exportroutes_generatesimplepdfreport",
-      "label": "generateSimplePdfReport()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "generatesimplepdfreport()",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L9"
     },
     {
       "id": "src_controllers_authcontroller",
@@ -4110,61 +4122,6 @@
       "norm_label": "{ sendsuccess, senderror }",
       "source_file": "src/controllers/authController.js",
       "source_location": "L9"
-    },
-    {
-      "id": "src_middleware_authratelimit",
-      "label": "authRateLimit.js",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "authratelimit.js",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_middleware_authratelimit_failurestore",
-      "label": "failureStore",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "failurestore",
-      "source_file": "src/middleware/authRateLimit.js",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_middleware_ratelimit",
-      "label": "rateLimit.js",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "ratelimit.js",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_middleware_ratelimit_authbackofflimiter_recordauthfailure_resetauthfailure_calculatebackoffdelay_failurestore_getconfig_getauthconfig",
-      "label": "{\r\n  authBackoffLimiter,\r\n  recordAuthFailure,\r\n  resetAuthFailure,\r\n  calculateBackoffDelay,\r\n  failureStore,\r\n  getConfig: getAuthConfig\r\n}",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "{\r\n  authbackofflimiter,\r\n  recordauthfailure,\r\n  resetauthfailure,\r\n  calculatebackoffdelay,\r\n  failurestore,\r\n  getconfig: getauthconfig\r\n}",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "src_middleware_ratelimit_ratelimit",
-      "label": "rateLimit",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "authController.js",
-      "file_type": "code",
-      "norm_label": "ratelimit",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L1"
     },
     {
       "id": "src_utils_apiresponse",
@@ -5985,6 +5942,72 @@
       "source_location": "L14"
     },
     {
+      "id": "src_routes_applicationdbroutes",
+      "label": "applicationDbRoutes.js",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "applicationdbroutes.js",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_applicationdbroutes_appservice",
+      "label": "appService",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "appservice",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_routes_applicationdbroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_routes_applicationdbroutes_isauthenticated",
+      "label": "{ isAuthenticated }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "{ isauthenticated }",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_routes_applicationdbroutes_realtimenotificationservice",
+      "label": "realtimeNotificationService",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "realtimenotificationservice",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_routes_applicationdbroutes_router",
+      "label": "router",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "auth.js",
+      "file_type": "code",
+      "norm_label": "router",
+      "source_file": "src/routes/applicationDbRoutes.js",
+      "source_location": "L7"
+    },
+    {
       "id": "src_routes_employeeroutes",
       "label": "employeeRoutes.js",
       "_origin": "ast",
@@ -6417,105 +6440,6 @@
       "source_location": "L8"
     },
     {
-      "id": "src_middleware_ratelimit_ailimiter",
-      "label": "aiLimiter",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "ailimiter",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L66"
-    },
-    {
-      "id": "src_middleware_ratelimit_authenticatedlimiter",
-      "label": "authenticatedLimiter",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "authenticatedlimiter",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "src_middleware_ratelimit_publiclimiter",
-      "label": "publicLimiter",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "publiclimiter",
-      "source_file": "src/middleware/rateLimit.js",
-      "source_location": "L31"
-    },
-    {
-      "id": "src_routes_aiagentroutes",
-      "label": "aiAgentRoutes.js",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "aiagentroutes.js",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_aiagentroutes_aiagentcontroller",
-      "label": "aiAgentController",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "aiagentcontroller",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_routes_aiagentroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_aiagentroutes_optionalauth",
-      "label": "{ optionalAuth }",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ optionalauth }",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_routes_aiagentroutes_publiclimiter_ailimiter",
-      "label": "{ publicLimiter, aiLimiter }",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ publiclimiter, ailimiter }",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_routes_aiagentroutes_router",
-      "label": "router",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/aiAgentRoutes.js",
-      "source_location": "L6"
-    },
-    {
       "id": "src_routes_candidateroutes",
       "label": "candidateRoutes.js",
       "_origin": "ast",
@@ -6602,72 +6526,6 @@
       "norm_label": "upload",
       "source_file": "src/routes/candidateRoutes.js",
       "source_location": "L4"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes",
-      "label": "skillMarketplaceRoutes.js",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "skillmarketplaceroutes.js",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes_optionalauth",
-      "label": "{ optionalAuth }",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ optionalauth }",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes_publiclimiter",
-      "label": "{ publicLimiter }",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ publiclimiter }",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes_router",
-      "label": "router",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_routes_skillmarketplaceroutes_skillmarketplacecontroller",
-      "label": "skillMarketplaceController",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "candidateRoutes.js",
-      "file_type": "code",
-      "norm_label": "skillmarketplacecontroller",
-      "source_file": "src/routes/skillMarketplaceRoutes.js",
-      "source_location": "L7"
     },
     {
       "id": "agents_skills_supabase_postgres_best_practices_references_lock_short_transactions",
@@ -7089,17 +6947,6 @@
       "norm_label": "docx",
       "source_file": "package.json",
       "source_location": "L57"
-    },
-    {
-      "id": "ref_pdf_lib",
-      "label": "pdf-lib",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "candidateFeatureController.js",
-      "file_type": "concept",
-      "norm_label": "pdf-lib",
-      "source_file": "package.json",
-      "source_location": "L49"
     },
     {
       "id": "agents_skills_supabase_postgres_best_practices_references_schema_constraints",
@@ -8267,87 +8114,98 @@
       "label": "rbac.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "rbac.js",
       "source_file": "src/middleware/rbac.js",
       "source_location": "L1"
     },
     {
-      "id": "src_routes_attendanceroutes",
-      "label": "attendanceRoutes.js",
+      "id": "src_routes_analyticsroutes",
+      "label": "analyticsRoutes.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
-      "norm_label": "attendanceroutes.js",
-      "source_file": "src/routes/attendanceRoutes.js",
+      "norm_label": "analyticsroutes.js",
+      "source_file": "src/routes/analyticsRoutes.js",
       "source_location": "L1"
     },
     {
-      "id": "src_routes_attendanceroutes_authorizeroles",
-      "label": "{ authorizeRoles }",
+      "id": "src_routes_analyticsroutes_ailimiter",
+      "label": "{ aiLimiter }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
-      "norm_label": "{ authorizeroles }",
-      "source_file": "src/routes/attendanceRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_attendanceroutes_db",
-      "label": "db",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "attendanceRoutes.js",
-      "file_type": "code",
-      "norm_label": "db",
-      "source_file": "src/routes/attendanceRoutes.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_routes_attendanceroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "attendanceRoutes.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/attendanceRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_attendanceroutes_optionalauth_isauthenticated",
-      "label": "{ optionalAuth, isAuthenticated }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "attendanceRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ optionalauth, isauthenticated }",
-      "source_file": "src/routes/attendanceRoutes.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_routes_attendanceroutes_realtimenotificationservice",
-      "label": "realtimeNotificationService",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "attendanceRoutes.js",
-      "file_type": "code",
-      "norm_label": "realtimenotificationservice",
-      "source_file": "src/routes/attendanceRoutes.js",
+      "norm_label": "{ ailimiter }",
+      "source_file": "src/routes/analyticsRoutes.js",
       "source_location": "L6"
     },
     {
-      "id": "src_routes_attendanceroutes_router",
+      "id": "src_routes_analyticsroutes_analyticscontroller",
+      "label": "analyticsController",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "analyticsRoutes.js",
+      "file_type": "code",
+      "norm_label": "analyticscontroller",
+      "source_file": "src/routes/analyticsRoutes.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_routes_analyticsroutes_apicachemiddleware",
+      "label": "{ apiCacheMiddleware }",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "analyticsRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ apicachemiddleware }",
+      "source_file": "src/routes/analyticsRoutes.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_routes_analyticsroutes_authorizeroles",
+      "label": "{ authorizeRoles }",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "analyticsRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ authorizeroles }",
+      "source_file": "src/routes/analyticsRoutes.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_routes_analyticsroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "analyticsRoutes.js",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/analyticsRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_analyticsroutes_optionalauth_isauthenticated_requirehrms",
+      "label": "{ optionalAuth, isAuthenticated, requireHRMS }",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "analyticsRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ optionalauth, isauthenticated, requirehrms }",
+      "source_file": "src/routes/analyticsRoutes.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_routes_analyticsroutes_router",
       "label": "router",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "router",
-      "source_file": "src/routes/attendanceRoutes.js",
+      "source_file": "src/routes/analyticsRoutes.js",
       "source_location": "L2"
     },
     {
@@ -8355,7 +8213,7 @@
       "label": "complaintRoutes.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "complaintroutes.js",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8366,7 +8224,7 @@
       "label": "{ authorizeRoles }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "{ authorizeroles }",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8377,7 +8235,7 @@
       "label": "express",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "express",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8388,7 +8246,7 @@
       "label": "{ isAuthenticated }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "{ isauthenticated }",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8399,7 +8257,7 @@
       "label": "router",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "router",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8410,7 +8268,7 @@
       "label": "{ supabase }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "attendanceRoutes.js",
+      "community_name": "analyticsRoutes.js",
       "file_type": "code",
       "norm_label": "{ supabase }",
       "source_file": "src/routes/complaintRoutes.js",
@@ -8681,6 +8539,72 @@
       "source_location": "L776"
     },
     {
+      "id": "scripts_cleanup_dummy_data",
+      "label": "cleanup_dummy_data.js",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "cleanup_dummy_data.js",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_cleanup_dummy_data_pgdb",
+      "label": "pgDb",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "pgdb",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "scripts_cleanup_dummy_data_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "scripts_verify_env",
+      "label": "verify-env.js",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "verify-env.js",
+      "source_file": "scripts/verify-env.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_verify_env_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "axios",
+      "source_file": "scripts/verify-env.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_verify_env_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "scripts/verify-env.js",
+      "source_location": "L3"
+    },
+    {
       "id": "src_config_database",
       "label": "database.js",
       "_origin": "ast",
@@ -8758,37 +8682,92 @@
       "source_location": "L8"
     },
     {
-      "id": "src_controllers_skillmarketplacecontroller",
-      "label": "skillMarketplaceController.js",
+      "id": "src_routes_exportroutes",
+      "label": "exportRoutes.js",
       "_origin": "ast",
       "community": 2,
       "community_name": "database.js",
       "file_type": "code",
-      "norm_label": "skillmarketplacecontroller.js",
-      "source_file": "src/controllers/skillMarketplaceController.js",
+      "norm_label": "exportroutes.js",
+      "source_file": "src/routes/exportRoutes.js",
       "source_location": "L1"
     },
     {
-      "id": "src_controllers_skillmarketplacecontroller_prisma",
+      "id": "src_routes_exportroutes_exceljs",
+      "label": "ExcelJS",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "exceljs",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_routes_exportroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_exportroutes_optionalauth",
+      "label": "{ optionalAuth }",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "{ optionalauth }",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_routes_exportroutes_pdfdocument_rgb_standardfonts",
+      "label": "{ PDFDocument, rgb, StandardFonts }",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "{ pdfdocument, rgb, standardfonts }",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_routes_exportroutes_pgdb",
+      "label": "pgDb",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "database.js",
+      "file_type": "code",
+      "norm_label": "pgdb",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_routes_exportroutes_prisma",
       "label": "prisma",
       "_origin": "ast",
       "community": 2,
       "community_name": "database.js",
       "file_type": "code",
       "norm_label": "prisma",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L6"
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L5"
     },
     {
-      "id": "src_controllers_skillmarketplacecontroller_skillmarketplaceservice",
-      "label": "skillMarketplaceService",
+      "id": "src_routes_exportroutes_router",
+      "label": "router",
       "_origin": "ast",
       "community": 2,
       "community_name": "database.js",
       "file_type": "code",
-      "norm_label": "skillmarketplaceservice",
-      "source_file": "src/controllers/skillMarketplaceController.js",
-      "source_location": "L5"
+      "norm_label": "router",
+      "source_file": "src/routes/exportRoutes.js",
+      "source_location": "L2"
     },
     {
       "id": "src_services_aiagentservice",
@@ -8846,26 +8825,15 @@
       "source_location": "L7"
     },
     {
-      "id": "src_services_skillmarketplaceservice",
-      "label": "skillMarketplaceService.js",
+      "id": "ref_pdf_lib",
+      "label": "pdf-lib",
       "_origin": "ast",
       "community": 2,
       "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "skillmarketplaceservice.js",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_services_skillmarketplaceservice_prisma",
-      "label": "prisma",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "database.js",
-      "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "src/services/skillMarketplaceService.js",
-      "source_location": "L6"
+      "file_type": "concept",
+      "norm_label": "pdf-lib",
+      "source_file": "package.json",
+      "source_location": "L49"
     },
     {
       "id": "src_services_applicationdbservice",
@@ -9119,39 +9087,6 @@
       "norm_label": "puppeteer",
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L1"
-    },
-    {
-      "id": "scripts_verify_env",
-      "label": "verify-env.js",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "verify-env.js",
-      "source_file": "scripts/verify-env.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_verify_env_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "axios",
-      "source_file": "scripts/verify-env.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "scripts_verify_env_prisma",
-      "label": "prisma",
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "axios",
-      "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "scripts/verify-env.js",
-      "source_location": "L3"
     },
     {
       "id": "ref_axios",
@@ -9679,83 +9614,6 @@
       "source_location": "L2"
     },
     {
-      "id": "src_routes_healthroutes",
-      "label": "healthRoutes.js",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "healthroutes.js",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_healthroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_healthroutes_healthcontroller",
-      "label": "healthController",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "healthcontroller",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_routes_healthroutes_healthtriggerlimiter",
-      "label": "healthTriggerLimiter",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "healthtriggerlimiter",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_routes_healthroutes_optionalauth",
-      "label": "{ optionalAuth }",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "{ optionalauth }",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_routes_healthroutes_ratelimit",
-      "label": "rateLimit",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "ratelimit",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_healthroutes_router",
-      "label": "router",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/healthRoutes.js",
-      "source_location": "L2"
-    },
-    {
       "id": "src_services_healthchecker",
       "label": "healthChecker.js",
       "_origin": "ast",
@@ -9899,58 +9757,36 @@
       "source_location": "L12"
     },
     {
-      "id": "ref_express_rate_limit",
-      "label": "express-rate-limit",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "concept",
-      "norm_label": "express-rate-limit",
-      "source_file": "package.json",
-      "source_location": "L37"
-    },
-    {
-      "id": "ref_nodemailer",
-      "label": "nodemailer",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "healthChecker.js",
-      "file_type": "concept",
-      "norm_label": "nodemailer",
-      "source_file": "package.json",
-      "source_location": "L44"
-    },
-    {
-      "id": "scripts_fix_internal_docs_rls",
-      "label": "fix_internal_docs_rls.js",
+      "id": "scripts_setup_attendance_leave_tables",
+      "label": "setup_attendance_leave_tables.js",
       "_origin": "ast",
       "community": 30,
       "community_name": "supabaseClient.js",
       "file_type": "code",
-      "norm_label": "fix_internal_docs_rls.js",
-      "source_file": "scripts/fix_internal_docs_rls.js",
+      "norm_label": "setup_attendance_leave_tables.js",
+      "source_file": "scripts/setup_attendance_leave_tables.js",
       "source_location": "L1"
     },
     {
-      "id": "scripts_fix_internal_docs_rls_db",
+      "id": "scripts_setup_attendance_leave_tables_db",
       "label": "db",
       "_origin": "ast",
       "community": 30,
       "community_name": "supabaseClient.js",
       "file_type": "code",
       "norm_label": "db",
-      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_file": "scripts/setup_attendance_leave_tables.js",
       "source_location": "L2"
     },
     {
-      "id": "scripts_fix_internal_docs_rls_supabase",
+      "id": "scripts_setup_attendance_leave_tables_supabase",
       "label": "supabase",
       "_origin": "ast",
       "community": 30,
       "community_name": "supabaseClient.js",
       "file_type": "code",
       "norm_label": "supabase",
-      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_file": "scripts/setup_attendance_leave_tables.js",
       "source_location": "L3"
     },
     {
@@ -11472,48 +11308,59 @@
       "source_location": "L251"
     },
     {
-      "id": "src_services_auditlogservice",
-      "label": "auditLogService.js",
+      "id": "src_controllers_skillmarketplacecontroller",
+      "label": "skillMarketplaceController.js",
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "auditlogservice.js",
-      "source_file": "src/services/auditLogService.js",
+      "norm_label": "skillmarketplacecontroller.js",
+      "source_file": "src/controllers/skillMarketplaceController.js",
       "source_location": "L1"
     },
     {
-      "id": "src_services_auditlogservice_crypto",
-      "label": "crypto",
-      "_origin": "ast",
-      "community": 42,
-      "community_name": "auditLogService.js",
-      "file_type": "code",
-      "norm_label": "crypto",
-      "source_file": "src/services/auditLogService.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "src_services_auditlogservice_prisma",
+      "id": "src_controllers_skillmarketplacecontroller_prisma",
       "label": "prisma",
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
       "norm_label": "prisma",
-      "source_file": "src/services/auditLogService.js",
-      "source_location": "L4"
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L6"
     },
     {
-      "id": "src_services_auditlogservice_prismaclient",
-      "label": "{ PrismaClient }",
+      "id": "src_controllers_skillmarketplacecontroller_skillmarketplaceservice",
+      "label": "skillMarketplaceService",
       "_origin": "ast",
       "community": 42,
-      "community_name": "auditLogService.js",
+      "community_name": "skillMarketplaceController.js",
       "file_type": "code",
-      "norm_label": "{ prismaclient }",
-      "source_file": "src/services/auditLogService.js",
+      "norm_label": "skillmarketplaceservice",
+      "source_file": "src/controllers/skillMarketplaceController.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice",
+      "label": "skillMarketplaceService.js",
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "skillmarketplaceservice.js",
+      "source_file": "src/services/skillMarketplaceService.js",
       "source_location": "L1"
+    },
+    {
+      "id": "src_services_skillmarketplaceservice_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "skillMarketplaceController.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "src/services/skillMarketplaceService.js",
+      "source_location": "L6"
     },
     {
       "id": "scripts_init_notification_table",
@@ -11932,6 +11779,83 @@
       "source_location": "L13"
     },
     {
+      "id": "src_middleware_ratelimit_ailimiter",
+      "label": "aiLimiter",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "ailimiter",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L66"
+    },
+    {
+      "id": "src_routes_aiagentroutes",
+      "label": "aiAgentRoutes.js",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "aiagentroutes.js",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_aiagentroutes_aiagentcontroller",
+      "label": "aiAgentController",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "aiagentcontroller",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_routes_aiagentroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_routes_aiagentroutes_optionalauth",
+      "label": "{ optionalAuth }",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "{ optionalauth }",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_routes_aiagentroutes_publiclimiter_ailimiter",
+      "label": "{ publicLimiter, aiLimiter }",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "{ publiclimiter, ailimiter }",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_routes_aiagentroutes_router",
+      "label": "router",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "express",
+      "file_type": "code",
+      "norm_label": "router",
+      "source_file": "src/routes/aiAgentRoutes.js",
+      "source_location": "L6"
+    },
+    {
       "id": "src_routes_notificationroutes",
       "label": "notificationRoutes.js",
       "_origin": "ast",
@@ -12064,92 +11988,81 @@
       "source_location": "L36"
     },
     {
-      "id": "src_routes_analyticsroutes",
-      "label": "analyticsRoutes.js",
+      "id": "src_middleware_authratelimit",
+      "label": "authRateLimit.js",
       "_origin": "ast",
       "community": 47,
-      "community_name": "analyticsRoutes.js",
+      "community_name": "rateLimit.js",
       "file_type": "code",
-      "norm_label": "analyticsroutes.js",
-      "source_file": "src/routes/analyticsRoutes.js",
+      "norm_label": "authratelimit.js",
+      "source_file": "src/middleware/authRateLimit.js",
       "source_location": "L1"
     },
     {
-      "id": "src_routes_analyticsroutes_ailimiter",
-      "label": "{ aiLimiter }",
+      "id": "src_middleware_authratelimit_failurestore",
+      "label": "failureStore",
       "_origin": "ast",
       "community": 47,
-      "community_name": "analyticsRoutes.js",
+      "community_name": "rateLimit.js",
       "file_type": "code",
-      "norm_label": "{ ailimiter }",
-      "source_file": "src/routes/analyticsRoutes.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_routes_analyticsroutes_analyticscontroller",
-      "label": "analyticsController",
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "analyticsRoutes.js",
-      "file_type": "code",
-      "norm_label": "analyticscontroller",
-      "source_file": "src/routes/analyticsRoutes.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_routes_analyticsroutes_apicachemiddleware",
-      "label": "{ apiCacheMiddleware }",
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "analyticsRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ apicachemiddleware }",
-      "source_file": "src/routes/analyticsRoutes.js",
+      "norm_label": "failurestore",
+      "source_file": "src/middleware/authRateLimit.js",
       "source_location": "L7"
     },
     {
-      "id": "src_routes_analyticsroutes_authorizeroles",
-      "label": "{ authorizeRoles }",
+      "id": "src_middleware_ratelimit",
+      "label": "rateLimit.js",
       "_origin": "ast",
       "community": 47,
-      "community_name": "analyticsRoutes.js",
+      "community_name": "rateLimit.js",
       "file_type": "code",
-      "norm_label": "{ authorizeroles }",
-      "source_file": "src/routes/analyticsRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_analyticsroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "analyticsRoutes.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/analyticsRoutes.js",
+      "norm_label": "ratelimit.js",
+      "source_file": "src/middleware/rateLimit.js",
       "source_location": "L1"
     },
     {
-      "id": "src_routes_analyticsroutes_optionalauth_isauthenticated_requirehrms",
-      "label": "{ optionalAuth, isAuthenticated, requireHRMS }",
+      "id": "src_middleware_ratelimit_authbackofflimiter_recordauthfailure_resetauthfailure_calculatebackoffdelay_failurestore_getconfig_getauthconfig",
+      "label": "{\r\n  authBackoffLimiter,\r\n  recordAuthFailure,\r\n  resetAuthFailure,\r\n  calculateBackoffDelay,\r\n  failureStore,\r\n  getConfig: getAuthConfig\r\n}",
       "_origin": "ast",
       "community": 47,
-      "community_name": "analyticsRoutes.js",
+      "community_name": "rateLimit.js",
       "file_type": "code",
-      "norm_label": "{ optionalauth, isauthenticated, requirehrms }",
-      "source_file": "src/routes/analyticsRoutes.js",
-      "source_location": "L4"
+      "norm_label": "{\r\n  authbackofflimiter,\r\n  recordauthfailure,\r\n  resetauthfailure,\r\n  calculatebackoffdelay,\r\n  failurestore,\r\n  getconfig: getauthconfig\r\n}",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L2"
     },
     {
-      "id": "src_routes_analyticsroutes_router",
-      "label": "router",
+      "id": "src_middleware_ratelimit_authenticatedlimiter",
+      "label": "authenticatedLimiter",
       "_origin": "ast",
       "community": 47,
-      "community_name": "analyticsRoutes.js",
+      "community_name": "rateLimit.js",
       "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/analyticsRoutes.js",
-      "source_location": "L2"
+      "norm_label": "authenticatedlimiter",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "src_middleware_ratelimit_publiclimiter",
+      "label": "publicLimiter",
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "publiclimiter",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L31"
+    },
+    {
+      "id": "src_middleware_ratelimit_ratelimit",
+      "label": "rateLimit",
+      "_origin": "ast",
+      "community": 47,
+      "community_name": "rateLimit.js",
+      "file_type": "code",
+      "norm_label": "ratelimit",
+      "source_file": "src/middleware/rateLimit.js",
+      "source_location": "L1"
     },
     {
       "id": "public_js_attendanceleave",
@@ -12746,28 +12659,6 @@
       "source_location": "L2"
     },
     {
-      "id": "src_controllers_notificationcontroller",
-      "label": "notificationController.js",
-      "_origin": "ast",
-      "community": 57,
-      "community_name": "notificationController.js",
-      "file_type": "code",
-      "norm_label": "notificationcontroller.js",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_controllers_notificationcontroller_prisma",
-      "label": "prisma",
-      "_origin": "ast",
-      "community": 57,
-      "community_name": "notificationController.js",
-      "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "src/controllers/notificationController.js",
-      "source_location": "L1"
-    },
-    {
       "id": "package_devdependencies",
       "label": "devDependencies",
       "_origin": "ast",
@@ -12933,37 +12824,103 @@
       "source_location": "L13"
     },
     {
-      "id": "scripts_setup_attendance_leave_tables",
-      "label": "setup_attendance_leave_tables.js",
+      "id": "ref_nodemailer",
+      "label": "nodemailer",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "emailService.js",
+      "file_type": "concept",
+      "norm_label": "nodemailer",
+      "source_file": "package.json",
+      "source_location": "L44"
+    },
+    {
+      "id": "src_routes_healthroutes",
+      "label": "healthRoutes.js",
       "_origin": "ast",
       "community": 60,
-      "community_name": "setup_attendance_leave_tables.js",
+      "community_name": "healthRoutes.js",
       "file_type": "code",
-      "norm_label": "setup_attendance_leave_tables.js",
-      "source_file": "scripts/setup_attendance_leave_tables.js",
+      "norm_label": "healthroutes.js",
+      "source_file": "src/routes/healthRoutes.js",
       "source_location": "L1"
     },
     {
-      "id": "scripts_setup_attendance_leave_tables_db",
-      "label": "db",
+      "id": "src_routes_healthroutes_express",
+      "label": "express",
       "_origin": "ast",
       "community": 60,
-      "community_name": "setup_attendance_leave_tables.js",
+      "community_name": "healthRoutes.js",
       "file_type": "code",
-      "norm_label": "db",
-      "source_file": "scripts/setup_attendance_leave_tables.js",
+      "norm_label": "express",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_healthroutes_healthcontroller",
+      "label": "healthController",
+      "_origin": "ast",
+      "community": 60,
+      "community_name": "healthRoutes.js",
+      "file_type": "code",
+      "norm_label": "healthcontroller",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_routes_healthroutes_healthtriggerlimiter",
+      "label": "healthTriggerLimiter",
+      "_origin": "ast",
+      "community": 60,
+      "community_name": "healthRoutes.js",
+      "file_type": "code",
+      "norm_label": "healthtriggerlimiter",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_routes_healthroutes_optionalauth",
+      "label": "{ optionalAuth }",
+      "_origin": "ast",
+      "community": 60,
+      "community_name": "healthRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ optionalauth }",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_routes_healthroutes_ratelimit",
+      "label": "rateLimit",
+      "_origin": "ast",
+      "community": 60,
+      "community_name": "healthRoutes.js",
+      "file_type": "code",
+      "norm_label": "ratelimit",
+      "source_file": "src/routes/healthRoutes.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_routes_healthroutes_router",
+      "label": "router",
+      "_origin": "ast",
+      "community": 60,
+      "community_name": "healthRoutes.js",
+      "file_type": "code",
+      "norm_label": "router",
+      "source_file": "src/routes/healthRoutes.js",
       "source_location": "L2"
     },
     {
-      "id": "scripts_setup_attendance_leave_tables_supabase",
-      "label": "supabase",
+      "id": "ref_express_rate_limit",
+      "label": "express-rate-limit",
       "_origin": "ast",
       "community": 60,
-      "community_name": "setup_attendance_leave_tables.js",
-      "file_type": "code",
-      "norm_label": "supabase",
-      "source_file": "scripts/setup_attendance_leave_tables.js",
-      "source_location": "L3"
+      "community_name": "healthRoutes.js",
+      "file_type": "concept",
+      "norm_label": "express-rate-limit",
+      "source_file": "package.json",
+      "source_location": "L37"
     },
     {
       "id": "scripts_setup_complaints_table",
@@ -13239,72 +13196,6 @@
       "norm_label": "puppeteer",
       "source_file": "scripts/test_authenticated_browser.js",
       "source_location": "L1"
-    },
-    {
-      "id": "src_routes_applicationdbroutes",
-      "label": "applicationDbRoutes.js",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "applicationdbroutes.js",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_applicationdbroutes_appservice",
-      "label": "appService",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "appservice",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_routes_applicationdbroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_routes_applicationdbroutes_isauthenticated",
-      "label": "{ isAuthenticated }",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "{ isauthenticated }",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_routes_applicationdbroutes_realtimenotificationservice",
-      "label": "realtimeNotificationService",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "realtimenotificationservice",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_routes_applicationdbroutes_router",
-      "label": "router",
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "isAuthenticated",
-      "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/applicationDbRoutes.js",
-      "source_location": "L7"
     },
     {
       "id": "scripts_check_all_working",
@@ -13681,6 +13572,83 @@
       "source_location": "L6"
     },
     {
+      "id": "src_routes_attendanceroutes",
+      "label": "attendanceRoutes.js",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "attendanceroutes.js",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_attendanceroutes_authorizeroles",
+      "label": "{ authorizeRoles }",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ authorizeroles }",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_routes_attendanceroutes_db",
+      "label": "db",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "db",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_routes_attendanceroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_attendanceroutes_optionalauth_isauthenticated",
+      "label": "{ optionalAuth, isAuthenticated }",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "{ optionalauth, isauthenticated }",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_routes_attendanceroutes_realtimenotificationservice",
+      "label": "realtimeNotificationService",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "realtimenotificationservice",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_routes_attendanceroutes_router",
+      "label": "router",
+      "_origin": "ast",
+      "community": 71,
+      "community_name": "attendanceRoutes.js",
+      "file_type": "code",
+      "norm_label": "router",
+      "source_file": "src/routes/attendanceRoutes.js",
+      "source_location": "L2"
+    },
+    {
       "id": "scripts_query_db",
       "label": "query_db.js",
       "_origin": "ast",
@@ -13965,6 +13933,105 @@
       "norm_label": "requestlogger.js",
       "source_file": "src/middleware/requestLogger.js",
       "source_location": "L1"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes",
+      "label": "skillMarketplaceRoutes.js",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "skillmarketplaceroutes.js",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes_optionalauth",
+      "label": "{ optionalAuth }",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "{ optionalauth }",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes_publiclimiter",
+      "label": "{ publicLimiter }",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "{ publiclimiter }",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes_router",
+      "label": "router",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "router",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_routes_skillmarketplaceroutes_skillmarketplacecontroller",
+      "label": "skillMarketplaceController",
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "optionalAuth",
+      "file_type": "code",
+      "norm_label": "skillmarketplacecontroller",
+      "source_file": "src/routes/skillMarketplaceRoutes.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "scripts_fix_internal_docs_rls",
+      "label": "fix_internal_docs_rls.js",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "fix_internal_docs_rls.js",
+      "file_type": "code",
+      "norm_label": "fix_internal_docs_rls.js",
+      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_fix_internal_docs_rls_db",
+      "label": "db",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "fix_internal_docs_rls.js",
+      "file_type": "code",
+      "norm_label": "db",
+      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "scripts_fix_internal_docs_rls_supabase",
+      "label": "supabase",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "fix_internal_docs_rls.js",
+      "file_type": "code",
+      "norm_label": "supabase",
+      "source_file": "scripts/fix_internal_docs_rls.js",
+      "source_location": "L3"
     },
     {
       "id": "package_dependencies",
@@ -14611,6 +14678,28 @@
       "source_location": "L64"
     },
     {
+      "id": "src_controllers_notificationcontroller",
+      "label": "notificationController.js",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "notificationcontroller.js",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_controllers_notificationcontroller_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "src/controllers/notificationController.js",
+      "source_location": "L1"
+    },
+    {
       "id": "src_controllers_pipelinecontroller",
       "label": "pipelineController.js",
       "_origin": "ast",
@@ -14664,6 +14753,50 @@
       "norm_label": "{ sendcandidatestatusnotification }",
       "source_file": "src/controllers/pipelineController.js",
       "source_location": "L2"
+    },
+    {
+      "id": "src_services_auditlogservice",
+      "label": "auditLogService.js",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "auditlogservice.js",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_services_auditlogservice_crypto",
+      "label": "crypto",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "crypto",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "src_services_auditlogservice_prisma",
+      "label": "prisma",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "prisma",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_services_auditlogservice_prismaclient",
+      "label": "{ PrismaClient }",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "pipelineController.js",
+      "file_type": "code",
+      "norm_label": "{ prismaclient }",
+      "source_file": "src/services/auditLogService.js",
+      "source_location": "L1"
     },
     {
       "id": "agents_skills_supabase_changelog",
@@ -15572,94 +15705,6 @@
       "norm_label": "section definitions",
       "source_file": ".agents/skills/supabase-postgres-best-practices/references/_sections.md",
       "source_location": "L1"
-    },
-    {
-      "id": "src_routes_exportroutes",
-      "label": "exportRoutes.js",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "exportroutes.js",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_exportroutes_exceljs",
-      "label": "ExcelJS",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "exceljs",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_routes_exportroutes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_routes_exportroutes_optionalauth",
-      "label": "{ optionalAuth }",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ optionalauth }",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_routes_exportroutes_pdfdocument_rgb_standardfonts",
-      "label": "{ PDFDocument, rgb, StandardFonts }",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "{ pdfdocument, rgb, standardfonts }",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_routes_exportroutes_pgdb",
-      "label": "pgDb",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "pgdb",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_routes_exportroutes_prisma",
-      "label": "prisma",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "prisma",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_routes_exportroutes_router",
-      "label": "router",
-      "_origin": "ast",
-      "community": 96,
-      "community_name": "exportRoutes.js",
-      "file_type": "code",
-      "norm_label": "router",
-      "source_file": "src/routes/exportRoutes.js",
-      "source_location": "L2"
     },
     {
       "id": "rules",
@@ -21141,6 +21186,30 @@
       "context": "import",
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_cleanup_dummy_data",
+      "target": "src_config_database",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_cleanup_dummy_data",
+      "target": "src_config_pgdatabase",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -29071,6 +29140,39 @@
       "confidence_score": 1.0,
       "source_file": "scripts/check_dashboard_status.js",
       "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_cleanup_dummy_data",
+      "target": "scripts_cleanup_dummy_data_prisma",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_cleanup_dummy_data",
+      "target": "scripts_cleanup_dummy_data_pgdb",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_cleanup_dummy_data",
+      "target": "scripts_cleanup_dummy_data_cleandummydata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/cleanup_dummy_data.js",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -37191,5 +37293,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "46df116bfa2fe1e49e01ee345a1081355f8dc6a0"
+  "built_at_commit": "40edd97969ba450e4a9439d03310b8bfc6ab92ee"
 }
