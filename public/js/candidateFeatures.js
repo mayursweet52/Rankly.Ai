@@ -1063,11 +1063,48 @@
 
         if (completeness) completeness.textContent = (p.completeness || 90) + '%';
 
+        // Render live clickable Social & Portfolio badges in header
+        const headerSocial = document.getElementById('profileHeaderSocialLinks');
+        if (headerSocial) {
+            const links = [];
+            if (p.linkedInUrl) links.push(`<a href="${formatUrl(p.linkedInUrl)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 text-xs font-semibold flex items-center gap-1.5 transition-all"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>`);
+            if (p.githubUrl) links.push(`<a href="${formatUrl(p.githubUrl)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-slate-800/10 text-slate-800 dark:text-white border border-slate-800/20 hover:bg-slate-800/20 text-xs font-semibold flex items-center gap-1.5 transition-all"><i class="fa-brands fa-github"></i> GitHub</a>`);
+            if (p.portfolioUrl) links.push(`<a href="${formatUrl(p.portfolioUrl)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 text-xs font-semibold flex items-center gap-1.5 transition-all"><i class="fa-solid fa-globe"></i> Portfolio</a>`);
+            headerSocial.innerHTML = links.join(' ');
+        }
+
         if (Array.isArray(p.skills) && p.skills.length > 0) {
             currentProfileSkills = [...p.skills];
         }
         renderProfileSkillChips();
     }
+
+    function formatUrl(url) {
+        if (!url) return '#';
+        const trimmed = url.trim();
+        if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+            return 'https://' + trimmed;
+        }
+        return trimmed;
+    }
+
+    window.openSocialLink = function(inputId) {
+        const el = document.getElementById(inputId);
+        const raw = el ? el.value.trim() : '';
+        if (!raw) {
+            if (typeof window.showToast === 'function') {
+                window.showToast('Please enter or save a valid URL first.', 'warning');
+            } else {
+                alert('Please enter a valid URL first.');
+            }
+            return;
+        }
+        const fullUrl = formatUrl(raw);
+        window.open(fullUrl, '_blank', 'noopener,noreferrer');
+        if (typeof window.showToast === 'function') {
+            window.showToast(`🚀 Opening ${fullUrl}...`, 'info');
+        }
+    };
 
     function setVal(id, val) {
         const el = document.getElementById(id);

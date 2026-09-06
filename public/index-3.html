@@ -9223,6 +9223,7 @@ body.dark-theme .resume-tip-box,
                                             <span id="profileHeaderEmail"><i class="fa-regular fa-envelope mr-1 text-emerald-500"></i> sumit.khomne@rankly.ai</span>
                                             <span id="profileHeaderPhone"><i class="fa-solid fa-phone mr-1 text-emerald-500"></i> +91 98765 43210</span>
                                         </div>
+                                        <div id="profileHeaderSocialLinks" class="flex flex-wrap items-center gap-2 mt-2.5"></div>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-3">
@@ -9419,14 +9420,18 @@ body.dark-theme .resume-tip-box,
 
                                     <!-- Online Presence & Links -->
                                     <div class="p-5 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-3 text-xs">
-                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center gap-2">
-                                            <i class="fa-solid fa-link text-blue-500"></i> Social & Portfolio Links
+                                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#111111] dark:text-white flex items-center justify-between">
+                                            <span class="flex items-center gap-2"><i class="fa-solid fa-link text-blue-500"></i> Social & Portfolio Links</span>
+                                            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">Active Links</span>
                                         </h3>
                                         <div>
                                             <label class="block font-medium text-gray-600 dark:text-zinc-400 mb-1">LinkedIn URL</label>
                                             <div class="flex items-center gap-2">
                                                 <span class="text-blue-600"><i class="fa-brands fa-linkedin text-sm"></i></span>
                                                 <input type="url" id="profileLinkedIn" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://linkedin.com/in/username" />
+                                                <button type="button" onclick="openSocialLink('profileLinkedIn')" title="Open original LinkedIn in new tab" class="p-2 rounded-xl bg-gray-100 hover:bg-blue-50 text-blue-600 dark:bg-zinc-800 dark:hover:bg-blue-900/30 transition-all cursor-pointer">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                                                </button>
                                             </div>
                                         </div>
                                         <div>
@@ -9434,6 +9439,9 @@ body.dark-theme .resume-tip-box,
                                             <div class="flex items-center gap-2">
                                                 <span class="text-slate-800 dark:text-white"><i class="fa-brands fa-github text-sm"></i></span>
                                                 <input type="url" id="profileGitHub" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://github.com/username" />
+                                                <button type="button" onclick="openSocialLink('profileGitHub')" title="Open original GitHub in new tab" class="p-2 rounded-xl bg-gray-100 hover:bg-zinc-200 text-slate-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-white transition-all cursor-pointer">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                                                </button>
                                             </div>
                                         </div>
                                         <div>
@@ -9441,6 +9449,9 @@ body.dark-theme .resume-tip-box,
                                             <div class="flex items-center gap-2">
                                                 <span class="text-emerald-500"><i class="fa-solid fa-globe text-sm"></i></span>
                                                 <input type="url" id="profilePortfolio" class="form-input flex-1 p-2 rounded-xl border text-xs" placeholder="https://mywebsite.dev" />
+                                                <button type="button" onclick="openSocialLink('profilePortfolio')" title="Open original Portfolio in new tab" class="p-2 rounded-xl bg-gray-100 hover:bg-emerald-50 text-emerald-600 dark:bg-zinc-800 dark:hover:bg-emerald-900/30 transition-all cursor-pointer">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
