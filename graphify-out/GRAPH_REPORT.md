@@ -1,16 +1,16 @@
 # Graph Report - Rankly.ai  (2026-09-06)
 
 ## Corpus Check
-- 186 files · ~485,281 words
+- 193 files · ~671,600 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1271 nodes · 1715 edges · 140 communities (86 shown, 48 thin omitted)
-- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 203 edges (avg confidence: 0.85)
+- 1359 nodes · 1838 edges · 142 communities (87 shown, 50 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 209 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d182aa79`
+- Built from commit: `e5513259`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,7 @@
 - healthChecker.js
 - userRoutes.js
 - documentController.js
-- userController.js
+- emailService.js
 - authRoutes.js
 - dependencies
 - pipelineController.js
@@ -31,17 +31,17 @@
 - candidateRoutes.js
 - candidateFeatureController.js
 - Rankly.ai - One-Click Startup Guide
-- leaveRoutes.js
+- attendanceRoutes.js
 - candidateFeatures.js
 - middleware/upload.js
 - aiService.js
 - applicationDbService.js
-- emailService.js
+- leaveRoutes.js
 - axios
 - figma
 - manifest.json
 - pgDatabase.js
-- healthController.js
+- RealtimeNotificationService
 - CircuitBreaker
 - hrCandidateQueue.js
 - deploy
@@ -49,30 +49,30 @@
 - exportService.js
 - analyticsController.js
 - cacheManager.js
-- healthRoutes.js
+- chatController.js
 - passport.js
 - create-desktop-shortcut.js
 - documentRoutes.js
 - scripts
-- grievanceController.js
+- notificationClient.js
 - test-document-rbac-ui.js
 - Rankly.ai - Complete Setup Overview
 - optionalAuth
-- attendanceRoutes.js
+- seed_hr_candidates.js
 - jwtEmployeeRoutes.js
 - 🎨 2. For Frontend Developers (UI Integration)
-- resumeRoutes.js
+- express
 - analyticsRoutes.js
 - attendanceLeave.js
 - js/upload.js
-- express
+- pgEmployeeRoutes.js
 - guardian.js
 - test-e2e-ai-pipeline.js
 - test-integration.js
 - test-complaints.js
 - setup_candidates_table.js
 - run_migration.js
-- extractTextFromDocument
+- uploadApplicationHandler
 - devDependencies
 - ask_nvidia_nemotron
 - setup_attendance_leave_tables.js
@@ -83,6 +83,8 @@
 - capture_candidate_shots.js
 - capture_screenshots.js
 - test_authenticated_browser.js
+- @prisma/client
+- check_all_working.js
 - query_db.js
 - Supabase
 - src/components/unlumen-ui/sidebar-toggle-icon.tsx
@@ -149,9 +151,10 @@
 - security-rls-performance.md
 - _template.md
 - workflows/graphify.md
+- 🚀 Rankly.ai — Next-Gen Executive AI Screening & Candidate Management System
 
 ## God Nodes (most connected - your core abstractions)
-1. `express` - 22 edges
+1. `express` - 23 edges
 2. `Rankly.ai - One-Click Startup Guide` - 14 edges
 3. `axios` - 13 edges
 4. `isAuthenticated()` - 13 edges
@@ -159,8 +162,8 @@
 6. `recordAuthFailure()` - 13 edges
 7. `Rankly.ai - Complete Setup Overview` - 13 edges
 8. `sendSystemEmail()` - 12 edges
-9. `failAuth()` - 11 edges
-10. `executeAiInference()` - 11 edges
+9. `🚀 Rankly.ai — Next-Gen Executive AI Screening & Candidate Management System` - 12 edges
+10. `failAuth()` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `runTest()` --calls--> `processInternalDocument()`  [EXTRACTED]
@@ -169,15 +172,15 @@
   scripts/test-document-engine.js → src/services/documentParserService.js
 - `getAgent()` --calls--> `getAgentById()`  [EXTRACTED]
   src/controllers/aiAgentController.js → src/services/aiAgentService.js
-- `processDocumentWithAi()` --calls--> `processInternalDocument()`  [EXTRACTED]
-  src/controllers/documentController.js → src/services/aiService.js
-- `summarizeDocumentWithAi()` --calls--> `summarizePolicyDocument()`  [EXTRACTED]
-  src/controllers/documentController.js → src/services/aiService.js
+- `checkAtsScoreHandler()` --calls--> `extractTextFromDocument()`  [EXTRACTED]
+  src/controllers/candidateFeatureController.js → src/utils/helpers.js
+- `uploadApplicationHandler()` --calls--> `extractTextFromDocument()`  [EXTRACTED]
+  src/controllers/candidateFeatureController.js → src/utils/helpers.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (140 total, 48 thin omitted)
+## Communities (142 total, 50 thin omitted)
 
 ### Community 0 - "authController.js"
 Cohesion: 0.07
@@ -185,15 +188,15 @@ Nodes (47): bcrypt, checkEmailAvailability(), companyResetPassword(), crypto, fa
 
 ### Community 1 - "server.js"
 Cohesion: 0.04
-Nodes (46): aiAgentRoutes, allowedOrigins, analyticsRoutes, { apiLimiter, publicLimiter, authenticatedLimiter }, app, applicationDbRoutes, attendanceRoutes, authRoutes (+38 more)
+Nodes (47): aiAgentRoutes, allowedOrigins, analyticsRoutes, { apiLimiter, publicLimiter, authenticatedLimiter }, app, applicationDbRoutes, attendanceRoutes, authRoutes (+39 more)
 
 ### Community 2 - "database.js"
-Cohesion: 0.05
-Nodes (41): @prisma/client, candidatesData, crypto, prisma, { PrismaClient }, { PrismaClient }, aiAgentService, approveDraft() (+33 more)
+Cohesion: 0.07
+Nodes (36): { PrismaClient }, aiAgentService, approveDraft(), chatWithAgent(), getAgent(), listAgents(), registerAgent(), createOrUpdateEmployee() (+28 more)
 
 ### Community 3 - "healthChecker.js"
-Cohesion: 0.12
-Nodes (19): triggerManualCheck(), autoFixIssue(), backupCode(), checks, crypto, { exec }, fs, generateActionToken() (+11 more)
+Cohesion: 0.06
+Nodes (38): express-rate-limit, fs, getDiagnostics(), getSecurityThreats(), handleApproveFix(), handleRejectFix(), healthChecker, path (+30 more)
 
 ### Community 4 - "userRoutes.js"
 Cohesion: 0.07
@@ -203,9 +206,9 @@ Nodes (35): PATTERNS, validate(), validateField(), validateObject(), { aiLimiter
 Cohesion: 0.07
 Nodes (27): mammoth, pdf-parse, axios, { extractDocumentText }, fs, http, path, { processInternalDocument } (+19 more)
 
-### Community 6 - "userController.js"
-Cohesion: 0.13
-Nodes (7): bcrypt, createReferralCode(), crypto, { generateReferralCode }, prisma, { sendInvitationEmail }, generateReferralCode()
+### Community 6 - "emailService.js"
+Cohesion: 0.07
+Nodes (23): nodemailer, prisma, { sendRanklyEmail }, submitGrievance(), sendTestEmail(), bcrypt, createReferralCode(), crypto (+15 more)
 
 ### Community 7 - "authRoutes.js"
 Cohesion: 0.08
@@ -216,20 +219,20 @@ Cohesion: 0.07
 Nodes (30): dependencies, adm-zip, axios, bcryptjs, compression, connect-sqlite3, cors, dotenv (+22 more)
 
 ### Community 9 - "pipelineController.js"
-Cohesion: 0.15
-Nodes (24): buildAiCheatSheet(), createCandidate(), deleteCandidate(), formatCandidate(), getAiCandidateQueue(), getCandidateAuditLogs(), getCandidateById(), getCandidateCheatSheet() (+16 more)
+Cohesion: 0.11
+Nodes (32): createNotification(), getNotifications(), getUnreadCount(), getUserId(), markAllRead(), markAsRead(), prisma, buildAiCheatSheet() (+24 more)
 
 ### Community 10 - "package.json"
 Cohesion: 0.10
 Nodes (19): author, description, keywords, license, main, name, version, adm-zip (+11 more)
 
 ### Community 11 - "resumeController.js"
-Cohesion: 0.16
-Nodes (12): batchUploadHandler(), { extractTextFromDocument, extractCandidateInfoFromText }, fs, prisma, { screenResume, detectRole }, screenResumeHandler(), screenResume(), crypto (+4 more)
+Cohesion: 0.15
+Nodes (17): parseResumeHandler(), batchUploadHandler(), detectRoleHandler(), { extractTextFromDocument, extractCandidateInfoFromText }, fs, prisma, realtimeNotificationService, { screenResume, detectRole } (+9 more)
 
 ### Community 12 - "auth.js"
-Cohesion: 0.14
-Nodes (15): prisma, requireHRMS(), requireRole(), verifyToken, authLimiter, employeeController, express, { isAuthenticated, requireHRMS, requireRole } (+7 more)
+Cohesion: 0.10
+Nodes (21): isAuthenticated(), prisma, requireHRMS(), requireRole(), verifyToken, authLimiter, appService, express (+13 more)
 
 ### Community 13 - "candidateRoutes.js"
 Cohesion: 0.12
@@ -237,44 +240,44 @@ Nodes (16): aiLimiter, apiLimiter(), authenticatedLimiter, publicLimiter, aiAgen
 
 ### Community 14 - "candidateFeatureController.js"
 Cohesion: 0.12
-Nodes (10): { 
+Nodes (8): { 
   calculateAtsScoreWithJd, 
   generateCoverLetterAi, 
   calculateSkillGap,
   ROLE_BENCHMARKS 
-}, CURATED_JOB_LISTINGS, { extractTextFromDocument }, fs, generateCoverLetterHandler(), { 
+}, CURATED_JOB_LISTINGS, { extractTextFromDocument }, fs, { 
   generateResumeDocx, 
   generateResumePdf, 
   generateCoverLetterDocx 
-}, getSkillGapHandler(), prisma (+2 more)
+}, getSkillGapHandler(), prisma, calculateSkillGap()
 
 ### Community 15 - "Rankly.ai - One-Click Startup Guide"
 Cohesion: 0.06
 Nodes (35): Accessing the Application, Adding Your Own Icon, Advanced: Create Windows Service, Changing App Name/Description, Configuration, Creating a Portable Version, Custom Icon Setup, **Design Your Own Icon** (+27 more)
 
-### Community 16 - "leaveRoutes.js"
-Cohesion: 0.15
-Nodes (11): authorizeRoles(), { authorizeRoles }, express, { isAuthenticated }, router, { supabase }, { authorizeRoles }, db (+3 more)
+### Community 16 - "attendanceRoutes.js"
+Cohesion: 0.13
+Nodes (13): runTests(), authorizeRoles(), { authorizeRoles }, db, express, { optionalAuth, isAuthenticated }, realtimeNotificationService, router (+5 more)
 
 ### Community 17 - "candidateFeatures.js"
-Cohesion: 0.24
-Nodes (12): escapeHtml(), renderAiTalentReport(), renderAtsResults(), renderCandidatePipeline(), renderCandidateProfile(), renderJobListings(), renderPolicySummary(), renderProfileSkillChips() (+4 more)
+Cohesion: 0.20
+Nodes (15): escapeHtml(), formatUrl(), handleLiveNotification(), initRealtimeNotificationClient(), renderAiTalentReport(), renderAtsResults(), renderCandidatePipeline(), renderCandidateProfile() (+7 more)
 
 ### Community 18 - "middleware/upload.js"
 Cohesion: 0.15
 Nodes (11): multer, allowedExtensions, allowedMimes, crypto, fs, maxFileSizeMB, multer, path (+3 more)
 
 ### Community 19 - "aiService.js"
-Cohesion: 0.13
-Nodes (16): ollama, { chatCareerCounselor }, prisma, sendMessage(), detectRoleHandler(), axios, chatCareerCounselor(), detectRole() (+8 more)
+Cohesion: 0.18
+Nodes (12): ollama, generateCoverLetterHandler(), axios, { evaluateResumeRuleBased, safeJsonParse }, executeAiInference(), generateCoverLetterAi(), { getCircuitBreaker }, groqBreaker (+4 more)
 
 ### Community 20 - "applicationDbService.js"
 Cohesion: 0.20
 Nodes (6): ALLOWED_TRANSITIONS, db, isValidStatus(), isValidTransition(), updateApplicationStatus(), VALID_STATUSES
 
-### Community 21 - "emailService.js"
-Cohesion: 0.21
-Nodes (11): nodemailer, sendTestEmail(), inviteTeamMember(), dns, nodemailer, path, sendInvitationEmail(), sendSystemEmail() (+3 more)
+### Community 21 - "leaveRoutes.js"
+Cohesion: 0.12
+Nodes (13): exceljs, assert, ExcelJS, leaveRoutes, realtimeService, { authorizeRoles }, db, express (+5 more)
 
 ### Community 22 - "axios"
 Cohesion: 0.22
@@ -291,10 +294,6 @@ Nodes (9): background_color, description, display, icons, name, orientation, sho
 ### Community 25 - "pgDatabase.js"
 Cohesion: 0.22
 Nodes (5): pg, { pool }, tables, db, { Pool }
-
-### Community 26 - "healthController.js"
-Cohesion: 0.15
-Nodes (12): fs, getDiagnostics(), getSecurityThreats(), handleApproveFix(), handleRejectFix(), healthChecker, path, rollbackSnapshot() (+4 more)
 
 ### Community 27 - "CircuitBreaker"
 Cohesion: 0.29
@@ -313,8 +312,8 @@ Cohesion: 0.22
 Nodes (6): @supabase/supabase-js, db, supabase, { createClient }, supabaseKey, supabaseUrl
 
 ### Community 31 - "exportService.js"
-Cohesion: 0.25
-Nodes (10): docx, pdf-lib, exportCoverLetterHandler(), exportResumeHandler(), cleanText(), { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle }, generateCoverLetterDocx(), generateResumeDocx() (+2 more)
+Cohesion: 0.29
+Nodes (9): docx, exportCoverLetterHandler(), exportResumeHandler(), cleanText(), { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle }, generateCoverLetterDocx(), generateResumeDocx(), generateResumePdf() (+1 more)
 
 ### Community 32 - "analyticsController.js"
 Cohesion: 0.25
@@ -324,9 +323,9 @@ Nodes (6): db, generateAiPerformanceReport(), { generatePerformanceInsights }, p
 Cohesion: 0.22
 Nodes (7): apiCacheMiddleware(), crypto, fragmentCache, fs, invalidateFragmentCache(), pageCache, serveCachedHtml()
 
-### Community 34 - "healthRoutes.js"
-Cohesion: 0.22
-Nodes (7): express-rate-limit, express, healthController, healthTriggerLimiter, { optionalAuth }, rateLimit, router
+### Community 34 - "chatController.js"
+Cohesion: 0.33
+Nodes (4): { chatCareerCounselor }, prisma, sendMessage(), chatCareerCounselor()
 
 ### Community 35 - "passport.js"
 Cohesion: 0.25
@@ -344,9 +343,9 @@ Nodes (7): { authorizeRoles }, documentController, express, { optionalAuth, isAu
 Cohesion: 0.29
 Nodes (7): scripts, build, dev, prisma:generate, prisma:migrate, prisma:studio, start
 
-### Community 39 - "grievanceController.js"
-Cohesion: 0.25
-Nodes (5): prisma, { sendRanklyEmail }, submitGrievance(), createTransporter(), sendRanklyEmail()
+### Community 39 - "notificationClient.js"
+Cohesion: 0.47
+Nodes (3): fetchLatestAndToast(), fetchUnreadCount(), updateBadge()
 
 ### Community 40 - "test-document-rbac-ui.js"
 Cohesion: 0.33
@@ -360,9 +359,9 @@ Nodes (32): 📱 Advanced Features, Before Production, Configuration & Tools, De
 Cohesion: 0.29
 Nodes (6): optionalAuth(), express, { optionalAuth }, { publicLimiter }, router, skillMarketplaceController
 
-### Community 43 - "attendanceRoutes.js"
-Cohesion: 0.29
-Nodes (5): { authorizeRoles }, db, express, { optionalAuth, isAuthenticated }, router
+### Community 43 - "seed_hr_candidates.js"
+Cohesion: 0.33
+Nodes (4): candidatesData, crypto, prisma, { PrismaClient }
 
 ### Community 44 - "jwtEmployeeRoutes.js"
 Cohesion: 0.29
@@ -372,9 +371,9 @@ Nodes (4): employeeController, express, router, verifyToken
 Cohesion: 0.10
 Nodes (19): 🌐 1. Server & Environment Endpoints, 🎨 2. For Frontend Developers (UI Integration), 🤖 3. For AI & Agent Developers (AI Engine & Recommendations), 🏥 4. Health & Status Checks, A. Direct Supabase Query (Python Example), A. Employee Directory & HRMS, B. AI Agent API Endpoints, B. ATS Candidate Pipeline & Screening (+11 more)
 
-### Community 46 - "resumeRoutes.js"
-Cohesion: 0.15
-Nodes (11): isAuthenticated(), appService, express, { isAuthenticated }, router, { aiLimiter }, express, { optionalAuth, isAuthenticated } (+3 more)
+### Community 46 - "express"
+Cohesion: 0.17
+Nodes (10): express, express, notificationController, router, { aiLimiter }, express, { optionalAuth, isAuthenticated }, resumeController (+2 more)
 
 ### Community 47 - "analyticsRoutes.js"
 Cohesion: 0.25
@@ -385,12 +384,12 @@ Cohesion: 0.40
 Nodes (3): fetchTodayAttendance(), startClock(), updatePunchUI()
 
 ### Community 49 - "js/upload.js"
-Cohesion: 0.60
+Cohesion: 0.48
 Nodes (5): getInitials(), handleFiles(), isAllowedFile(), renderCandidate(), renderCandidates()
 
-### Community 50 - "express"
-Cohesion: 0.33
-Nodes (4): express, db, express, router
+### Community 50 - "pgEmployeeRoutes.js"
+Cohesion: 0.40
+Nodes (3): db, express, router
 
 ### Community 51 - "guardian.js"
 Cohesion: 0.33
@@ -412,9 +411,9 @@ Nodes (6): axios, http, req, runTest(), supabase, server
 Cohesion: 0.40
 Nodes (3): db, fs, path
 
-### Community 57 - "extractTextFromDocument"
+### Community 57 - "uploadApplicationHandler"
 Cohesion: 0.50
-Nodes (5): checkAtsScoreHandler(), uploadApplicationHandler(), calculateAtsScoreWithJd(), executeDeterministicAtsMatch(), extractTextFromDocument()
+Nodes (4): checkAtsScoreHandler(), uploadApplicationHandler(), calculateAtsScoreWithJd(), executeDeterministicAtsMatch()
 
 ### Community 58 - "devDependencies"
 Cohesion: 0.50
@@ -435,6 +434,10 @@ Nodes (3): axios, path, puppeteer
 ### Community 66 - "capture_screenshots.js"
 Cohesion: 0.40
 Nodes (3): axios, path, puppeteer
+
+### Community 68 - "@prisma/client"
+Cohesion: 0.40
+Nodes (3): @prisma/client, prisma, { PrismaClient }
 
 ### Community 73 - "Supabase"
 Cohesion: 0.11
@@ -470,7 +473,7 @@ Nodes (9): 1. Query Performance (query), 2. Connection Management (conn), 3. Sec
 
 ### Community 96 - "exportRoutes.js"
 Cohesion: 0.20
-Nodes (8): exceljs, ExcelJS, express, { optionalAuth }, { PDFDocument, rgb, StandardFonts }, pgDb, prisma, router
+Nodes (8): pdf-lib, ExcelJS, express, { optionalAuth }, { PDFDocument, rgb, StandardFonts }, pgDb, prisma, router
 
 ### Community 97 - "ELITE DEVELOPER SYSTEM INSTRUCTIONS (ANTIGRAVITY CORE)"
 Cohesion: 0.20
@@ -532,25 +535,29 @@ Nodes (3): Architecture Stack, Core Directives, Rankly.ai — Project Memory & O
 Cohesion: 0.50
 Nodes (3): Implementation Plan: Figma MCP Server Configuration, Objective, Step-by-Step Execution
 
+### Community 155 - "🚀 Rankly.ai — Next-Gen Executive AI Screening & Candidate Management System"
+Cohesion: 0.06
+Nodes (31): 1. Authentication & Security, 1. Candidate Portal & Live Application Tracker, 2. Candidate & Document Upload, ⏱️ 2-Minute Live Demo Walkthrough, 2. Multi-Tiered AI Screening (NVIDIA Nemotron 70B), 3. HR Recruiter AI Queue & Decisioning Engine, 3. HR Recruiter & Decisioning, 4. Enterprise HRMS (Attendance & Smart Leave) (+23 more)
+
 ## Knowledge Gaps
-- **652 isolated node(s):** `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp`, `name`, `version` (+647 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 820 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **48 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **695 isolated node(s):** `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp`, `name`, `version` (+690 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 871 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **50 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `express` connect `express` to `exportRoutes.js`, `server.js`, `healthRoutes.js`, `userRoutes.js`, `documentRoutes.js`, `authRoutes.js`, `package.json`, `attendanceRoutes.js`, `auth.js`, `candidateRoutes.js`, `resumeRoutes.js`, `analyticsRoutes.js`, `leaveRoutes.js`, `jwtEmployeeRoutes.js`, `optionalAuth`?**
+- **Why does `express` connect `express` to `exportRoutes.js`, `server.js`, `healthChecker.js`, `userRoutes.js`, `documentRoutes.js`, `authRoutes.js`, `package.json`, `optionalAuth`, `auth.js`, `candidateRoutes.js`, `jwtEmployeeRoutes.js`, `analyticsRoutes.js`, `attendanceRoutes.js`, `pgEmployeeRoutes.js`, `leaveRoutes.js`?**
   _High betweenness centrality (0.032) - this node is a cross-community bridge._
 - **Why does `axios` connect `axios` to `capture_candidate_shots.js`, `capture_screenshots.js`, `test_authenticated_browser.js`, `database.js`, `documentController.js`, `authRoutes.js`, `package.json`, `aiService.js`, `test-e2e-ai-pipeline.js`, `test-integration.js`, `test-complaints.js`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `package.json`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `puppeteer-core` connect `puppeteer-core` to `capture_candidate_shots.js`, `capture_screenshots.js`, `test_authenticated_browser.js`, `package.json`, `axios`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **What connects `@magicuidesign/mcp`, `@nexus2520/figma-mcp-server`, `figma-developer-mcp` to the rest of the system?**
-  _652 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _695 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `authController.js` be split into smaller, more focused modules?**
   _Cohesion score 0.07199032062915911 - nodes in this community are weakly interconnected._
 - **Should `server.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
 - **Should `database.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.05450733752620545 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06567992599444958 - nodes in this community are weakly interconnected._

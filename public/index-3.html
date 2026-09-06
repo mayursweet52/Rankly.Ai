@@ -26,7 +26,7 @@
     <meta name="twitter:image" content="https://ranklyai-production.up.railway.app/assets/backgrounds/login-art.png" />
 
     <title>Rankly.ai — Enterprise AI Recruitment Platform</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
@@ -6307,8 +6307,8 @@ body.dark-theme .resume-tip-box,
 
                     <!-- Step 3: Link Dispatched Screen -->
                     <div id="fpResetStep3" style="display:none;" class="text-center py-4">
-                        <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-950/50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl border border-emerald-100 dark:border-emerald-800">
-                            📬
+                        <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-950/50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-emerald-600 dark:text-emerald-400 text-2xl border border-emerald-100 dark:border-emerald-800 shadow-sm">
+                            <i class="fa-solid fa-envelope-circle-check"></i>
                         </div>
                         <h4 class="text-lg font-black text-gray-900 dark:text-white mb-2">Password Reset Link Sent!</h4>
                         <p class="text-xs text-gray-600 dark:text-gray-300 mb-4 leading-relaxed max-w-sm mx-auto">
@@ -6317,8 +6317,8 @@ body.dark-theme .resume-tip-box,
                         <div class="bg-indigo-50/80 dark:bg-zinc-800/80 border border-indigo-100 dark:border-zinc-700 py-2.5 px-4 rounded-xl mb-5 text-xs text-indigo-900 dark:text-indigo-200 font-mono break-all inline-block max-w-full">
                             <span id="fpResetFinalEmail" class="font-bold"></span>
                         </div>
-                        <p class="text-xs text-amber-600 dark:text-amber-400 mb-5">
-                            👉 Open Gmail on your <strong>mobile phone or computer</strong> and click the link to set your new password.
+                        <p class="text-xs text-amber-600 dark:text-amber-400 mb-5 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-arrow-right text-[11px]"></i> Open your email provider on your <strong>mobile phone or computer</strong> and click the link to set your new password.
                         </p>
                         <div class="flex gap-2 justify-center">
                             <a href="https://mail.google.com" target="_blank" class="btn-primary py-2 px-4 text-xs font-bold flex items-center gap-1.5">
@@ -7134,20 +7134,20 @@ body.dark-theme .resume-tip-box,
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Meeting Platform</label>
                     <select id="schedulePlatformSelect" class="form-input">
-                        <option value="Google Meet">📹 Google Meet (Direct Link)</option>
-                        <option value="Zoom">🎥 Zoom Video Conference</option>
-                        <option value="Microsoft Teams">💼 Microsoft Teams</option>
-                        <option value="In-Person Office">🏢 On-Site Office Round</option>
+                        <option value="Google Meet">Google Meet (Direct Video Link)</option>
+                        <option value="Zoom">Zoom Video Conference</option>
+                        <option value="Microsoft Teams">Microsoft Teams</option>
+                        <option value="In-Person Office">On-Site Office Round</option>
                     </select>
                 </div>
                 <!-- Interview Round Type -->
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Evaluation Round</label>
                     <select id="scheduleRoundSelect" class="form-input">
-                        <option value="Technical Screening">💻 Round 1: Technical & Code Screening</option>
-                        <option value="System Architecture">🏛️ Round 2: System Design & Scalability</option>
-                        <option value="Hiring Manager Discussion" selected>🤝 Round 3: Hiring Manager Review</option>
-                        <option value="Executive HR Fit">🌟 Round 4: Executive Culture & HR</option>
+                        <option value="Technical Screening">Round 1: Technical & Code Screening</option>
+                        <option value="System Architecture">Round 2: System Design & Scalability</option>
+                        <option value="Hiring Manager Discussion" selected>Round 3: Hiring Manager Review</option>
+                        <option value="Executive HR Fit">Round 4: Executive Culture & HR Fit</option>
                     </select>
                 </div>
             </div>
@@ -7315,20 +7315,17 @@ body.dark-theme .resume-tip-box,
                             </div>
                         </div>
 
-                        <!-- Live Stats Grid (3 cards with Magic UI Animated Border Beam) -->
+                        <!-- Live Stats Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div class="stat-card border-beam-container">
-                                <div class="border-beam border-beam-emerald" style="--border-beam-duration: 9s;"></div>
+                            <div class="stat-card">
                                 <span class="stat-label">Resumes Uploaded</span>
                                 <span class="stat-value" id="resumeCount">0</span>
                             </div>
-                            <div class="stat-card border-beam-container">
-                                <div class="border-beam border-beam-amber" style="--border-beam-duration: 7s;"></div>
+                            <div class="stat-card">
                                 <span class="stat-label">AI Matches</span>
                                 <span class="stat-value" id="matchCount">0</span>
                             </div>
-                            <div class="stat-card border-beam-container">
-                                <div class="border-beam border-beam-emerald" style="--border-beam-duration: 8s;"></div>
+                            <div class="stat-card">
                                 <span class="stat-label">Profile Strength</span>
                                 <span class="stat-value" id="profileStrength">0%</span>
                             </div>
@@ -7566,7 +7563,7 @@ body.dark-theme .resume-tip-box,
                             <!-- Card Header -->
                             <div class="flex justify-between items-start mb-4 pb-4 border-b border-[#E5E5DF] dark:border-white/10">
                                 <div>
-                                    <h2 class="command-a-title text-xl md:text-2xl tracking-tight mb-1">Command A Playground</h2>
+                                    <h2 class="command-a-title text-xl md:text-2xl tracking-tight mb-1">AI Talent Intelligence Console</h2>
                                     <p class="command-a-subtitle text-xs mb-0">Real-time candidate evaluation &amp; career intelligence</p>
                                 </div>
                                 <div class="flex items-center gap-3">
@@ -7581,7 +7578,7 @@ body.dark-theme .resume-tip-box,
                             <div class="command-a-container border rounded-2xl p-5 mb-4 flex-1 overflow-y-auto space-y-4" id="chatContainer" style="min-height:360px; max-height:460px;">
                                 <div class="chat-msg-row bot">
                                     <div class="command-a-bubble p-4 border rounded-xl max-w-2xl text-xs md:text-sm leading-relaxed shadow-2xs">
-                                        Welcome to Command A Playground. How can I assist with your candidate screening or resume optimization today?
+                                        Welcome to the Rankly AI Talent Intelligence Console. How can I assist with your candidate screening or resume optimization today?
                                     </div>
                                 </div>
                             </div>
@@ -8097,18 +8094,18 @@ body.dark-theme .resume-tip-box,
                             <div class="flex justify-between items-center mb-4">
                                 <div>
                                     <h3 class="card-title mb-1">Production API Keys</h3>
-                                    <p class="text-xs text-[#888880] font-mono">Use keys to integrate Rankly Command A with your ATS pipelines</p>
+                                    <p class="text-xs text-[#888880] font-mono">Use keys to integrate Rankly Talent Intelligence with your ATS pipelines</p>
                                 </div>
-                                <button class="btn-primary" onclick="showToast('Generated new API Key: rk_live_7k89d2...', 'success')">
+                                <button class="btn-primary" onclick="generateEnterpriseApiKey()">
                                     <i class="fas fa-plus mr-1"></i> Generate Key
                                 </button>
                             </div>
-                            <div class="border border-[#E5E5DF] rounded-lg p-4 bg-[#FAFAFA] flex justify-between items-center font-mono text-xs">
+                            <div class="border border-[#E5E5DF] dark:border-zinc-700 rounded-lg p-4 bg-[#FAFAFA] dark:bg-zinc-800 flex justify-between items-center font-mono text-xs">
                                 <div>
-                                    <p class="font-bold text-[#111111]">Default Production Key</p>
-                                    <p class="text-[#888880] mt-1">rk_live_89a7f34c98d7... (Active)</p>
+                                    <p class="font-bold text-[#111111] dark:text-zinc-200">Default Production Key</p>
+                                    <p class="text-[#888880] dark:text-zinc-400 mt-1" id="prodApiKeyDisplay">rk_live_89a7f34c98d7... (Active)</p>
                                 </div>
-                                <button onclick="navigator.clipboard?.writeText('rk_live_89a7f34c98d7'); showToast('Copied API Key to clipboard!', 'info')" class="btn-secondary text-xs py-1.5 px-3">
+                                <button onclick="copyEnterpriseApiKey()" class="btn-secondary text-xs py-1.5 px-3">
                                     <i class="fas fa-copy mr-1"></i> Copy
                                 </button>
                             </div>
@@ -8247,12 +8244,12 @@ body.dark-theme .resume-tip-box,
                                         <i class="fas fa-chevron-right text-xs"></i>
                                     </button>
 
-                                    <div class="p-3 bg-[#FAFAF8] border border-[#E5E5DF] rounded-xl flex items-center justify-between">
+                                    <div class="p-3 bg-[#FAFAF8] dark:bg-zinc-800 border border-[#E5E5DF] dark:border-zinc-700 rounded-xl flex items-center justify-between">
                                         <div>
-                                            <p class="text-xs font-bold text-[#111111] mb-0">Corporate Referral Code</p>
-                                            <p class="text-[11px] text-[#666660] font-mono mb-0" id="adminReferralCodeDisplay">RNK-CORP-9842</p>
+                                            <p class="text-xs font-bold text-[#111111] dark:text-zinc-200 mb-0">Corporate Team Invite Code</p>
+                                            <p class="text-[11px] text-[#666660] dark:text-zinc-400 font-mono mb-0" id="adminReferralCodeDisplay">RNK-CORP-9842</p>
                                         </div>
-                                        <button class="btn-secondary text-xs py-1 px-3 rounded-lg" onclick="navigator.clipboard?.writeText('RNK-CORP-9842'); showToast('Referral Code Copied!', 'info');">
+                                        <button class="btn-secondary text-xs py-1 px-3 rounded-lg" onclick="copyCorporateInviteCode()">
                                             <i class="fas fa-copy mr-1"></i> Copy Code
                                         </button>
                                     </div>
@@ -9140,7 +9137,7 @@ body.dark-theme .resume-tip-box,
                                             <i class="fa-solid fa-user-tie"></i>
                                         </div>
                                         <div class="text-xs font-black text-amber-900 dark:text-amber-300">3. HR Review</div>
-                                        <div class="text-[10px] text-amber-700/70 dark:text-amber-400/80 mt-0.5">Cheat Sheet & Shortlist</div>
+                                        <div class="text-[10px] text-amber-700/70 dark:text-amber-400/80 mt-0.5">Evaluation Brief & Shortlist</div>
                                     </div>
                                     <!-- Stage 4: Interview -->
                                     <div class="p-3 rounded-xl border border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/20 text-center relative">
@@ -9403,9 +9400,9 @@ body.dark-theme .resume-tip-box,
                                             <i class="fa-solid fa-signal text-emerald-500"></i> Job Search Availability
                                         </h3>
                                         <select id="profileJobSearchStatus" class="form-input w-full p-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-zinc-800">
-                                            <option value="actively_looking">🟢 Actively Interviewing & Looking</option>
-                                            <option value="open_to_offers">🟡 Open to Compelling Offers</option>
-                                            <option value="not_looking">⚪ Closed / Not Looking</option>
+                                            <option value="actively_looking">Actively Interviewing & Looking</option>
+                                            <option value="open_to_offers">Open to Compelling Offers</option>
+                                            <option value="not_looking">Closed / Not Looking</option>
                                         </select>
                                         <div class="space-y-2 pt-2 border-t border-[#E5E5DF] dark:border-zinc-800 text-xs">
                                             <div class="flex justify-between items-center text-gray-600 dark:text-zinc-400">
@@ -9836,11 +9833,11 @@ body.dark-theme .resume-tip-box,
                                             <div>
                                                 <label class="block font-bold text-gray-700 dark:text-zinc-300 mb-1">Select Policy to Summarize</label>
                                                 <select id="policySelectDoc" onchange="toggleCustomPolicyInput()" class="form-input w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-zinc-800">
-                                                    <option value="consolidated">📋 All Consolidated Company Policies</option>
-                                                    <option value="code_of_conduct">⚖️ Employee Code of Conduct & Ethics</option>
-                                                    <option value="leave_attendance">🏖️ Paid Time Off, Leaves & Attendance Policy</option>
-                                                    <option value="remote_work">💻 Remote & Hybrid Work Security Protocol</option>
-                                                    <option value="custom">✍️ Paste Custom Policy Document Text...</option>
+                                                    <option value="consolidated">All Consolidated Company Policies</option>
+                                                    <option value="code_of_conduct">Employee Code of Conduct & Ethics</option>
+                                                    <option value="leave_attendance">Paid Time Off, Leaves & Attendance Policy</option>
+                                                    <option value="remote_work">Remote & Hybrid Work Security Protocol</option>
+                                                    <option value="custom">Paste Custom Policy Document Text...</option>
                                                 </select>
                                             </div>
 
@@ -10160,7 +10157,7 @@ body.dark-theme .resume-tip-box,
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Ranked (90%+ on Top)
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Live applicant queue automatically ordered by AI Fit Score. Review cheat sheets & 1-click shortlist with immutable audit logs.</p>
+                                        <p class="text-xs text-[#666660] dark:text-zinc-400 mt-1">Live applicant queue automatically ordered by AI Fit Score. Review candidate evaluation briefs &amp; 1-click shortlist with immutable audit logs.</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-2">
@@ -10186,7 +10183,7 @@ body.dark-theme .resume-tip-box,
                                     <div id="queueStatTotal" class="text-2xl font-black font-mono text-[#111111] dark:text-white mt-1">0</div>
                                 </div>
                                 <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 shadow-2xs">
-                                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">⭐ Top Priority (90%+ Match)</span>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Top Priority (90%+ Match)</span>
                                     <div id="queueStatTop" class="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400 mt-1">0</div>
                                 </div>
                                 <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs">
@@ -10226,13 +10223,13 @@ body.dark-theme .resume-tip-box,
                                         All Candidates
                                     </button>
                                     <button type="button" data-score="90" onclick="setAiQueueScoreFilter('90')" class="ai-score-pill px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 hover:border-emerald-500 cursor-pointer">
-                                        ⭐ 90%+ Match (Top Tier)
+                                        90%+ Match (Top Tier)
                                     </button>
                                     <button type="button" data-score="75" onclick="setAiQueueScoreFilter('75')" class="ai-score-pill px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 hover:border-emerald-500 cursor-pointer">
-                                        🟢 75%+ Strong Fits
+                                        75%+ Strong Fits
                                     </button>
                                     <button type="button" data-score="50" onclick="setAiQueueScoreFilter('50')" class="ai-score-pill px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 hover:border-emerald-500 cursor-pointer">
-                                        🟡 50%+ Moderate Fits
+                                        50%+ Moderate Fits
                                     </button>
                                 </div>
                             </div>
@@ -10258,7 +10255,7 @@ body.dark-theme .resume-tip-box,
                                                 <th class="p-3.5">Target Benchmark Role</th>
                                                 <th class="p-3.5">AI Fit Score (Ranked)</th>
                                                 <th class="p-3.5">Stage</th>
-                                                <th class="p-3.5">AI Cheat Sheet Snippet</th>
+                                                <th class="p-3.5">Evaluation Brief Snippet</th>
                                                 <th class="p-3.5 text-right">Fast Actions</th>
                                             </tr>
                                         </thead>
@@ -10289,7 +10286,7 @@ body.dark-theme .resume-tip-box,
                                 </span>
                                 <h2 class="text-2xl font-black text-[#111111] dark:text-white mt-3">Unauthorized HR Queue Access</h2>
                                 <p class="text-xs text-gray-600 dark:text-zinc-400 mt-2 max-w-md mx-auto leading-relaxed">
-                                    You are currently signed in as a <strong class="text-rose-600 dark:text-rose-400">Normal Corporate Employee</strong>. Internal HR Candidate Queues, Talent Pipelines, Screening Matrices, and Recruiter Cheat Sheets are strictly restricted to Human Resources (HR) and Company Administrators.
+                                    You are currently signed in as a <strong class="text-rose-600 dark:text-rose-400">Normal Corporate Employee</strong>. Internal HR Candidate Queues, Talent Pipelines, Screening Matrices, and Candidate Evaluation Briefs are strictly restricted to Human Resources (HR) and Company Administrators.
                                 </p>
                             </div>
                             <div class="p-4 rounded-2xl bg-[#FAFAF8] dark:bg-zinc-800/50 border border-[#E5E5DF] dark:border-zinc-800 text-left text-xs space-y-2">
@@ -10311,15 +10308,15 @@ body.dark-theme .resume-tip-box,
                         </div>
                     </div>
 
-                    <!-- Modal: AI Recruiter Cheat Sheet Panel -->
+                    <!-- Modal: Candidate Evaluation Dossier Panel -->
                     <div id="aiCheatSheetModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeAiCheatSheet()">
                         <div class="modal-card max-w-3xl w-full p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
                             <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-sm font-bold">
-                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                        <i class="fa-solid fa-file-lines"></i>
                                     </div>
-                                    <h3 class="text-sm font-bold text-[#111111] dark:text-white">AI Candidate Cheat Sheet Panel</h3>
+                                    <h3 class="text-sm font-bold text-[#111111] dark:text-white">Candidate Evaluation Dossier</h3>
                                 </div>
                                 <button type="button" onclick="closeAiCheatSheet()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
                             </div>
@@ -11602,6 +11599,44 @@ body.dark-theme .resume-tip-box,
                 });
             }
             window.setupDashboardForRole = setupDashboardForRole;
+
+            window.generateEnterpriseApiKey = function() {
+                const rawKey = 'rk_live_' + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join('');
+                localStorage.setItem('rankly_api_key', rawKey);
+                const displayEl = document.getElementById('prodApiKeyDisplay');
+                if (displayEl) {
+                    displayEl.textContent = `${rawKey.substring(0, 16)}... (Active)`;
+                }
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`Generated new Production API Key: ${rawKey.substring(0, 18)}...`, 'success');
+                }
+            };
+
+            window.copyEnterpriseApiKey = function() {
+                let key = localStorage.getItem('rankly_api_key');
+                if (!key) {
+                    key = 'rk_live_' + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join('');
+                    localStorage.setItem('rankly_api_key', key);
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(key).then(() => {
+                        if (typeof window.showToast === 'function') window.showToast('Copied Enterprise API Key to clipboard!', 'info');
+                    }).catch(() => {
+                        if (typeof window.showToast === 'function') window.showToast('Key: ' + key, 'info');
+                    });
+                } else {
+                    if (typeof window.showToast === 'function') window.showToast('Enterprise API Key: ' + key, 'info');
+                }
+            };
+
+            window.copyCorporateInviteCode = function() {
+                const code = document.getElementById('adminReferralCodeDisplay')?.textContent?.trim() || 'RNK-CORP-9842';
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        if (typeof window.showToast === 'function') window.showToast('Corporate Team Invite Code Copied!', 'info');
+                    });
+                }
+            };
 
             function switchTab(tabId) {
                 if (tabId === 'cover-letter') {

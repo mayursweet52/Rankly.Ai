@@ -39,7 +39,7 @@
       "file_type": "code",
       "norm_label": "checkemailavailability()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1938"
+      "source_location": "L2066"
     },
     {
       "id": "src_controllers_authcontroller_checkverificationstatus",
@@ -51,7 +51,7 @@
       "file_type": "code",
       "norm_label": "checkverificationstatus()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1715"
+      "source_location": "L1827"
     },
     {
       "id": "src_controllers_authcontroller_companyresetpassword",
@@ -63,7 +63,7 @@
       "file_type": "code",
       "norm_label": "companyresetpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1250"
+      "source_location": "L1286"
     },
     {
       "id": "src_controllers_authcontroller_createorganization",
@@ -75,7 +75,7 @@
       "file_type": "code",
       "norm_label": "createorganization()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1330"
+      "source_location": "L1366"
     },
     {
       "id": "src_controllers_authcontroller_failauth",
@@ -87,7 +87,7 @@
       "file_type": "code",
       "norm_label": "failauth()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L55"
+      "source_location": "L87"
     },
     {
       "id": "src_controllers_authcontroller_findexistinguserbyemail",
@@ -111,7 +111,7 @@
       "file_type": "code",
       "norm_label": "forgotpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L842"
+      "source_location": "L878"
     },
     {
       "id": "src_controllers_authcontroller_formatuserresponse",
@@ -123,7 +123,7 @@
       "file_type": "code",
       "norm_label": "formatuserresponse()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L60"
+      "source_location": "L92"
     },
     {
       "id": "src_controllers_authcontroller_getappbaseurl",
@@ -135,7 +135,7 @@
       "file_type": "code",
       "norm_label": "getappbaseurl()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L75"
+      "source_location": "L107"
     },
     {
       "id": "src_controllers_authcontroller_getme",
@@ -147,7 +147,7 @@
       "file_type": "code",
       "norm_label": "getme()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L576"
+      "source_location": "L608"
     },
     {
       "id": "src_controllers_authcontroller_joinorganization",
@@ -159,7 +159,7 @@
       "file_type": "code",
       "norm_label": "joinorganization()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1369"
+      "source_location": "L1405"
     },
     {
       "id": "src_controllers_authcontroller_login",
@@ -171,7 +171,7 @@
       "file_type": "code",
       "norm_label": "login()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L451"
+      "source_location": "L483"
     },
     {
       "id": "src_controllers_authcontroller_logout",
@@ -183,7 +183,7 @@
       "file_type": "code",
       "norm_label": "logout()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L537"
+      "source_location": "L569"
     },
     {
       "id": "src_controllers_authcontroller_register",
@@ -195,7 +195,7 @@
       "file_type": "code",
       "norm_label": "register()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L149"
+      "source_location": "L181"
     },
     {
       "id": "src_controllers_authcontroller_renderverificationresultpage",
@@ -207,7 +207,7 @@
       "file_type": "code",
       "norm_label": "renderverificationresultpage()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1421"
+      "source_location": "L1457"
     },
     {
       "id": "src_controllers_authcontroller_resendlink",
@@ -219,7 +219,7 @@
       "file_type": "code",
       "norm_label": "resendlink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1871"
+      "source_location": "L1983"
     },
     {
       "id": "src_controllers_authcontroller_resendotp",
@@ -231,7 +231,7 @@
       "file_type": "code",
       "norm_label": "resendotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1805"
+      "source_location": "L1917"
     },
     {
       "id": "src_controllers_authcontroller_resetpassword",
@@ -243,7 +243,7 @@
       "file_type": "code",
       "norm_label": "resetpassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L901"
+      "source_location": "L937"
     },
     {
       "id": "src_controllers_authcontroller_resetpasswordwithtoken",
@@ -255,7 +255,7 @@
       "file_type": "code",
       "norm_label": "resetpasswordwithtoken()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1028"
+      "source_location": "L1064"
     },
     {
       "id": "src_controllers_authcontroller_sendotp",
@@ -267,7 +267,7 @@
       "file_type": "code",
       "norm_label": "sendotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L627"
+      "source_location": "L659"
     },
     {
       "id": "src_controllers_authcontroller_submitchangepassword",
@@ -279,7 +279,7 @@
       "file_type": "code",
       "norm_label": "submitchangepassword()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1155"
+      "source_location": "L1191"
     },
     {
       "id": "src_controllers_authcontroller_validateemailaddress",
@@ -291,7 +291,7 @@
       "file_type": "code",
       "norm_label": "validateemailaddress()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L112"
+      "source_location": "L144"
     },
     {
       "id": "src_controllers_authcontroller_verifychangepasswordcredentials",
@@ -303,7 +303,7 @@
       "file_type": "code",
       "norm_label": "verifychangepasswordcredentials()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1088"
+      "source_location": "L1124"
     },
     {
       "id": "src_controllers_authcontroller_verifycompanyreferral",
@@ -315,7 +315,7 @@
       "file_type": "code",
       "norm_label": "verifycompanyreferral()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1215"
+      "source_location": "L1251"
     },
     {
       "id": "src_controllers_authcontroller_verifyemaillink",
@@ -327,7 +327,7 @@
       "file_type": "code",
       "norm_label": "verifyemaillink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1615"
+      "source_location": "L1651"
     },
     {
       "id": "src_controllers_authcontroller_verifyforgototpandsendlink",
@@ -339,7 +339,7 @@
       "file_type": "code",
       "norm_label": "verifyforgototpandsendlink()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L958"
+      "source_location": "L994"
     },
     {
       "id": "src_controllers_authcontroller_verifyotp",
@@ -351,7 +351,7 @@
       "file_type": "code",
       "norm_label": "verifyotp()",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L725"
+      "source_location": "L761"
     },
     {
       "id": "src_middleware_authratelimit_authbackofflimiter",
@@ -3657,7 +3657,7 @@
       "file_type": "code",
       "norm_label": "personal_email_domains",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L92"
+      "source_location": "L124"
     },
     {
       "id": "src_controllers_authcontroller_pgdb",
@@ -15360,7 +15360,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1945",
+      "source_location": "L2073",
       "weight": 1.0
     },
     {
@@ -15372,7 +15372,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1257",
+      "source_location": "L1293",
       "weight": 1.0
     },
     {
@@ -15384,7 +15384,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1308",
+      "source_location": "L1344",
       "weight": 1.0
     },
     {
@@ -15396,7 +15396,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1316",
+      "source_location": "L1352",
       "weight": 1.0
     },
     {
@@ -15408,7 +15408,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L56",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -15420,7 +15420,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L57",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -15432,7 +15432,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L847",
+      "source_location": "L883",
       "weight": 1.0
     },
     {
@@ -15444,7 +15444,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L849",
+      "source_location": "L885",
       "weight": 1.0
     },
     {
@@ -15456,7 +15456,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L867",
+      "source_location": "L903",
       "weight": 1.0
     },
     {
@@ -15468,7 +15468,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L880",
+      "source_location": "L916",
       "weight": 1.0
     },
     {
@@ -15480,7 +15480,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L602",
+      "source_location": "L634",
       "weight": 1.0
     },
     {
@@ -15492,7 +15492,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L457",
+      "source_location": "L489",
       "weight": 1.0
     },
     {
@@ -15504,7 +15504,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L479",
+      "source_location": "L511",
       "weight": 1.0
     },
     {
@@ -15516,7 +15516,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L497",
+      "source_location": "L529",
       "weight": 1.0
     },
     {
@@ -15528,7 +15528,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L524",
+      "source_location": "L556",
       "weight": 1.0
     },
     {
@@ -15540,7 +15540,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L186",
+      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -15552,7 +15552,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L187",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -15564,7 +15564,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L190",
+      "source_location": "L222",
       "weight": 1.0
     },
     {
@@ -15576,7 +15576,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L403",
+      "source_location": "L435",
       "weight": 1.0
     },
     {
@@ -15588,7 +15588,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L407",
+      "source_location": "L439",
       "weight": 1.0
     },
     {
@@ -15600,7 +15600,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L418",
+      "source_location": "L450",
       "weight": 1.0
     },
     {
@@ -15612,7 +15612,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L426",
+      "source_location": "L458",
       "weight": 1.0
     },
     {
@@ -15624,7 +15624,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L438",
+      "source_location": "L470",
       "weight": 1.0
     },
     {
@@ -15636,7 +15636,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1908",
+      "source_location": "L2028",
       "weight": 1.0
     },
     {
@@ -15648,7 +15648,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1914",
+      "source_location": "L2035",
       "weight": 1.0
     },
     {
@@ -15660,7 +15660,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1815",
+      "source_location": "L1927",
       "weight": 1.0
     },
     {
@@ -15672,24 +15672,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1850",
+      "source_location": "L1962",
       "weight": 1.0
     },
     {
       "source": "src_controllers_authcontroller_resetpassword",
       "target": "src_controllers_authcontroller_failauth",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L906",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller_resetpassword",
-      "target": "src_middleware_authratelimit_resetauthfailure",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15701,6 +15689,18 @@
     },
     {
       "source": "src_controllers_authcontroller_resetpassword",
+      "target": "src_middleware_authratelimit_resetauthfailure",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L978",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_resetpassword",
       "target": "src_middleware_authratelimit_recordauthfailure",
       "relation": "calls",
       "_origin": "ast",
@@ -15708,19 +15708,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L949",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller_sendotp",
-      "target": "src_controllers_authcontroller_validateemailaddress",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L633",
+      "source_location": "L985",
       "weight": 1.0
     },
     {
@@ -15732,7 +15720,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L647",
+      "source_location": "L670",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_sendotp",
+      "target": "src_controllers_authcontroller_validateemailaddress",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L684",
       "weight": 1.0
     },
     {
@@ -15744,7 +15744,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L682",
+      "source_location": "L718",
       "weight": 1.0
     },
     {
@@ -15756,7 +15756,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L695",
+      "source_location": "L731",
       "weight": 1.0
     },
     {
@@ -15768,7 +15768,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1218",
+      "source_location": "L1254",
       "weight": 1.0
     },
     {
@@ -15780,12 +15780,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1621",
+      "source_location": "L1657",
       "weight": 1.0
     },
     {
       "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
-      "target": "src_controllers_authcontroller_getappbaseurl",
+      "target": "src_controllers_authcontroller_failauth",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15797,6 +15797,18 @@
     },
     {
       "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
+      "target": "src_controllers_authcontroller_getappbaseurl",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L1036",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
       "target": "src_services_emailservice_sendpasswordresetlinkemail",
       "relation": "calls",
       "_origin": "ast",
@@ -15804,19 +15816,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1004",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller_verifyforgototpandsendlink",
-      "target": "src_controllers_authcontroller_failauth",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L964",
+      "source_location": "L1040",
       "weight": 1.0
     },
     {
@@ -15828,7 +15828,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L734",
+      "source_location": "L770",
       "weight": 1.0
     },
     {
@@ -15840,7 +15840,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L816",
+      "source_location": "L852",
       "weight": 1.0
     },
     {
@@ -15852,7 +15852,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L832",
+      "source_location": "L868",
       "weight": 1.0
     },
     {
@@ -28964,24 +28964,35 @@
     },
     {
       "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_getappbaseurl",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_personal_email_domains",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
       "target": "src_controllers_authcontroller_validateemailaddress",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
-      "source_location": "L112",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_findexistinguserbyemail",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L14",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -28992,7 +29003,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1421",
+      "source_location": "L1457",
       "weight": 1.0
     },
     {
@@ -29041,17 +29052,6 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_failauth",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L55",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
       "target": "src_controllers_authcontroller_generateotp_generatereferralcode",
       "relation": "contains",
       "_origin": "ast",
@@ -29059,17 +29059,6 @@
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
       "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_formatuserresponse",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -29085,17 +29074,6 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_getappbaseurl",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/controllers/authController.js",
-      "source_location": "L75",
-      "weight": 1.0
-    },
-    {
-      "source": "src_controllers_authcontroller",
       "target": "src_controllers_authcontroller_recordauthfailure_resetauthfailure",
       "relation": "contains",
       "_origin": "ast",
@@ -29103,6 +29081,17 @@
       "confidence_score": 1.0,
       "source_file": "src/controllers/authController.js",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_failauth",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -29118,7 +29107,7 @@
     },
     {
       "source": "src_controllers_authcontroller",
-      "target": "src_controllers_authcontroller_personal_email_domains",
+      "target": "src_controllers_authcontroller_formatuserresponse",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -32362,6 +32351,18 @@
     },
     {
       "source": "src_controllers_authcontroller",
+      "target": "src_controllers_authcontroller_findexistinguserbyemail",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "src/controllers/authController.js",
+      "source_location": "L2097",
+      "weight": 1.0
+    },
+    {
+      "source": "src_controllers_authcontroller",
       "target": "src_controllers_authcontroller_register",
       "relation": "indirect_call",
       "_origin": "ast",
@@ -32369,7 +32370,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1959",
+      "source_location": "L2098",
       "weight": 1.0
     },
     {
@@ -32381,7 +32382,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1961",
+      "source_location": "L2100",
       "weight": 1.0
     },
     {
@@ -32393,7 +32394,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1962",
+      "source_location": "L2101",
       "weight": 1.0
     },
     {
@@ -32405,7 +32406,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1963",
+      "source_location": "L2102",
       "weight": 1.0
     },
     {
@@ -32417,7 +32418,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1964",
+      "source_location": "L2103",
       "weight": 1.0
     },
     {
@@ -32429,7 +32430,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1965",
+      "source_location": "L2104",
       "weight": 1.0
     },
     {
@@ -32441,7 +32442,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1966",
+      "source_location": "L2105",
       "weight": 1.0
     },
     {
@@ -32453,7 +32454,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1967",
+      "source_location": "L2106",
       "weight": 1.0
     },
     {
@@ -32465,7 +32466,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1968",
+      "source_location": "L2107",
       "weight": 1.0
     },
     {
@@ -32477,7 +32478,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1969",
+      "source_location": "L2108",
       "weight": 1.0
     },
     {
@@ -32489,7 +32490,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1970",
+      "source_location": "L2109",
       "weight": 1.0
     },
     {
@@ -32501,7 +32502,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1971",
+      "source_location": "L2110",
       "weight": 1.0
     },
     {
@@ -32513,7 +32514,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1973",
+      "source_location": "L2112",
       "weight": 1.0
     },
     {
@@ -32525,7 +32526,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1974",
+      "source_location": "L2113",
       "weight": 1.0
     },
     {
@@ -32537,7 +32538,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1975",
+      "source_location": "L2114",
       "weight": 1.0
     },
     {
@@ -32549,7 +32550,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1976",
+      "source_location": "L2115",
       "weight": 1.0
     },
     {
@@ -32561,7 +32562,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1977",
+      "source_location": "L2116",
       "weight": 1.0
     },
     {
@@ -32573,7 +32574,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1978",
+      "source_location": "L2117",
       "weight": 1.0
     },
     {
@@ -32585,7 +32586,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1979",
+      "source_location": "L2118",
       "weight": 1.0
     },
     {
@@ -32597,7 +32598,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1980",
+      "source_location": "L2119",
       "weight": 1.0
     },
     {
@@ -32609,7 +32610,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "src/controllers/authController.js",
-      "source_location": "L1981",
+      "source_location": "L2120",
       "weight": 1.0
     },
     {
@@ -34642,5 +34643,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "dadb0feb7963c751e1f1ff21ff36b9b0da69bf89"
+  "built_at_commit": "d182aa79073bea7dcb799330c310b4d7fbc25d66"
 }
