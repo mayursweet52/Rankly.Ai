@@ -1,6 +1,7 @@
 const prisma = require('../config/database');
 const { sendCandidateStatusNotification } = require('../services/emailService');
 const { recordAuditLog, getRecentAuditLogs } = require('../services/auditLogService');
+const { createNotification } = require('./notificationController');
 
 function safeJsonParse(str, fallback = []) {
   if (!str) return fallback;
@@ -298,6 +299,16 @@ async function performCandidateAction(req, res) {
         newStage,
         hrNotes
       ).catch(e => console.warn('[Auto-Email] Notification warning:', e.message));
+
+      if (candidate.userId) {
+        createNotification(
+          candidate.userId,
+          'Application Status Updated',
+          `Your application for ${candidate.targetRole} is now: ${newStage.toUpperCase().replace('_', ' ')}.`,
+          newStage === 'rejected' ? 'warning' : 'success',
+          '#tab-applications'
+        ).catch(e => console.warn('[Auto-Notification] Warning:', e.message));
+      }
     }
 
     return res.json({
@@ -473,6 +484,16 @@ async function updateCandidateStage(req, res) {
         stage,
         notes || `Your application status has been moved to ${stage.toUpperCase()}.`
       ).catch(e => console.warn('[Auto-Email] Notification warning:', e.message));
+
+      if (candidate.userId) {
+        createNotification(
+          candidate.userId,
+          'Application Stage Changed',
+          `Your application for ${candidate.targetRole} has transitioned to: ${stage.toUpperCase().replace('_', ' ')}.`,
+          stage === 'rejected' ? 'warning' : 'success',
+          '#tab-applications'
+        ).catch(e => console.warn('[Auto-Notification] Warning:', e.message));
+      }
     }
 
     return res.json({

@@ -730,11 +730,17 @@ async function uploadApplicationHandler(req, res) {
     let resumeText = '';
     let fileName = file ? file.originalname : 'Resume Document';
     let resumeUrl = file ? `/uploads/${file.filename}` : null;
+    let parsedInfo = { name: '', email: '', phone: '' };
 
     if (file) {
       try {
         const fileBuffer = fs.readFileSync(file.path);
         resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
+        // Extract candidate contact info from resume text for auto-fill
+        if (resumeText && resumeText.length > 20) {
+          const { extractCandidateInfoFromText } = require('../utils/helpers');
+          parsedInfo = extractCandidateInfoFromText(resumeText, file.originalname) || parsedInfo;
+        }
       } catch (extractErr) {
         console.warn('Text extraction warning:', extractErr.message);
       }
@@ -831,13 +837,75 @@ async function uploadApplicationHandler(req, res) {
 
     return res.status(201).json({
       success: true,
-      message: `🎉 Resume & application submitted successfully! AI Fit Score calibrated at ${matchScore}%.`,
+      message: `Resume & application submitted successfully! AI Fit Score calibrated at ${matchScore}%.`,
       application,
-      candidate: candidateRecord
+      candidate: candidateRecord,
+      parsedFromResume: {
+        name: parsedInfo.name || candidateName,
+        email: parsedInfo.email || candidateEmail,
+        phone: parsedInfo.phone || phone || '',
+        skills: skillsList
+      }
     });
   } catch (err) {
     console.error('Upload Application Error:', err);
     return res.status(500).json({ success: false, message: 'Failed to process application: ' + err.message });
+  }
+}
+
+async function parseResumeHandler(req, res) {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ success: false, message: 'Please upload a resume file (PDF, DOCX, DOC, TXT).' });
+    }
+
+    const fileBuffer = fs.readFileSync(file.path);
+    const resumeText = await extractTextFromDocument(fileBuffer, file.mimetype, file.originalname);
+    if (!resumeText || resumeText.trim().length < 20) {
+      return res.status(400).json({ success: false, message: 'Could not extract text from document. Please ensure it is a valid text document.' });
+    }
+
+    const { extractCandidateInfoFromText } = require('../utils/helpers');
+    const contactInfo = extractCandidateInfoFromText(resumeText, file.originalname) || {};
+
+    // Common technology skills extraction
+    const commonSkills = [
+      'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'Go', 'Rust', 'PHP', 'Ruby', 'Swift', 'Kotlin',
+      'React', 'Next.js', 'Vue.js', 'Angular', 'Node.js', 'Express', 'Django', 'Flask', 'FastAPI', 'Spring Boot',
+      'SQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'SQLite', 'Prisma', 'GraphQL',
+      'Docker', 'Kubernetes', 'AWS', 'Azure', 'GCP', 'CI/CD', 'Git', 'Linux', 'Tailwind CSS', 'HTML5', 'CSS3',
+      'Machine Learning', 'AI', 'NLP', 'TensorFlow', 'PyTorch', 'Data Analysis', 'Figma', 'UI/UX'
+    ];
+    const textLower = resumeText.toLowerCase();
+    const matchedSkills = commonSkills.filter(skill => {
+      const regex = new RegExp(`\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      return regex.test(textLower);
+    });
+
+    let targetRole = 'Software Engineer';
+    try {
+      const { detectRole } = require('../services/aiService');
+      if (typeof detectRole === 'function') {
+        const detected = await detectRole(resumeText);
+        if (detected && detected.role) targetRole = detected.role;
+      }
+    } catch (_) {}
+
+    return res.json({
+      success: true,
+      message: 'Resume parsed successfully.',
+      parsed: {
+        name: contactInfo.name || '',
+        email: contactInfo.email || '',
+        phone: contactInfo.phone || '',
+        skills: matchedSkills,
+        targetRole: targetRole
+      }
+    });
+  } catch (err) {
+    console.error('Parse resume error:', err);
+    return res.status(500).json({ success: false, message: 'Resume parsing failed: ' + err.message });
   }
 }
 
@@ -855,6 +923,7 @@ module.exports = {
   updateCandidateProfileHandler,
   getJobListingsHandler,
   applyToJobHandler,
-  uploadApplicationHandler
+  uploadApplicationHandler,
+  parseResumeHandler
 };
 

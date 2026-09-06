@@ -615,7 +615,7 @@
     // ─────────────────────────────────────────────────────────────────────────
     // 6. CANDIDATE PORTAL: RESUME UPLOAD FORM & APPLICATION SUBMIT
     // ─────────────────────────────────────────────────────────────────────────
-    window.handleCandCvSelect = function(input) {
+    window.handleCandCvSelect = async function(input) {
         if (input.files && input.files.length > 0) {
             const file = input.files[0];
             const badge = document.getElementById('candCvFileBadge');
@@ -624,15 +624,87 @@
             if (nameEl) nameEl.textContent = file.name;
             if (sizeEl) sizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
             if (badge) badge.classList.remove('hidden');
+
+            // Trigger AI Resume Auto-Fill
+            const statusBox = document.getElementById('cvAutoFillStatus');
+            const statusText = document.getElementById('cvAutoFillText');
+            const autoBadge = document.getElementById('cvAutoFillBadge');
+
+            if (statusBox) {
+                statusBox.classList.remove('hidden');
+                if (statusText) statusText.textContent = 'Extracting candidate details from resume...';
+                if (autoBadge) autoBadge.classList.add('hidden');
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('resume', file);
+
+                const res = await fetch('/api/candidate/parse-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data && data.success && data.parsed) {
+                    const { name, email, phone, skills, targetRole } = data.parsed;
+
+                    // 1. Candidate Application Form in Portal
+                    const nameInp = document.getElementById('candAppFullName');
+                    const emailInp = document.getElementById('candAppEmail');
+                    const phoneInp = document.getElementById('candAppPhone');
+                    const roleInp = document.getElementById('candAppTargetRole');
+                    const skillsInp = document.getElementById('candAppSkills');
+
+                    if (name && nameInp && !nameInp.value) nameInp.value = name;
+                    if (email && emailInp && !emailInp.value) emailInp.value = email;
+                    if (phone && phoneInp && !phoneInp.value) phoneInp.value = phone;
+                    if (targetRole && roleInp && (!roleInp.value || roleInp.value === 'Senior Full Stack Engineer')) roleInp.value = targetRole;
+                    if (skills && skills.length > 0 && skillsInp) {
+                        const skillsStr = skills.join(', ');
+                        skillsInp.value = skillsStr;
+                    }
+
+                    // 2. Sliding Register Form (if present)
+                    const slideFirst = document.getElementById('slideRegFirstName');
+                    const slideLast = document.getElementById('slideRegLastName');
+                    const slideEmail = document.getElementById('slideRegEmail');
+                    const slidePhone = document.getElementById('slideRegPhone');
+
+                    if (name && (slideFirst || slideLast)) {
+                        const parts = name.split(' ');
+                        if (slideFirst && !slideFirst.value) slideFirst.value = parts[0] || '';
+                        if (slideLast && !slideLast.value) slideLast.value = parts.slice(1).join(' ') || '';
+                    }
+                    if (email && slideEmail && !slideEmail.value) slideEmail.value = email;
+                    if (phone && slidePhone && !slidePhone.value) slidePhone.value = phone;
+
+                    // Update UI status banner
+                    if (statusText) statusText.textContent = `Auto-filled details for: ${name || 'Applicant'} (${skills && skills.length ? skills.length + ' skills detected' : 'parsed'})`;
+                    if (autoBadge) autoBadge.classList.remove('hidden');
+
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('Resume parsed! Candidate profile auto-filled.', 'success');
+                    }
+                } else {
+                    if (statusBox) statusBox.classList.add('hidden');
+                }
+            } catch (err) {
+                console.warn('Auto-fill parse warning:', err.message);
+                if (statusBox) statusBox.classList.add('hidden');
+            }
         }
     };
 
     window.clearCandCvFile = function() {
         const fileInput = document.getElementById('candCvFileInput');
         const badge = document.getElementById('candCvFileBadge');
+        const statusBox = document.getElementById('cvAutoFillStatus');
         if (fileInput) fileInput.value = '';
         if (badge) badge.classList.add('hidden');
+        if (statusBox) statusBox.classList.add('hidden');
     };
+
 
     window.submitCandidateResumeApplication = async function() {
         const nameInput = document.getElementById('candAppFullName');

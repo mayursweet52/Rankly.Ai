@@ -39,6 +39,7 @@ router.post('/jobs/apply', optionalAuth, apiLimiter, candidateFeatureController.
 const pipelineController = require('../controllers/pipelineController');
 
 // 8. Candidate CV Upload & Application Form Submission
+router.post('/parse-resume', optionalAuth, apiLimiter, upload.single('resume'), candidateFeatureController.parseResumeHandler);
 router.post('/upload-application', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
 router.post('/upload-resume-form', optionalAuth, apiLimiter, upload.single('cv'), candidateFeatureController.uploadApplicationHandler);
 

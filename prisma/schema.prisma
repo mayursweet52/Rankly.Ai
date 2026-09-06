@@ -50,6 +50,7 @@ model User {
   companyDocuments CompanyDocument[]
   grievances       Grievance[]
   applications     CandidateApplication[]
+  notifications    Notification[]
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -716,4 +717,16 @@ model AuditLog {
   @@index([createdAt])
 }
 
-
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("info")
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+  @@index([userId, isRead])
+  @@index([createdAt])
+}

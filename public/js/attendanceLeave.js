@@ -364,6 +364,7 @@
         const sInp = document.getElementById('leaveStartDate');
         const eInp = document.getElementById('leaveEndDate');
         const display = document.getElementById('calculatedLeaveDays');
+        const weekendInfo = document.getElementById('leaveWeekendInfo');
         if (!sInp || !eInp || !display) return;
 
         if (sInp.value && eInp.value) {
@@ -384,18 +385,37 @@
 
             // Client-side instant fallback calculation
             const start = new Date(sInp.value);
-            const end = new Date(eInp.value);
+            if (end < start) {
+                display.textContent = 'Invalid range';
+                if (weekendInfo) weekendInfo.textContent = '';
+                return;
+            }
+
             let count = 0;
+            let weekendCount = 0;
             let cur = new Date(start);
             cur.setHours(0,0,0,0);
             const endMid = new Date(end);
             endMid.setHours(0,0,0,0);
             while (cur <= endMid) {
                 const day = cur.getDay();
-                if (day !== 0 && day !== 6) count++;
+                if (day !== 0 && day !== 6) {
+                    count++;
+                } else {
+                    weekendCount++;
+                }
                 cur.setDate(cur.getDate() + 1);
             }
             display.textContent = `${count}.0 Working Day(s)`;
+            if (weekendInfo) {
+                if (weekendCount > 0) {
+                    weekendInfo.textContent = `(${weekendCount} Weekend day${weekendCount > 1 ? 's' : ''} excluded)`;
+                    weekendInfo.classList.remove('hidden');
+                } else {
+                    weekendInfo.textContent = `(No weekends in selected range)`;
+                    weekendInfo.classList.remove('hidden');
+                }
+            }
         }
     };
 
@@ -416,6 +436,17 @@
             return;
         }
 
+        const start = new Date(startEl.value);
+        const end = new Date(endEl.value);
+        let workingDays = 0;
+        const current = new Date(start);
+        while (current <= end) {
+            const dow = current.getDay();
+            if (dow !== 0 && dow !== 6) workingDays++;
+            current.setDate(current.getDate() + 1);
+        }
+        workingDays = Math.max(1, workingDays);
+
         if (btn) {
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Submitting...';
@@ -430,6 +461,7 @@
                     leave_type: typeEl.value,
                     start_date: startEl.value,
                     end_date: endEl.value,
+                    days_count: workingDays,
                     reason: reasonEl.value.trim()
                 })
             });
@@ -438,7 +470,7 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Leave application failed');
 
             if (typeof window.showToast === 'function') {
-                window.showToast(data.message || '✅ Leave request submitted successfully!', 'success');
+                window.showToast(data.message || 'Leave request submitted successfully!', 'success');
             }
             window.closeApplyLeaveModal();
             reasonEl.value = '';
