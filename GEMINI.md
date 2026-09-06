@@ -12,15 +12,29 @@
 - Do NOT wait for the user to remind you to push or pull. It must happen proactively on EVERY turn and update.
 - Keep the local server daemon up to date and verified.
 
-## Autonomous Peer Agent Communication Protocol (AGENT_BRIDGE)
-- **Rule**: Whenever you pull or interact with this workspace, check `AGENT_BRIDGE.json` and `AGENT_BRIDGE.md`.
-  - If there is an unread message or handshake request from another Antigravity agent, read the message, append your technical reply/status update, declare any active files you are editing in `AGENT_BRIDGE.json` and `AGENT_BRIDGE.md`, and push back to `origin main`.
-  - Always communicate API changes, data schemas, and active components through `AGENT_BRIDGE.json` to ensure zero merge conflicts between teammates.
+## Strict Tripartite Engineering Ownership (STRICT DOMAIN BOUNDARIES)
+- **Mayur (Primary AI & Backend Architect)**:
+  - **SCOPE**: Node.js/Express APIs (`src/routes/*`, `src/controllers/*`), NVIDIA Nemotron AI Engine (`src/services/aiMatcher.js`, `src/services/documentParser.js`), Authentication & Middleware (`src/middleware/*`), Supabase Realtime workers.
+  - **DO NOT TOUCH**: Frontend HTML/CSS/DOM UI layouts or direct database schema definitions.
+- **Sumit (Frontend & UI/UX Lead)**:
+  - **SCOPE**: Frontend UI/UX (`public/*.html`, `public/js/*`, `public/candidateProfile.js`), Responsive Tailwind design, Forms, Modals, 4-Stage Stepper, Recruiter Queue Views, Animations & WCAG AAA Accessibility.
+  - **DO NOT TOUCH**: Backend API endpoints or direct database models.
+- **Vaibhav (Database & Infrastructure Lead)**:
+  - **SCOPE**: Database Architecture (`prisma/schema.prisma`, SQLite & PostgreSQL sync), Migrations (`scripts/create_*`), DB Indexes & Relations, Data Integrity, ExcelJS/CSV Database Exports (`src/routes/exportRoutes.js`), Self-Healing Daemon (`src/services/healthChecker.js`).
+  - **DO NOT TOUCH**: Frontend DOM elements or API business logic.
+
+## Autonomous Multi-Agent Bridge & Briefing Protocol (AGENT_BRIDGE)
+- **Rule**: On every interaction, update `AGENT_BRIDGE.json` and `AGENT_BRIDGE.md` with:
+  1. The overall architectural plan.
+  2. Clear, explicit briefing on what **Sumit MUST do vs MUST NOT do**.
+  3. Clear, explicit briefing on what **Vaibhav MUST do vs MUST NOT do**.
+  4. Clear, explicit briefing on what **Mayur MUST do vs MUST NOT do**.
 
 ## Tripartite Collaborative Planning & Mandatory Developer Permission Gate (MANDATORY RULE)
-- **Rule**: When planning new features or architecture (e.g. Candidate Profile, AI match engine, UI/UX workflows):
-  1. **Collaborative Brainstorming**: Both Antigravity agents formulate the best-practice plan together, following modern web engineering rules (WCAG AAA accessibility, 60fps responsive UI, clean API contracts, zero layout shifts).
+- **Rule**:
+  1. **Collaborative Brainstorming**: All 3 Antigravity agents formulate the best-practice plan together, following modern web engineering rules (WCAG AAA accessibility, 60fps responsive UI, clean API contracts, zero layout shifts).
   2. **Clear Proposal & Explanation**: Write the proposal clearly in simple, understandable terms in `PROPOSAL_AND_PLAN.md` with options and visual breakdown.
-  3. **STRICT DEVELOPER PERMISSION GATE**: You MUST NEVER execute code modifications without explicit developer approval. Present the plan clearly to the user/developer, explain the rationale, and wait for their explicit permission ("Proceed / Approved") before writing code.
-  4. **Divided Execution**: Once approved by the developers, both agents divide the tasks cleanly to avoid merge conflicts.
+  3. **STRICT DEVELOPER PERMISSION GATE**: You MUST NEVER execute code modifications without explicit developer approval. Present the plan clearly to the user/developers (Mayur, Sumit, Vaibhav), explain the rationale in detail, and wait for explicit permission ("Proceed / Approved") before writing code.
+  4. **Divided Execution**: Once approved by the developers, all three agents execute their cleanly divided tasks with zero merge conflicts.
+
 
