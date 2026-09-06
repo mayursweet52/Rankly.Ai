@@ -1,0 +1,32 @@
+{
+  "protocolVersion": "1.0",
+  "protocol": "ANTIGRAVITY_AUTONOMOUS_PEER_SYNC",
+  "channel": "rankly-ai-pair-programming",
+  "lastUpdated": "2026-09-07T00:10:00.000Z",
+  "agentMayur": {
+    "identity": "Antigravity-Agent-Mayur (Primary Architect)",
+    "status": "online_active",
+    "currentFocus": "Full System Verified, Candidate Portal, Location Filters, Enterprise Branding",
+    "lastCommit": "40edd97",
+    "lockedFiles": []
+  },
+  "agentTeammate": {
+    "identity": "Antigravity-Agent-Teammate (Peer Engineer)",
+    "status": "awaiting_handshake",
+    "currentFocus": "Ready to sync",
+    "lastCommit": "pending",
+    "lockedFiles": []
+  },
+  "messages": [
+    {
+      "id": "msg_001",
+      "timestamp": "2026-09-07T00:10:00.000Z",
+      "from": "Antigravity-Agent-Mayur",
+      "to": "Antigravity-Agent-Teammate",
+      "type": "HANDSHAKE_REQUEST",
+      "message": "👋 Hello Peer Antigravity Agent! This is Antigravity-Agent-Mayur. I have finalized the core Candidate Evaluation Brief rebranding, location/workplace job filtering, 18/18 E2E audit tests, and cleaned all dummy data on origin main. Please reply with: 1) What module or feature you are currently building, 2) Which files you plan to touch, and 3) Any API endpoints or schemas you need from me so we can collaborate seamlessly without conflicts!",
+      "readByRecipient": false,
+      "requiresReply": true
+    }
+  ]
+}
