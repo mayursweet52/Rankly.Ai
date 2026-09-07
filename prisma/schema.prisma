@@ -730,3 +730,27 @@ model Notification {
   @@index([userId, isRead])
   @@index([createdAt])
 }
+
+model Company {
+  id           String       @id @default(uuid())
+  name         String
+  domain       String?
+  atsPlatform  String?      
+  atsBoardSlug String?      
+  isRegistered Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  jobs         CompanyJob[]
+}
+
+model CompanyJob {
+  id                    String   @id @default(uuid())
+  companyId             String
+  company               Company  @relation(fields: [companyId], references: [id])
+  jobTitle              String
+  department            String?
+  location              String?
+  externalApplyUrl      String?
+  ranklyApplicationSlug String   @unique
+  status                String   @default("active")
+  createdAt             DateTime @default(now())
+}

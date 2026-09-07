@@ -789,7 +789,39 @@
     window.loadCandidateApplications = async function() {
         const pipelineContainer = document.getElementById('candidatePipelineContainer');
         if (pipelineContainer) {
-            pipelineContainer.innerHTML = '<div class="p-8 text-center text-xs text-gray-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading tracking pipeline...</div>';
+            pipelineContainer.setAttribute('aria-busy', 'true');
+            pipelineContainer.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 items-start animate-pulse" role="status" aria-label="Loading candidate application pipeline">
+                    ${[1, 2, 3, 4, 5].map(col => `
+                        <div class="bg-[#FAFAF8] dark:bg-zinc-900/60 rounded-2xl p-3.5 border border-[#E5E5DF] dark:border-zinc-800 flex flex-col min-h-[420px] shadow-2xs space-y-3">
+                            <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3.5 h-3.5 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                    <div class="w-20 h-3 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                </div>
+                                <div class="w-5 h-4 rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
+                            </div>
+                            <!-- Skeleton Cards -->
+                            <div class="space-y-3">
+                                <div class="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 space-y-2.5">
+                                    <div class="w-3/4 h-3.5 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                    <div class="w-1/2 h-2.5 rounded bg-emerald-100 dark:bg-emerald-950/40"></div>
+                                    <div class="w-2/3 h-2 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                    <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex justify-between">
+                                        <div class="w-10 h-2 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                        <div class="w-16 h-4 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                    </div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 space-y-2.5 opacity-60">
+                                    <div class="w-2/3 h-3.5 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                    <div class="w-1/3 h-2.5 rounded bg-blue-100 dark:bg-blue-950/40"></div>
+                                    <div class="w-1/2 h-2 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
 
         try {
@@ -803,10 +835,14 @@
         } catch (err) {
             console.error('Applications Load Error:', err);
             if (pipelineContainer) {
-                pipelineContainer.innerHTML = `<div class="p-8 text-center text-xs text-red-500">Failed to load applications: ${err.message}</div>`;
+                pipelineContainer.removeAttribute('aria-busy');
+                pipelineContainer.innerHTML = `<div class="p-8 text-center text-xs text-red-500 bg-red-50/50 dark:bg-red-950/20 rounded-xl border border-red-200 dark:border-red-900"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Failed to load applications: ${err.message}</div>`;
             }
+        } finally {
+            if (pipelineContainer) pipelineContainer.removeAttribute('aria-busy');
         }
     };
+
 
     function renderCandidatePipeline(applications, employerEvals = []) {
         const stages = [
@@ -1006,20 +1042,44 @@
     let currentProfileSkills = ['JavaScript', 'TypeScript', 'React.js', 'Node.js', 'PostgreSQL', 'Docker', 'GraphQL', 'Tailwind CSS', 'AWS'];
 
     window.loadCandidateProfile = async function() {
+        const headerName = document.getElementById('profileHeaderName');
+        const headerTitle = document.getElementById('profileHeaderTitle');
+        const avatar = document.getElementById('profileAvatar');
+        
+        // Initial Skeleton Shimmer State
+        if (headerName && !headerName.textContent.trim()) {
+            headerName.innerHTML = '<div class="h-5 w-48 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse inline-block"></div>';
+        }
+        if (headerTitle && !headerTitle.textContent.trim()) {
+            headerTitle.innerHTML = '<div class="h-3.5 w-64 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mt-1 inline-block"></div>';
+        }
+        if (avatar && avatar.textContent.trim() === 'SK') {
+            avatar.classList.add('animate-pulse');
+        }
+
         try {
-            const res = await fetch('/api/candidate/profile');
+            const res = await fetch('/api/candidate/v2/profile');
             const data = await res.json();
             if (data && data.profile) {
                 renderCandidateProfile(data.profile);
             } else {
-                const local = localStorage.getItem('candidate_profile');
-                if (local) renderCandidateProfile(JSON.parse(local));
+                const resLegacy = await fetch('/api/candidate/profile');
+                const legacyData = await resLegacy.json();
+                if (legacyData && legacyData.profile) {
+                    renderCandidateProfile(legacyData.profile);
+                } else {
+                    const local = localStorage.getItem('candidate_profile');
+                    if (local) renderCandidateProfile(JSON.parse(local));
+                }
             }
         } catch (e) {
             const local = localStorage.getItem('candidate_profile');
             if (local) renderCandidateProfile(JSON.parse(local));
+        } finally {
+            if (avatar) avatar.classList.remove('animate-pulse');
         }
     };
+
 
     function renderCandidateProfile(p) {
         if (!p) return;
@@ -1179,46 +1239,70 @@
         const origTop = btn ? btn.innerHTML : '';
         const origBottom = bottomBtn ? bottomBtn.innerHTML : '';
 
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-        if (bottomBtn) bottomBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-1.5"></i> Saving Changes...';
+        }
+        if (bottomBtn) {
+            bottomBtn.disabled = true;
+            bottomBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-1.5"></i> Saving & Calibrating...';
+        }
+
+        const firstName = document.getElementById('profileFirstName')?.value.trim() || '';
+        const lastName = document.getElementById('profileLastName')?.value.trim() || '';
+        const fullName = `${firstName} ${lastName}`.trim() || 'Candidate';
 
         const profileData = {
-            firstName: document.getElementById('profileFirstName')?.value.trim() || '',
-            lastName: document.getElementById('profileLastName')?.value.trim() || '',
+            firstName,
+            lastName,
+            fullName,
             email: document.getElementById('profileEmail')?.value.trim() || '',
             phone: document.getElementById('profilePhone')?.value.trim() || '',
             location: document.getElementById('profileLocation')?.value.trim() || '',
             profession: document.getElementById('profileProfession')?.value.trim() || '',
+            headline: document.getElementById('profileProfession')?.value.trim() || '',
             bio: document.getElementById('profileBio')?.value.trim() || '',
-            skills: currentProfileSkills,
+            skills: currentProfileSkills.map(s => ({ skillName: s, proficiency: 'Intermediate', yearsExperience: 2 })),
             experienceYears: Number(document.getElementById('profileExpYears')?.value) || 4,
             experienceLevel: document.getElementById('profileExpLevel')?.value || 'Mid',
             workType: document.getElementById('profileWorkType')?.value || 'Remote / Hybrid',
+            workPreference: document.getElementById('profileWorkType')?.value || 'remote',
             education: document.getElementById('profileEducation')?.value.trim() || '',
             expectedSalary: document.getElementById('profileExpectedSalary')?.value.trim() || '₹22 - 28 LPA',
+            expectedCtc: document.getElementById('profileExpectedSalary')?.value.trim() || '₹22 - 28 LPA',
             linkedInUrl: document.getElementById('profileLinkedIn')?.value.trim() || '',
+            linkedinUrl: document.getElementById('profileLinkedIn')?.value.trim() || '',
             githubUrl: document.getElementById('profileGitHub')?.value.trim() || '',
             portfolioUrl: document.getElementById('profilePortfolio')?.value.trim() || '',
             completeness: updateProfileCompletenessMeter()
         };
 
         try {
-            const res = await fetch('/api/candidate/profile', {
-                method: 'POST',
+            const res = await fetch('/api/candidate/v2/profile', {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(profileData)
             });
             const data = await res.json();
             localStorage.setItem('candidate_profile', JSON.stringify(profileData));
-            renderCandidateProfile(profileData);
-            if (typeof window.showToast === 'function') window.showToast('Candidate Profile saved successfully!', 'success');
+            renderCandidateProfile({
+                ...profileData,
+                profileStrength: data.profileStrength || profileData.completeness
+            });
+            if (typeof window.showToast === 'function') window.showToast('Candidate Profile saved & strength calibrated successfully!', 'success');
         } catch (e) {
             localStorage.setItem('candidate_profile', JSON.stringify(profileData));
             renderCandidateProfile(profileData);
             if (typeof window.showToast === 'function') window.showToast('Profile saved locally.', 'success');
         } finally {
-            if (btn) btn.innerHTML = origTop;
-            if (bottomBtn) bottomBtn.innerHTML = origBottom;
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = origTop || '<i class="fa-solid fa-floppy-disk mr-1.5"></i> Save Profile';
+            }
+            if (bottomBtn) {
+                bottomBtn.disabled = false;
+                bottomBtn.innerHTML = origBottom || '<i class="fa-solid fa-floppy-disk mr-1.5"></i> Save & Recalibrate';
+            }
         }
     };
 
@@ -1267,7 +1351,31 @@
 
     window.loadJobListings = async function() {
         const grid = document.getElementById('jobListingsGrid');
-        if (grid) grid.innerHTML = '<div class="col-span-full text-center py-10 text-xs text-gray-500"><i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2 block"></i> Loading verified tech job openings...</div>';
+        if (grid) {
+            grid.setAttribute('aria-busy', 'true');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 col-span-full';
+            grid.innerHTML = `
+                ${[1, 2, 3, 4, 5, 6].map(() => `
+                    <div class="p-4 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs animate-pulse space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div class="space-y-2 flex-1">
+                                <div class="h-4 w-3/4 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                                <div class="h-3 w-1/3 rounded bg-blue-100 dark:bg-blue-950/40"></div>
+                            </div>
+                            <div class="w-8 h-8 rounded-xl bg-zinc-200 dark:bg-zinc-800"></div>
+                        </div>
+                        <div class="space-y-1.5 py-1">
+                            <div class="h-3 w-1/2 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-3 w-2/3 rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                        </div>
+                        <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                            <div class="h-4 w-16 rounded bg-emerald-100 dark:bg-emerald-950/40"></div>
+                            <div class="h-7 w-24 rounded-lg bg-zinc-200 dark:bg-zinc-800"></div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
 
         try {
             const res = await fetch('/api/candidate/jobs');
@@ -1278,8 +1386,14 @@
             }
         } catch (e) {
             console.error('Failed to load jobs:', e);
+            if (grid) {
+                grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-red-500 bg-red-50/40 dark:bg-red-950/20 rounded-xl border border-red-200 dark:border-red-900">Failed to load job listings: ${e.message}</div>`;
+            }
+        } finally {
+            if (grid) grid.removeAttribute('aria-busy');
         }
     };
+
 
     window.filterJobListings = function() {
         const q = (document.getElementById('jobSearchInput')?.value || '').toLowerCase().trim();

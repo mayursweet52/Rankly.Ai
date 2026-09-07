@@ -531,10 +531,10 @@ async function login(req, res) {
     const isRemember = req.body.rememberMe === true || req.body.rememberMe === 'true';
     if (req.session && req.session.cookie) {
       if (isRemember) {
-        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days persistent
       } else {
-        req.session.cookie.expires = false; // Browser session cookie (expires when browser is closed)
-        req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // Standard 24h fallback
+        req.session.cookie.expires = false; // Browser session cookie (terminates on browser/tab close)
+        req.session.cookie.maxAge = null;   // Transient session cookie
       }
     }
 

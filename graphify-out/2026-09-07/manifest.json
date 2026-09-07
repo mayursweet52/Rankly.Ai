@@ -1032,9 +1032,9 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1788719920.820969,
-    "seen": 1788719934.1450076,
-    "ast_hash": "3228db59634396d558f576b2f2633911",
+    "mtime": 1788596035.925424,
+    "seen": 1788644549.3013055,
+    "ast_hash": "e767209663ecf9af3efefed0a4f3518e",
     "semantic_hash": ""
   },
   "API_DOCS.md": {
@@ -1044,9 +1044,9 @@
     "semantic_hash": ""
   },
   "GEMINI.md": {
-    "mtime": 1788719923.6095097,
-    "seen": 1788719934.1451046,
-    "ast_hash": "3228db59634396d558f576b2f2633911",
+    "mtime": 1788604309.8659904,
+    "seen": 1788644549.3013074,
+    "ast_hash": "e767209663ecf9af3efefed0a4f3518e",
     "semantic_hash": ""
   },
   "ONE-CLICK-SETUP.md": {
@@ -1422,21 +1422,9 @@
     "semantic_hash": ""
   },
   "scripts/cleanup_dummy_data.js": {
-    "mtime": 1788715148.5853124,
-    "seen": 1788719934.1107688,
-    "ast_hash": "2acae2fd4995ef052c55d0a85c165b12",
-    "semantic_hash": ""
-  },
-  "AGENT_BRIDGE.json": {
-    "mtime": 1788719904.4591963,
-    "seen": 1788719934.1061711,
-    "ast_hash": "43819817c2500f7d28a11244f0fe62ca",
-    "semantic_hash": ""
-  },
-  "AGENT_BRIDGE.md": {
-    "mtime": 1788719908.554191,
-    "seen": 1788719934.14501,
-    "ast_hash": "78e847c0bb82f141b7c170f75502b74d",
+    "mtime": 1788715099.952362,
+    "seen": 1788715137.7714581,
+    "ast_hash": "e9b75ed96ab2a08f349d96757f3d16e5",
     "semantic_hash": ""
   }
 }
