@@ -7458,6 +7458,96 @@ body.dark-theme .resume-tip-box,
         </div>
     </div>
 
+    <!-- ─── 20 UI/UX POLISH SPECIFICATION SUITE CONTAINERS (Lead: Sumit) ─── -->
+    <!-- 15. Scroll Progress Bar -->
+    <div id="scrollProgressBar" class="fixed top-0 left-0 h-[3px] bg-emerald-500 z-50 transition-all duration-75" style="width: 0%;"></div>
+
+    <!-- 7. Offline Network Banner -->
+    <div id="offlineNetworkBanner" class="fixed top-0 inset-x-0 bg-rose-600 text-white text-xs font-semibold py-2 px-4 text-center z-50 shadow-lg flex items-center justify-center gap-2 transition-transform duration-300 transform -translate-y-full hidden">
+        <i class="fa-solid fa-wifi-slash"></i> You are currently offline. Live AI evaluation and database synchronization features are operating in cached local mode.
+    </div>
+
+    <!-- 2. Undo Toast Notification Container -->
+    <div id="undoToastContainer" class="fixed bottom-6 right-6 z-50 transition-all duration-300 transform translate-y-16 opacity-0 hidden"></div>
+
+    <!-- 1. Global Command Search Modal (Cmd+K / Ctrl+K) -->
+    <div id="globalCommandPaletteModal" class="modal-overlay" onclick="if(event.target===this) closeGlobalCommandPalette()" style="display:none;">
+        <div class="modal-box max-w-xl w-full p-0 overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 text-left">
+            <div class="p-4 border-b border-gray-100 dark:border-zinc-800 flex items-center gap-3">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
+                <input type="text" id="commandPaletteInput" oninput="filterCommandPalette(this.value)" placeholder="Type a command, candidate name, or search view (e.g., 'Interview', 'Jobs', 'Theme')..." class="w-full bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none" />
+                <kbd class="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 text-gray-500 border border-gray-200 dark:border-zinc-700">ESC</kbd>
+            </div>
+            <div id="commandPaletteResultsContainer" class="p-2 max-h-80 overflow-y-auto space-y-1">
+                <!-- Populated dynamically by uiPolishSuite.js -->
+            </div>
+            <div class="p-3 border-t border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/50 flex justify-between items-center text-[11px] text-gray-400 font-mono">
+                <span>Navigate: <kbd class="px-1 bg-gray-200 dark:bg-zinc-800 rounded">↑</kbd> <kbd class="px-1 bg-gray-200 dark:bg-zinc-800 rounded">↓</kbd></span>
+                <span>Select: <kbd class="px-1 bg-gray-200 dark:bg-zinc-800 rounded">↵ Enter</kbd></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16. High-Risk Action Confirmation Modal -->
+    <div id="actionConfirmationModal" class="modal-overlay" onclick="if(event.target===this) resolveConfirmationModal(false)" style="display:none;">
+        <div class="modal-box max-w-md w-full p-6 text-center bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 space-y-4">
+            <div class="w-14 h-14 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 id="confirmModalTitle" class="text-base font-bold text-gray-900 dark:text-white">Confirm Dangerous Action</h3>
+                <p id="confirmModalMessage" class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">Are you sure you want to proceed? This action cannot be undone.</p>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button type="button" id="btnModalCancel" onclick="resolveConfirmationModal(false)" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" id="btnModalConfirm" onclick="resolveConfirmationModal(true)" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 transition-all shadow-md cursor-pointer">
+                    Yes, Proceed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. Floating Back-to-Top Button -->
+    <button id="backToTopBtn" onclick="scrollToTop()" title="Back to Top" class="fixed bottom-6 left-6 z-40 w-11 h-11 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-xl flex items-center justify-center transition-all duration-300 opacity-0 translate-y-8 pointer-events-none cursor-pointer">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- 18. Floating Support & Feedback Widget (FAB) -->
+    <div id="floatingSupportWidget" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+        <div id="floatingSupportDrawer" class="hidden mb-3 w-80 p-5 rounded-2xl bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-200 shadow-2xl border border-gray-200 dark:border-zinc-800 transition-all duration-200 origin-bottom-right scale-95 opacity-0 space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2.5">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-emerald-600"></i>
+                    <h4 class="text-xs font-bold text-gray-900 dark:text-white m-0">Rankly.ai Support & Quick Help</h4>
+                </div>
+                <button type="button" onclick="closeFloatingSupportDrawer()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xs cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <a href="#feedback" onclick="closeFloatingSupportDrawer(); document.getElementById('feedbackMessage')?.focus();" class="p-2.5 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-emerald-500 bg-gray-50/50 dark:bg-zinc-800/40 flex items-center gap-3 transition-all">
+                    <i class="fa-solid fa-comment-dots text-emerald-500"></i>
+                    <div>
+                        <div class="font-bold">Submit Feedback</div>
+                        <div class="text-[10px] text-gray-400">Directly contact core developers</div>
+                    </div>
+                </a>
+                <a href="/api/health" target="_blank" class="p-2.5 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-emerald-500 bg-gray-50/50 dark:bg-zinc-800/40 flex items-center gap-3 transition-all">
+                    <i class="fa-solid fa-heart-pulse text-emerald-500"></i>
+                    <div>
+                        <div class="font-bold">System Status (Live)</div>
+                        <div class="text-[10px] text-gray-400">Check server health & latency</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button type="button" id="btnToggleSupportFab" onclick="toggleFloatingSupportDrawer()" class="w-12 h-12 rounded-full bg-zinc-900 hover:bg-black dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer">
+            <i class="fa-solid fa-headset text-base"></i>
+        </button>
+    </div>
+
     <!-- ─── DASHBOARD WORKSPACE (Rankly.ai Branded) ─── -->
     <div class="page" id="dashboardPage" style="display:none;">
         <div class="dash-layout">
@@ -17654,5 +17744,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
     <script src="/js/notificationClient.js"></script>
     <!-- Lead Sumit: Interactive Calendar, In-Browser Resume Viewer, Bulk Actions Toolbar, Assessment Quiz & Voice Simulator -->
     <script src="/js/sumitEnhancements.js"></script>
+    <!-- Lead Sumit: 20 UI/UX Polish Technical Specification Suite -->
+    <script src="/js/uiPolishSuite.js"></script>
 </body>
 </html>
