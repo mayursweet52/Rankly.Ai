@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wonderful Tools — Fluid Vector Motion Morph</title>
-    <!-- GSAP for Smooth Elastic Curves -->
+    <title>Rankly.ai in Motion — Vector Path Morphing</title>
+    <!-- GSAP for Spring Kinematics -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <!-- Flubber for Mathematical 2D Shape Morphing -->
+    <!-- Flubber for Pure 2D Polygon Vertex Interpolation -->
     <script src="/js/flubber.min.js"></script>
     <style>
         * {
@@ -16,18 +16,17 @@
         }
 
         :root {
-            --canvas-bg: #EBE4F7;
+            --canvas-lilac: #EBE4F7;
             --canvas-glow: radial-gradient(circle at 50% 45%, #F7F3FD 0%, #EBE4F7 60%, #DFD4F2 100%);
             --ink-black: #0E0D14;
-            --ink-subtle: #706880;
-            --accent-coral: #D95D39;
-            --accent-teal: #5B998C;
-            --accent-emerald: #10B981;
-            --accent-blue: #3B82F6;
+            --terracotta: #D95D39;
+            --teal: #5B998C;
+            --emerald: #10B981;
+            --violet-base: #282830;
         }
 
         body {
-            background-color: var(--canvas-bg);
+            background-color: var(--canvas-lilac);
             background: var(--canvas-glow);
             color: var(--ink-black);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
@@ -42,10 +41,10 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Top Reel Header Badge matching original reel */
+        /* Top Reel Header Badge (Exact Bento Motion Style) */
         .reel-header {
             position: absolute;
-            top: 40px;
+            top: 44px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -55,7 +54,7 @@
             text-align: center;
         }
 
-        .reel-tagline {
+        .reel-subtitle {
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.18em;
@@ -64,14 +63,14 @@
         }
 
         .reel-title {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 900;
             letter-spacing: -0.02em;
             color: #1A1724;
         }
 
-        /* Center Animation Stage */
-        .stage-container {
+        /* Center Animation Viewport */
+        .stage-viewport {
             position: relative;
             width: 520px;
             height: 520px;
@@ -82,38 +81,37 @@
 
         /* Master SVG Canvas */
         .master-svg {
-            width: 460px;
-            height: 460px;
+            width: 480px;
+            height: 480px;
             overflow: visible;
-            filter: drop-shadow(0 25px 40px rgba(50, 40, 75, 0.10));
+            filter: drop-shadow(0 25px 45px rgba(45, 35, 65, 0.12));
         }
 
-        /* The Main Vector Morphing Path (No hardcoded fill in CSS!) */
-        #mainMorphPath {
+        /* Core Vector Morph Path */
+        #corePath {
             transform-origin: 250px 250px;
-            transition: stroke 0.6s ease;
         }
 
-        /* Internal Elements Group */
-        .internal-group {
+        /* Internal Kinetic Layers */
+        .layer-group {
             transform-origin: 250px 250px;
             pointer-events: none;
         }
 
-        /* Bottom Scene Indicator */
-        .scene-indicator {
+        /* Minimalist Stage Indicator at Bottom */
+        .scene-caption {
             position: absolute;
-            bottom: 40px;
-            background: rgba(255, 255, 255, 0.6);
+            bottom: 44px;
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.85);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-            padding: 8px 22px;
+            padding: 8px 24px;
             border-radius: 999px;
             font-size: 12px;
             font-weight: 800;
-            letter-spacing: 0.10em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #554D68;
             pointer-events: none;
@@ -124,265 +122,332 @@
 </head>
 <body>
 
-    <!-- Header matching Bento Motion aesthetic -->
+    <!-- Header matching original reel aesthetic -->
     <header class="reel-header">
-        <div class="reel-tagline">Continuous Vector Path Morphing</div>
+        <div class="reel-subtitle">Recreated for Rankly.ai · Fluid Vector Motion</div>
         <div class="reel-title">Wonderful Tools in Motion</div>
     </header>
 
     <!-- Center Stage -->
-    <main class="stage-container">
+    <main class="stage-viewport">
         <svg class="master-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
             <defs>
+                <!-- Official Rankly 3D Gradients -->
+                <linearGradient id="rk-base" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#2D2D36"/>
+                    <stop offset="50%" stop-color="#1A1A20"/>
+                    <stop offset="100%" stop-color="#0E0E12"/>
+                </linearGradient>
+
+                <linearGradient id="rk-violet" x1="160" y1="120" x2="340" y2="340" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#D8B4FE"/>
+                    <stop offset="30%" stop-color="#A855F7"/>
+                    <stop offset="100%" stop-color="#6B21A8"/>
+                </linearGradient>
+
+                <linearGradient id="rk-coral" x1="220" y1="240" x2="330" y2="350" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FDBA74"/>
+                    <stop offset="40%" stop-color="#FB923C"/>
+                    <stop offset="100%" stop-color="#EA580C"/>
+                </linearGradient>
+
+                <linearGradient id="rk-gem" x1="300" y1="120" x2="350" y2="170" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#5EEAD4"/>
+                    <stop offset="50%" stop-color="#14B8A6"/>
+                    <stop offset="100%" stop-color="#0F766E"/>
+                </linearGradient>
+
+                <linearGradient id="laserBeamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#EA580C" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="#EA580C" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#EA580C" stop-opacity="0"/>
+                </linearGradient>
+
                 <linearGradient id="pebbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#D95D39" />
-                    <stop offset="100%" stop-color="#5B998C" />
-                </linearGradient>
-
-                <linearGradient id="siriGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#3B82F6" />
-                    <stop offset="50%" stop-color="#8B5CF6" />
-                    <stop offset="100%" stop-color="#EC4899" />
-                </linearGradient>
-
-                <linearGradient id="scannerGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#D95D39" stop-opacity="0" />
-                    <stop offset="50%" stop-color="#D95D39" stop-opacity="0.8" />
-                    <stop offset="100%" stop-color="#D95D39" stop-opacity="0" />
+                    <stop offset="0%" stop-color="#D95D39"/>
+                    <stop offset="100%" stop-color="#5B998C"/>
                 </linearGradient>
             </defs>
 
-            <!-- 1. The Core Morphed Vector Path (Flubber continuously computes its d attribute) -->
-            <path id="mainMorphPath" d="M 250,190 C 283,190 310,217 310,250 C 310,283 283,310 250,310 C 217,310 190,283 190,250 C 190,217 217,190 250,190 Z" fill="#0E0D14" />
+            <!-- 1. Master Continuous Morphing Polygon Body -->
+            <path id="corePath" d="M 250,230 C 261,230 270,239 270,250 C 270,261 261,270 250,270 C 239,270 230,261 230,250 C 230,239 239,230 250,230 Z" fill="#0E0D14" />
 
-            <!-- 2. Dual Internal Detail Layers for Spring Cross-Morphing -->
-            <g id="layerA" class="internal-group"></g>
-            <g id="layerB" class="internal-group"></g>
+            <!-- 2. Dual Internal Detail Groups for Spring Cross-Dissolve -->
+            <g id="internalGroupA" class="layer-group"></g>
+            <g id="internalGroupB" class="layer-group"></g>
+
+            <!-- 3. Cursive Draw Script Group ("rankly.") -->
+            <path id="cursiveScript" style="opacity: 0;" d="M 120,265 C 135,215 150,205 160,230 C 170,255 175,260 185,235 C 195,220 210,220 215,240 C 220,260 230,260 240,230 C 250,205 260,195 265,245 C 270,265 280,265 290,235 C 300,210 310,210 320,240 C 330,265 340,265 350,235 C 360,210 370,210 380,260" fill="none" stroke="#0E0D14" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
 
         <!-- Scene Caption -->
-        <div class="scene-indicator" id="captionText">1/8 · Origin Sphere</div>
+        <div class="scene-caption" id="captionText">1/8 · Origin Kinetic Pulse</div>
     </main>
 
-    <!-- Kinetic Morph Engine -->
+    <!-- Kinetic Flubber Engine -->
     <script>
-        const mainPath = document.getElementById('mainMorphPath');
-        const layerA = document.getElementById('layerA');
-        const layerB = document.getElementById('layerB');
+        const corePath = document.getElementById('corePath');
+        const internalGroupA = document.getElementById('internalGroupA');
+        const internalGroupB = document.getElementById('internalGroupB');
+        const cursiveScript = document.getElementById('cursiveScript');
         const caption = document.getElementById('captionText');
 
-        // The 8 Morphing Stages with their exact SVG path geometries & internal content
-        const sequence = [
-            // Stage 0: Initial Origin Dot / Sphere
+        // 8 Real Platform Icons of Rankly.ai
+        const stages = [
+            // Stage 0: Cursive Handwriting / Origin Pulse
             {
-                title: "1/8 · Origin Pulse",
-                path: "M 250,190 C 283,190 310,217 310,250 C 310,283 283,310 250,310 C 217,310 190,283 190,250 C 190,217 217,190 250,190 Z",
+                title: "1/8 · Rankly Cursive Script",
+                path: "M 250,230 C 261,230 270,239 270,250 C 270,261 261,270 250,270 C 239,270 230,261 230,250 C 230,239 239,230 250,230 Z",
                 fill: "#0E0D14",
                 render: () => `
-                    <circle cx="250" cy="250" r="14" fill="#FAF6FE" />
+                    <circle cx="250" cy="250" r="18" fill="#FFFFFF" />
                 `
             },
-            // Stage 1: Melts into Candidate 3D Card
+            // Stage 1: Rankly 3D Official App Icon (from public/rankly-logo.svg)
             {
-                title: "2/8 · Candidate Profile Card",
-                path: "M 140,170 C 140,150 155,150 175,150 L 325,150 C 345,150 360,150 360,170 L 360,330 C 360,350 345,350 325,350 L 175,350 C 155,350 140,350 140,330 Z",
+                title: "2/8 · Rankly 3D Brand Mark",
+                path: "M 150,160 C 150,135 165,120 190,120 L 310,120 C 335,120 350,135 350,160 L 350,340 C 350,365 335,380 310,380 L 190,380 C 165,380 150,365 150,340 Z",
+                fill: "url(#rk-base)",
+                render: () => `
+                    <!-- 3D Letter R with Violet Gradient -->
+                    <path d="M 195,165 H 260 C 285,165 305,180 305,205 C 305,230 285,245 260,245 H 225 V 335 H 195 V 165 Z" fill="url(#rk-violet)" />
+                    <!-- Aperture White Center -->
+                    <circle cx="255" cy="205" r="14" fill="#FFFFFF" />
+                    <!-- Coral Diagonal Leg -->
+                    <path d="M 240,245 L 305,335 H 265 L 210,245 H 240 Z" fill="url(#rk-coral)" />
+                    <!-- Teal Gem Dot -->
+                    <circle cx="320" cy="150" r="14" fill="url(#rk-gem)" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+                `
+            },
+            // Stage 2: ATS AI Document Scanner with Laser Beam
+            {
+                title: "3/8 · ATS AI Document Scanner",
+                path: "M 160,110 C 160,95 175,95 190,95 L 285,95 L 340,150 L 340,390 C 340,405 325,405 310,405 L 190,405 C 175,405 160,405 160,390 Z",
                 fill: "#FFFFFF",
                 render: () => `
-                    <circle cx="195" cy="205" r="22" fill="#EBE4F7" />
-                    <circle cx="195" cy="200" r="10" fill="#7A728E" />
-                    <path d="M 181,220 C 183,212 207,212 209,220 Z" fill="#7A728E" />
+                    <!-- Folded Corner Notch -->
+                    <path d="M 285,95 L 340,150 H 300 C 290,150 285,145 285,135 V 95 Z" fill="#E2D9F3" />
                     
-                    <circle cx="214" cy="218" r="8" fill="#10B981" />
-                    <path d="M 211,218 L 213,220 L 218,216" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
-
-                    <rect x="230" y="195" width="75" height="10" rx="5" fill="#0E0D14" />
-                    <rect x="230" y="212" width="50" height="7" rx="3.5" fill="#A49CB5" />
-
-                    <rect x="165" y="250" width="50" height="16" rx="8" fill="#F4EFEA" stroke="#D95D39" stroke-width="1.5" />
-                    <text x="190" y="261" font-size="8" font-weight="800" text-anchor="middle" fill="#D95D39">AI ENG</text>
-
-                    <rect x="222" y="250" width="52" height="16" rx="8" fill="#EEF7F5" stroke="#5B998C" stroke-width="1.5" />
-                    <text x="248" y="261" font-size="8" font-weight="800" text-anchor="middle" fill="#5B998C">NVIDIA</text>
-
-                    <rect x="280" y="250" width="55" height="16" rx="8" fill="#F3F0FA" stroke="#7A728E" stroke-width="1.5" />
-                    <text x="307" y="261" font-size="8" font-weight="800" text-anchor="middle" fill="#7A728E">SYSTEMS</text>
-
-                    <rect x="165" y="285" width="170" height="8" rx="4" fill="#EBE4F7" />
-                    <rect x="165" y="285" width="145" height="8" rx="4" fill="#D95D39" />
-                `
-            },
-            // Stage 2: Card splits / morphs into 6 OTP Boxes
-            {
-                title: "3/8 · 6-Digit Auth Verification",
-                path: "M 110,210 C 110,195 125,195 140,195 L 360,195 C 375,195 390,195 390,210 L 390,290 C 390,305 375,305 360,305 L 140,305 C 125,305 110,305 110,290 Z",
-                fill: "#FAF6FE",
-                render: () => `
-                    <rect x="125" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="142" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">8</text>
-
-                    <rect x="167" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="184" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">4</text>
-
-                    <rect x="209" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="226" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">2</text>
-
-                    <rect x="251" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="268" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">9</text>
-
-                    <rect x="293" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="310" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">1</text>
-
-                    <rect x="335" y="215" width="34" height="46" rx="8" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2.5" />
-                    <text x="352" y="247" font-size="22" font-weight="900" text-anchor="middle" fill="#0E0D14">7</text>
-
-                    <text x="250" y="282" font-size="10" font-weight="800" text-anchor="middle" fill="#5B998C" letter-spacing="1.5">VERIFIED 2FA TOKEN</text>
-                `
-            },
-            // Stage 3: OTP boxes fuse into ATS Resume Sheet with Laser
-            {
-                title: "4/8 · ATS Resume Document Scanner",
-                path: "M 170,120 C 170,105 185,105 205,105 L 295,105 C 315,105 330,105 330,120 L 330,380 C 330,395 315,395 295,395 L 205,395 C 185,395 170,395 170,380 Z",
-                fill: "#FFFFFF",
-                render: () => `
-                    <rect x="195" y="140" width="70" height="9" rx="4.5" fill="#0E0D14" />
-                    <rect x="195" y="165" width="110" height="5" rx="2.5" fill="#DFD4F2" />
-                    <rect x="195" y="180" width="95" height="5" rx="2.5" fill="#DFD4F2" />
-                    <rect x="195" y="195" width="105" height="5" rx="2.5" fill="#DFD4F2" />
+                    <!-- Document Typography Lines -->
+                    <rect x="190" y="150" width="75" height="10" rx="5" fill="#0E0D14" />
+                    <rect x="190" y="175" width="120" height="6" rx="3" fill="#D8CCE8" />
+                    <rect x="190" y="195" width="105" height="6" rx="3" fill="#D8CCE8" />
+                    <rect x="190" y="215" width="115" height="6" rx="3" fill="#D8CCE8" />
                     
-                    <rect x="195" y="220" width="80" height="5" rx="2.5" fill="#5B998C" />
-                    <rect x="195" y="235" width="110" height="5" rx="2.5" fill="#DFD4F2" />
-                    <rect x="195" y="250" width="90" height="5" rx="2.5" fill="#DFD4F2" />
+                    <rect x="190" y="245" width="85" height="6" rx="3" fill="#14B8A6" />
+                    <rect x="190" y="265" width="120" height="6" rx="3" fill="#D8CCE8" />
+                    <rect x="190" y="285" width="95" height="6" rx="3" fill="#D8CCE8" />
 
-                    <rect x="195" y="275" width="105" height="5" rx="2.5" fill="#DFD4F2" />
-                    <rect x="195" y="290" width="75" height="5" rx="2.5" fill="#DFD4F2" />
+                    <rect x="190" y="315" width="115" height="6" rx="3" fill="#D8CCE8" />
+                    <rect x="190" y="335" width="80" height="6" rx="3" fill="#D8CCE8" />
 
-                    <g id="laserScannerGroup">
-                        <line x1="160" y1="210" x2="340" y2="210" stroke="#D95D39" stroke-width="3" stroke-linecap="round" />
-                        <rect x="170" y="202" width="160" height="16" fill="url(#scannerGlow)" />
+                    <!-- Sweeping Coral Laser Scanner Beam -->
+                    <g id="laserBeamGroup">
+                        <line x1="140" y1="230" x2="360" y2="230" stroke="#EA580C" stroke-width="4" stroke-linecap="round" />
+                        <rect x="150" y="220" width="200" height="20" fill="url(#laserBeamGrad)" />
                     </g>
                 `
             },
-            // Stage 4: Document rolls into 98% Match Radial Gauge
+            // Stage 3: Calibrated AI Match Gauge (98%)
             {
-                title: "5/8 · 98% Calibrated Score Gauge",
-                path: "M 250,140 C 310,140 360,190 360,250 C 360,310 310,360 250,360 C 190,360 140,310 140,250 C 140,190 190,140 250,140 Z",
+                title: "4/8 · 98% AI Match Calibration",
+                path: "M 250,120 C 322,120 380,178 380,250 C 380,322 322,380 250,380 C 178,380 120,322 120,250 C 120,178 178,120 250,120 Z",
                 fill: "#FFFFFF",
                 render: () => `
-                    <circle cx="250" cy="250" r="82" fill="none" stroke="#EBE4F7" stroke-width="14" stroke-linecap="round" />
-                    <path d="M 192,308 A 82,82 0 1,1 308,308" fill="none" stroke="#D95D39" stroke-width="14" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="60" />
+                    <!-- 270-Degree Radial Gauge Arc -->
+                    <circle cx="250" cy="250" r="95" fill="none" stroke="#EBE4F7" stroke-width="16" stroke-linecap="round" />
+                    <path d="M 183,317 A 95,95 0 1,1 317,317" fill="none" stroke="#EA580C" stroke-width="16" stroke-linecap="round" stroke-dasharray="450" stroke-dashoffset="75" />
 
-                    <text x="250" y="246" font-size="46" font-weight="900" text-anchor="middle" fill="#0E0D14" letter-spacing="-0.04em">98<tspan font-size="24" fill="#D95D39">%</tspan></text>
-                    <text x="250" y="274" font-size="10" font-weight="800" text-anchor="middle" fill="#5B998C" letter-spacing="2">JOB MATCH FIT</text>
+                    <!-- Bold Calibrated Score -->
+                    <text x="250" y="246" font-size="54" font-weight="900" text-anchor="middle" fill="#0E0D14" letter-spacing="-0.04em">98<tspan font-size="28" fill="#EA580C">%</tspan></text>
+                    <text x="250" y="278" font-size="11" font-weight="800" text-anchor="middle" fill="#14B8A6" letter-spacing="2">JOB MATCH FIT</text>
                 `
             },
-            // Stage 5: Gauge unrolls into Voice AI Waveform Bars
+            // Stage 4: AI Voice Interview Multi-Band Equalizer Ribbons
             {
-                title: "6/8 · AI Voice Interview Soundwave",
-                path: "M 120,230 C 120,215 135,215 150,215 L 350,215 C 365,215 380,215 380,230 L 380,270 C 380,285 365,285 350,285 L 150,285 C 135,285 120,285 120,270 Z",
+                title: "5/8 · AI Voice Interview Equalizer",
+                path: "M 110,225 C 110,210 125,210 140,210 L 360,210 C 375,210 390,210 390,225 L 390,275 C 390,290 375,290 360,290 L 140,290 C 125,290 110,290 110,275 Z",
                 fill: "#FAF6FE",
                 render: () => `
+                    <!-- 11 Kinetic Oscillating Bars -->
                     <g transform="translate(0, 0)">
-                        <rect class="kinetic-bar" x="145" y="235" width="8" height="30" rx="4" fill="#D95D39" />
-                        <rect class="kinetic-bar" x="168" y="215" width="8" height="70" rx="4" fill="#5B998C" />
-                        <rect class="kinetic-bar" x="191" y="200" width="8" height="100" rx="4" fill="#0E0D14" />
-                        <rect class="kinetic-bar" x="214" y="180" width="8" height="140" rx="4" fill="#D95D39" />
-                        <rect class="kinetic-bar" x="237" y="170" width="8" height="160" rx="4" fill="#5B998C" />
-                        <rect class="kinetic-bar" x="260" y="185" width="8" height="130" rx="4" fill="#0E0D14" />
-                        <rect class="kinetic-bar" x="283" y="205" width="8" height="90" rx="4" fill="#D95D39" />
-                        <rect class="kinetic-bar" x="306" y="220" width="8" height="60" rx="4" fill="#5B998C" />
-                        <rect class="kinetic-bar" x="329" y="235" width="8" height="30" rx="4" fill="#0E0D14" />
+                        <rect class="audio-bar" x="135" y="235" width="8" height="30" rx="4" fill="#EA580C" />
+                        <rect class="audio-bar" x="156" y="215" width="8" height="70" rx="4" fill="#A855F7" />
+                        <rect class="audio-bar" x="177" y="195" width="8" height="110" rx="4" fill="#14B8A6" />
+                        <rect class="audio-bar" x="198" y="180" width="8" height="140" rx="4" fill="#0E0D14" />
+                        <rect class="audio-bar" x="219" y="165" width="8" height="170" rx="4" fill="#EA580C" />
+                        <rect class="audio-bar" x="240" y="150" width="8" height="200" rx="4" fill="#A855F7" />
+                        <rect class="audio-bar" x="261" y="165" width="8" height="170" rx="4" fill="#14B8A6" />
+                        <rect class="audio-bar" x="282" y="180" width="8" height="140" rx="4" fill="#0E0D14" />
+                        <rect class="audio-bar" x="303" y="195" width="8" height="110" rx="4" fill="#EA580C" />
+                        <rect class="audio-bar" x="324" y="215" width="8" height="70" rx="4" fill="#A855F7" />
+                        <rect class="audio-bar" x="345" y="235" width="8" height="30" rx="4" fill="#14B8A6" />
                     </g>
-                    <text x="250" y="325" font-size="10" font-weight="800" text-anchor="middle" fill="#7A728E" letter-spacing="2">SPEECH PROSODY ENGINE</text>
+                    <text x="250" y="335" font-size="11" font-weight="800" text-anchor="middle" fill="#7A728E" letter-spacing="2">ACOUSTIC PROSODY ANALYSIS</text>
                 `
             },
-            // Stage 6: Soundwaves collapse into HRMS Attendance Clock
+            // Stage 5: HRMS Biometric Attendance Clock Dial
             {
-                title: "7/8 · HRMS Attendance Dial",
-                path: "M 250,130 C 316,130 370,184 370,250 C 370,316 316,370 250,370 C 184,370 130,316 130,250 C 130,184 184,130 250,130 Z",
+                title: "6/8 · HRMS Attendance & Biometrics",
+                path: "M 250,125 C 319,125 375,181 375,250 C 375,319 319,375 250,375 C 181,375 125,319 125,250 C 125,181 181,125 250,125 Z",
                 fill: "#FFFFFF",
                 render: () => `
-                    <circle cx="250" cy="250" r="105" fill="none" stroke="#EBE4F7" stroke-width="4" />
-                    <circle cx="250" cy="155" r="4" fill="#0E0D14" />
-                    <circle cx="345" cy="250" r="4" fill="#0E0D14" />
-                    <circle cx="250" cy="345" r="4" fill="#0E0D14" />
-                    <circle cx="155" cy="250" r="4" fill="#0E0D14" />
+                    <!-- Concentric Biometric Rings -->
+                    <circle cx="250" cy="250" r="110" fill="none" stroke="#EBE4F7" stroke-width="4" />
+                    
+                    <!-- 4 Cardinal Clock Marks -->
+                    <circle cx="250" cy="150" r="5" fill="#0E0D14" />
+                    <circle cx="350" cy="250" r="5" fill="#0E0D14" />
+                    <circle cx="250" cy="350" r="5" fill="#0E0D14" />
+                    <circle cx="150" cy="250" r="5" fill="#0E0D14" />
 
-                    <line id="hourHand" x1="250" y1="250" x2="250" y2="185" stroke="#0E0D14" stroke-width="7" stroke-linecap="round" />
-                    <line id="minuteHand" x1="250" y1="250" x2="305" y2="250" stroke="#D95D39" stroke-width="5" stroke-linecap="round" />
-                    <circle cx="250" cy="250" r="8" fill="#0E0D14" />
+                    <!-- Animated Clock Hands -->
+                    <line id="hourHand" x1="250" y1="250" x2="250" y2="180" stroke="#0E0D14" stroke-width="8" stroke-linecap="round" />
+                    <line id="minuteHand" x1="250" y1="250" x2="310" y2="250" stroke="#EA580C" stroke-width="5" stroke-linecap="round" />
+                    <circle cx="250" cy="250" r="9" fill="#0E0D14" />
 
-                    <rect x="175" y="285" width="65" height="22" rx="11" fill="#EEF7F5" stroke="#10B981" stroke-width="1.5" />
-                    <circle cx="188" cy="296" r="4" fill="#10B981" />
-                    <text x="212" y="299" font-size="9" font-weight="800" fill="#10B981">IN 09:00</text>
+                    <!-- Punch Status Badges -->
+                    <g transform="translate(0, 0)">
+                        <rect x="175" y="285" width="65" height="22" rx="11" fill="#EEF7F5" stroke="#10B981" stroke-width="1.5" />
+                        <circle cx="188" cy="296" r="4" fill="#10B981" />
+                        <text x="212" y="299" font-size="9" font-weight="800" fill="#10B981">IN 09:00</text>
 
-                    <rect x="255" y="285" width="70" height="22" rx="11" fill="#FDF3F1" stroke="#D95D39" stroke-width="1.5" />
-                    <circle cx="268" cy="296" r="4" fill="#D95D39" />
-                    <text x="294" y="299" font-size="9" font-weight="800" fill="#D95D39">OUT 18:00</text>
+                        <rect x="255" y="285" width="70" height="22" rx="11" fill="#FDF3F1" stroke="#EA580C" stroke-width="1.5" />
+                        <circle cx="268" cy="296" r="4" fill="#EA580C" />
+                        <text x="294" y="299" font-size="9" font-weight="800" fill="#EA580C">OUT 18:00</text>
+                    </g>
                 `
             },
-            // Stage 7: Clock morphs into Rankly Pebble Brand Mark
+            // Stage 6: Security Gating Shield & 6 OTP Verified Tokens
             {
-                title: "8/8 · Rankly Pebble Brand Mark",
-                path: "M 195,155 C 290,135 355,185 330,275 C 305,335 210,350 170,295 C 135,240 150,175 195,155 Z",
-                fill: "url(#pebbleGrad)",
+                title: "7/8 · Security Gating & 6-Digit OTP",
+                path: "M 250,120 L 350,165 C 350,280 290,360 250,385 C 210,360 150,280 150,165 Z",
+                fill: "#FAF6FE",
                 render: () => `
-                    <text x="246" y="278" font-size="92" font-weight="900" text-anchor="middle" fill="#FFFFFF" letter-spacing="-0.04em">R</text>
-                    <text x="250" y="325" font-size="12" font-weight="800" text-anchor="middle" fill="#FFFFFF" opacity="0.9" letter-spacing="3">RANKLY.AI</text>
+                    <!-- Inner Shield Border -->
+                    <path d="M 250,140 L 330,175 C 330,265 285,335 250,360 C 215,335 170,265 170,175 Z" fill="none" stroke="#D8CCE8" stroke-width="3" />
+
+                    <!-- 6 Glowing OTP Digits -->
+                    <g transform="translate(0, 0)">
+                        <rect x="160" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="172" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">8</text>
+
+                        <rect x="190" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="202" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">4</text>
+
+                        <rect x="220" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="232" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">2</text>
+
+                        <rect x="250" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="262" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">9</text>
+
+                        <rect x="280" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="292" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">1</text>
+
+                        <rect x="310" y="225" width="24" height="34" rx="6" fill="#FFFFFF" stroke="#0E0D14" stroke-width="2" />
+                        <text x="322" y="248" font-size="16" font-weight="900" text-anchor="middle" fill="#0E0D14">7</text>
+                    </g>
+                    <text x="250" y="285" font-size="10" font-weight="800" text-anchor="middle" fill="#14B8A6" letter-spacing="1.5">VERIFIED 2FA TOKEN</text>
+                `
+            },
+            // Stage 7: Candidate Profile Avatar Halo
+            {
+                title: "8/8 · Candidate Profile Verified Halo",
+                path: "M 250,135 C 313,135 365,187 365,250 C 365,313 313,365 250,365 C 187,365 135,313 135,250 C 135,187 187,135 250,135 Z",
+                fill: "#FFFFFF",
+                render: () => `
+                    <!-- Candidate Profile Avatar -->
+                    <circle cx="250" cy="220" r="36" fill="#EBE4F7" />
+                    <circle cx="250" cy="210" r="18" fill="#7A728E" />
+                    <path d="M 225,246 C 228,230 272,230 275,246 Z" fill="#7A728E" />
+
+                    <!-- Glowing Emerald Checkmark Badge -->
+                    <circle cx="282" cy="242" r="14" fill="#10B981" />
+                    <path d="M 276,242 L 280,246 L 288,238" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+
+                    <!-- Candidate Name & Match Pill -->
+                    <rect x="185" y="275" width="130" height="14" rx="7" fill="#0E0D14" />
+                    <rect x="205" y="298" width="90" height="8" rx="4" fill="#EA580C" />
                 `
             }
         ];
 
         let currentIndex = 0;
-        let activeLayer = layerA;
-        let incomingLayer = layerB;
+        let activeGroup = internalGroupA;
+        let nextGroup = internalGroupB;
 
-        // Initialize First Stage
-        activeLayer.innerHTML = sequence[0].render();
-        mainPath.setAttribute('d', sequence[0].path);
-        mainPath.style.fill = sequence[0].fill;
-        caption.textContent = sequence[0].title;
+        // Initialize First State
+        activeGroup.innerHTML = stages[0].render();
+        corePath.setAttribute('d', stages[0].path);
+        corePath.style.fill = stages[0].fill;
+        caption.textContent = stages[0].title;
 
-        function runNextMorph() {
-            const nextIndex = (currentIndex + 1) % sequence.length;
-            const cur = sequence[currentIndex];
-            const nxt = sequence[nextIndex];
+        // Draw Cursive Script at start
+        function playCursiveDraw() {
+            cursiveScript.style.opacity = 1;
+            const length = cursiveScript.getTotalLength();
+            cursiveScript.style.strokeDasharray = length;
+            cursiveScript.style.strokeDashoffset = length;
 
-            // 1. Update live indicator
+            gsap.to(cursiveScript, {
+                strokeDashoffset: 0,
+                duration: 1.4,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    gsap.to(cursiveScript, {
+                        opacity: 0,
+                        duration: 0.4,
+                        delay: 0.8,
+                        onComplete: () => {
+                            // Morph from Dot to Logo!
+                            executeMorph();
+                        }
+                    });
+                }
+            });
+        }
+
+        function executeMorph() {
+            const nextIndex = (currentIndex + 1) % stages.length;
+            const cur = stages[currentIndex];
+            const nxt = stages[nextIndex];
+
+            // 1. Update caption
             caption.textContent = nxt.title;
 
             // 2. Set up incoming content
-            incomingLayer.innerHTML = nxt.render();
-            gsap.set(incomingLayer, { opacity: 0, scale: 0.55 });
+            nextGroup.innerHTML = nxt.render();
+            gsap.set(nextGroup, { opacity: 0, scale: 0.5 });
 
-            // 3. True Flubber Vector Interpolation
+            // 3. Flubber Mathematical Vector Path Interpolator
             const interpolator = flubber.interpolate(cur.path, nxt.path, {
                 maxSegmentLength: 2,
                 string: true
             });
 
-            // 4. GSAP Timeline with 1.1s Smooth Visible Morph
+            // 4. GSAP Timeline with 1.1s Smooth Elastic Morph
             const tl = gsap.timeline({
                 onComplete: () => {
                     currentIndex = nextIndex;
-                    // Swap layers
-                    const temp = activeLayer;
-                    activeLayer = incomingLayer;
-                    incomingLayer = temp;
-                    incomingLayer.innerHTML = '';
+                    // Swap groups
+                    const temp = activeGroup;
+                    activeGroup = nextGroup;
+                    nextGroup = temp;
+                    nextGroup.innerHTML = '';
 
-                    // Stage-specific secondary kinetic micro-animations
-                    if (nextIndex === 3) {
-                        const laser = document.getElementById('laserScannerGroup');
+                    // Micro-animations for stage details
+                    if (nextIndex === 2) {
+                        const laser = document.getElementById('laserBeamGroup');
                         if (laser) {
                             gsap.fromTo(laser, 
-                                { y: -50 }, 
-                                { y: 115, duration: 1.0, repeat: 1, yoyo: true, ease: "power1.inOut" }
+                                { y: -55 }, 
+                                { y: 125, duration: 1.0, repeat: 1, yoyo: true, ease: "power1.inOut" }
                             );
                         }
                     }
 
-                    if (nextIndex === 5) {
-                        const bars = document.querySelectorAll('.kinetic-bar');
+                    if (nextIndex === 4) {
+                        const bars = document.querySelectorAll('.audio-bar');
                         bars.forEach((bar) => {
                             gsap.to(bar, {
                                 scaleY: 0.3 + Math.random() * 0.9,
@@ -395,7 +460,7 @@
                         });
                     }
 
-                    if (nextIndex === 6) {
+                    if (nextIndex === 5) {
                         const h = document.getElementById('hourHand');
                         const m = document.getElementById('minuteHand');
                         if (h && m) {
@@ -404,49 +469,49 @@
                         }
                     }
 
-                    // Hold on the settled shape for 1.8 seconds, then morph to next
-                    setTimeout(runNextMorph, 1800);
+                    // Settle for 1.6 seconds, then morph to next
+                    setTimeout(executeMorph, 1600);
                 }
             });
 
-            // Morph the vector path geometry continuously over 1.05s with power2.inOut ease
-            const tracker = { progress: 0 };
-            tl.to(tracker, {
-                progress: 1,
+            // Continuous Path Morphing (60 FPS Polygon Interpolation)
+            const morphTracker = { t: 0 };
+            tl.to(morphTracker, {
+                t: 1,
                 duration: 1.05,
                 ease: "power2.inOut",
                 onUpdate: () => {
-                    mainPath.setAttribute('d', interpolator(tracker.progress));
+                    corePath.setAttribute('d', interpolator(morphTracker.t));
                 }
             }, 0);
 
-            // Animate fill style smoothly
-            tl.to(mainPath, {
+            // Animate Fill Style
+            tl.to(corePath, {
                 fill: nxt.fill,
                 duration: 0.8,
                 ease: "power2.inOut"
             }, 0);
 
-            // Add slight elastic squash & stretch bounce during the morph!
-            tl.to(mainPath, {
-                scaleX: 1.06,
-                scaleY: 0.94,
+            // Snappy Elastic Squash & Stretch
+            tl.to(corePath, {
+                scaleX: 1.05,
+                scaleY: 0.95,
                 duration: 0.5,
                 ease: "power1.out",
                 yoyo: true,
                 repeat: 1
             }, 0);
 
-            // Outgoing details contract smoothly
-            tl.to(activeLayer, {
+            // Outgoing details contract
+            tl.to(activeGroup, {
                 opacity: 0,
-                scale: 0.35,
-                duration: 0.45,
+                scale: 0.3,
+                duration: 0.4,
                 ease: "power2.in"
             }, 0);
 
-            // Incoming details blossom with back.out elastic spring
-            tl.to(incomingLayer, {
+            // Incoming details spring out
+            tl.to(nextGroup, {
                 opacity: 1,
                 scale: 1,
                 duration: 0.75,
@@ -455,7 +520,7 @@
         }
 
         // Auto-play immediately on load
-        setTimeout(runNextMorph, 1500);
+        setTimeout(playCursiveDraw, 600);
     </script>
 </body>
 </html>
