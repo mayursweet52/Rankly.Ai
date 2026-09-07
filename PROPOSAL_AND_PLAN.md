@@ -1,54 +1,58 @@
-# 🔐 Proposal & Architecture Plan: Browser Close Session Termination (Transient Session Management)
+﻿# 🏷️ Proposal & Architecture Plan: Remove All Decorative Pill Tags & Badges Across Entire Web Application
 **Project:** Rankly.ai  
-**Task Description:** Close hone par website ka session terminate hona chahiye (Session must automatically terminate when browser/tab is closed unless user explicitly selects 'Remember Me').  
+**Task Description:** Web ke andar jitne bhi tags honge sab hata de AS PER THE SCREENSHOT (Remove all decorative pill tags, portal identity badges, section header tags, and live status pills across all roles/views).  
 **Collaboration Model:** Tripartite Collaboration (Mayur [Backend] + Sumit [Frontend] + Vaibhav [Database])  
 **Status:** 🟡 **AWAITING DEVELOPER PERMISSION / APPROVAL** (No source code will be modified until approved)
 
 ---
 
-## 🎯 1. Executive Summary & Problem Diagnosis
+## 🎯 1. Executive Summary & Screenshot Breakdown
 
-### Current Behavior:
-- Jab user browser ya website tab close karta hai aur wapas open karta hai, toh user automatically logged-in rehta hai.
-- **Root Cause 1 (Frontend)**: Login hone par user session `localStorage.setItem('rankly_session', ...)` aur `localStorage.setItem('user', ...)` me unconditionally save hota hai. Kyunki `localStorage` browser close hone ke baad bhi permanent rehta hai, naya tab open karne par `localStorage.getItem('rankly_session')` user ko auto-login kar deta hai.
-- **Root Cause 2 (Backend)**: `src/controllers/authController.js` me session cookie par `maxAge = 24 * 60 * 60 * 1000` set hai, jisse browser cookie ko disk par 24 ghante ke liye save kar leta hai bajaye transient session cookie ke.
+Based on the user's explicit instructions and uploaded reference screenshots:
 
-### Desired Behavior (Secure Session Lifecycle):
-- Website ya browser tab band karne par session **turant terminate / expire** hona chahiye.
-- User jab dobara site kholega toh usse clean **Login Page** dikhna chahiye.
-- Agar user ne explicitly **"Remember Me"** check kiya ho, tabhi persistent storage use hoga.
+1. **Screenshot 1 (`media_1788778583698.png`) - Topbar Portal Identity Badge**:
+   - Location: Topbar header next to the page title.
+   - Example: `[icon] Candidate Portal (Applicant Zone)`, `HR Recruitment Workspace`, `Executive Administrator Portal`, `Employee Self-Service Portal`.
+   - Action: **Remove completely** from topbar. Clean up `#portalBadge` and make JS handler null-safe.
+
+2. **Screenshot 2 (`media_1788778599032.png`) - Section Header Badge Tags**:
+   - Location: Next to main section titles (e.g. "AI Resume Optimizer & ATS Studio").
+   - Example: `● ATS CALIBRATION ENGINE`, `● ADVANCED ATS AI ENGINE`, `● LIVE SYNC`, `● AUTO-RANKED (90%+ ON TOP)`.
+   - Action: **Remove completely**. Section titles will render with clean, modern, distraction-free typography.
+
+3. **Screenshot 3 (`media_1788778609364.png`) - Live Status Indicator Pill Tags**:
+   - Location: In telemetry cards and subheaders.
+   - Example: `AWAITING INPUT` (`#atsLivePill`), `OPTIMAL HEALTH` (`#talentHealthBadge`), `VERIFIED JOBSEEKER`, `ENTERPRISE EXCLUSIVE`, `ACTIVE LINKS`.
+   - Action: **Remove completely**.
+
+4. **Global Scope Across All Roles & Views**:
+   - All similar decorative pill badge tags across Candidate Portal, HR Recruiter Queue, Admin Dashboard, Employee Portal, ATS Studio, and Landing Page will be removed for a consistent, ultra-clean, minimalist design.
 
 ---
 
 ## 🏗️ 2. Architectural Solution & Implementation Plan
 
-### A. Frontend Session Lifecycle (Sumit - Frontend Lead):
-1. **Primary Session Store = `sessionStorage`**:
-   - Active user session and JWT token will be stored strictly in `sessionStorage` (`sessionStorage.setItem('rankly_session', ...)`).
-   - `sessionStorage` is automatically wiped out by the operating system / browser engine as soon as the tab or window is closed.
-2. **Conditional "Remember Me" Support**:
-   - `localStorage` will ONLY be used if the user checked "Remember Me" during login.
-   - If not remembered, all legacy persistent tokens (`localStorage.removeItem('rankly_session')`, `localStorage.removeItem('user')`, `localStorage.removeItem('rankly_jwt')`) are cleared.
-3. **Session Auto-Restoration on Tab Boot**:
-   - On page load, the system checks `sessionStorage.getItem('rankly_session')`. If the browser was closed, `sessionStorage` is null $\longrightarrow$ User starts fresh on the Login page.
+### A. Frontend DOM & Template Cleanup (Sumit - Frontend Lead):
+1. **Remove Topbar Identity Badge**:
+   - Remove `<span id="portalBadge" ...></span>` in `public/index.html` and `public/index-3.html`.
+   - Ensure JS `updatePortalBadge` or role routing safely guards `if (portalBadge) { ... }` so 0 console errors occur.
+2. **Remove Section Header & Banner Badges**:
+   - Remove `● ATS Calibration Engine` badge from Resume Studio top banner.
+   - Remove `● Advanced ATS AI Engine` badge from ATS analysis card.
+   - Remove `● Live Sync` badge from Real-Time Pipeline monitor.
+   - Remove `● Auto-Ranked (90%+ on Top)` from Applicant Queue view.
+   - Remove hero/landing section pill badges.
+3. **Remove Status & Telemetry Pill Badges**:
+   - Remove `<span id="atsLivePill">Awaiting Input</span>` and guard JS `updateAtsReadinessScore()`.
+   - Remove `#talentHealthBadge`, `Verified Jobseeker`, `Enterprise Exclusive`, `Active Links`, and integration card pill badges.
+4. **Preserve Functional Elements**:
+   - All action buttons (Apply, Upload, Save, Clear, Search, Filters, Settings), form inputs, table data, progress indicators, avatars, and navigation links remain 100% active and untouched.
 
-### B. Backend Session Cookie Tuning (Mayur - Backend Architect):
-1. **Express Session Transient Cookies (`src/controllers/authController.js`)**:
-   - When `rememberMe` is false/unchecked:
-     ```javascript
-     req.session.cookie.maxAge = null; // Browser deletes cookie on tab/window close
-     req.session.cookie.expires = false;
-     ```
-   - When `rememberMe` is true:
-     ```javascript
-     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30-day persistent cookie
-     ```
-2. **Google OAuth & Candidate Auth Sync**:
-   - Apply the same transient cookie standard to Google login credentials endpoint (`/api/auth/google/credential`) and candidate auth routes.
+### B. Backend & AI Stability (Mayur - Backend Architect):
+- Backend routes, NVIDIA Nemotron AI scoring, and authentication remain untouched and blazing fast (< 5ms response time).
 
-### C. Database & Security Audit (Vaibhav - Database Lead):
-1. **Database Session Integrity**:
-   - Ensure Prisma session store and SQLite/PG sync cleanly handle session termination without dangling locks.
+### C. Database & Infrastructure (Vaibhav - Database Lead):
+- Database schema, Prisma models, and server health daemon remain 100% stable and operational.
 
 ---
 
@@ -56,9 +60,9 @@
 
 | Engineer / Agent | Strict Domain | Scope / Tasks (MUST DO) | Restricted (MUST NOT DO) | Targeted Files |
 | :--- | :--- | :--- | :--- | :--- |
-| **Mayur**<br>`Antigravity-Agent-Mayur` | **BACKEND ARCHITECT** | • Configure transient session cookies (`cookie.maxAge = null`, `expires = false`) in auth controllers.<br>• Update `/api/auth/login`, `/api/auth/google/credential`, and candidate auth.<br>• Verify sub-5ms auth latency. | • Do NOT touch HTML/CSS UI layouts.<br>• Do NOT alter DB schema definitions. | `src/controllers/authController.js`, `src/routes/authRoutes.js` |
-| **Sumit**<br>`Antigravity-Agent-Sumit` | **FRONTEND LEAD** | • Migrate session persistence to `sessionStorage` across `public/index.html` and `public/index-3.html`.<br>• Only save to `localStorage` if "Remember Me" is selected.<br>• Ensure zero layout shifts and seamless login experience. | • Do NOT touch Express route controllers.<br>• Do NOT touch DB models. | `public/index.html`, `public/index-3.html` |
-| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **DATABASE LEAD** | • Verify database models & Prisma session integrity.<br>• Check health monitor daemon (`status: HEALTHY`). | • Do NOT touch frontend DOM.<br>• Do NOT touch backend auth handlers. | `src/services/healthChecker.js`, `prisma/schema.prisma` |
+| **Sumit**<br>`Antigravity-Agent-Sumit` | **FRONTEND LEAD** | • Remove all decorative pill badges and tags in `public/index.html` & `public/index-3.html`.<br>• Guard JS element queries with null-checks to prevent runtime errors.<br>• Maintain byte-for-byte synchronization between `index.html` and `index-3.html`. | • Do NOT alter Express APIs or backend logic.<br>• Do NOT touch DB models. | `public/index.html`, `public/index-3.html` |
+| **Mayur**<br>`Antigravity-Agent-Mayur` | **BACKEND ARCHITECT** | • Ensure zero backend API disruption.<br>• Maintain sub-5ms API response latency. | • Do NOT touch HTML/CSS UI layouts.<br>• Do NOT alter DB schemas. | `server.js`, `src/routes/*` |
+| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **DATABASE LEAD** | • Monitor server daemon and database session health. | • Do NOT touch frontend DOM.<br>• Do NOT alter controller logic. | `src/services/healthChecker.js` |
 
 ---
 
@@ -66,5 +70,5 @@
 
 > [!IMPORTANT]
 > **Developer Approval Required:**  
-> Plan aur architecture ready hai! Browser/tab band hone par session terminate karne aur Login page par laane ke liye kripya **"Proceed"** ya **"Approved"** kahein.  
+> Plan aur architecture ready hai! Web ke andar se sabhi decorative tags aur pill badges (Portal Identity Badge, ATS Calibration Engine badge, Awaiting Input pill, etc.) ko clean karne ke liye kripya **"Proceed"** ya **"Approved"** kahein.  
 > Aapke explicit approval ke bina koi code modify nahi kiya jayega.
