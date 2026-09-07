@@ -1,0 +1,333 @@
+﻿/* ═══════════════════════════════════════════════════════════════════
+   APPLE "WONDERFUL TOOLS" EXACT RECREATION STYLESHEET
+   Pure Apple aesthetic: #F5F5F7 & #000000 background, SF Pro typography,
+   minimal geometric line art, morphing paths, precise ease curves.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --apple-bg: #000000;
+  --apple-bg-light: #F5F5F7;
+  --apple-card-dark: #121214;
+  --apple-text: #F5F5F7;
+  --apple-subtext: #86868B;
+  --apple-white: #FFFFFF;
+  --apple-blue: #2997FF;
+  --apple-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --apple-spring: cubic-bezier(0.17, 0.67, 0.24, 0.99);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.apple-theme {
+  margin: 0;
+  padding: 0;
+  background-color: var(--apple-bg);
+  color: var(--apple-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Top Apple Floating Pill Controller ─── */
+.apple-nav-bar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: rgba(22, 22, 26, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+}
+
+.apple-pill-badge {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apple-pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--apple-subtext);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s var(--apple-ease);
+}
+
+.apple-pill-btn:hover, .apple-pill-btn.active {
+  color: var(--apple-white);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Apple Full-Screen Stages ─── */
+.apple-stage {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Stage Typography */
+.apple-eyebrow {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--apple-subtext);
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s var(--apple-ease);
+}
+
+.apple-headline {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+  color: var(--apple-white);
+  margin: 0 0 16px;
+  max-width: 1100px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s var(--apple-ease) 0.1s;
+}
+
+.apple-subline {
+  font-size: clamp(19px, 2.8vw, 28px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  color: var(--apple-subtext);
+  max-width: 680px;
+  margin: 0 0 50px;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.8s var(--apple-ease) 0.2s;
+}
+
+/* In View Active Reveal */
+.apple-stage.active .apple-eyebrow,
+.apple-stage.active .apple-headline,
+.apple-stage.active .apple-subline,
+.apple-stage.active .apple-interactive-canvas,
+.apple-stage.active .apple-morph-box {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Central Canvas For Vector Art ─── */
+.apple-morph-box {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1s var(--apple-spring);
+}
+
+.apple-vector-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ─── Apple Morph 1: Wired EarPods to AirPods Case ─── */
+.wire-path {
+  stroke: var(--apple-white);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 0;
+  transition: all 1.2s var(--apple-ease);
+}
+
+.airpod-head {
+  fill: var(--apple-white);
+  transition: all 0.8s var(--apple-ease);
+}
+
+.case-body {
+  stroke: var(--apple-white);
+  stroke-width: 2.5;
+  fill: rgba(255, 255, 255, 0.05);
+  rx: 24;
+  transition: all 1s var(--apple-spring);
+}
+
+/* ─── Apple Stage 2: Apple Watch Digital Crown & Heart Ring ─── */
+.watch-ring-bg {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 12;
+  fill: none;
+}
+
+.watch-ring-red {
+  stroke: #FA114F;
+  stroke-width: 12;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 80;
+  transition: stroke-dashoffset 1.8s var(--apple-ease);
+}
+
+.watch-ring-green {
+  stroke: #A8FF00;
+  stroke-width: 12;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 360;
+  stroke-dashoffset: 90;
+  transition: stroke-dashoffset 2s var(--apple-ease) 0.2s;
+}
+
+.watch-ring-blue {
+  stroke: #00F0FF;
+  stroke-width: 12;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 60;
+  transition: stroke-dashoffset 2.2s var(--apple-ease) 0.4s;
+}
+
+/* ─── Apple Stage 3: iPad Pro + Apple Pencil Stroke ─── */
+.pencil-body {
+  stroke: var(--apple-white);
+  stroke-width: 2;
+  fill: #1C1C1E;
+}
+
+.drawing-arc {
+  stroke: var(--apple-blue);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: drawArc 3s infinite alternate var(--apple-ease);
+}
+
+@keyframes drawArc {
+  0% { stroke-dashoffset: 500; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ─── Apple Stage 4: MacBook Clamshell Lift Open ─── */
+.macbook-screen {
+  transform-origin: 160px 220px;
+  transition: transform 1.2s var(--apple-spring);
+}
+
+.apple-stage.active .macbook-screen {
+  transform: rotateX(0deg);
+}
+
+.macbook-glow {
+  opacity: 0.15;
+  filter: blur(24px);
+  fill: var(--apple-white);
+}
+
+/* ─── Apple Stage 5: Triple Camera Lenses Alignment ─── */
+.camera-lens {
+  stroke: #2C2C2E;
+  stroke-width: 4;
+  fill: #0C0C0E;
+  filter: drop-shadow(0 0 10px rgba(41, 151, 255, 0.2));
+}
+
+.lens-reflection {
+  fill: rgba(41, 151, 255, 0.4);
+  opacity: 0.7;
+  animation: lensGlint 4s infinite ease-in-out;
+}
+
+@keyframes lensGlint {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+/* ─── Play / Pause Scrub Bar at Bottom ─── */
+.apple-timeline-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: rgba(22, 22, 26, 0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--apple-subtext);
+}
+
+.apple-progress-track {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.apple-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--apple-white);
+  border-radius: 99px;
+  transition: width 0.3s linear;
+}
+
+.apple-cta-button {
+  background: var(--apple-white);
+  color: #000;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 16px 36px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s var(--apple-spring);
+  text-decoration: none;
+}
+
+.apple-cta-button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
