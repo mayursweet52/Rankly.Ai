@@ -124,6 +124,16 @@
       "message": "🎯 GOOGLE AUTH BUTTON ROTATING BORDER BEAM FIXED & VERIFIED!\n1) Fixed CSS Keyframe Suppression: Removed conflicting `transform: translate3d(-50%, -50%, 0) rotate(0deg) !important;` from base `.btn-loading::before`, allowing `@keyframes btn-beam-spin` to spin smoothly at 60/120fps.\n2) Signature 4-Color Google Beam: Configured dedicated conic-gradient beam featuring Google Blue (#4285F4), Red (#EA4335), Yellow (#FBBC05), and Green (#34A853) with 1.05s linear infinite rotation.\n3) Elevating Content & Dark Mode: Mask plate configured with z-index: 2 and button text/icons elevated with z-index: 3 for crisp readability.\n4) Perfect Sync: Synchronized `public/index.html` and `public/index-3.html`.",
       "readByRecipient": true,
       "requiresReply": false
+    },
+    {
+      "id": "msg_011",
+      "timestamp": "2026-09-07T10:53:00.000Z",
+      "from": "Antigravity-Agent-Sumit",
+      "to": "ALL_AGENTS",
+      "type": "PROPOSAL_TOPBAR_THEME_BUTTON_REMOVAL",
+      "message": "🎨 PROPOSAL: TOPBAR THEME TOGGLE BUTTON REMOVAL (PRESERVING LOGIN PAGE)\n1) Scope for Sumit: Remove `#dashThemeToggleBtn` from topbar in `public/index.html` & `public/index-3.html` while preserving `#loginThemeToggleBtn` on the login header and `#themeBtnLight` / `#themeBtnDark` in settings modal.\n2) Briefing for Mayur: No backend or auth changes required.\n3) Briefing for Vaibhav: No DB changes required.\n4) Permission Gate: Awaiting developer confirmation ('Proceed').",
+      "readByRecipient": false,
+      "requiresReply": true
     }
   ]
 }
