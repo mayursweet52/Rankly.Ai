@@ -1,0 +1,122 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TRUE CONTINUOUS VECTOR PATH MORPHING ENGINE (FLUBBER + GSAP)
+   Pastel Lavender Canvas (#EBE4F7) matching Bento Motion's Apple Reel.
+   Vector paths physically melt, stretch, bend, and morph into one another.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --rk-canvas-lilac: #EBE4F7;
+  --rk-lilac-subtle: #DFD4F2;
+  --rk-ink-black: #0E0D14;
+  --rk-ink-muted: #5C556D;
+  --rk-terracotta: #D95D39;
+  --rk-sage: #5B998C;
+  --rk-emerald: #10B981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.fluid-morph-body {
+  background-color: #EBE4F7;
+  background: radial-gradient(circle at 50% 45%, #F5F0FD 0%, #EBE4F7 60%, #E1D6F2 100%);
+  color: var(--rk-ink-black);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle Top Reel Watermark */
+.reel-badge-header {
+  position: absolute;
+  top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.reel-badge-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7A728E;
+}
+
+.reel-badge-title {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #1A1724;
+}
+
+/* Center Stage Viewport */
+.fluid-morph-stage {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Master Morph SVG Canvas */
+.master-morph-svg {
+  width: 480px;
+  height: 480px;
+  overflow: visible;
+  filter: drop-shadow(0 20px 35px rgba(45, 35, 65, 0.08));
+}
+
+/* Core Morphed Vector Path */
+.morph-main-path {
+  fill: var(--rk-ink-black);
+  transform-origin: 250px 250px;
+}
+
+/* Morph Stroke Path (For Cursive Script & Scanner Beam & Rings) */
+.morph-stroke-path {
+  fill: none;
+  stroke: var(--rk-ink-black);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: 250px 250px;
+}
+
+/* Dynamic Internal Detail Group */
+.morph-internal-group {
+  transform-origin: 250px 250px;
+  pointer-events: none;
+}
+
+/* Minimalist Live Stage Indicator */
+.morph-live-caption {
+  position: absolute;
+  bottom: 36px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6B6280;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
