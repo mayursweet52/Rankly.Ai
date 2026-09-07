@@ -93,7 +93,7 @@ router.get('/calculate-days', optionalAuth, (req, res) => {
  * GET /api/leaves/summary
  * Employee leave balance & pending counts
  */
-router.get('/summary', optionalAuth, async (req, res) => {
+router.get(['/summary', '/balance'], optionalAuth, async (req, res) => {
   try {
     const employeeId = await resolveEmployeeId(req);
     const leavesRes = await db.query('SELECT * FROM leave_requests WHERE employee_id = $1;', [employeeId]);

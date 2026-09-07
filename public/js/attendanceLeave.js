@@ -385,6 +385,7 @@
 
             // Client-side instant fallback calculation
             const start = new Date(sInp.value);
+            const end = new Date(eInp.value);
             if (end < start) {
                 display.textContent = 'Invalid range';
                 if (weekendInfo) weekendInfo.textContent = '';
@@ -554,4 +555,20 @@
     window.exportCandidatesToPdf = () => window.exportCandidates('pdf');
     window.exportEmployeesToExcel = () => window.exportEmployees('xlsx');
     window.exportEmployeesToPdf = () => window.exportEmployees('pdf');
+
+    window.calculateWeekendLeaveDays = function(startStr, endStr) {
+        if (!startStr || !endStr) return 0;
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+        let count = 0;
+        let cur = new Date(start);
+        while (cur <= end) {
+            const dow = cur.getDay();
+            if (dow !== 0 && dow !== 6) count++;
+            cur.setDate(cur.getDate() + 1);
+        }
+        return count;
+    };
+    window.submitEmployeeLeave = window.submitLeaveRequest;
+    window.recordPunch = window.attendancePunchIn;
 })();
