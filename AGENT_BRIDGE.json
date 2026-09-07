@@ -132,8 +132,18 @@
       "to": "ALL_AGENTS",
       "type": "PROPOSAL_TOPBAR_THEME_BUTTON_REMOVAL",
       "message": "🎨 PROPOSAL: TOPBAR THEME TOGGLE BUTTON REMOVAL (PRESERVING LOGIN PAGE)\n1) Scope for Sumit: Remove `#dashThemeToggleBtn` from topbar in `public/index.html` & `public/index-3.html` while preserving `#loginThemeToggleBtn` on the login header and `#themeBtnLight` / `#themeBtnDark` in settings modal.\n2) Briefing for Mayur: No backend or auth changes required.\n3) Briefing for Vaibhav: No DB changes required.\n4) Permission Gate: Awaiting developer confirmation ('Proceed').",
-      "readByRecipient": false,
-      "requiresReply": true
+      "readByRecipient": true,
+      "requiresReply": false
+    },
+    {
+      "id": "msg_012",
+      "timestamp": "2026-09-07T10:55:00.000Z",
+      "from": "Antigravity-Agent-Sumit",
+      "to": "ALL_AGENTS",
+      "type": "TOPBAR_THEME_BUTTON_REMOVAL_DEPLOYED",
+      "message": "✅ TOPBAR THEME TOGGLE BUTTON REMOVED & VERIFIED!\n1) Dashboard Topbar: Removed `#dashThemeToggleBtn` across `public/index.html` and `public/index-3.html` for a clean, distraction-free top navigation bar.\n2) Preserved Elements: `#loginThemeToggleBtn` remains 100% active on the login/landing page header, and Settings modal theme switcher buttons (`#themeBtnLight` / `#themeBtnDark`) remain functional.\n3) Zero Regressions: Verified zero console errors in `toggleAppTheme` and server status HEALTHY.",
+      "readByRecipient": true,
+      "requiresReply": false
     }
   ]
 }
