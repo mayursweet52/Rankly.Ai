@@ -7084,89 +7084,359 @@ body.dark-theme .resume-tip-box,
     </div>
 
     <!-- ─── RANKLY EXECUTIVE INTERVIEW SCHEDULING CALENDAR MODAL ─── -->
-    <div id="interviewCalendarModal" class="modal-overlay" onclick="if(event.target===this) closeModal('interviewCalendarModal')" style="display:none;">
-        <div class="modal-box" style="max-width: 600px;">
-            <div class="flex justify-between items-center pb-3 mb-3 border-b border-[var(--border-color)]">
-                <div class="flex items-center gap-2">
+    <!-- ─── 1.1 RANKLY EXECUTIVE INTERVIEW SCHEDULING CALENDAR MODAL ─── -->
+    <div id="interviewCalendarModal" class="modal-overlay" onclick="if(event.target===this) closeInterviewCalendarModal()" style="display:none;">
+        <div class="modal-box max-w-xl w-full p-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 text-left space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-zinc-800">
+                <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base border border-emerald-500/20">
                         <i class="fa-regular fa-calendar-check"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-black text-[var(--text-primary)] m-0">Executive Interview Calendar</h3>
-                        <p class="text-xs text-[var(--text-muted)] m-0">Schedule technical & behavioral evaluation sessions.</p>
+                        <h3 class="text-base font-black text-gray-900 dark:text-white m-0">Executive Interview Calendar</h3>
+                        <p class="text-xs text-gray-500 dark:text-zinc-400 m-0">Interactive slot picker & automated calendar sync.</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('interviewCalendarModal')" class="text-[var(--text-muted)] hover:text-[var(--text-primary)] text-lg" aria-label="Close modal">
+                <button type="button" onclick="closeInterviewCalendarModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg cursor-pointer" aria-label="Close modal">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <!-- Candidate Context Badge -->
-            <div id="scheduleCandidateInfo" class="p-2.5 mb-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] flex items-center justify-between text-xs">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-user-tie text-emerald-600"></i>
-                    <span>Candidate: <strong id="scheduleCandName" class="text-[var(--text-primary)]">Selected Candidate</strong></span>
+            <div id="scheduleCandidateInfo" class="p-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-900 dark:text-white m-0" id="calendarCandName">Selected Candidate</p>
+                        <p class="text-[11px] text-gray-500 dark:text-zinc-400 m-0" id="calendarCandRole">Software Engineer</p>
+                    </div>
                 </div>
-                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 text-[10px]">Interview Stage</span>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-500/20 text-[10px]" id="calendarCandEmail">candidate@example.com</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <!-- Date Selection -->
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interview Date *</label>
-                    <input type="date" id="scheduleDateInput" class="form-input" required />
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Interview Date *</label>
+                    <input type="date" id="interviewDateInput" onchange="if(typeof updateCalendarSyncLinks==='function') updateCalendarSyncLinks()" class="form-input w-full p-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs" required />
                 </div>
-                <!-- Time Slot Selection -->
+                <!-- Duration Selection -->
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Select Time Slot *</label>
-                    <select id="scheduleTimeSelect" class="form-input">
-                        <option value="10:00 AM">10:00 AM - 10:45 AM (Morning)</option>
-                        <option value="11:30 AM">11:30 AM - 12:15 PM (Pre-Lunch)</option>
-                        <option value="02:00 PM" selected>02:00 PM - 02:45 PM (Afternoon)</option>
-                        <option value="04:00 PM">04:00 PM - 04:45 PM (Late Afternoon)</option>
-                        <option value="05:30 PM">05:30 PM - 06:15 PM (Evening)</option>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Session Duration</label>
+                    <select id="interviewDurationSelect" onchange="if(typeof updateCalendarSyncLinks==='function') updateCalendarSyncLinks()" class="form-input w-full p-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs">
+                        <option value="30">30 Minutes (Screening)</option>
+                        <option value="45" selected>45 Minutes (Standard Technical)</option>
+                        <option value="60">60 Minutes (Architecture & Deep Dive)</option>
                     </select>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                <!-- Meeting Platform -->
+            <!-- Visual Slot Picker -->
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Interactive Time Slot *</label>
+                <input type="hidden" id="selectedInterviewTime" value="10:00 AM" />
+                <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 text-xs font-mono">
+                    <button type="button" onclick="selectInterviewTimeSlot(this, '10:00 AM')" class="calendar-time-slot p-2 rounded-lg border text-center font-bold transition-all cursor-pointer bg-emerald-600 text-white border-emerald-600">10:00 AM</button>
+                    <button type="button" onclick="selectInterviewTimeSlot(this, '11:30 AM')" class="calendar-time-slot p-2 rounded-lg border text-center font-bold transition-all cursor-pointer bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 border-gray-200 dark:border-zinc-700">11:30 AM</button>
+                    <button type="button" onclick="selectInterviewTimeSlot(this, '02:00 PM')" class="calendar-time-slot p-2 rounded-lg border text-center font-bold transition-all cursor-pointer bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 border-gray-200 dark:border-zinc-700">02:00 PM</button>
+                    <button type="button" onclick="selectInterviewTimeSlot(this, '04:00 PM')" class="calendar-time-slot p-2 rounded-lg border text-center font-bold transition-all cursor-pointer bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 border-gray-200 dark:border-zinc-700">04:00 PM</button>
+                    <button type="button" onclick="selectInterviewTimeSlot(this, '05:30 PM')" class="calendar-time-slot p-2 rounded-lg border text-center font-bold transition-all cursor-pointer bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 border-gray-200 dark:border-zinc-700">05:30 PM</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Meeting Platform</label>
-                    <select id="schedulePlatformSelect" class="form-input">
-                        <option value="Google Meet">Google Meet (Direct Video Link)</option>
-                        <option value="Zoom">Zoom Video Conference</option>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Platform Mode</label>
+                    <select id="interviewModeSelect" onchange="if(typeof updateCalendarSyncLinks==='function') updateCalendarSyncLinks()" class="form-input w-full p-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs">
+                        <option value="Google Meet">Google Meet (Auto Link)</option>
+                        <option value="Zoom">Zoom Video Room</option>
                         <option value="Microsoft Teams">Microsoft Teams</option>
-                        <option value="In-Person Office">On-Site Office Round</option>
+                        <option value="On-Site Office">On-Site Corporate Round</option>
                     </select>
                 </div>
-                <!-- Interview Round Type -->
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Evaluation Round</label>
-                    <select id="scheduleRoundSelect" class="form-input">
-                        <option value="Technical Screening">Round 1: Technical & Code Screening</option>
-                        <option value="System Architecture">Round 2: System Design & Scalability</option>
-                        <option value="Hiring Manager Discussion" selected>Round 3: Hiring Manager Review</option>
-                        <option value="Executive HR Fit">Round 4: Executive Culture & HR Fit</option>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Evaluation Round</label>
+                    <select id="interviewRoundType" onchange="if(typeof updateCalendarSyncLinks==='function') updateCalendarSyncLinks()" class="form-input w-full p-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs">
+                        <option value="Technical Screening">Technical Deep Dive</option>
+                        <option value="System Architecture">System Architecture Review</option>
+                        <option value="HR Culture Fit">HR Culture & Leadership</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Meeting Notes -->
-            <div class="mb-4">
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Interviewer Notes & Focus Areas</label>
-                <textarea id="scheduleNotesInput" class="form-input h-16 text-xs resize-none" placeholder="e.g. Focus on candidate's experience in full-stack architecture, React 19, and Node.js microservices."></textarea>
+            <!-- Instant Calendar Sync Integrations -->
+            <div class="p-3 bg-gray-50 dark:bg-zinc-800/60 rounded-xl border border-gray-200 dark:border-zinc-800">
+                <span class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-2">Direct 1-Click Calendar Sync & Invite Export:</span>
+                <div class="flex flex-wrap gap-2">
+                    <a id="btnSyncGoogleCalendar" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900 text-xs font-semibold hover:bg-blue-100 transition-all cursor-pointer">
+                        <i class="fa-brands fa-google text-blue-600"></i> Google Calendar
+                    </a>
+                    <a id="btnSyncOutlookCalendar" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-900 text-xs font-semibold hover:bg-sky-100 transition-all cursor-pointer">
+                        <i class="fa-brands fa-microsoft text-sky-600"></i> Outlook Web
+                    </a>
+                    <button type="button" onclick="downloadIcsCalendarFile()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-900 text-xs font-semibold hover:bg-amber-100 transition-all cursor-pointer">
+                        <i class="fa-regular fa-calendar-plus text-amber-600"></i> Download .ICS File
+                    </button>
+                </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex justify-end gap-2 pt-3 border-t border-[var(--border-color)]">
-                <button type="button" onclick="closeModal('interviewCalendarModal')" class="px-4 py-2 text-xs font-semibold rounded-lg border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--bg-input)] transition-all cursor-pointer">
+            <div class="flex justify-end gap-2 pt-2 border-t border-gray-200 dark:border-zinc-800">
+                <button type="button" onclick="closeInterviewCalendarModal()" class="px-4 py-2 text-xs font-semibold rounded-lg border border-gray-200 dark:border-zinc-700 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all cursor-pointer">
                     Cancel
                 </button>
-                <button type="button" onclick="confirmInterviewSchedule()" class="px-5 py-2 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                <button type="button" id="btnConfirmScheduleInterview" onclick="confirmAndScheduleInterview()" class="px-5 py-2 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-regular fa-calendar-check"></i>
-                    <span>Confirm & Schedule</span>
+                    <span>Confirm & Notify Candidate</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── 1.2 IN-BROWSER PDF / DOCX RESUME VIEWER MODAL ─── -->
+    <div id="resumeViewerModal" class="modal-overlay" onclick="if(event.target===this) closeResumeViewerModal()" style="display:none;">
+        <div class="modal-card max-w-4xl w-full h-[88vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
+            <!-- Header & Viewer Toolbar -->
+            <div class="p-4 border-b border-gray-200 dark:border-zinc-800 flex flex-wrap justify-between items-center gap-3 bg-gray-50 dark:bg-zinc-800/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white m-0" id="resumeViewerCandidateName">Candidate Resume Preview</h3>
+                        <p class="text-[11px] text-gray-400 m-0" id="resumeViewerSkillsBadge">In-Browser Split-Screen Document Inspection</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300" id="resumeViewerScoreBadge">
+                        88% Match
+                    </span>
+                    <!-- Zoom & Fullscreen Controls -->
+                    <div class="inline-flex items-center rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs">
+                        <button type="button" onclick="zoomResumeViewer(-15)" class="px-2.5 py-1 text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer" title="Zoom Out"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                        <span id="resumeViewerZoomPercent" class="px-2 font-mono text-[11px] font-bold text-gray-700 dark:text-zinc-300">100%</span>
+                        <button type="button" onclick="zoomResumeViewer(15)" class="px-2.5 py-1 text-gray-500 hover:text-gray-900 dark:hover:text-white cursor-pointer" title="Zoom In"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                    </div>
+                    <button type="button" onclick="toggleResumeViewerFullscreen()" class="p-1.5 rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-500 hover:text-gray-900 dark:hover:text-white text-xs cursor-pointer" title="Toggle Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                    <button type="button" onclick="closeResumeViewerModal()" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-white text-base cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Document Preview Container -->
+            <div id="resumeViewerFrameContainer" class="flex-1 overflow-y-auto bg-gray-100/70 dark:bg-zinc-950 p-4 sm:p-6 flex justify-center">
+                <!-- Injected dynamically via openResumeViewerModal() -->
+            </div>
+
+            <!-- Footer Action Bar -->
+            <div class="p-3 border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex justify-between items-center text-xs">
+                <span class="text-gray-400 text-[11px] font-mono">Verified cryptographic ATS signature attached</span>
+                <div class="flex gap-2">
+                    <button type="button" onclick="openInterviewCalendarModal(); closeResumeViewerModal();" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all cursor-pointer">
+                        <i class="fa-regular fa-calendar-check mr-1"></i> Schedule Interview
+                    </button>
+                    <button type="button" onclick="closeResumeViewerModal()" class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-zinc-700 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── 1.3 HR CANDIDATE BULK ACTIONS FLOATING TOOLBAR ─── -->
+    <div id="hrBulkActionsToolbar" class="fixed bottom-6 inset-x-0 mx-auto max-w-xl bg-zinc-900/95 dark:bg-black/95 text-white backdrop-blur-md rounded-2xl shadow-2xl p-3 sm:px-5 border border-zinc-700/80 flex items-center justify-between z-50 transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-2.5 text-xs font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span><strong id="selectedCandidatesCount" class="font-bold text-emerald-400">0</strong> candidates selected</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" onclick="executeBulkCandidateAction('shortlist')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs">
+                <i class="fa-solid fa-user-check text-[11px]"></i> Bulk Shortlist
+            </button>
+            <button type="button" onclick="executeBulkCandidateAction('reject')" class="px-3 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-user-xmark text-[11px]"></i> Bulk Reject
+            </button>
+            <button type="button" onclick="executeBulkCandidateAction('export')" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-download text-[11px]"></i> Export
+            </button>
+            <button type="button" onclick="clearCandidateSelection()" class="p-1.5 rounded-lg text-zinc-400 hover:text-white cursor-pointer" title="Deselect All">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ─── 1.4 CANDIDATE ASSESSMENT QUIZ / CODING TEST UI MODAL ─── -->
+    <div id="candidateAssessmentModal" class="modal-overlay" onclick="if(event.target===this) closeCandidateAssessmentModal()" style="display:none;">
+        <div class="modal-box max-w-2xl w-full p-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 text-left space-y-4">
+            <!-- Header with Active Timer -->
+            <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-zinc-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white m-0" id="assessmentRoleTitle">Technical Screening Assessment</h3>
+                        <p class="text-[11px] text-gray-400 m-0">5-Minute Automated Core Competency Verification</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-zinc-800 border border-emerald-500/20">
+                        <i class="fa-regular fa-clock text-xs text-emerald-600"></i>
+                        <span id="assessmentTimerDisplay" class="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">05:00</span>
+                    </div>
+                    <button type="button" onclick="closeCandidateAssessmentModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Active Screen -->
+            <div id="assessmentQuizView" class="space-y-4">
+                <div class="flex justify-between items-center text-xs font-mono text-gray-400">
+                    <span>Question <strong id="assessmentCurrentQNumber" class="text-gray-900 dark:text-white">1</strong> of <span id="assessmentTotalQCount">5</span></span>
+                    <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Multiple Choice / Scenario</span>
+                </div>
+
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-zinc-800/40 border border-gray-200 dark:border-zinc-800">
+                    <p id="assessmentQuestionText" class="text-sm font-bold text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">Loading question...</p>
+                </div>
+
+                <!-- Answer Options -->
+                <div id="assessmentOptionsContainer" class="space-y-2">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-zinc-800">
+                    <button type="button" id="btnAssessmentPrev" onclick="prevAssessmentQuestion()" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 text-xs font-semibold text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer disabled:opacity-40 disabled:pointer-events-none">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                    </button>
+                    <div class="flex gap-2">
+                        <button type="button" id="btnAssessmentNext" onclick="nextAssessmentQuestion()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                            Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                        <button type="button" id="btnAssessmentSubmit" onclick="submitCandidateAssessment()" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer hidden">
+                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Submit Assessment
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scorecard Result View -->
+            <div id="assessmentScorecardView" class="hidden p-6 text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-2xl mx-auto border border-emerald-500/20">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900 dark:text-white font-mono" id="scorecardPercent">80%</h2>
+                    <p class="text-xs text-gray-400 mt-0.5" id="scorecardCorrectCount">4 of 5 Questions Correct</p>
+                </div>
+                <div>
+                    <span id="scorecardStatusBadge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                        <i class="fa-solid fa-circle-check mr-1.5"></i> Assessment Passed
+                    </span>
+                </div>
+                <p id="scorecardRemarks" class="text-xs text-gray-600 dark:text-zinc-300 max-w-md mx-auto leading-relaxed">
+                    Technical evaluation recorded. Your score has been synced directly with your application pipeline.
+                </p>
+                <button type="button" onclick="closeCandidateAssessmentModal()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                    Return to Portal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── 1.5 AUDIO / VOICE INTERVIEW PRACTICE SIMULATOR MODAL ─── -->
+    <div id="voiceInterviewModal" class="modal-overlay" onclick="if(event.target===this) closeVoiceInterviewModal()" style="display:none;">
+        <div class="modal-box max-w-xl w-full p-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 text-left space-y-4">
+            <!-- Header -->
+            <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-zinc-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-microphone-lines"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white m-0">AI Voice Mock Interview Simulator</h3>
+                        <p class="text-[11px] text-gray-400 m-0">Real-Time Speech Clarity, WPM & Behavioral Feedback</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="voiceQuestionCounter" class="text-xs font-mono text-gray-400">Question 1 of 4</span>
+                    <button type="button" onclick="closeVoiceInterviewModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer ml-2">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Voice Recording Interactive Section -->
+            <div id="voiceRecordingSection" class="space-y-4">
+                <!-- Interview Question Card -->
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-zinc-800/40 border border-gray-200 dark:border-zinc-800 relative">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Mock Interviewer Prompt:</span>
+                        <button type="button" onclick="cycleNextMockQuestion()" class="text-[11px] text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold cursor-pointer">
+                            Next Prompt <i class="fa-solid fa-forward-step ml-1"></i>
+                        </button>
+                    </div>
+                    <p id="voiceCurrentQuestionText" class="text-xs font-semibold text-gray-800 dark:text-zinc-200 italic leading-relaxed">
+                        "Tell me about a complex distributed system failure you resolved, and how you traced the root cause."
+                    </p>
+                </div>
+
+                <!-- Waveform Visualizer Canvas -->
+                <div class="space-y-1.5 text-center">
+                    <canvas id="voiceWaveformCanvas" width="500" height="70" class="w-full h-18 bg-zinc-900 dark:bg-black rounded-xl border border-zinc-800"></canvas>
+                    <div class="flex justify-between items-center px-1 text-[11px] text-gray-400 font-mono">
+                        <span>Web Audio API Visualizer</span>
+                        <span id="voiceStatusBadge" class="text-xs font-mono font-bold px-3 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-zinc-800 dark:text-zinc-300">Ready to Record</span>
+                    </div>
+                </div>
+
+                <!-- Record Button -->
+                <div class="pt-2 text-center">
+                    <button type="button" id="btnToggleVoiceRecord" onclick="toggleVoiceRecording()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-microphone text-white"></i>
+                        <span>Start Speaking Answer</span>
+                    </button>
+                    <p class="text-[11px] text-gray-400 mt-2">Speak for 5-15 seconds. AI evaluates pace, clarity, and structural cohesion.</p>
+                </div>
+            </div>
+
+            <!-- Real-Time Speech Feedback Card -->
+            <div id="voiceFeedbackReport" class="hidden p-4 rounded-xl bg-emerald-50/50 dark:bg-zinc-800/60 border border-emerald-500/20 space-y-3">
+                <div class="flex justify-between items-center border-b border-gray-200 dark:border-zinc-700 pb-2">
+                    <span class="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-simple text-emerald-600"></i> AI Speech Diagnostics
+                    </span>
+                    <button type="button" onclick="cycleNextMockQuestion()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer">
+                        Practice Another Question →
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800">
+                        <span class="text-[10px] text-gray-400 uppercase font-mono">Clarity</span>
+                        <p id="voiceClarityScore" class="text-base font-black text-emerald-600 dark:text-emerald-400 mt-0.5 font-mono">92%</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800">
+                        <span class="text-[10px] text-gray-400 uppercase font-mono">Pace (WPM)</span>
+                        <p id="voicePaceWpm" class="text-base font-black text-gray-900 dark:text-white mt-0.5 font-mono">138 WPM</p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800">
+                        <span class="text-[10px] text-gray-400 uppercase font-mono">Filler Words</span>
+                        <p id="voiceFillerCount" class="text-base font-black text-gray-900 dark:text-white mt-0.5 font-mono">0 detected</p>
+                    </div>
+                </div>
+
+                <ul id="voiceFeedbackTips" class="text-xs text-gray-600 dark:text-zinc-300 space-y-1.5">
+                    <!-- Populated dynamically -->
+                </ul>
             </div>
         </div>
     </div>
@@ -9267,6 +9537,59 @@ body.dark-theme .resume-tip-box,
                                 </div>
                             </div>
 
+                            <!-- ─── LEAD SUMIT: CANDIDATE INTERACTIVE SKILL ASSESSMENT & VOICE INTERVIEW LAUNCHPAD ─── -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Card 1: 5-Min Skill Assessment -->
+                                <div class="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/5 via-white to-teal-50/20 dark:from-emerald-950/20 dark:via-zinc-900 dark:to-teal-950/10 shadow-xs flex flex-col justify-between space-y-4">
+                                    <div class="flex items-start gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl flex-shrink-0">
+                                            <i class="fa-solid fa-stopwatch-20"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-sm font-bold text-gray-900 dark:text-white">5-Min Skill Assessment</h4>
+                                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 uppercase">Timed</span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                                                Test your role-specific technical skills with our 5-minute timed quiz and coding challenges. Instant AI scoring calibrated with your profile.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-2 border-t border-emerald-500/10 dark:border-zinc-800">
+                                        <span class="text-[11px] font-mono text-gray-400">5 Questions • 5 Mins</span>
+                                        <button type="button" onclick="openCandidateAssessmentModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                            <i class="fa-solid fa-play text-[10px]"></i>
+                                            <span>Start Assessment</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: AI Voice Mock Interview Simulator -->
+                                <div class="p-5 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/5 via-white to-purple-50/20 dark:from-indigo-950/20 dark:via-zinc-900 dark:to-purple-950/10 shadow-xs flex flex-col justify-between space-y-4">
+                                    <div class="flex items-start gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl flex-shrink-0">
+                                            <i class="fa-solid fa-headset"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-sm font-bold text-gray-900 dark:text-white">AI Voice Interview Simulator</h4>
+                                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 uppercase">Live Mic</span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                                                Practice realistic behavioral & technical interview questions with live audio waveform capture, real-time speech pace, clarity metrics & AI feedback.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-2 border-t border-indigo-500/10 dark:border-zinc-800">
+                                        <span class="text-[11px] font-mono text-gray-400">Speech Audio API • Real-Time</span>
+                                        <button type="button" onclick="openVoiceInterviewModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                            <i class="fa-solid fa-microphone text-[10px]"></i>
+                                            <span>Practice Interview</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- ─── CANDIDATE CV UPLOAD & APPLICATION FORM ─── -->
                             <div class="card p-6 rounded-3xl border border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-b from-white via-white to-emerald-50/20 dark:from-zinc-900 dark:via-zinc-900 dark:to-emerald-950/20 shadow-md space-y-5">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5E5DF] dark:border-zinc-800">
@@ -10279,6 +10602,9 @@ body.dark-theme .resume-tip-box,
                                     <table class="w-full text-left border-collapse">
                                         <thead class="bg-[#FAFAF8] dark:bg-zinc-800/60 border-b border-[#E5E5DF] dark:border-zinc-800 text-[11px] font-bold text-[#666660] dark:text-zinc-400 uppercase tracking-wider">
                                             <tr>
+                                                <th class="p-3.5 w-10 text-center">
+                                                    <input type="checkbox" id="selectAllCandidatesCheckbox" onchange="toggleSelectAllCandidates(this)" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer w-4 h-4" title="Select / Deselect All">
+                                                </th>
                                                 <th class="p-3.5">Candidate Profile</th>
                                                 <th class="p-3.5">Target Benchmark Role</th>
                                                 <th class="p-3.5">AI Fit Score (Ranked)</th>
@@ -17329,5 +17655,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
     <script src="/js/hrCandidateQueue.js"></script>
     <!-- Real-Time Client Notification & Live Toast Alert Engine -->
     <script src="/js/notificationClient.js"></script>
+    <!-- Lead Sumit: Interactive Calendar, In-Browser Resume Viewer, Bulk Actions Toolbar, Assessment Quiz & Voice Simulator -->
+    <script src="/js/sumitEnhancements.js"></script>
 </body>
 </html>

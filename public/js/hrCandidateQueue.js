@@ -22,7 +22,7 @@
         if (tableBody) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="p-8 text-center text-xs text-gray-400">
+                    <td colspan="7" class="p-8 text-center text-xs text-gray-400">
                         <i class="fa-solid fa-spinner fa-spin mr-2 text-emerald-500 text-sm"></i> Calibrating AI Candidate Queue with AI Fit ranking...
                     </td>
                 </tr>
@@ -146,6 +146,11 @@
 
             return `
                 <tr class="hover:bg-slate-50/80 dark:hover:bg-zinc-800/40 transition-colors border-b border-[#E5E5DF] dark:border-zinc-800/60 text-xs">
+                    <!-- Bulk Checkbox -->
+                    <td class="p-3.5 text-center">
+                        <input type="checkbox" class="candidate-bulk-checkbox rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer w-4 h-4" value="${cand.id}" data-name="${escapeHtml(cand.name)}" onchange="if(window.toggleCandidateSelection) toggleCandidateSelection(this, '${cand.id}')">
+                    </td>
+
                     <!-- Candidate Info -->
                     <td class="p-3.5">
                         <div class="flex items-center gap-3">
@@ -196,9 +201,21 @@
                         </p>
                     </td>
 
-                    <!-- Fast Action Buttons (HR Shortlist / Reject / Evaluation Brief) -->
+                    <!-- Fast Action Buttons (HR Shortlist / Reject / Resume Viewer / Interview Calendar / Evaluation Brief) -->
                     <td class="p-3.5 text-right">
-                        <div class="inline-flex items-center gap-1.5">
+                        <div class="inline-flex items-center gap-1.5 flex-wrap justify-end">
+                            <!-- In-Browser Resume Viewer -->
+                            <button type="button" onclick="if(window.openResumeViewerModal) openResumeViewerModal('${cand.cvFile || ''}', '${escapeJsStr(cand.name)}', ${score})" class="p-2 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-emerald-500 text-gray-700 dark:text-zinc-200 hover:text-emerald-600 transition-all text-xs font-semibold shadow-2xs cursor-pointer" title="View In-Browser Resume">
+                                <i class="fa-regular fa-file-pdf text-rose-500 mr-1"></i>
+                                <span>Resume</span>
+                            </button>
+
+                            <!-- Interactive Interview Scheduler -->
+                            <button type="button" onclick="if(window.openInterviewCalendarModal) openInterviewCalendarModal({ id: '${cand.id}', name: '${escapeJsStr(cand.name)}', email: '${escapeJsStr(cand.email || '')}', role: '${escapeJsStr(cand.targetRole || '')}', score: ${score} })" class="p-2 rounded-lg border border-purple-200 dark:border-purple-800/40 bg-purple-50/50 dark:bg-purple-950/20 hover:bg-purple-100 text-purple-700 dark:text-purple-300 transition-all text-xs font-semibold shadow-2xs cursor-pointer" title="Schedule Interview Calendar">
+                                <i class="fa-regular fa-calendar-check text-purple-600 mr-1"></i>
+                                <span>Schedule</span>
+                            </button>
+
                             <!-- View Candidate Evaluation Brief -->
                             <button type="button" onclick="openAiCheatSheet('${cand.id}')" class="p-2 rounded-lg border border-[#E5E5DF] dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-emerald-500 text-gray-700 dark:text-zinc-200 hover:text-emerald-600 transition-all text-xs font-semibold shadow-2xs cursor-pointer" title="Open Candidate Evaluation Brief">
                                 <i class="fa-solid fa-file-lines text-emerald-500 mr-1"></i>
