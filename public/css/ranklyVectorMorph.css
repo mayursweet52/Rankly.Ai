@@ -1,0 +1,333 @@
+﻿/* ═══════════════════════════════════════════════════════════════════
+   RANKLY.AI "WONDERFUL TOOLS" VECTOR SHAPE-MORPH ENGINE
+   Exact Reel Motion Architecture: 
+   Lilac Canvas (#EBE4F7) -> Dot -> "rankly." -> Candidate Auth -> 
+   6-Digit OTP -> ATS Scanner -> 98% Gauge -> Recruiter Funnel -> 
+   Voice Waveform -> HRMS Punch Clock -> Rankly Pebble Brand
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --rk-lilac-bg: #EBE4F7;
+  --rk-lilac-radial: radial-gradient(circle at 50% 40%, #FAF6FE 0%, #EBE4F7 60%, #DFCFF4 100%);
+  --rk-black: #0E0D14;
+  --rk-subtle: #736D82;
+  --rk-terracotta: #D95D39;
+  --rk-sage-dark: #183B33;
+  --rk-sage-mint: #5B998C;
+  --rk-emerald: #10B981;
+  --rk-blue: #258CF4;
+  --rk-ease-morph: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.rankly-vector-morph-body {
+  background: var(--rk-lilac-bg);
+  background: var(--rk-lilac-radial);
+  color: var(--rk-black);
+  font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Center Morph Arena ─── */
+.rk-morph-viewport {
+  position: relative;
+  width: 460px;
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Each Vector Scene Frame */
+.rk-vector-frame {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.82);
+  transition: opacity 0.3s var(--rk-ease-morph), transform 0.45s var(--rk-ease-morph);
+  pointer-events: none;
+}
+
+.rk-vector-frame.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* ─── Scene 1: Pulsing Black Dot ─── */
+.rk-dot-pulse {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--rk-black);
+}
+
+/* ─── Scene 2: Script "rankly." (like "hello.") ─── */
+.rk-script-logo {
+  font-family: 'Brush Script MT', 'Dancing Script', cursive, -apple-system;
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--rk-black);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Scene 3: Candidate 3D Auth Card ─── */
+.rk-vector-auth-card {
+  width: 240px;
+  height: 150px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(60, 40, 90, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.rk-auth-mock-line {
+  height: 28px;
+  background: #F4EFFB;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rk-black);
+  justify-content: space-between;
+}
+
+.rk-auth-btn-pill {
+  height: 32px;
+  background: var(--rk-terracotta);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ─── Scene 4: 6-Digit Cryptographic OTP Ring ─── */
+.rk-otp-cells-cluster {
+  display: flex;
+  gap: 8px;
+}
+
+.rk-otp-cube {
+  width: 42px;
+  height: 52px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(60, 40, 90, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--rk-black);
+  border: 1.5px solid #DFCFF4;
+}
+
+/* ─── Scene 5: ATS Document Scanner ─── */
+.rk-resume-doc-sheet {
+  width: 170px;
+  height: 220px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(60, 40, 90, 0.14);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rk-scan-line-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--rk-terracotta);
+  box-shadow: 0 0 15px var(--rk-terracotta);
+  animation: scanSweep 1.5s infinite linear;
+}
+
+@keyframes scanSweep {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.rk-doc-line {
+  height: 6px;
+  background: #E8E2F2;
+  border-radius: 4px;
+}
+
+/* ─── Scene 6: Radial Match Score Gauge (98%) ─── */
+.rk-gauge-wrapper {
+  position: relative;
+  width: 220px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.rk-gauge-dial {
+  width: 200px;
+  height: 100px;
+}
+
+.rk-gauge-score-digits {
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--rk-black);
+  margin-top: -28px;
+}
+
+/* ─── Scene 7: Recruiter Candidate Triage Cards ─── */
+.rk-triage-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+}
+
+.rk-triage-row {
+  background: #FFFFFF;
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 10px 30px rgba(60, 40, 90, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rk-cand-badge {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--rk-black);
+}
+
+.rk-cand-score {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--rk-emerald);
+}
+
+/* ─── Scene 8: AI Mock Voice Interview Waveform ─── */
+.rk-interview-wave-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 90px;
+}
+
+.rk-audio-bar {
+  width: 5px;
+  border-radius: 99px;
+  background: linear-gradient(to top, var(--rk-terracotta), var(--rk-sage-mint));
+  animation: audioBounce 1.2s infinite ease-in-out;
+}
+
+@keyframes audioBounce {
+  0%, 100% { height: 12px; }
+  50% { height: 75px; }
+}
+
+/* ─── Scene 9: HRMS Dual Punch Attendance Clock ─── */
+.rk-punch-clock-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 24px 30px;
+  box-shadow: 0 20px 50px rgba(60, 40, 90, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.rk-time-numbers {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--rk-black);
+  letter-spacing: 0.05em;
+}
+
+.rk-punch-pill-duo {
+  display: flex;
+  gap: 8px;
+}
+
+.rk-punch-pill-in {
+  background: #E6F9F0;
+  color: var(--rk-emerald);
+  border: 1px solid #A7F3D0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.rk-punch-pill-out {
+  background: #FFF1F2;
+  color: #E11D48;
+  border: 1px solid #FECDD3;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ─── Scene 10: Rankly.ai Brand Finale ─── */
+.rk-brand-finale-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rk-brand-finale-title {
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--rk-black);
+}
+
+.rk-brand-finale-title span {
+  color: var(--rk-terracotta);
+}
+
+.rk-brand-finale-sub {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rk-subtle);
+  letter-spacing: 0.02em;
+}
