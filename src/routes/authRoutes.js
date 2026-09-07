@@ -8,7 +8,7 @@ const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const prisma = require('../config/database');
-const { authLimiter, authBackoffLimiter } = require('../middleware/rateLimit');
+const { authLimiter, authBackoffLimiter, otpLimiter } = require('../middleware/rateLimit');
 const { validate } = require('../middleware/validator');
 const {
   registerSchema,
@@ -29,7 +29,7 @@ const {
 // -----------------------------------------------------------------------------
 router.post('/register', authLimiter, authBackoffLimiter, validate({ body: registerSchema }), authController.register);
 router.post('/create-account', authLimiter, authBackoffLimiter, authController.register);
-router.post('/resend-otp', authLimiter, authBackoffLimiter, authController.resendOtp);
+router.post('/resend-otp', otpLimiter, authBackoffLimiter, authController.resendOtp);
 router.post('/resend-link', authLimiter, authBackoffLimiter, authController.resendLink);
 router.get('/verify-email', authController.verifyEmailLink);
 router.get('/check-email', authController.checkEmailAvailability);
@@ -42,15 +42,15 @@ router.post('/candidate/login', authLimiter, authBackoffLimiter, validate({ body
 router.post('/enterprise/login', authLimiter, authBackoffLimiter, validate({ body: loginSchema }), authController.login);
 
 // Candidate / Normal User Password Recovery (Email Existence Check + OTP / Link)
-router.post('/send-otp', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.sendOtp);
-router.post('/forgot-password', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
-router.post('/candidate/forgot-password', authLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
-router.post('/verify-otp', authLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyOtp);
+router.post('/send-otp', otpLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.sendOtp);
+router.post('/forgot-password', otpLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
+router.post('/candidate/forgot-password', otpLimiter, authBackoffLimiter, validate({ body: sendOtpSchema }), authController.forgotPassword);
+router.post('/verify-otp', otpLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyOtp);
 router.post('/reset-password', authLimiter, authBackoffLimiter, validate({ body: resetPasswordSchema }), authController.resetPassword);
 router.post('/candidate/reset-password', authLimiter, authBackoffLimiter, validate({ body: resetPasswordSchema }), authController.resetPassword);
 
 // 1. Password Reset via Verified Link (Email -> OTP -> Send Reset Link to Gmail -> Open Link -> Set New Password)
-router.post('/forgot-password/verify-and-send-link', authLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyForgotOtpAndSendLink);
+router.post('/forgot-password/verify-and-send-link', otpLimiter, authBackoffLimiter, validate({ body: verifyOtpSchema }), authController.verifyForgotOtpAndSendLink);
 router.post('/reset-password-with-token', authLimiter, authBackoffLimiter, validate({ body: resetPasswordWithTokenSchema }), authController.resetPasswordWithToken);
 
 // 2. Change Password via Current Password (Email -> OTP + Current Password -> Set New Password)

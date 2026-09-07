@@ -18,11 +18,25 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.prisma;
 }
 
-// Helper to check connection and auto-initialize tables
+// Helper to check connection and auto-initialize tables with auto-failover
 async function connectDatabase() {
   try {
     await prisma.$connect();
-    console.log('✅ SQLite Database connected successfully via Prisma ORM.');
+    console.log('✅ Database connected successfully via Prisma ORM.');
+  } catch (initialErr) {
+    console.warn('⚠️ [Auto-Failover] Primary DB connection failed:', initialErr.message);
+    console.log('🔄 [Auto-Failover] Gracefully failing over to local SQLite database...');
+    try {
+      process.env.DATABASE_URL = 'file:./rankly.db';
+      prisma = new PrismaClient({ datasources: { db: { url: 'file:./rankly.db' } } });
+      await prisma.$connect();
+      console.log('✅ [Auto-Failover] Connected to SQLite local failover replica.');
+    } catch (failoverErr) {
+      console.error('❌ [Auto-Failover] Failover connection failed:', failoverErr.message);
+    }
+  }
+
+  try {
 
     // Auto-create essential tables if they don't exist
     await prisma.$executeRawUnsafe(`

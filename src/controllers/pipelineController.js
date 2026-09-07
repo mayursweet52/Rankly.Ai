@@ -131,52 +131,64 @@ async function getCandidates(req, res) {
 }
 
 /**
- * 2. AI-Sorted Candidate Queue (Highest Match Scores 90%+ on Top)
+ * 2. AI-Sorted Candidate Queue (Highest Match Scores 90%+ on Top) - Redis / Memory Cached
  */
 async function getAiCandidateQueue(req, res) {
   try {
-    const { targetRole, minScore, stage, search } = req.query;
-    const where = {};
+    const { targetRole = 'all', minScore = '', stage = 'all', search = '' } = req.query;
+    const redisCacheService = require('../services/redisCacheService');
+    const orgId = req.session?.organizationId || 'global';
+    const cacheKey = `candidates:queue:${orgId}:${targetRole}:${stage}:${minScore}:${search}`;
 
-    if (stage && stage !== 'all') {
-      where.stage = stage;
-    }
-    if (targetRole && targetRole !== 'all') {
-      where.targetRole = { contains: targetRole };
-    }
-    if (minScore && !isNaN(parseFloat(minScore))) {
-      where.score = { gte: parseFloat(minScore) };
-    }
+    const { data, cached } = await redisCacheService.getOrSet(cacheKey, async () => {
+      const where = {};
 
-    if (search) {
-      where.OR = [
-        { name: { contains: search } },
-        { email: { contains: search } },
-        { targetRole: { contains: search } }
-      ];
-    }
+      if (stage && stage !== 'all') {
+        where.stage = stage;
+      }
+      if (targetRole && targetRole !== 'all') {
+        where.targetRole = { contains: targetRole };
+      }
+      if (minScore && !isNaN(parseFloat(minScore))) {
+        where.score = { gte: parseFloat(minScore) };
+      }
 
-    // Always sort by AI Fit Score descending (90%+ matches on top!)
-    const candidates = await prisma.candidate.findMany({
-      where,
-      take: 150,
-      orderBy: [{ score: 'desc' }, { createdAt: 'desc' }]
-    });
+      if (search) {
+        where.OR = [
+          { name: { contains: search } },
+          { email: { contains: search } },
+          { targetRole: { contains: search } }
+        ];
+      }
 
-    const enriched = candidates.map(c => {
-      const formatted = formatCandidate(c);
-      const cheatSheet = buildAiCheatSheet(c);
+      // Always sort by AI Fit Score descending (90%+ matches on top!)
+      const candidates = await prisma.candidate.findMany({
+        where,
+        take: 150,
+        orderBy: [{ score: 'desc' }, { createdAt: 'desc' }]
+      });
+
+      const enriched = candidates.map(c => {
+        const formatted = formatCandidate(c);
+        const cheatSheet = buildAiCheatSheet(c);
+        return {
+          ...formatted,
+          cheatSheet
+        };
+      });
+
       return {
-        ...formatted,
-        cheatSheet
+        total: enriched.length,
+        topMatchesCount: enriched.filter(c => c.score >= 90).length,
+        candidates: enriched
       };
-    });
+    }, 45); // 45 seconds TTL
 
+    res.setHeader('X-Cache', cached ? 'HIT' : 'MISS');
     return res.json({
       success: true,
-      total: enriched.length,
-      topMatchesCount: enriched.filter(c => c.score >= 90).length,
-      candidates: enriched
+      cached,
+      ...data
     });
   } catch (error) {
     console.error('AI Candidate Queue Error:', error);
@@ -265,6 +277,10 @@ async function performCandidateAction(req, res) {
         }
       }).catch(() => {});
     }
+
+    // Invalidate candidate queue caches
+    const redisCacheService = require('../services/redisCacheService');
+    await redisCacheService.delPattern('candidates:*');
 
     // 3. Record permanent Audit Log
     const actorEmail = req.user?.email || req.session?.user?.email || 'hr@rankly.ai';
@@ -741,6 +757,9 @@ async function deleteCandidate(req, res) {
     await prisma.candidate.delete({ where: { id } });
 
     if (candidate) {
+      const redisCacheService = require('../services/redisCacheService');
+      await redisCacheService.delPattern('candidates:*');
+
       await recordAuditLog({
         action: 'CANDIDATE_DELETED',
         actorEmail: req.user?.email || req.session?.user?.email || 'hr@rankly.ai',

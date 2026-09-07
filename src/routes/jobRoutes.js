@@ -83,6 +83,10 @@ router.post('/ingest/greenhouse', async (req, res) => {
       where: { companyId: company.id }
     });
 
+    // Invalidate cached job queries
+    const redisCacheService = require('../services/redisCacheService');
+    await redisCacheService.delPattern('jobs:*');
+
     res.json({ 
       success: true, 
       message: `${jobsToInsert.length} jobs successfully fetched and saved for ${companyName}!`,
@@ -105,38 +109,49 @@ router.post('/ingest/greenhouse', async (req, res) => {
 
 /**
  * GET /api/jobs
- * Lists ingested jobs with company metadata & filtering
+ * Lists ingested jobs with company metadata & filtering (Cached via Redis/Memory)
  */
 router.get('/', async (req, res) => {
   try {
-    const { search, location, limit = 50 } = req.query;
-    const where = { status: 'active' };
+    const { search = '', location = '', limit = 50 } = req.query;
+    const redisCacheService = require('../services/redisCacheService');
+    const cacheKey = `jobs:list:${search}:${location}:${limit}`;
 
-    if (search) {
-      where.jobTitle = { contains: String(search) };
-    }
-    if (location) {
-      where.location = { contains: String(location) };
-    }
+    const { data, cached } = await redisCacheService.getOrSet(cacheKey, async () => {
+      const where = { status: 'active' };
 
-    const jobs = await prisma.companyJob.findMany({
-      where,
-      include: {
-        company: {
-          select: { id: true, name: true, atsPlatform: true, atsBoardSlug: true }
-        }
-      },
-      take: Math.min(parseInt(limit, 10) || 50, 200),
-      orderBy: { createdAt: 'desc' }
-    });
+      if (search) {
+        where.jobTitle = { contains: String(search) };
+      }
+      if (location) {
+        where.location = { contains: String(location) };
+      }
 
-    const total = await prisma.companyJob.count({ where });
+      const jobs = await prisma.companyJob.findMany({
+        where,
+        include: {
+          company: {
+            select: { id: true, name: true, atsPlatform: true, atsBoardSlug: true }
+          }
+        },
+        take: Math.min(parseInt(limit, 10) || 50, 200),
+        orderBy: { createdAt: 'desc' }
+      });
 
+      const total = await prisma.companyJob.count({ where });
+
+      return {
+        total,
+        count: jobs.length,
+        jobs
+      };
+    }, 60); // 60 seconds TTL
+
+    res.setHeader('X-Cache', cached ? 'HIT' : 'MISS');
     res.json({ 
       success: true, 
-      total, 
-      count: jobs.length, 
-      jobs 
+      cached,
+      ...data
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
