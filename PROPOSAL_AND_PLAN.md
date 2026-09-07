@@ -1,74 +1,55 @@
-﻿# 🏷️ Proposal & Architecture Plan: Remove All Decorative Pill Tags & Badges Across Entire Web Application
+﻿# 🎯 Proposal & Architecture Plan: Next-Gen HR Interview Scheduler, Bulk Actions, PDF Previewer & Automated Email Notifications
 **Project:** Rankly.ai  
-**Task Description:** Web ke andar jitne bhi tags honge sab hata de AS PER THE SCREENSHOT (Remove all decorative pill tags, portal identity badges, section header tags, and live status pills across all roles/views).  
+**Task Description:** Implementation of pending high-priority roadmap modules: Interactive Interview Calendar, In-Browser PDF Resume Previewer, HR Bulk Action Toolbar, and Automated Email Dispatcher.  
 **Collaboration Model:** Tripartite Collaboration (Mayur [Backend] + Sumit [Frontend] + Vaibhav [Database])  
 **Status:** 🟡 **AWAITING DEVELOPER PERMISSION / APPROVAL** (No source code will be modified until approved)
 
 ---
 
-## 🎯 1. Executive Summary & Screenshot Breakdown
+## 🏗️ 1. Module Breakdown & Technical Architecture
 
-Based on the user's explicit instructions and uploaded reference screenshots:
+### A. 📅 Interactive Interview Scheduler & Calendar Sync (Lead: Sumit [Frontend] + Mayur [Backend]):
+1. **UI / Modal (`#interviewScheduleModal`)**:
+   - Date picker, Time slot selection (Morning, Afternoon, Evening), Round Type (Screening, Technical Deep-Dive, System Design, HR Cultural).
+   - Video Platform selector (Google Meet, Microsoft Teams, Zoom, In-Person).
+   - Generates instant **1-Click "Add to Google Calendar"** URL (`https://calendar.google.com/calendar/render?action=TEMPLATE...`).
+2. **Backend API (`POST /api/candidates/schedule-interview`)**:
+   - Saves interview schedule to database.
+   - Triggers `sendSystemEmail` with branded HTML invitation containing meeting link, calendar attachments, and time slot.
+   - Logs action to immutable audit trail.
 
-1. **Screenshot 1 (`media_1788778583698.png`) - Topbar Portal Identity Badge**:
-   - Location: Topbar header next to the page title.
-   - Example: `[icon] Candidate Portal (Applicant Zone)`, `HR Recruitment Workspace`, `Executive Administrator Portal`, `Employee Self-Service Portal`.
-   - Action: **Remove completely** from topbar. Clean up `#portalBadge` and make JS handler null-safe.
+### B. 📄 In-Browser Split-Screen PDF / CV Previewer (Lead: Sumit [Frontend]):
+1. **Preview Modal (`#cvQuickPreviewModal`)**:
+   - Sleek responsive modal to preview candidate CV directly in browser without downloading.
+   - Supports zoom controls, page flipping, text selection, and 1-Click Print.
 
-2. **Screenshot 2 (`media_1788778599032.png`) - Section Header Badge Tags**:
-   - Location: Next to main section titles (e.g. "AI Resume Optimizer & ATS Studio").
-   - Example: `● ATS CALIBRATION ENGINE`, `● ADVANCED ATS AI ENGINE`, `● LIVE SYNC`, `● AUTO-RANKED (90%+ ON TOP)`.
-   - Action: **Remove completely**. Section titles will render with clean, modern, distraction-free typography.
+### C. ⚡ HR Candidate Bulk Actions Toolbar (Lead: Sumit [Frontend] + Mayur [Backend]):
+1. **Floating Multi-Select Action Bar**:
+   - Select multiple candidates via table checkboxes in the AI Candidate Queue.
+   - Sticky bottom action bar: "Bulk Shortlist", "Bulk Schedule", "Bulk Reject", "Bulk Export Excel".
+2. **Backend Endpoint (`POST /api/candidates/bulk-action`)**:
+   - Atomic batch update in Prisma / SQLite with audit logging for every candidate.
 
-3. **Screenshot 3 (`media_1788778609364.png`) - Live Status Indicator Pill Tags**:
-   - Location: In telemetry cards and subheaders.
-   - Example: `AWAITING INPUT` (`#atsLivePill`), `OPTIMAL HEALTH` (`#talentHealthBadge`), `VERIFIED JOBSEEKER`, `ENTERPRISE EXCLUSIVE`, `ACTIVE LINKS`.
-   - Action: **Remove completely**.
-
-4. **Global Scope Across All Roles & Views**:
-   - All similar decorative pill badge tags across Candidate Portal, HR Recruiter Queue, Admin Dashboard, Employee Portal, ATS Studio, and Landing Page will be removed for a consistent, ultra-clean, minimalist design.
-
----
-
-## 🏗️ 2. Architectural Solution & Implementation Plan
-
-### A. Frontend DOM & Template Cleanup (Sumit - Frontend Lead):
-1. **Remove Topbar Identity Badge**:
-   - Remove `<span id="portalBadge" ...></span>` in `public/index.html` and `public/index-3.html`.
-   - Ensure JS `updatePortalBadge` or role routing safely guards `if (portalBadge) { ... }` so 0 console errors occur.
-2. **Remove Section Header & Banner Badges**:
-   - Remove `● ATS Calibration Engine` badge from Resume Studio top banner.
-   - Remove `● Advanced ATS AI Engine` badge from ATS analysis card.
-   - Remove `● Live Sync` badge from Real-Time Pipeline monitor.
-   - Remove `● Auto-Ranked (90%+ on Top)` from Applicant Queue view.
-   - Remove hero/landing section pill badges.
-3. **Remove Status & Telemetry Pill Badges**:
-   - Remove `<span id="atsLivePill">Awaiting Input</span>` and guard JS `updateAtsReadinessScore()`.
-   - Remove `#talentHealthBadge`, `Verified Jobseeker`, `Enterprise Exclusive`, `Active Links`, and integration card pill badges.
-4. **Preserve Functional Elements**:
-   - All action buttons (Apply, Upload, Save, Clear, Search, Filters, Settings), form inputs, table data, progress indicators, avatars, and navigation links remain 100% active and untouched.
-
-### B. Backend & AI Stability (Mayur - Backend Architect):
-- Backend routes, NVIDIA Nemotron AI scoring, and authentication remain untouched and blazing fast (< 5ms response time).
-
-### C. Database & Infrastructure (Vaibhav - Database Lead):
-- Database schema, Prisma models, and server health daemon remain 100% stable and operational.
+### D. 💾 Automated Database Backup Service (Lead: Vaibhav [Database]):
+1. **Service (`src/services/dbBackupService.js`)**:
+   - Generates daily timestamped snapshots in `backups/`.
+   - Endpoint `GET /api/export/backup` for 1-Click admin database archive download.
 
 ---
 
-## 👥 3. Team Task Division (Strict Domain Boundaries)
+## 👥 2. Strict Tripartite Engineering Ownership
 
-| Engineer / Agent | Strict Domain | Scope / Tasks (MUST DO) | Restricted (MUST NOT DO) | Targeted Files |
+| Engineer / Agent | Role | Scope (MUST DO) | Restricted (MUST NOT DO) | Targeted Files |
 | :--- | :--- | :--- | :--- | :--- |
-| **Sumit**<br>`Antigravity-Agent-Sumit` | **FRONTEND LEAD** | • Remove all decorative pill badges and tags in `public/index.html` & `public/index-3.html`.<br>• Guard JS element queries with null-checks to prevent runtime errors.<br>• Maintain byte-for-byte synchronization between `index.html` and `index-3.html`. | • Do NOT alter Express APIs or backend logic.<br>• Do NOT touch DB models. | `public/index.html`, `public/index-3.html` |
-| **Mayur**<br>`Antigravity-Agent-Mayur` | **BACKEND ARCHITECT** | • Ensure zero backend API disruption.<br>• Maintain sub-5ms API response latency. | • Do NOT touch HTML/CSS UI layouts.<br>• Do NOT alter DB schemas. | `server.js`, `src/routes/*` |
-| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **DATABASE LEAD** | • Monitor server daemon and database session health. | • Do NOT touch frontend DOM.<br>• Do NOT alter controller logic. | `src/services/healthChecker.js` |
+| **Sumit**<br>`Antigravity-Agent-Sumit` | **Frontend Lead** | • Build Interview Scheduler Modal with Google Calendar link generator.<br>• Build In-Browser PDF Preview modal.<br>• Build HR Queue Bulk Action checkbox & floating toolbar in `public/js/hrCandidateQueue.js` & `public/index.html`. | • Do NOT alter Express route handlers or DB models directly. | `public/index.html`, `public/index-3.html`, `public/js/hrCandidateQueue.js` |
+| **Mayur**<br>`Antigravity-Agent-Mayur` | **Backend Architect** | • Build `POST /api/candidates/schedule-interview` and `POST /api/candidates/bulk-action` in `src/routes/candidateRoutes.js`.<br>• Integrate branded HTML email notifications via `src/services/emailService.js`. | • Do NOT alter HTML/CSS layouts. | `src/routes/candidateRoutes.js`, `src/services/emailService.js` |
+| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **Database Lead** | • Create `src/services/dbBackupService.js` and `GET /api/export/backup`.<br>• Verify data integrity, Prisma schemas, and server daemon health. | • Do NOT touch frontend DOM. | `src/services/dbBackupService.js`, `src/routes/exportRoutes.js` |
 
 ---
 
-## 🚦 4. Mandatory Developer Permission Gate
+## 🚦 3. Mandatory Developer Permission Gate
 
 > [!IMPORTANT]
 > **Developer Approval Required:**  
-> Plan aur architecture ready hai! Web ke andar se sabhi decorative tags aur pill badges (Portal Identity Badge, ATS Calibration Engine badge, Awaiting Input pill, etc.) ko clean karne ke liye kripya **"Proceed"** ya **"Approved"** kahein.  
+> Plan aur architecture ready hai! In pending modules (Interview Scheduler, PDF Previewer, Bulk Actions Toolbar, and Automated Email Notifications) ko execute karne ke liye kripya **"Proceed"** ya **"Approved"** kahein.  
 > Aapke explicit approval ke bina koi code modify nahi kiya jayega.
