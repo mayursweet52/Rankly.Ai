@@ -605,8 +605,8 @@ async function scheduleCandidateInterview(req, res) {
     const link = meetingLink || 'https://meet.google.com';
 
     // 1. Update candidate stage to 'interview'
-    const updatedNotes = candidate.notes 
-      ? `${candidate.notes}\n[Interview Scheduled]: ${round} on ${dateStr} at ${timeStr} (${platform})`
+    const updatedNotes = candidate.notes ?
+      `${candidate.notes}\n[Interview Scheduled]: ${round} on ${dateStr} at ${timeStr} (${platform})`
       : `[Interview Scheduled]: ${round} on ${dateStr} at ${timeStr} (${platform})`;
 
     const updated = await prisma.candidate.update({
