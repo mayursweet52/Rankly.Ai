@@ -579,13 +579,212 @@ async function sendPasswordResetLinkEmail({ to, fullName, resetLink }) {
 
     const text = `Hello ${displayName},\n\nYour identity has been verified via OTP. Please visit the following link to set your new password:\n\n${resetLink}\n\nThis link will expire in 1 hour.\n\n© 2026 Rankly.ai Inc.`;
 
-    const res = await sendSystemEmail({
-        to: cleanRecipient,
-        subject,
-        html,
-        text
-    });
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html, text });
     return res.success;
+}
+
+/**
+ * Send Shortlist Notification Email
+ */
+async function sendShortlistNotificationEmail({ to, candidateName, roleTitle, score, hrName }) {
+
+    if (!to) return false;
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const displayName = candidateName || 'Candidate';
+    const role = roleTitle || 'Software Engineer';
+    const scoreVal = Math.round(score || 85);
+    const hr = hrName || 'Talent Acquisition Team';
+    const subject = `🎉 Congratulations! You have been Shortlisted for ${role} — Rankly.ai`;
+
+    const html = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px 16px; background-color: #f8fafc; color: #334155;">
+      <div style="max-width: 560px; margin: auto; background: #ffffff; padding: 36px 32px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
+        <div style="text-align: left; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
+          <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
+        </div>
+        <div style="display: inline-block; background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 6px 14px; margin-bottom: 16px;">
+          <span style="color: #047857; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">✓ Application Shortlisted</span>
+        </div>
+        <h2 style="color: #0f172a; margin: 0 0 14px 0; font-size: 22px; font-weight: 800;">Congratulations, ${displayName}!</h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 20px 0;">
+          We are pleased to inform you that your profile has been successfully evaluated and <strong>shortlisted</strong> for the position of <strong>${role}</strong>.
+        </p>
+        <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <tr>
+              <td style="color: #166534; font-weight: 600; padding: 4px 0;">Target Position:</td>
+              <td style="color: #0f172a; font-weight: 700; text-align: right; padding: 4px 0;">${role}</td>
+            </tr>
+            <tr>
+              <td style="color: #166534; font-weight: 600; padding: 4px 0;">AI Calibrated Fit Index:</td>
+              <td style="color: #047857; font-weight: 800; font-size: 15px; text-align: right; padding: 4px 0;">${scoreVal}% Match</td>
+            </tr>
+            <tr>
+              <td style="color: #166534; font-weight: 600; padding: 4px 0;">Reviewing Recruiter:</td>
+              <td style="color: #0f172a; font-weight: 700; text-align: right; padding: 4px 0;">${hr}</td>
+            </tr>
+          </table>
+        </div>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0;">
+          Our hiring team is currently preparing the next interview rounds. You will receive an interview scheduling invitation shortly.
+        </p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="https://ranklyai-production.up.railway.app/#candidate" style="background-color: #183B33; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 14px; display: inline-block;">
+            View Candidate Dashboard
+          </a>
+        </div>
+        <div style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 16px; text-align: center;">
+          &copy; 2026 Rankly.ai Inc. • Next-Gen AI Recruitment Ecosystem
+        </div>
+      </div>
+    </div>
+    `;
+
+    const text = `Congratulations, ${displayName}!\n\nYour profile has been shortlisted for the position of ${role} with an AI Fit Index of ${scoreVal}%.\n\nOur hiring team will reach out with interview details shortly.\n\nView your dashboard: https://ranklyai-production.up.railway.app/#candidate\n\n© 2026 Rankly.ai Inc.`;
+
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html, text });
+    return res.success;
+}
+
+/**
+ * Send Interview Scheduled Notification Email with Meeting Link
+ */
+async function sendInterviewScheduledEmail({ to, candidateName, roleTitle, interviewRound, scheduledDate, scheduledTime, meetingPlatform, meetingLink, notes }) {
+    if (!to) return false;
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const displayName = candidateName || 'Candidate';
+    const role = roleTitle || 'Software Engineer';
+    const round = interviewRound || 'Technical Interview';
+    const dateStr = scheduledDate || 'Upcoming Date';
+    const timeStr = scheduledTime || '10:00 AM IST';
+    const platform = meetingPlatform || 'Google Meet';
+    const link = meetingLink || 'https://meet.google.com';
+    const subject = `📅 Interview Scheduled: ${round} for ${role} — Rankly.ai`;
+
+    const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Interview: ' + round + ' - ' + role + ' (Rankly.ai)')}&details=${encodeURIComponent('Interview Round: ' + round + '\nPlatform: ' + platform + '\nLink: ' + link + '\nNotes: ' + (notes || 'None'))}&location=${encodeURIComponent(link)}`;
+
+    const html = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px 16px; background-color: #f8fafc; color: #334155;">
+      <div style="max-width: 560px; margin: auto; background: #ffffff; padding: 36px 32px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
+        <div style="text-align: left; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
+          <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
+        </div>
+        <div style="display: inline-block; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 6px 14px; margin-bottom: 16px;">
+          <span style="color: #1d4ed8; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">📅 Interview Confirmed</span>
+        </div>
+        <h2 style="color: #0f172a; margin: 0 0 14px 0; font-size: 22px; font-weight: 800;">Interview Scheduled for ${displayName}</h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 20px 0;">
+          Your <strong>${round}</strong> for the <strong>${role}</strong> role has been officially scheduled. Please review the details below:
+        </p>
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <tr>
+              <td style="color: #64748b; font-weight: 600; padding: 6px 0;">Round:</td>
+              <td style="color: #0f172a; font-weight: 700; text-align: right; padding: 6px 0;">${round}</td>
+            </tr>
+            <tr>
+              <td style="color: #64748b; font-weight: 600; padding: 6px 0;">Date:</td>
+              <td style="color: #0f172a; font-weight: 700; text-align: right; padding: 6px 0;">${dateStr}</td>
+            </tr>
+            <tr>
+              <td style="color: #64748b; font-weight: 600; padding: 6px 0;">Time:</td>
+              <td style="color: #0f172a; font-weight: 700; text-align: right; padding: 6px 0;">${timeStr}</td>
+            </tr>
+            <tr>
+              <td style="color: #64748b; font-weight: 600; padding: 6px 0;">Meeting Platform:</td>
+              <td style="color: #2563eb; font-weight: 700; text-align: right; padding: 6px 0;">${platform}</td>
+            </tr>
+            ${notes ? `
+            <tr>
+              <td style="color: #64748b; font-weight: 600; padding: 6px 0;">Recruiter Note:</td>
+              <td style="color: #334155; text-align: right; padding: 6px 0;">${notes}</td>
+            </tr>
+            ` : ''}
+          </table>
+        </div>
+        <div style="text-align: center; margin: 24px 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="${link}" target="_blank" style="background-color: #183B33; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 14px; display: inline-block;">
+            Join Video Meeting
+          </a>
+          <a href="${gcalUrl}" target="_blank" style="background-color: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; padding: 12px 24px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 14px; display: inline-block;">
+            + Add to Google Calendar
+          </a>
+        </div>
+        <div style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 16px; text-align: center;">
+          &copy; 2026 Rankly.ai Inc. • Candidate Experience & Real-Time Interview Management
+        </div>
+      </div>
+    </div>
+    `;
+
+    const text = `Interview Scheduled: ${round} for ${role}\n\nCandidate: ${displayName}\nDate: ${dateStr}\nTime: ${timeStr}\nPlatform: ${platform}\nMeeting Link: ${link}\n\nAdd to Google Calendar: ${gcalUrl}\n\n© 2026 Rankly.ai Inc.`;
+
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html, text });
+    return res.success;
+}
+
+/**
+ * Send Rejection Feedback Email
+ */
+async function sendRejectionFeedbackEmail({ to, candidateName, roleTitle, feedbackPoints }) {
+    if (!to) return false;
+    const cleanRecipient = to.toString().toLowerCase().trim();
+    const displayName = candidateName || 'Candidate';
+    const role = roleTitle || 'Software Engineer';
+    const subject = `Update regarding your application for ${role} — Rankly.ai`;
+
+    const html = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px 16px; background-color: #f8fafc; color: #334155;">
+      <div style="max-width: 560px; margin: auto; background: #ffffff; padding: 36px 32px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
+        <div style="text-align: left; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
+          <span style="font-size: 22px; font-weight: 800; color: #183B33; letter-spacing: -0.5px;">Rankly<span style="color: #2563eb;">.ai</span></span>
+        </div>
+        <h2 style="color: #0f172a; margin: 0 0 14px 0; font-size: 20px; font-weight: 800;">Thank you for your application, ${displayName}</h2>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 16px 0;">
+          Thank you for taking the time to apply for the <strong>${role}</strong> position at our organization. After careful evaluation of our current hiring requirements, we have decided not to move forward with your application for this specific role at this time.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 20px 0;">
+          Your profile and verified credentials remain active in our talent network, and we will proactively reach out should future openings align with your expertise.
+        </p>
+        <div style="background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; padding: 14px 16px; margin: 20px 0;">
+          <p style="font-size: 12px; color: #64748b; margin: 0; line-height: 1.5;">
+            💡 <strong>Career Recommendation:</strong> Keep your Rankly.ai candidate profile updated with your latest projects and certifications to increase recommendation matches.
+          </p>
+        </div>
+        <div style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 16px; text-align: center;">
+          &copy; 2026 Rankly.ai Inc. All rights reserved.
+        </div>
+      </div>
+    </div>
+    `;
+
+    const text = `Dear ${displayName},\n\nThank you for applying for the ${role} position. We have decided not to proceed with your candidacy at this time. Your profile remains active in our network for future opportunities.\n\n© 2026 Rankly.ai Inc.`;
+
+    const res = await sendSystemEmail({ to: cleanRecipient, subject, html, text });
+    return res.success;
+}
+
+/**
+ * Universal Candidate Status Notification Dispatcher
+ */
+async function sendCandidateStatusNotification(to, candidateName, roleTitle, stage, notes = '') {
+    if (!to) return false;
+    const cleanStage = (stage || '').toLowerCase().trim();
+
+    if (cleanStage === 'shortlisted' || cleanStage === 'shortlist') {
+        return sendShortlistNotificationEmail({ to, candidateName, roleTitle });
+    }
+    if (cleanStage === 'interview' || cleanStage === 'interview_scheduled') {
+        return sendInterviewScheduledEmail({ to, candidateName, roleTitle, notes });
+    }
+    if (cleanStage === 'rejected' || cleanStage === 'reject') {
+        return sendRejectionFeedbackEmail({ to, candidateName, roleTitle });
+    }
+
+    // Default status change email
+    const subject = `Update on your application for ${roleTitle || 'Job'} — Rankly.ai`;
+    const html = `<p>Hello ${candidateName || 'Candidate'}, your application status has been updated to: <strong>${stage}</strong>.</p>`;
+    return (await sendSystemEmail({ to, subject, html, text: `Your application status: ${stage}` })).success;
 }
 
 module.exports = {
@@ -596,5 +795,9 @@ module.exports = {
     sendVerificationLinkEmail,
     sendPasswordResetLinkEmail,
     sendInvitationEmail,
+    sendShortlistNotificationEmail,
+    sendInterviewScheduledEmail,
+    sendRejectionFeedbackEmail,
     sendCandidateStatusNotification
 };
+

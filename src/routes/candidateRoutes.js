@@ -51,6 +51,38 @@ router.get('/:id/evaluation-brief', optionalAuth, pipelineController.getCandidat
 router.post('/:id/action', optionalAuth, pipelineController.performCandidateAction);
 router.post('/action', optionalAuth, pipelineController.performCandidateAction);
 
+// 10. Automated Interview Scheduling & Bulk Action Endpoints
+router.post('/schedule-interview', optionalAuth, apiLimiter, pipelineController.scheduleCandidateInterview);
+router.post('/bulk-action', optionalAuth, apiLimiter, pipelineController.performBulkCandidateAction);
+
+// 11. Sub-Millisecond Vector Similarity Search & Semantic Embedding Engine
+const vectorSearchService = require('../services/vectorSearchService');
+router.post('/vector-search', optionalAuth, apiLimiter, async (req, res) => {
+  try {
+    const { query, limit, filters } = req.body || {};
+    const results = await vectorSearchService.searchCandidatesByVector(query || '', limit || 20, filters || {});
+    return res.json(results);
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+router.get('/vector-search', optionalAuth, apiLimiter, async (req, res) => {
+  try {
+    const { query, limit, stage, targetRole } = req.query || {};
+    const results = await vectorSearchService.searchCandidatesByVector(
+      query || '',
+      parseInt(limit, 10) || 20,
+      { stage, targetRole }
+    );
+    return res.json(results);
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;
+
+
 
 

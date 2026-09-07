@@ -559,6 +559,179 @@ async function notifyCandidate(req, res) {
 }
 
 /**
+ * 6. Schedule Candidate Interview & Dispatch Calendar Invite
+ */
+async function scheduleCandidateInterview(req, res) {
+  try {
+    const {
+      candidateId,
+      interviewRound,
+      scheduledDate,
+      scheduledTime,
+      meetingPlatform,
+      meetingLink,
+      notes
+    } = req.body || {};
+
+    if (!candidateId) {
+      return res.status(400).json({ success: false, message: 'Candidate ID is required to schedule interview.' });
+    }
+
+    const candidate = await prisma.candidate.findUnique({ where: { id: candidateId } });
+    if (!candidate) {
+      return res.status(404).json({ success: false, message: 'Candidate record not found.' });
+    }
+
+    const round = interviewRound || 'Technical Interview Round';
+    const dateStr = scheduledDate || new Date().toISOString().split('T')[0];
+    const timeStr = scheduledTime || '10:00 AM IST';
+    const platform = meetingPlatform || 'Google Meet';
+    const link = meetingLink || 'https://meet.google.com';
+
+    // 1. Update candidate stage to 'interview'
+    const updatedNotes = candidate.notes 
+      ? `${candidate.notes}\n[Interview Scheduled]: ${round} on ${dateStr} at ${timeStr} (${platform})`
+      : `[Interview Scheduled]: ${round} on ${dateStr} at ${timeStr} (${platform})`;
+
+    const updated = await prisma.candidate.update({
+      where: { id: candidateId },
+      data: {
+        stage: 'interview',
+        notes: updatedNotes
+      }
+    });
+
+    // 2. Update linked evaluation
+    if (candidate.evaluationId) {
+      await prisma.evaluation.update({
+        where: { id: candidate.evaluationId },
+        data: {
+          pipelineStage: 'interview',
+          status: 'shortlisted',
+          hmNotes: updatedNotes
+        }
+      }).catch(() => {});
+    }
+
+    // 3. Record Audit Log
+    const actorEmail = req.user?.email || req.session?.user?.email || 'hr@rankly.ai';
+    await recordAuditLog({
+      action: 'INTERVIEW_SCHEDULED',
+      actorId: req.user?.id || req.session?.userId || null,
+      actorEmail,
+      actorRole: req.user?.role || req.session?.user?.role || 'hr',
+      targetType: 'candidate',
+      targetId: candidate.id,
+      targetName: candidate.name,
+      previousStage: candidate.stage,
+      newStage: 'interview',
+      details: {
+        round,
+        scheduledDate: dateStr,
+        scheduledTime: timeStr,
+        platform,
+        meetingLink: link,
+        notes
+      }
+    });
+
+    // 4. Dispatch Email with Calendar Invite
+    if (candidate.email) {
+      const { sendInterviewScheduledEmail } = require('../services/emailService');
+      sendInterviewScheduledEmail({
+        to: candidate.email,
+        candidateName: candidate.name,
+        roleTitle: candidate.targetRole,
+        interviewRound: round,
+        scheduledDate: dateStr,
+        scheduledTime: timeStr,
+        meetingPlatform: platform,
+        meetingLink: link,
+        notes
+      }).catch(e => console.warn('[Auto-Email] Interview scheduling email warning:', e.message));
+    }
+
+    return res.json({
+      success: true,
+      message: `Interview for ${candidate.name} scheduled on ${dateStr} at ${timeStr} (${platform}). Email invitation dispatched.`,
+      candidate: formatCandidate(updated)
+    });
+  } catch (error) {
+    console.error('Schedule Interview Error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to schedule interview: ' + error.message });
+  }
+}
+
+/**
+ * 7. Bulk Action on Multiple Candidates (Bulk Shortlist / Bulk Reject / Bulk Export)
+ */
+async function performBulkCandidateAction(req, res) {
+  try {
+    const { candidateIds, action, notes } = req.body || {};
+
+    if (!Array.isArray(candidateIds) || candidateIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'Array of candidate IDs is required.' });
+    }
+
+    let targetStage = 'shortlisted';
+    if (action === 'reject' || action === 'bulk_reject') targetStage = 'rejected';
+    if (action === 'interview' || action === 'bulk_interview') targetStage = 'interview';
+
+    const actorEmail = req.user?.email || req.session?.user?.email || 'hr@rankly.ai';
+    const hrNotes = notes || `Bulk action: ${action.toUpperCase()} performed by HR.`;
+
+    const updatedCandidates = [];
+
+    for (const cid of candidateIds) {
+      try {
+        const c = await prisma.candidate.findUnique({ where: { id: cid } });
+        if (!c) continue;
+
+        const updated = await prisma.candidate.update({
+          where: { id: cid },
+          data: {
+            stage: targetStage,
+            notes: c.notes ? `${c.notes}\n[Bulk Update]: ${hrNotes}` : hrNotes
+          }
+        });
+
+        // Audit Log per candidate
+        await recordAuditLog({
+          action: action === 'reject' ? 'BULK_CANDIDATE_REJECTED' : 'BULK_CANDIDATE_SHORTLISTED',
+          actorEmail,
+          targetType: 'candidate',
+          targetId: c.id,
+          targetName: c.name,
+          previousStage: c.stage,
+          newStage: targetStage,
+          details: { action, hrNotes }
+        });
+
+        // Auto Email per candidate
+        if (c.email) {
+          sendCandidateStatusNotification(c.email, c.name, c.targetRole, targetStage, hrNotes)
+            .catch(e => console.warn('[Bulk-Email Warning]:', e.message));
+        }
+
+        updatedCandidates.push(updated);
+      } catch (innerErr) {
+        console.warn(`[Bulk-Action] Failed for candidate ${cid}:`, innerErr.message);
+      }
+    }
+
+    return res.json({
+      success: true,
+      message: `Successfully processed ${updatedCandidates.length} of ${candidateIds.length} candidates with action: ${action}.`,
+      processedCount: updatedCandidates.length,
+      targetStage
+    });
+  } catch (error) {
+    console.error('Bulk Candidate Action Error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to process bulk candidate action: ' + error.message });
+  }
+}
+
+/**
  * Delete Candidate
  */
 async function deleteCandidate(req, res) {
@@ -590,6 +763,8 @@ module.exports = {
   getAiCandidateQueue,
   getCandidateCheatSheet,
   performCandidateAction,
+  scheduleCandidateInterview,
+  performBulkCandidateAction,
   getCandidateAuditLogs,
   createCandidate,
   getCandidateById,
@@ -598,3 +773,4 @@ module.exports = {
   notifyCandidate,
   deleteCandidate
 };
+
