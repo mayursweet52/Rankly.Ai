@@ -93,7 +93,8 @@ app.set('trust proxy', 1);
 // Prompt 01 Optimization: Enable HTTP Response Compression in Transit (Gzip / Deflate / Brotli)
 const compression = require('compression');
 app.use(compression({
-  threshold: 1024, // Only compress responses larger than 1 KB
+  threshold: 256, // Compress responses larger than 256 bytes
+  level: 6,
   filter: (req, res) => {
     if (req.headers['x-no-compression']) return false;
     const contentType = res.getHeader('Content-Type') || '';
@@ -110,6 +111,19 @@ app.use(compression({
     return compression.filter(req, res);
   }
 }));
+
+// Performance Header Middleware (High-Resolution Response Timers & Keep-Alive)
+app.use((req, res, next) => {
+  const start = process.hrtime();
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Keep-Alive', 'timeout=65');
+  res.on('finish', () => {
+    const diff = process.hrtime(start);
+    const timeMs = (diff[0] * 1e3 + diff[1] * 1e-6).toFixed(2);
+    res.setHeader('X-Response-Time', `${timeMs}ms`);
+  });
+  next();
+});
 
 // Ensure upload directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -172,17 +186,24 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve Static Assets & Uploads with instant cache invalidation
-app.use('/uploads', express.static(uploadsDir));
+// Serve Static Assets & Uploads with optimized browser caching and ETag support
+app.use('/uploads', express.static(uploadsDir, { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1d',
+  etag: true,
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.html')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
+    } else if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=3600');
+    } else if (filePath.match(/\.(png|jpg|jpeg|gif|ico|svg|woff2|woff|ttf)$/i)) {
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
     }
   }
 }));
+
 
 // General API Rate Limiting
 app.use('/api', apiLimiter);
