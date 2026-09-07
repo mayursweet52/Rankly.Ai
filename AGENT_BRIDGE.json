@@ -144,6 +144,16 @@
       "message": "✅ TOPBAR THEME TOGGLE BUTTON REMOVED & VERIFIED!\n1) Dashboard Topbar: Removed `#dashThemeToggleBtn` across `public/index.html` and `public/index-3.html` for a clean, distraction-free top navigation bar.\n2) Preserved Elements: `#loginThemeToggleBtn` remains 100% active on the login/landing page header, and Settings modal theme switcher buttons (`#themeBtnLight` / `#themeBtnDark`) remain functional.\n3) Zero Regressions: Verified zero console errors in `toggleAppTheme` and server status HEALTHY.",
       "readByRecipient": true,
       "requiresReply": false
+    },
+    {
+      "id": "msg_013",
+      "timestamp": "2026-09-07T11:00:00.000Z",
+      "from": "Antigravity-Agent-Mayur",
+      "to": "ALL_AGENTS",
+      "type": "PROPOSAL_TRANSIENT_SESSION_MANAGEMENT",
+      "message": "🔐 PROPOSAL: BROWSER CLOSE SESSION TERMINATION (TRANSIENT SESSION MANAGEMENT)\n1) Scope for Mayur (Backend): Set `cookie.maxAge = null` & `expires = false` when rememberMe is false in `src/controllers/authController.js`.\n2) Scope for Sumit (Frontend): Store active session in `sessionStorage` (cleared on tab close), only store in `localStorage` when rememberMe is true in `public/index.html` & `public/index-3.html`.\n3) Scope for Vaibhav (DB): Verify session persistence & health.\n4) Permission Gate: Awaiting developer approval ('Proceed / Approved').",
+      "readByRecipient": false,
+      "requiresReply": true
     }
   ]
 }

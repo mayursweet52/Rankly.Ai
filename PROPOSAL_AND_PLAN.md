@@ -1,46 +1,64 @@
-# 🎨 Proposal & Plan: Topbar Theme Toggle Button Removal (Preserving Login Page)
+# 🔐 Proposal & Architecture Plan: Browser Close Session Termination (Transient Session Management)
 **Project:** Rankly.ai  
-**Task Description:** Remove the "Light Mode / Dark Mode" topbar pill button from dashboard/internal screens while keeping it on the Login & Landing page and in User Settings.  
-**Ownership Domain:** **Sumit (Frontend & UI/UX Lead)**  
-**Status:** 🟡 **AWAITING DEVELOPER PERMISSION / APPROVAL**
+**Task Description:** Close hone par website ka session terminate hona chahiye (Session must automatically terminate when browser/tab is closed unless user explicitly selects 'Remember Me').  
+**Collaboration Model:** Tripartite Collaboration (Mayur [Backend] + Sumit [Frontend] + Vaibhav [Database])  
+**Status:** 🟡 **AWAITING DEVELOPER PERMISSION / APPROVAL** (No source code will be modified until approved)
 
 ---
 
-## 🎯 1. Overview & Requirement Analysis
-- **User Intent**: The user requested removing the floating pill button showing `☀️ Light Mode` / `🌙 Dark Mode` everywhere across the application **EXCEPT on the Login & Landing page**.
-- **Elements Identified**:
-  1. **Dashboard Topbar Pill Button (`#dashThemeToggleBtn`)**: Currently located inside the main top navigation bar next to the notification bell (`public/index.html` line 7284 and `public/index-3.html` line 7284). **ACTION: REMOVE**.
-  2. **Login Page Header Theme Pill (`#loginThemeToggleBtn`)**: Located on the login & signup landing screen header (`public/index.html` line 5654). **ACTION: KEEP (PRESERVE)**.
-  3. **Settings & Preferences Theme Switcher (`#themeBtnLight`, `#themeBtnDark`)**: Located inside the user profile & settings dropdown modal (`public/index.html` line 8233). **ACTION: KEEP (PRESERVE)**.
+## 🎯 1. Executive Summary & Problem Diagnosis
+
+### Current Behavior:
+- Jab user browser ya website tab close karta hai aur wapas open karta hai, toh user automatically logged-in rehta hai.
+- **Root Cause 1 (Frontend)**: Login hone par user session `localStorage.setItem('rankly_session', ...)` aur `localStorage.setItem('user', ...)` me unconditionally save hota hai. Kyunki `localStorage` browser close hone ke baad bhi permanent rehta hai, naya tab open karne par `localStorage.getItem('rankly_session')` user ko auto-login kar deta hai.
+- **Root Cause 2 (Backend)**: `src/controllers/authController.js` me session cookie par `maxAge = 24 * 60 * 60 * 1000` set hai, jisse browser cookie ko disk par 24 ghante ke liye save kar leta hai bajaye transient session cookie ke.
+
+### Desired Behavior (Secure Session Lifecycle):
+- Website ya browser tab band karne par session **turant terminate / expire** hona chahiye.
+- User jab dobara site kholega toh usse clean **Login Page** dikhna chahiye.
+- Agar user ne explicitly **"Remember Me"** check kiya ho, tabhi persistent storage use hoga.
 
 ---
 
-## 🏗️ 2. Proposed Changes & Technical Implementation
+## 🏗️ 2. Architectural Solution & Implementation Plan
 
-### A. Frontend Layer (Sumit - Frontend Lead):
-1. **Remove `#dashThemeToggleBtn`**:
-   - In `public/index.html` and `public/index-3.html`, cleanly remove the `<button id="dashThemeToggleBtn" ...>...</button>` element from the topbar navigation.
-2. **Safety in `toggleAppTheme` JS function**:
-   - The JS function in line 15312 already features safe optional chaining and null check:
+### A. Frontend Session Lifecycle (Sumit - Frontend Lead):
+1. **Primary Session Store = `sessionStorage`**:
+   - Active user session and JWT token will be stored strictly in `sessionStorage` (`sessionStorage.setItem('rankly_session', ...)`).
+   - `sessionStorage` is automatically wiped out by the operating system / browser engine as soon as the tab or window is closed.
+2. **Conditional "Remember Me" Support**:
+   - `localStorage` will ONLY be used if the user checked "Remember Me" during login.
+   - If not remembered, all legacy persistent tokens (`localStorage.removeItem('rankly_session')`, `localStorage.removeItem('user')`, `localStorage.removeItem('rankly_jwt')`) are cleared.
+3. **Session Auto-Restoration on Tab Boot**:
+   - On page load, the system checks `sessionStorage.getItem('rankly_session')`. If the browser was closed, `sessionStorage` is null $\longrightarrow$ User starts fresh on the Login page.
+
+### B. Backend Session Cookie Tuning (Mayur - Backend Architect):
+1. **Express Session Transient Cookies (`src/controllers/authController.js`)**:
+   - When `rememberMe` is false/unchecked:
      ```javascript
-     const updateToggleBtn = (btn, isDark) => {
-         if (!btn) return;
-         ...
-     };
+     req.session.cookie.maxAge = null; // Browser deletes cookie on tab/window close
+     req.session.cookie.expires = false;
      ```
-   - No runtime script errors will occur when `#dashThemeToggleBtn` is absent from the DOM.
-3. **Clean Topbar Layout**:
-   - The topbar flex container will cleanly display the Notification Bell, Search Bar, and User Profile Avatar without layout shifts.
+   - When `rememberMe` is true:
+     ```javascript
+     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30-day persistent cookie
+     ```
+2. **Google OAuth & Candidate Auth Sync**:
+   - Apply the same transient cookie standard to Google login credentials endpoint (`/api/auth/google/credential`) and candidate auth routes.
+
+### C. Database & Security Audit (Vaibhav - Database Lead):
+1. **Database Session Integrity**:
+   - Ensure Prisma session store and SQLite/PG sync cleanly handle session termination without dangling locks.
 
 ---
 
-## 👥 3. Strict Tripartite Domain Boundaries
+## 👥 3. Team Task Division (Strict Domain Boundaries)
 
-| Engineer / Agent | Role | Scope (MUST DO) | Strict Restriction (MUST NOT DO) |
-| :--- | :--- | :--- | :--- |
-| **Sumit** (`Antigravity-Agent-Sumit`) | **FRONTEND LEAD** | • Remove `#dashThemeToggleBtn` from topbar in `public/index.html` & `public/index-3.html`.<br>• Preserve `#loginThemeToggleBtn` and Settings theme buttons.<br>• Verify 0 console errors and clean layout. | • Do NOT modify backend API routes.<br>• Do NOT alter DB models or schemas. |
-| **Mayur** (`Antigravity-Agent-Mayur`) | **BACKEND ARCHITECT** | • Verify all auth & candidate endpoints remain healthy.<br>• Ensure zero backend regressions. | • Do NOT touch HTML/CSS/DOM. |
-| **Vaibhav** (`Antigravity-Agent-Vaibhav`) | **DATABASE LEAD** | • Verify database integrity & SQLite/PG dual-sync. | • Do NOT touch frontend DOM. |
+| Engineer / Agent | Strict Domain | Scope / Tasks (MUST DO) | Restricted (MUST NOT DO) | Targeted Files |
+| :--- | :--- | :--- | :--- | :--- |
+| **Mayur**<br>`Antigravity-Agent-Mayur` | **BACKEND ARCHITECT** | • Configure transient session cookies (`cookie.maxAge = null`, `expires = false`) in auth controllers.<br>• Update `/api/auth/login`, `/api/auth/google/credential`, and candidate auth.<br>• Verify sub-5ms auth latency. | • Do NOT touch HTML/CSS UI layouts.<br>• Do NOT alter DB schema definitions. | `src/controllers/authController.js`, `src/routes/authRoutes.js` |
+| **Sumit**<br>`Antigravity-Agent-Sumit` | **FRONTEND LEAD** | • Migrate session persistence to `sessionStorage` across `public/index.html` and `public/index-3.html`.<br>• Only save to `localStorage` if "Remember Me" is selected.<br>• Ensure zero layout shifts and seamless login experience. | • Do NOT touch Express route controllers.<br>• Do NOT touch DB models. | `public/index.html`, `public/index-3.html` |
+| **Vaibhav**<br>`Antigravity-Agent-Vaibhav` | **DATABASE LEAD** | • Verify database models & Prisma session integrity.<br>• Check health monitor daemon (`status: HEALTHY`). | • Do NOT touch frontend DOM.<br>• Do NOT touch backend auth handlers. | `src/services/healthChecker.js`, `prisma/schema.prisma` |
 
 ---
 
@@ -48,5 +66,5 @@
 
 > [!IMPORTANT]
 > **Developer Approval Required:**  
-> Plan taiyyar hai! Agar aap chahte hain ki hum **Dashboard Topbar se Theme Button hata dein aur Login Page par rakhein**, toh kripya **"Proceed"** ya **"Approved"** likhein.  
-> Aapke permission ke bina koi code change nahi hoga.
+> Plan aur architecture ready hai! Browser/tab band hone par session terminate karne aur Login page par laane ke liye kripya **"Proceed"** ya **"Approved"** kahein.  
+> Aapke explicit approval ke bina koi code modify nahi kiya jayega.
