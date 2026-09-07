@@ -238,7 +238,9 @@ app.use('/api/pg/applications', applicationDbRoutes);
 app.use('/api/applications', applicationDbRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/webhooks', require('./src/routes/webhookRoutes'));
 app.use('/health', healthRoutes);
+
 
 
 // Supabase JS Client live connectivity check
@@ -351,7 +353,10 @@ Be precise, technical, and direct.`;
 app.use('/api/ai/chat', chatRoutes);
 app.use('/api/ai', resumeRoutes);
 app.use('/api/resume', resumeRoutes);
+app.use('/api/candidates', candidateRoutes);
 app.use('/api/candidates', pipelineRoutes);
+app.use('/api/candidate', candidateRoutes);
+app.use('/api/pipeline', pipelineRoutes);
 app.use('/api/evaluations', resumeRoutes);
 app.use('/api/upload', resumeRoutes);
 app.use('/api/team', userRoutes);
