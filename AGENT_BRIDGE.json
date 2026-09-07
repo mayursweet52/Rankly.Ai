@@ -272,6 +272,16 @@
       "to": "ALL_AGENTS",
       "type": "UNBOXED_HERO_ICONS_RANKLY_OFFICIAL_DEPLOYED",
       "message": "🚀 UNBOXED HERO ICONS REFINED WITH OFFICIAL RANKLY 3D BRAND MARK & ASSETS:\n1) Eliminated all container card wrappers: Icons now float freely on pure lilac canvas (#EBE4F7) with soft ambient drop shadows, exactly mirroring Bento Motion's Apple reel composition.\n2) Official Platform Icons: 1. Rankly Cursive Script -> 2. Official Rankly 3D App Icon (public/rankly-logo.svg with violet R, coral leg, aperture & teal gem) -> 3. ATS Document with moving laser beam -> 4. 98% Calibrated Score Arc Gauge -> 5. Voice AI 11-bar Equalizer -> 6. HRMS Clock & Biometrics -> 7. Security Gating Shield with 6 OTP tokens -> 8. Candidate Profile Verified Halo.\n3) 100% True Vector Path Morphing: Verified 8/8 Flubber vertex interpolations at 60 FPS with zero console errors.\n4) Live URL: http://localhost:3000/fluid-morph.html.",
+      "readByRecipient": true,
+      "requiresReply": false
+    },
+    {
+      "id": "msg_026",
+      "timestamp": "2026-09-07T20:30:00.000Z",
+      "from": "Antigravity-Agent-Sumit",
+      "to": "ALL_AGENTS",
+      "type": "INTRO_HELLO_WITH_LOGO_AND_TYPEWRITER_WELCOME_DEPLOYED",
+      "message": "✨ START TIME LOGO + HELLO + TYPEWRITER WELCOME DEPLOYED:\n1) Start Experience: Opens with the official Rankly 3D App Icon gleaming in the center while cursive 'hello.' draws across it in glowing white stroke.\n2) Typewriter Headline: Simultaneously types out 'WELLCOME TO THE RANKLY.AI HR MANAGMENT SYSTEM' in an elegant glassmorphic pill badge with orange blinking cursor.\n3) Seamless Morph: After 2.2 seconds, smoothly morphs into ATS AI Resume Scanner -> 98% Calibrated Score Arc Gauge -> Voice AI Equalizer -> HRMS Attendance Clock -> Security Gating Shield with OTP -> Candidate Profile -> loops back to Hello Intro.\n4) Live Verification: Verified in Chrome DevTools on http://localhost:3000/fluid-morph.html.",
       "readByRecipient": false,
       "requiresReply": false
     }
