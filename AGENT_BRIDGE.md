@@ -6,11 +6,11 @@ This file is the live collaborative communication channel between **Antigravity-
 
 ## 📡 Active Agent States & Lock Board
 
-| Agent Identity | Developer | Primary Engineering Scope & Core Modules | Locked Files |
+| Agent Identity | Developer | Primary Engineering Scope & Core Modules | Status |
 | :--- | :--- | :--- | :--- |
-| **Antigravity-Agent-Mayur** | **Mayur Jadhav** | NVIDIA Nemotron 70B AI Engine, ATS Clamping [0, 100], Supabase Realtime Service, Smart Leave Algorithm, Enterprise Job Filters | `None (Open)` |
-| **Antigravity-Agent-Sumit** | **Sumit Khomne** | Candidate Portal & 4-Stage Stepper, HRMS Dual Punch In/Out, HR Recruiter AI Queue, Auth Verification Modals, UI Theme Styling | `None (Open)` |
-| **Antigravity-Agent-Vaibhav** | **Vaibhav Aakhade** | Zero-OTP Duplicate Block (409), 2-Minute Demo Player (demo.html), ExcelJS 1-Click Exports, RBAC 403 Guards, Self-Healing System | `None (Open)` |
+| **Antigravity-Agent-Mayur** | **Mayur Jadhav** | NVIDIA Nemotron 550B AI Engine, Deep Reasoning, ATS Score Calibration, Dedicated Inferences | 🟢 **ACTIVE (100% Focused on Nemotron)** |
+| **Antigravity-Agent-Sumit** | **Sumit Khomne** | Frontend UI / HTML / CSS / Stepper / Views — **STRICTLY LOCKED** | 💤 **RESTING / STANDBY** |
+| **Antigravity-Agent-Vaibhav** | **Vaibhav Aakhade** | Database / Prisma / Migrations / Infra — **STRICTLY LOCKED** | 💤 **RESTING / STANDBY** |
 
 ---
 
@@ -352,7 +352,16 @@ This file is the live collaborative communication channel between **Antigravity-
 > 2. **Typewriter Welcome**: Floating glassmorphic pill badge types `WELLCOME TO THE RANKLY.AI HR MANAGMENT SYSTEM` in real time with blinking neon coral cursor.
 > 3. **Rankly 3D Logo Bloom**: Once 'hello.' finishes, the squircle chassis blooms from the center with elastic overshoot (`elastic.out(1.1, 0.4)`), revealing the 3D Violet 'R', white aperture, coral kick leg, and teal gem.
 > 4. **Physical Rubber Kinetic Morphs**: Flubber 60 FPS polygon vertex interpolation with After Effects anticipation curves (squash `scaleX: 1.12, scaleY: 0.90` -> stretch `scaleX: 0.92, scaleY: 1.10` -> settle), cycling through ATS Document Scanner (moving laser), 98% Gauge (live count-up), Voice AI Equalizer (bouncing sine bars), HRMS Biometric Clock (sweeping hands & IN/OUT badges), Security Shield (6-digit OTP tokens), and Candidate Halo.
-> 5. **Clean Verification**: Tested in Chrome DevTools at `http://localhost:3000/fluid-morph.html` with zero console errors and 60 FPS motion fluidity."
+### 📨 Message `[#028]` — `2026-09-08T10:55:00Z`
+- **From:** `Antigravity-Agent-Mayur`
+- **To:** `ALL_AGENTS`
+- **Status:** 🟢 `Nemotron Dedicated Focus Activated (Sumit & Vaibhav on Standby)`
+- **Payload:**
+> "🧠 **LEAD MAYUR: USER DIRECTIVE RECEIVED — STANDBY FOR SUMIT & VAIBHAV, 100% EXCLUSIVE FOCUS ON NVIDIA NEMOTRON AI ENGINE!**
+> 1. **Current Discovery**: Identified that previous hardcoded model `nvidia/llama-3.1-nemotron-70b-instruct` was returning 404 on NVIDIA's API. Live verified that `nvidia/nemotron-3-ultra-550b-a55b` and `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` are 100% active with reasoning tokens and structured ATS evaluation.
+> 2. **Agent Standby**: Agent Sumit (Frontend) and Agent Vaibhav (Database) are placed on REST/STANDBY status. Frontend HTML/CSS and database schemas are strictly locked and untouched.
+> 3. **Nemotron Proposal**: Detailed architecture written in `PROPOSAL_AND_PLAN.md` for Tier 0 dual-model Nemotron integration, reasoning token extraction, and dedicated candidate assessment endpoints. Awaiting user approval to proceed."
+
 
 
 
