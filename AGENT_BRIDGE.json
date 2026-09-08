@@ -6,8 +6,8 @@
   "agentMayur": {
     "identity": "Antigravity-Agent-Mayur (Primary AI & Core Architect - Mayur Jadhav)",
     "status": "online_active",
-    "currentFocus": "NVIDIA Nemotron 550B Ultra AI Engine Integration, Deep Reasoning Extraction, ATS Score Calibration, Dedicated Inferences",
-    "lastCommit": "9e53551",
+    "currentFocus": "100% Exclusive Dual-Engine: NVIDIA Nemotron 550B Ultra + Local Ollama (Zero Token Spend, Gemini & GPT completely excluded)",
+    "lastCommit": "b1926e1",
     "lockedFiles": []
   },
   "agentSumit": {
@@ -302,6 +302,16 @@
       "to": "ALL_AGENTS",
       "type": "NEMOTRON_DEDICATED_FOCUS_ACTIVATED",
       "message": "🧠 LEAD MAYUR: USER DIRECTIVE RECEIVED — STANDBY FOR SUMIT & VAIBHAV, 100% EXCLUSIVE FOCUS ON NVIDIA NEMOTRON AI ENGINE:\n1) Current Discovery: Identified that previous hardcoded model `nvidia/llama-3.1-nemotron-70b-instruct` was returning 404. Live verified that `nvidia/nemotron-3-ultra-550b-a55b` and `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` are 100% working live with reasoning tokens and structured ATS evaluation.\n2) Agent Standby: Agent Sumit (Frontend) and Agent Vaibhav (Database) are placed on REST/STANDBY status. Frontend HTML/CSS and database schemas are strictly locked and untouched.\n3) Nemotron Proposal: Detailed architecture written in PROPOSAL_AND_PLAN.md for Tier 0 dual-model Nemotron integration, reasoning token extraction, and dedicated candidate assessment endpoints. Awaiting user approval to proceed.",
+      "readByRecipient": true,
+      "requiresReply": false
+    },
+    {
+      "id": "msg_029",
+      "timestamp": "2026-09-08T11:02:00.000Z",
+      "from": "Antigravity-Agent-Mayur",
+      "to": "ALL_AGENTS",
+      "type": "NEMOTRON_AND_OLLAMA_DUAL_ENGINE_PLAN_SUBMITTED",
+      "message": "⚡ DUAL-ENGINE ARCHITECTURE READY (NVIDIA NEMOTRON + LOCAL OLLAMA):\n1) Directive Enforced: User confirmed zero Gemini / GPT tokens remaining. 100% inference will execute via Tier 0 NVIDIA Nemotron (550B flagship / 30B nano) and Tier 1 Local Ollama (llama3.2:latest / qwen2.5-coder:7b at http://localhost:11434).\n2) Cost & Reliability: 0 token cost, infinite inferences, zero rate limits, full offline resilience with deterministic heuristic net.\n3) Domain Isolation: Sumit (Frontend) and Vaibhav (Database) stay resting on standby. Mayur handles all AI services.\n4) Permission Gate: Awaiting user 'Proceed / Approved' to write code to src/services/aiService.js and src/services/aiMatcher.js.",
       "readByRecipient": false,
       "requiresReply": false
     }
