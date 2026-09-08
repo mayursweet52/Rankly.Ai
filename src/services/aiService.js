@@ -7,227 +7,133 @@ const groqBreaker = getCircuitBreaker('groq_ai', { failureThreshold: 2, timeout:
 const openRouterBreaker = getCircuitBreaker('openrouter_ai', { failureThreshold: 2, timeout: 8000, resetTimeout: 20000 });
 
 /**
- * Universal Multi-Provider AI Inference Engine
- * Tested & Active Providers: OpenRouter (DeepSeek), Mistral AI, Cloudflare AI, Groq, Gemini, Ollama
+ * Clean reasoning tags or markdown artifacts from LLM responses
+ */
+function cleanAiResponseText(rawText) {
+  if (!rawText || typeof rawText !== 'string') return '';
+  // Strip <think>...</think> blocks if present
+  let cleaned = rawText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  // Strip markdown ```json ... ``` code fences if present
+  cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+  return cleaned;
+}
+
+/**
+ * Dedicated AI Inference Engine (NVIDIA Nemotron + Local Ollama)
+ * Zero external token consumption (No Gemini, No GPT)
+ * Tier 0: NVIDIA Nemotron 550B Ultra / 30B Nano Reasoning (Cloud Flagship)
+ * Tier 1: Local Ollama (llama3.2 / qwen2.5-coder) - Offline, unlimited, ₹0.00 cost
+ * Tier 2: Algorithmic Heuristic ATS Fallback - 100% Guaranteed Uptime
  */
 async function executeAiInference(prompt, isJson = true, systemPrompt = 'You are an expert AI Executive Recruiter & ATS Career Counselor for Rankly.ai.') {
   const errors = [];
 
   // =========================================================================
-  // 0. Tier 0: NVIDIA Cloud AI (Llama-3.1 / Deep Reasoning)
+  // 1. Tier 0: NVIDIA Cloud Nemotron Engine (550B Ultra & 30B Nano Reasoning)
   // =========================================================================
   if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_API_KEY.trim().length > 10) {
-    try {
-      const res = await axios.post('https://integrate.api.nvidia.com/v1/chat/completions', {
-        model: 'nvidia/llama-3.1-nemotron-70b-instruct',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.2,
-        max_tokens: 2048,
-        response_format: isJson ? { type: 'json_object' } : undefined
-      }, {
-        headers: {
-          'Authorization': `Bearer ${process.env.NVIDIA_API_KEY.trim()}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: 9000
-      });
+    const nemotronModels = [
+      'nvidia/nemotron-3-ultra-550b-a55b',
+      'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning'
+    ];
 
-      const content = res.data?.choices?.[0]?.message?.content;
-      if (content) {
-        return isJson ? safeJsonParse(content) : content;
-      }
-    } catch (err) {
-      errors.push(`NVIDIA AI: ${err.response?.data?.error?.message || err.message}`);
-    }
-  }
-
-  // =========================================================================
-  // 1. Tier 1: Groq Cloud (Ultra-Low Latency Qwen 3.8 / GPT-OSS) with Circuit Breaker
-  // =========================================================================
-  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim().startsWith('gsk_')) {
-    const groqModels = ['qwen/qwen3.8-27b', 'openai/gpt-oss-120b', 'qwen/qwen3.6-27b'];
-    for (const model of groqModels) {
+    for (const model of nemotronModels) {
       try {
-        const content = await groqBreaker.execute(async () => {
-          const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-            model,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: prompt }
-            ],
-            temperature: 0.2,
-            response_format: isJson ? { type: 'json_object' } : undefined
-          }, {
-            headers: {
-              'Authorization': `Bearer ${process.env.GROQ_API_KEY.trim()}`,
-              'Content-Type': 'application/json'
-            },
-            timeout: 6000
-          });
-          return res.data.choices[0].message.content;
-        });
-
-        if (content) {
-          return isJson ? safeJsonParse(content) : content;
-        }
-      } catch (err) {
-        errors.push(`Groq (${model}): ${err.response?.data?.error?.message || err.message}`);
-        // If circuit breaker is open, immediately stop trying other Groq models and cascade to Tier 2
-        if (groqBreaker.state === 'OPEN') break;
-      }
-    }
-  }
-
-  // =========================================================================
-  // 2. Tier 2: OpenRouter (DeepSeek / Qwen / Llama) - [VERIFIED ACTIVE]
-  // =========================================================================
-  if (process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_API_KEY.trim().startsWith('sk-or-')) {
-    try {
-      const res = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
-        model: 'deepseek/deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.2,
-        response_format: isJson ? { type: 'json_object' } : undefined
-      }, {
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY.trim()}`,
-          'HTTP-Referer': 'https://rankly.ai',
-          'X-Title': 'Rankly.ai ATS',
-          'Content-Type': 'application/json'
-        },
-        timeout: 15000
-      });
-
-      const content = res.data.choices[0].message.content;
-      return isJson ? safeJsonParse(content) : content;
-    } catch (err) {
-      errors.push(`OpenRouter: ${err.response?.data?.error?.message || err.message}`);
-    }
-  }
-
-  // =========================================================================
-  // 2. Tier 2: Mistral AI - [VERIFIED ACTIVE]
-  // =========================================================================
-  if (process.env.MISTRAL_API_KEY && process.env.MISTRAL_API_KEY.trim().length > 5) {
-    try {
-      const res = await axios.post('https://api.mistral.ai/v1/chat/completions', {
-        model: 'mistral-small-latest',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.2,
-        response_format: isJson ? { type: 'json_object' } : undefined
-      }, {
-        headers: {
-          'Authorization': `Bearer ${process.env.MISTRAL_API_KEY.trim()}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: 12000
-      });
-
-      const content = res.data.choices[0].message.content;
-      return isJson ? safeJsonParse(content) : content;
-    } catch (err) {
-      errors.push(`Mistral: ${err.response?.data?.error?.message || err.message}`);
-    }
-  }
-
-  // =========================================================================
-  // 3. Tier 3: Cloudflare Workers AI - [VERIFIED ACTIVE]
-  // =========================================================================
-  if (process.env.CLOUDFLARE_AI_TOKEN && process.env.CLOUDFLARE_ACCOUNT_ID) {
-    try {
-      const accountId = process.env.CLOUDFLARE_ACCOUNT_ID.trim();
-      const token = process.env.CLOUDFLARE_AI_TOKEN.trim();
-      const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.1-8b-instruct`;
-
-      const res = await axios.post(url, {
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ]
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: 15000
-      });
-
-      const text = res.data.result?.response;
-      if (text) {
-        return isJson ? safeJsonParse(text) : text;
-      }
-    } catch (err) {
-      errors.push(`Cloudflare AI: ${err.response?.data?.errors?.[0]?.message || err.message}`);
-    }
-  }
-
-  // =========================================================================
-  // 4. Tier 4: Groq Cloud
-  // =========================================================================
-  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim().startsWith('gsk_')) {
-    const groqModels = ['qwen/qwen3.8-27b', 'openai/gpt-oss-120b', 'qwen/qwen3.6-27b'];
-    for (const model of groqModels) {
-      try {
-        const res = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+        const res = await axios.post('https://integrate.api.nvidia.com/v1/chat/completions', {
           model,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: prompt }
           ],
           temperature: 0.2,
+          max_tokens: 3500,
           response_format: isJson ? { type: 'json_object' } : undefined
         }, {
           headers: {
-            'Authorization': `Bearer ${process.env.GROQ_API_KEY.trim()}`,
+            'Authorization': `Bearer ${process.env.NVIDIA_API_KEY.trim()}`,
             'Content-Type': 'application/json'
           },
-          timeout: 12000
+          timeout: 16000
         });
 
-        const content = res.data.choices[0].message.content;
-        return isJson ? safeJsonParse(content) : content;
+        const choice = res.data?.choices?.[0];
+        const rawContent = choice?.message?.content;
+        const reasoning = choice?.message?.reasoning_content || choice?.message?.reasoning;
+
+        if (rawContent) {
+          const cleaned = cleanAiResponseText(rawContent);
+          if (isJson) {
+            const parsed = safeJsonParse(cleaned);
+            if (parsed && Object.keys(parsed).length > 0) {
+              if (reasoning && !parsed._reasoning) {
+                parsed._reasoning = typeof reasoning === 'string' ? reasoning.slice(0, 500) : '';
+              }
+              console.log(`✅ [NVIDIA Nemotron] Successfully evaluated with ${model}`);
+              return parsed;
+            }
+          } else {
+            console.log(`✅ [NVIDIA Nemotron] Successfully generated text with ${model}`);
+            return cleaned;
+          }
+        }
       } catch (err) {
-        errors.push(`Groq (${model}): ${err.response?.data?.error?.message || err.message}`);
+        const errMsg = err.response?.data?.error?.message || err.message;
+        errors.push(`NVIDIA Nemotron (${model}): ${errMsg}`);
+        console.warn(`⚠️ [NVIDIA Nemotron] ${model} unavailable: ${errMsg}. Cascading...`);
       }
     }
   }
 
   // =========================================================================
-  // 5. Tier 5: Local Ollama (Offline fallback)
+  // 2. Tier 1: Local Ollama (Offline, 100% Free, Unlimited, Zero Token Spend)
   // =========================================================================
   const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
-  const ollamaModel = process.env.OLLAMA_MODEL || 'llama3.2:3b';
+  const localModels = [
+    process.env.OLLAMA_MODEL || 'llama3.2:latest',
+    'llama3.2:3b',
+    'qwen2.5-coder:7b'
+  ];
 
-  try {
-    const res = await axios.post(`${ollamaUrl}/api/generate`, {
-      model: ollamaModel,
-      prompt: `${systemPrompt}\n\n${prompt}`,
-      format: isJson ? 'json' : undefined,
-      stream: false,
-      options: { temperature: 0.1, seed: 42 }
-    }, { timeout: 30000 });
+  for (const model of localModels) {
+    try {
+      const res = await axios.post(`${ollamaUrl}/api/generate`, {
+        model,
+        prompt: `${systemPrompt}\n\n${prompt}`,
+        format: isJson ? 'json' : undefined,
+        stream: false,
+        options: { temperature: 0.1, seed: 42 }
+      }, { timeout: 25000 });
 
-    const text = res.data.response;
-    if (!isJson) return text;
-    return safeJsonParse(text);
-  } catch (ollamaErr) {
-    errors.push(`Ollama (${ollamaModel}): ${ollamaErr.message}`);
+      const rawText = res.data?.response;
+      if (rawText) {
+        const cleaned = cleanAiResponseText(rawText);
+        if (!isJson) {
+          console.log(`✅ [Local Ollama] Generated text with ${model}`);
+          return cleaned;
+        }
+        const parsed = safeJsonParse(cleaned);
+        if (parsed && Object.keys(parsed).length > 0) {
+          console.log(`✅ [Local Ollama] Evaluated JSON with ${model}`);
+          return parsed;
+        }
+      }
+    } catch (ollamaErr) {
+      errors.push(`Ollama (${model}): ${ollamaErr.message}`);
+    }
   }
 
   // =========================================================================
-  // 6. Tier 6: Intelligent Rule-Based ATS Engine Fallback
+  // 3. Tier 2: Intelligent Rule-Based ATS Engine Fallback
   // =========================================================================
-  console.log('ℹ️ Operating in Heuristic Fallback mode.');
+  console.log('ℹ️ [AI Engine] Operating in Deterministic Heuristic Fallback mode.');
   return null;
+}
+
+/**
+ * Universal Query AI helper
+ */
+async function queryAI(prompt, systemPrompt = 'You are an expert AI assistant.', isJson = false) {
+  return executeAiInference(prompt, isJson, systemPrompt);
 }
 
 /**
@@ -982,6 +888,7 @@ function calculateSkillGap(candidateSkills = [], roleKey = 'software-engineer') 
 
 module.exports = {
   executeAiInference,
+  queryAI,
   screenResume,
   detectRole,
   chatCareerCounselor,
