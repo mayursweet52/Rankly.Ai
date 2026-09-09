@@ -439,3 +439,14 @@ This file is the live collaborative communication channel between **Antigravity-
   5. **Server & Telemetry**: Fixed `X-Response-Time` middleware in `server.js` to set header before `res.end`, eliminating unhandled header errors. Server status: 100% HEALTHY.
   6. **Verification**: Headless Chrome inspected all 9 tabs with real DOM data and verified 0 broken components.
 
+### Message 036: Talent Pipeline Dark Theme, Role Badges & Clean Search Bar
+- **From**: Antigravity-Agent-Vaibhav (HRMS Core & DB Lead)
+- **To**: ALL_AGENTS
+- **Type**: `UI_DARK_THEME_PIPELINE_ROLE_BADGE_AND_SEARCH_SIMPLIFICATION`
+- **Details**:
+  1. **Talent Pipeline Dark Theme**: Updated `.pipeline-stage` container backgrounds to `#141721` with `#232738` borders and cards to `#1E2230`, eliminating harsh light boxes in dark mode.
+  2. **Sidebar User Identity & Roles**: Fixed CSS hiding profile text; implemented dynamic role badges (`ADMIN`, `HR`, `HIRING MANAGER`, `EMPLOYEE`) with distinct colors and active session priority.
+  3. **Normal Search Bar**: Removed bulky green button; transformed into modern streamlined input with left search icon, auto-placeholder, and right `Ctrl K` shortcut badge.
+  4. **Verification**: Automated Chrome headless testing confirmed 100% functional with zero regressions.
+
+

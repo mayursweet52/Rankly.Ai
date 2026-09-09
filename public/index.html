@@ -2227,10 +2227,12 @@
 
         /* ─── KANBAN PIPELINE ─── */
         .pipeline-stage {
-            background: #EBEBE6;
-            border-radius: 10px;
+            background: #F4F4F0;
+            border: 1px solid #E5E5DF;
+            border-radius: 12px;
             padding: 16px;
-            min-height: 220px;
+            min-height: 260px;
+            transition: all 0.2s ease;
         }
         .pipeline-stage h5 {
             font-family: 'JetBrains Mono', monospace;
@@ -2241,10 +2243,22 @@
             color: #666660;
             margin-bottom: 12px;
         }
+        body.dark-theme .pipeline-stage,
+        html.dark .pipeline-stage,
+        .dark .pipeline-stage {
+            background: #141721 !important;
+            border: 1px solid #232738 !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+        }
+        body.dark-theme .pipeline-stage h5,
+        html.dark .pipeline-stage h5,
+        .dark .pipeline-stage h5 {
+            color: #94A3B8 !important;
+        }
         .pipeline-card {
             background: var(--bg-card, #FFFFFF);
             border: 1px solid var(--border-color, #E0E0DA);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 12px 14px;
             margin-bottom: 8px;
             font-size: 13px;
@@ -2262,10 +2276,16 @@
         body.dark-theme .pipeline-card,
         html.dark .pipeline-card,
         .dark .pipeline-card {
-            background: #181B26 !important;
-            border-color: #272A38 !important;
+            background: #1E2230 !important;
+            border-color: #2D3348 !important;
             color: #FFFFFF !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+        }
+        body.dark-theme .pipeline-card:hover,
+        html.dark .pipeline-card:hover,
+        .dark .pipeline-card:hover {
+            border-color: #3B82F6 !important;
+            background: #232838 !important;
         }
         body.dark-theme .pipeline-card p,
         html.dark .pipeline-card p,
@@ -3657,34 +3677,56 @@
 
         
 
-        /* ─── DARK MODE – USER AVATAR & COMPACT SIGN OUT ─── */
+        /* ─── DARK MODE – USER PROFILE & ROLE CARD ─── */
         body.dark-theme .dash-sidebar .p-6.mt-auto {
-            padding: 8px 0 !important;
-            border-top: none !important;
+            padding: 16px 20px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
             display: flex !important;
             flex-direction: column !important;
-            align-items: center !important;
-            gap: 8px !important;
+            align-items: stretch !important;
+            gap: 12px !important;
             width: 100% !important;
         }
 
         body.dark-theme .dash-sidebar .p-6.mt-auto .flex.items-center.gap-3 {
             margin-bottom: 0 !important;
-            justify-content: center !important;
+            justify-content: flex-start !important;
+            display: flex !important;
+            width: 100% !important;
         }
 
         body.dark-theme .dash-sidebar .p-6.mt-auto .overflow-hidden {
-            display: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            min-width: 0 !important;
+            flex: 1 !important;
         }
 
-        body.dark-theme .dash-sidebar .user-avatar { border: 2px solid rgba(16, 185, 129, 0.4);
-            background: #1e1e2d;
-            color: #e2e8f0;
-            width: 38px;
-            height: 38px;
+        body.dark-theme #dashUserName {
+            color: #F8FAFC !important;
+            font-weight: 700 !important;
         }
 
-        
+        body.dark-theme .dash-sidebar .user-avatar {
+            border: 2px solid rgba(16, 185, 129, 0.4) !important;
+            background: #181B26 !important;
+            color: #10B981 !important;
+            width: 38px !important;
+            height: 38px !important;
+            font-weight: 800 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 12px !important;
+        }
+
+        body.dark-theme .dash-sidebar .btn-signout {
+            width: 100% !important;
+            justify-content: center !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
 
         body.dark-theme .dash-sidebar .btn-signout i,
         body.dark-theme .dash-sidebar .btn-signout svg {
@@ -8090,11 +8132,7 @@ body.dark-theme .resume-tip-box,
                                 spellcheck="false"
                             />
                             <div class="flex items-center gap-1.5 flex-shrink-0 pr-1">
-                                <button type="button" id="globalSearchActionBtn" onclick="triggerGlobalFeatureSearch()" aria-label="Perform search" title="Search features" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-[#183B33] dark:bg-emerald-600 hover:bg-[#122e28] dark:hover:bg-emerald-700 text-white transition-all shadow-xs cursor-pointer flex items-center gap-1.5">
-                                    <i class="fas fa-search text-[10px]"></i>
-                                    <span>Search</span>
-                                </button>
-                                <kbd class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-semibold text-[var(--text-muted)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded shadow-xs">Ctrl K</kbd>
+                                <kbd class="hidden md:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-semibold text-[var(--text-muted)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded shadow-xs">Ctrl K</kbd>
                             </div>
                         </div>
 
@@ -12771,17 +12809,18 @@ body.dark-theme .resume-tip-box,
             }
             window.switchTab = switchTab;
 
-            function updateDashboard() {
-                let activeUser = currentUser || window.currentUser;
+            function updateDashboard(overrideUser) {
+                let activeUser = overrideUser || null;
                 if (!activeUser) {
                     try {
-                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
                         if (stored) {
                             activeUser = JSON.parse(stored);
-                            currentUser = activeUser;
-                            window.currentUser = activeUser;
                         }
                     } catch(e) {}
+                }
+                if (!activeUser) {
+                    activeUser = window.currentUser || currentUser;
                 }
                 if (!activeUser) return;
                 currentUser = activeUser;
@@ -12792,14 +12831,64 @@ body.dark-theme .resume-tip-box,
                 const avatarEl = document.getElementById('dashAvatar');
                 const roleBadge = document.getElementById('dashRoleBadge');
 
-                const name = activeUser.fname ? `${activeUser.fname} ${activeUser.lname || ''}`.trim() : (activeUser.username || 'Google User');
-                if (nameEl) nameEl.textContent = name;
-                if (welcomeNameEl) welcomeNameEl.textContent = (activeUser.fname || activeUser.username || 'user').toLowerCase();
-                if (avatarEl) avatarEl.textContent = (activeUser.fname ? activeUser.fname[0] : (activeUser.username ? activeUser.username[0] : 'G')).toUpperCase();
+                const name = (activeUser.firstName && activeUser.lastName) 
+                    ? `${activeUser.firstName} ${activeUser.lastName}`.trim()
+                    : (activeUser.fname ? `${activeUser.fname} ${activeUser.lname || ''}`.trim() 
+                    : (activeUser.name || (activeUser.email ? activeUser.email.split('@')[0] : 'Admin User')));
+                if (nameEl) {
+                    nameEl.textContent = name;
+                    nameEl.title = name;
+                }
+                if (welcomeNameEl) welcomeNameEl.textContent = (activeUser.firstName || activeUser.fname || activeUser.username || 'user').toLowerCase();
+                if (avatarEl) {
+                    const initial = (name ? name[0] : (activeUser.email ? activeUser.email[0] : 'A')).toUpperCase();
+                    avatarEl.textContent = initial;
+                }
 
                 if (roleBadge) {
-                    roleBadge.textContent = (activeUser.role || 'NORMAL').toUpperCase();
-                    roleBadge.style.display = 'inline-block';
+                    const rawRole = (activeUser.role || (activeUser.isEmployee || activeUser.accountType === 'employee' ? 'employee' : 'admin')).toLowerCase();
+                    let roleDisplay = 'ADMIN';
+                    let roleBg = 'rgba(239, 68, 68, 0.15)';
+                    let roleColor = '#F87171';
+                    let roleBorder = 'rgba(239, 68, 68, 0.4)';
+                    let badgeClass = 'tag-pill-coral';
+
+                    if (rawRole === 'admin' || rawRole === 'administrator') {
+                        roleDisplay = 'ADMIN';
+                        roleBg = 'rgba(239, 68, 68, 0.15)';
+                        roleColor = '#F87171';
+                        roleBorder = 'rgba(239, 68, 68, 0.4)';
+                        badgeClass = 'tag-pill-coral';
+                    } else if (rawRole === 'hr' || rawRole === 'human_resources') {
+                        roleDisplay = 'HR';
+                        roleBg = 'rgba(245, 158, 11, 0.15)';
+                        roleColor = '#FBBF24';
+                        roleBorder = 'rgba(245, 158, 11, 0.4)';
+                        badgeClass = 'tag-pill-amber';
+                    } else if (rawRole === 'hm' || rawRole === 'hiring_manager' || rawRole === 'hiring') {
+                        roleDisplay = 'HIRING MANAGER';
+                        roleBg = 'rgba(168, 85, 247, 0.15)';
+                        roleColor = '#C084FC';
+                        roleBorder = 'rgba(168, 85, 247, 0.4)';
+                        badgeClass = 'tag-pill-purple';
+                    } else {
+                        roleDisplay = 'EMPLOYEE';
+                        roleBg = 'rgba(16, 185, 129, 0.15)';
+                        roleColor = '#34D399';
+                        roleBorder = 'rgba(16, 185, 129, 0.4)';
+                        badgeClass = 'tag-pill-emerald';
+                    }
+                    roleBadge.textContent = roleDisplay;
+                    roleBadge.className = 'tag-pill ' + badgeClass + ' mt-1';
+                    roleBadge.style.setProperty('background', roleBg, 'important');
+                    roleBadge.style.setProperty('color', roleColor, 'important');
+                    roleBadge.style.setProperty('border', `1px solid ${roleBorder}`, 'important');
+                    roleBadge.style.setProperty('display', 'inline-block', 'important');
+                    roleBadge.style.padding = '2px 8px';
+                    roleBadge.style.borderRadius = '9999px';
+                    roleBadge.style.fontSize = '10px';
+                    roleBadge.style.fontWeight = '800';
+                    roleBadge.style.letterSpacing = '0.05em';
                 }
 
                 const adminRes = document.getElementById('adminResumeList');
@@ -12851,6 +12940,7 @@ body.dark-theme .resume-tip-box,
                 renderPipeline();
                 renderAnalytics();
             }
+            window.updateDashboard = updateDashboard;
 
             function ensurePipelineData() {
                 if (!pipeline || !Array.isArray(pipeline) || pipeline.length === 0) {
