@@ -1126,11 +1126,11 @@
                     const initialChar = name.charAt(0).toUpperCase();
 
                     const avatarGrads = [
-                        'from-emerald-600 to-teal-500',
-                        'from-amber-600 to-orange-500',
-                        'from-blue-600 to-indigo-500',
-                        'from-purple-600 to-pink-500',
-                        'from-slate-700 to-zinc-900'
+                        'from-[#243E36] to-[#183B33]',
+                        'from-slate-700 to-slate-800',
+                        'from-zinc-700 to-zinc-800',
+                        'from-[#1E342D] to-[#12221E]',
+                        'from-gray-700 to-slate-900'
                     ];
                     const grad = avatarGrads[index % avatarGrads.length];
 

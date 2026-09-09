@@ -135,11 +135,11 @@
 
             const initialChar = (cand.name || 'C').charAt(0).toUpperCase();
             const avatarGrads = [
-                'from-emerald-600 to-teal-500',
-                'from-amber-600 to-orange-500',
-                'from-blue-600 to-indigo-500',
-                'from-purple-600 to-pink-500',
-                'from-slate-700 to-zinc-900'
+                'from-[#243E36] to-[#183B33]',
+                'from-slate-700 to-slate-800',
+                'from-zinc-700 to-zinc-800',
+                'from-[#1E342D] to-[#12221E]',
+                'from-gray-700 to-slate-900'
             ];
             const grad = avatarGrads[idx % avatarGrads.length];
 
@@ -387,7 +387,7 @@
                 <!-- Header Banner -->
                 <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-black text-lg flex items-center justify-center shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#243E36] to-[#183B33] text-white font-black text-lg flex items-center justify-center">
                             ${name.charAt(0).toUpperCase()}
                         </div>
                         <div>
