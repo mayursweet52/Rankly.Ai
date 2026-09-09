@@ -21,6 +21,8 @@ router.put('/profile', validate({ body: updateProfileSchema }), userController.u
 router.put('/email', validate({ body: updateEmailSchema }), userController.updateEmail);
 router.put('/password', validate({ body: updatePasswordSchema }), userController.updatePassword);
 router.delete('/account', userController.deleteAccount);
+router.post('/delete-account', userController.deleteAccount);
+router.delete('/delete-account', userController.deleteAccount);
 
 // Referral Codes (Admin / HR)
 router.post('/referral/create', requireRole(['admin', 'hr']), validate({ body: createReferralCodeSchema }), userController.createReferralCode);

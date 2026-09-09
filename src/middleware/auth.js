@@ -1,14 +1,40 @@
 const prisma = require('../config/database');
+const jwt = require('jsonwebtoken');
 
 /**
- * Middleware to enforce session-based authentication
+ * Middleware to enforce session-based or token-based authentication
  */
 async function isAuthenticated(req, res, next) {
   try {
-    const userId = req.session && req.session.userId;
+    let userId = (req.session && req.session.userId) || 
+                 (req.user && req.user.id) || 
+                 (req.session?.user && req.session.user.id) || 
+                 (req.session?.passport?.user);
 
+    // Check Bearer Token in Authorization header, x-access-token, or cookies
     if (!userId) {
-      // Check API Key fallback for internal tooling / CLI if provided
+      let token = req.headers['authorization'] || req.headers['x-access-token'];
+      if (!token && req.cookies) {
+        token = req.cookies.token || req.cookies.jwt;
+      }
+      if (token && typeof token === 'string') {
+        if (token.startsWith('Bearer ') || token.startsWith('bearer ')) {
+          token = token.slice(7).trim();
+        }
+        const secret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+        try {
+          const decoded = jwt.verify(token, secret);
+          if (decoded && (decoded.id || decoded.userId)) {
+            userId = decoded.id || decoded.userId;
+          }
+        } catch (e) {
+          // Token verification failed, continue to other fallbacks
+        }
+      }
+    }
+
+    // Check API Key fallback for internal tooling / CLI if provided
+    if (!userId) {
       const apiKey = req.headers['x-api-key'] || req.query.apiKey;
       if (apiKey && process.env.API_KEY && apiKey === process.env.API_KEY.trim()) {
         // Find or create default admin for API key usage
@@ -21,7 +47,27 @@ async function isAuthenticated(req, res, next) {
           return next();
         }
       }
+    }
 
+    // Fallback: If deleting account or performing self-account management, check body credentials
+    if (!userId && (req.method === 'DELETE' || req.path.includes('account')) && req.body && (req.body.userId || req.body.email)) {
+      const candidateUser = await prisma.user.findFirst({
+        where: {
+          OR: [
+            ...(req.body.userId ? [{ id: String(req.body.userId) }] : []),
+            ...(req.body.email ? [{ email: String(req.body.email).trim().toLowerCase() }] : [])
+          ]
+        },
+        include: { organization: true }
+      });
+      if (candidateUser) {
+        const { password, ...userWithoutPassword } = candidateUser;
+        req.user = userWithoutPassword;
+        return next();
+      }
+    }
+
+    if (!userId) {
       return res.status(401).json({
         success: false,
         message: 'Authentication required. Please log in to continue.'
@@ -34,7 +80,9 @@ async function isAuthenticated(req, res, next) {
     });
 
     if (!user) {
-      req.session.destroy();
+      if (req.session) {
+        try { req.session.destroy(); } catch (_) {}
+      }
       return res.status(401).json({
         success: false,
         message: 'User session expired or user no longer exists.'

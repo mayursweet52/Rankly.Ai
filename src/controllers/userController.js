@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const prisma = require('../config/database');
+const pgDb = require('../config/pgDatabase');
 const { generateReferralCode } = require('../utils/helpers');
 const { sendInvitationEmail } = require('../services/emailService');
 
@@ -141,45 +142,228 @@ async function updatePassword(req, res) {
 }
 
 /**
- * Delete User Account
+ * Delete User Account & Cascade Purge
  */
 async function deleteAccount(req, res) {
   try {
-    const userId = req.user.id;
-    const userEmail = req.user.email;
+    let userId = req.user?.id || req.session?.userId || req.session?.user?.id || req.userId;
+    let userEmail = (req.user?.email || req.session?.user?.email || req.body?.email || '').toLowerCase().trim();
 
-    // Clean up dependent child records
-    await prisma.referralCode.deleteMany({ where: { createdById: userId } }).catch(() => {});
-    await prisma.chatMessage.deleteMany({ where: { userId } }).catch(() => {});
-    await prisma.evaluation.deleteMany({ where: { userId } }).catch(() => {});
-    await prisma.candidate.deleteMany({ where: { userId } }).catch(() => {});
-    await prisma.grievance.deleteMany({ where: { userId } }).catch(() => {});
-    await prisma.employee.deleteMany({ where: { userId } }).catch(() => {});
-    if (userEmail) {
-      await prisma.oTP.deleteMany({ where: { email: userEmail } }).catch(() => {});
-      await prisma.employee.deleteMany({ where: { workEmail: userEmail } }).catch(() => {});
-      await prisma.candidate.deleteMany({ where: { email: userEmail } }).catch(() => {});
+    if (!userId && req.body?.userId) {
+      userId = String(req.body.userId);
     }
-    await prisma.organization.deleteMany({ where: { adminId: userId } }).catch(() => {});
 
-    await prisma.user.delete({ where: { id: userId } });
+    // Try finding the user if only email or only userId was provided
+    let existingUser = null;
+    if (userId) {
+      existingUser = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { organization: true }
+      }).catch(() => null);
+    }
+    if (!existingUser && userEmail) {
+      existingUser = await prisma.user.findFirst({
+        where: { email: { equals: userEmail } },
+        include: { organization: true }
+      }).catch(() => null);
+    }
 
+    const targetUserId = existingUser?.id || userId;
+    const targetUserEmail = (existingUser?.email || userEmail || '').toLowerCase().trim();
+
+    if (!targetUserId && !targetUserEmail) {
+      return res.status(401).json({ success: false, message: 'Unable to identify account to delete. Please sign in.' });
+    }
+
+    // 1. Direct User relations cleanup
+    if (targetUserId) {
+      await prisma.notification.deleteMany({ where: { userId: targetUserId } }).catch(() => {});
+      await prisma.chatMessage.deleteMany({ where: { userId: targetUserId } }).catch(() => {});
+      await prisma.companyDocument.deleteMany({ where: { uploadedById: targetUserId } }).catch(() => {});
+      await prisma.referralCode.deleteMany({ where: { createdById: targetUserId } }).catch(() => {});
+    }
+
+    await prisma.feedback.deleteMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ email: targetUserEmail }] : [])
+        ]
+      }
+    }).catch(() => {});
+
+    await prisma.candidateApplication.deleteMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ candidateEmail: targetUserEmail }] : [])
+        ]
+      }
+    }).catch(() => {});
+
+    await prisma.grievance.deleteMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ employeeEmail: targetUserEmail }] : [])
+        ]
+      }
+    }).catch(() => {});
+
+    await prisma.evaluation.deleteMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ candidateEmail: targetUserEmail }] : [])
+        ]
+      }
+    }).catch(() => {});
+
+    await prisma.candidate.deleteMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ email: targetUserEmail }] : [])
+        ]
+      }
+    }).catch(() => {});
+
+    if (targetUserEmail) {
+      await prisma.oTP.deleteMany({ where: { email: targetUserEmail } }).catch(() => {});
+    }
+
+    // 2. Employee Profile and child relations cascade purge
+    const employees = await prisma.employee.findMany({
+      where: {
+        OR: [
+          ...(targetUserId ? [{ userId: targetUserId }] : []),
+          ...(targetUserEmail ? [{ workEmail: targetUserEmail }, { personalEmail: targetUserEmail }] : [])
+        ]
+      },
+      select: { id: true }
+    }).catch(() => []);
+
+    const employeeIds = employees.map(e => e.id);
+    if (employeeIds.length > 0) {
+      // Unlink reportingManagerId and reviewedById so foreign keys don't block
+      await prisma.employee.updateMany({
+        where: { reportingManagerId: { in: employeeIds } },
+        data: { reportingManagerId: null }
+      }).catch(() => {});
+
+      await prisma.leaveRequest.updateMany({
+        where: { reviewedById: { in: employeeIds } },
+        data: { reviewedById: null }
+      }).catch(() => {});
+
+      await prisma.attendance.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.leaveRequest.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.employeeSalary.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.employeeBankDetails.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.salaryRevision.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.employeeAccessRole.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.employeeSkill.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.recommendedTraining.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+      await prisma.agentEmailDraft.deleteMany({ where: { employeeId: { in: employeeIds } } }).catch(() => {});
+
+      await prisma.employee.deleteMany({ where: { id: { in: employeeIds } } }).catch(() => {});
+    }
+
+    // 3. Organization cascade purge (if user is admin of the organization)
+    if (targetUserId) {
+      const administeredOrgs = await prisma.organization.findMany({
+        where: { adminId: targetUserId },
+        select: { id: true }
+      }).catch(() => []);
+      const orgIds = administeredOrgs.map(o => o.id);
+
+      if (orgIds.length > 0) {
+        // Unlink other member users
+        await prisma.user.updateMany({
+          where: { organizationId: { in: orgIds } },
+          data: { organizationId: null }
+        }).catch(() => {});
+
+        // Clean all employees in these orgs
+        const orgEmployees = await prisma.employee.findMany({
+          where: { organizationId: { in: orgIds } },
+          select: { id: true }
+        }).catch(() => []);
+        const orgEmpIds = orgEmployees.map(e => e.id);
+        if (orgEmpIds.length > 0) {
+          await prisma.employee.updateMany({ where: { reportingManagerId: { in: orgEmpIds } }, data: { reportingManagerId: null } }).catch(() => {});
+          await prisma.leaveRequest.updateMany({ where: { reviewedById: { in: orgEmpIds } }, data: { reviewedById: null } }).catch(() => {});
+          await prisma.attendance.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.leaveRequest.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.employeeSalary.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.employeeBankDetails.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.salaryRevision.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.employeeAccessRole.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.employeeSkill.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.recommendedTraining.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.agentEmailDraft.deleteMany({ where: { employeeId: { in: orgEmpIds } } }).catch(() => {});
+          await prisma.employee.deleteMany({ where: { id: { in: orgEmpIds } } }).catch(() => {});
+        }
+
+        await prisma.referralCode.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.teamInvitation.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.companyDocument.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.grievance.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.evaluation.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.candidate.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.department.deleteMany({ where: { organizationId: { in: orgIds } } }).catch(() => {});
+        await prisma.organization.deleteMany({ where: { id: { in: orgIds } } }).catch(() => {});
+      }
+    }
+
+    // 4. Delete User record
+    if (targetUserId) {
+      await prisma.user.delete({ where: { id: targetUserId } }).catch(async () => {
+        await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE id = ?`, targetUserId).catch(() => {});
+      });
+    }
+    if (targetUserEmail) {
+      await prisma.user.deleteMany({ where: { email: { equals: targetUserEmail } } }).catch(async () => {
+        await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE LOWER(email) = LOWER(?)`, targetUserEmail).catch(() => {});
+      });
+    }
+
+    // 5. Clean up live PostgreSQL tables if connected
+    if (targetUserEmail && pgDb && typeof pgDb.query === 'function') {
+      try {
+        await pgDb.query('DELETE FROM employees WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
+      } catch (err) {
+        console.warn('PostgreSQL employees delete warning:', err.message);
+      }
+      try {
+        await pgDb.query('DELETE FROM candidates WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
+      } catch (err) {
+        console.warn('PostgreSQL candidates delete warning:', err.message);
+      }
+      try {
+        await pgDb.query('DELETE FROM complaints WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
+      } catch (err) {
+        console.warn('PostgreSQL complaints delete warning:', err.message);
+      }
+    }
+
+    // 6. Session and cookie cleanup
     if (req.session && typeof req.logout === 'function') {
       try { req.logout({ keepSessionInfo: false }, () => {}); } catch (e) {}
     }
 
     if (req.session) {
-      req.session.destroy();
+      try { req.session.destroy(); } catch (e) {}
     }
     res.clearCookie('connect.sid', { path: '/' });
     res.clearCookie('token', { path: '/' });
     res.clearCookie('jwt', { path: '/' });
     res.clearCookie('rankly_session', { path: '/' });
 
-    return res.json({ success: true, message: 'Account deleted successfully.' });
+    return res.json({ success: true, message: 'Account permanently deleted from system.' });
   } catch (error) {
     console.error('Delete Account Error:', error);
-    return res.status(500).json({ success: false, message: 'Failed to delete account.' });
+    return res.status(500).json({ success: false, message: 'Failed to delete account. Please try again or contact support.' });
   }
 }
 

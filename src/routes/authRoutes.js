@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../config/passport');
 const authController = require('../controllers/authController');
+const userController = require('../controllers/userController');
 const { isAuthenticated } = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
@@ -66,10 +67,13 @@ router.post('/company/verify-referral', authLimiter, authBackoffLimiter, validat
 router.post('/enterprise/verify-referral', authLimiter, authBackoffLimiter, validate({ body: verifyReferralSchema }), authController.verifyCompanyReferral);
 
 
-// Session State
+// Session State & Account Deletion
 router.get('/me', authController.getMe);
 router.get('/logout', authController.logout);
 router.post('/logout', authController.logout);
+router.delete('/account', isAuthenticated, userController.deleteAccount);
+router.post('/delete-account', isAuthenticated, userController.deleteAccount);
+router.delete('/delete-account', isAuthenticated, userController.deleteAccount);
 
 function attachOAuthSession(req, user) {
   req.session.user = {

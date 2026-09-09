@@ -7255,9 +7255,14 @@ body.dark-theme .resume-tip-box,
                 <div class="mb-4"><label class="form-label">Username</label><input type="text" id="upUsername" class="form-input" /></div>
                 <div class="mb-4"><label class="form-label">Email</label><input type="email" id="upEmail" class="form-input" readonly style="opacity: 0.75; cursor: not-allowed;" /></div>
                 <div class="mb-4"><label class="form-label">Profession / Title</label><input type="text" id="upProfession" class="form-input" /></div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal('updateProfileModal')">Cancel</button>
-                    <button type="submit" class="btn-primary">Save Changes</button>
+                <div class="modal-actions" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <button type="button" class="text-xs text-red-600 hover:text-red-700 font-medium underline flex items-center gap-1.5 transition-colors" onclick="closeModal('updateProfileModal'); openModal('deleteAccountModal');">
+                        <i class="fas fa-trash-can"></i> Delete Account
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="btn-secondary" onclick="closeModal('updateProfileModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -13399,19 +13404,47 @@ body.dark-theme .resume-tip-box,
 
             window.confirmDeleteAccount = async function() {
                 const btn = document.getElementById('confirmDeleteBtn');
+                const origHtml = btn ? btn.innerHTML : '<i class="fas fa-trash-can"></i> <span>Delete Permanently</span>';
                 if (btn) {
                     btn.disabled = true;
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting permanently...';
                 }
 
                 try {
-                    await fetch('/api/user/account', {
+                    const token = localStorage.getItem('token') || localStorage.getItem('rankly_jwt') || sessionStorage.getItem('token');
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (token) {
+                        headers['Authorization'] = `Bearer ${token}`;
+                    }
+
+                    const payload = {
+                        email: (currentUser && currentUser.email) || localStorage.getItem('org_verified_email') || '',
+                        userId: (currentUser && currentUser.id) || ''
+                    };
+
+                    const res = await fetch('/api/user/account', {
                         method: 'DELETE',
                         credentials: 'include',
-                        headers: { 'Content-Type': 'application/json' }
+                        headers,
+                        body: JSON.stringify(payload)
                     });
+
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok || !data.success) {
+                        throw new Error(data.message || 'Failed to delete account from server.');
+                    }
                 } catch (e) {
-                    console.warn('API delete request failed', e);
+                    console.error('API delete request failed', e);
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = origHtml;
+                    }
+                    if (typeof showToast === 'function') {
+                        showToast(e.message || 'Failed to delete account. Please try again.', 'error');
+                    } else {
+                        alert(e.message || 'Failed to delete account.');
+                    }
+                    return;
                 }
 
                 // Completely wipe all local and session storage
