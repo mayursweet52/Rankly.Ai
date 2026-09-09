@@ -49,21 +49,34 @@ async function isAuthenticated(req, res, next) {
       }
     }
 
-    // Fallback: If deleting account or performing self-account management, check body credentials
-    if (!userId && (req.method === 'DELETE' || req.path.includes('account')) && req.body && (req.body.userId || req.body.email)) {
-      const candidateUser = await prisma.user.findFirst({
-        where: {
-          OR: [
-            ...(req.body.userId ? [{ id: String(req.body.userId) }] : []),
-            ...(req.body.email ? [{ email: String(req.body.email).trim().toLowerCase() }] : [])
-          ]
-        },
-        include: { organization: true }
-      });
-      if (candidateUser) {
-        const { password, ...userWithoutPassword } = candidateUser;
-        req.user = userWithoutPassword;
-        return next();
+    // Fallback: If deleting account or performing self-account management, check body, query, or custom headers
+    const isAccountDeletion = req.method === 'DELETE' || 
+                              req.path.includes('account') || 
+                              req.path.includes('delete') || 
+                              (req.originalUrl && (req.originalUrl.includes('account') || req.originalUrl.includes('delete')));
+
+    if (!userId && isAccountDeletion) {
+      const lookupEmail = (req.body?.email || req.body?.userEmail || req.query?.email || req.headers['x-user-email'] || '').toLowerCase().trim();
+      const lookupId = (req.body?.userId || req.body?.id || req.query?.userId || req.headers['x-user-id'] || '').trim();
+
+      if (lookupId || lookupEmail) {
+        const candidateUser = await prisma.user.findFirst({
+          where: {
+            OR: [
+              ...(lookupId ? [{ id: lookupId }] : []),
+              ...(lookupEmail ? [
+                { email: { equals: lookupEmail } },
+                { workEmail: { equals: lookupEmail } }
+              ] : [])
+            ]
+          },
+          include: { organization: true }
+        });
+        if (candidateUser) {
+          const { password, ...userWithoutPassword } = candidateUser;
+          req.user = userWithoutPassword;
+          return next();
+        }
       }
     }
 

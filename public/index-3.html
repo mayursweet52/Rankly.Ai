@@ -7302,9 +7302,10 @@ body.dark-theme .resume-tip-box,
             <p class="text-sm text-[#444440] leading-relaxed mb-4">
                 Are you sure you want to permanently delete your account? All your uploaded candidate datasets, resume screening results, ATS vector embeddings, and session credentials will be permanently erased.
             </p>
-            <div class="p-3 bg-[#FFF5F5] border border-[#FED7D7] rounded-lg text-xs text-[#C53030] font-mono mb-6">
+            <div class="p-3 bg-[#FFF5F5] border border-[#FED7D7] rounded-lg text-xs text-[#C53030] font-mono mb-4">
                 <i class="fas fa-circle-exclamation mr-1"></i> Warning: This action is permanent and cannot be undone.
             </div>
+            <div id="deleteAccountStatusMessage" class="hidden mb-4 p-3 rounded-lg text-xs font-mono"></div>
             <div class="modal-actions">
                 <button type="button" class="btn-secondary" onclick="closeModal('deleteAccountModal')">Cancel</button>
                 <button type="button" class="btn-danger flex items-center justify-center gap-2" id="confirmDeleteBtn" onclick="confirmDeleteAccount()">
@@ -13404,74 +13405,179 @@ body.dark-theme .resume-tip-box,
 
             window.confirmDeleteAccount = async function() {
                 const btn = document.getElementById('confirmDeleteBtn');
+                const statusMsg = document.getElementById('deleteAccountStatusMessage');
                 const origHtml = btn ? btn.innerHTML : '<i class="fas fa-trash-can"></i> <span>Delete Permanently</span>';
+
+                // 1. Gather User Information from ALL possible client locations
+                let resolvedEmail = '';
+                let resolvedUserId = '';
+                let resolvedToken = '';
+
+                // Check window / memory currentUser
+                const activeMemoryUser = (typeof window !== 'undefined' && window.currentUser) || (typeof currentUser !== 'undefined' && currentUser);
+                if (activeMemoryUser) {
+                    resolvedEmail = activeMemoryUser.email || activeMemoryUser.workEmail || '';
+                    resolvedUserId = activeMemoryUser.id || activeMemoryUser.userId || '';
+                }
+
+                // Check storage sessions if email or userId is missing
+                if (!resolvedEmail || !resolvedUserId) {
+                    const storageKeys = ['rankly_session', 'rankly_remembered_session', 'user'];
+                    for (const k of storageKeys) {
+                        try {
+                            const raw = sessionStorage.getItem(k) || localStorage.getItem(k);
+                            if (raw) {
+                                const parsed = JSON.parse(raw);
+                                if (parsed) {
+                                    if (!resolvedEmail) resolvedEmail = parsed.email || parsed.workEmail || '';
+                                    if (!resolvedUserId) resolvedUserId = parsed.id || parsed.userId || '';
+                                }
+                            }
+                        } catch(e) {}
+                    }
+                }
+
+                // Fallback: DOM inputs / text elements
+                if (!resolvedEmail) {
+                    resolvedEmail = document.getElementById('profileEmail')?.value ||
+                                    document.getElementById('userEmailDisplay')?.textContent ||
+                                    document.getElementById('settingsUserEmail')?.textContent ||
+                                    document.getElementById('navUserEmail')?.textContent ||
+                                    localStorage.getItem('org_verified_email') ||
+                                    localStorage.getItem('rankly_verified_email') || '';
+                }
+                resolvedEmail = (resolvedEmail || '').trim().toLowerCase();
+
+                // Resolve Auth Tokens
+                resolvedToken = sessionStorage.getItem('rankly_jwt') ||
+                                localStorage.getItem('rankly_jwt') ||
+                                localStorage.getItem('token') ||
+                                sessionStorage.getItem('token') ||
+                                sessionStorage.getItem('org_verified_token') ||
+                                localStorage.getItem('org_verified_token') || '';
+
+                // UI Loading state
                 if (btn) {
                     btn.disabled = true;
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting permanently...';
                 }
+                if (statusMsg) {
+                    statusMsg.className = 'mb-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs font-mono flex items-center gap-2';
+                    statusMsg.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Purging account, candidate datasets, and credentials...';
+                    statusMsg.classList.remove('hidden');
+                }
 
-                try {
-                    const token = localStorage.getItem('token') || localStorage.getItem('rankly_jwt') || sessionStorage.getItem('token');
-                    const headers = { 'Content-Type': 'application/json' };
-                    if (token) {
-                        headers['Authorization'] = `Bearer ${token}`;
+                const payload = {
+                    email: resolvedEmail,
+                    userId: resolvedUserId
+                };
+
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                };
+                if (resolvedEmail) headers['X-User-Email'] = resolvedEmail;
+                if (resolvedUserId) headers['X-User-Id'] = resolvedUserId;
+                if (resolvedToken) headers['Authorization'] = `Bearer ${resolvedToken}`;
+
+                // Endpoints to attempt sequentially with 8s timeout
+                const queryParams = `?email=${encodeURIComponent(resolvedEmail)}&userId=${encodeURIComponent(resolvedUserId)}`;
+                const endpoints = [
+                    { url: `/api/user/account${queryParams}`, method: 'DELETE' },
+                    { url: `/api/user/delete-account${queryParams}`, method: 'POST' },
+                    { url: `/api/auth/delete-account${queryParams}`, method: 'POST' },
+                    { url: `/api/auth/account${queryParams}`, method: 'DELETE' }
+                ];
+
+                let deleteSuccess = false;
+                let lastErrorMessage = 'Failed to delete account from server.';
+
+                for (const ep of endpoints) {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+                        const res = await fetch(ep.url, {
+                            method: ep.method,
+                            credentials: 'include',
+                            headers,
+                            body: JSON.stringify(payload),
+                            signal: controller.signal
+                        });
+                        clearTimeout(timeoutId);
+
+                        const data = await res.json().catch(() => ({}));
+                        if (res.ok && data.success) {
+                            deleteSuccess = true;
+                            break;
+                        } else if (data && data.message) {
+                            lastErrorMessage = data.message;
+                        }
+                    } catch (fetchErr) {
+                        console.warn(`[Delete Attempt ${ep.method} ${ep.url}] warning:`, fetchErr.message);
+                        lastErrorMessage = fetchErr.message || lastErrorMessage;
                     }
+                }
 
-                    const payload = {
-                        email: (currentUser && currentUser.email) || localStorage.getItem('org_verified_email') || '',
-                        userId: (currentUser && currentUser.id) || ''
-                    };
-
-                    const res = await fetch('/api/user/account', {
-                        method: 'DELETE',
-                        credentials: 'include',
-                        headers,
-                        body: JSON.stringify(payload)
-                    });
-
-                    const data = await res.json().catch(() => ({}));
-                    if (!res.ok || !data.success) {
-                        throw new Error(data.message || 'Failed to delete account from server.');
-                    }
-                } catch (e) {
-                    console.error('API delete request failed', e);
+                if (!deleteSuccess) {
                     if (btn) {
                         btn.disabled = false;
                         btn.innerHTML = origHtml;
                     }
+                    if (statusMsg) {
+                        statusMsg.className = 'mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded-lg text-xs font-mono flex items-center gap-2';
+                        statusMsg.innerHTML = `<i class="fas fa-circle-exclamation"></i> ${lastErrorMessage}`;
+                        statusMsg.classList.remove('hidden');
+                    }
                     if (typeof showToast === 'function') {
-                        showToast(e.message || 'Failed to delete account. Please try again.', 'error');
+                        showToast(lastErrorMessage, 'error');
                     } else {
-                        alert(e.message || 'Failed to delete account.');
+                        alert(lastErrorMessage);
                     }
                     return;
                 }
 
+                // Success State
+                if (btn) {
+                    btn.className = 'btn-success flex items-center justify-center gap-2 bg-emerald-600 text-white';
+                    btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Account Deleted!';
+                }
+                if (statusMsg) {
+                    statusMsg.className = 'mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs font-mono flex items-center gap-2';
+                    statusMsg.innerHTML = '<i class="fas fa-check-circle"></i> Account permanently deleted. Redirecting...';
+                    statusMsg.classList.remove('hidden');
+                }
+
                 // Completely wipe all local and session storage
-                sessionStorage.clear();
-                localStorage.removeItem('rankly_session');
-                localStorage.removeItem('rankly_remembered_session');
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
-                localStorage.removeItem('rankly_jwt');
-                localStorage.removeItem('org_verified_token');
-                localStorage.removeItem('org_verified_email');
+                try { sessionStorage.clear(); } catch(e){}
+                try {
+                    localStorage.removeItem('rankly_session');
+                    localStorage.removeItem('rankly_remembered_session');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('rankly_jwt');
+                    localStorage.removeItem('org_verified_token');
+                    localStorage.removeItem('org_verified_email');
+                    localStorage.removeItem('rankly_verified_email');
+                    localStorage.removeItem('rankly_users');
+                } catch(e){}
                 document.cookie = 'connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'rankly_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
-                if (currentUser) {
-                    users = (users || []).filter(u => u.id !== currentUser.id && u.email !== currentUser.email && u.username !== currentUser.username);
-                    setStoredData('rankly_users', users);
+                if (typeof window !== 'undefined') window.currentUser = null;
+                if (typeof currentUser !== 'undefined') currentUser = null;
+
+                if (typeof showToast === 'function') {
+                    showToast('Account permanently deleted from system.', 'success');
                 }
-                currentUser = null;
-
-                closeModal('deleteAccountModal');
-                showToast('Account permanently deleted from system.', 'success');
 
                 setTimeout(() => {
-                    window.location.replace('/');
-                }, 500);
+                    closeModal('deleteAccountModal');
+                    closeModal('updateProfileModal');
+                    window.location.replace('/?accountDeleted=true');
+                }, 600);
             };
 
             // ─── STANDARD BUTTON LOADING CONTROLLER ───

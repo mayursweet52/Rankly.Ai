@@ -146,12 +146,21 @@ async function updatePassword(req, res) {
  */
 async function deleteAccount(req, res) {
   try {
-    let userId = req.user?.id || req.session?.userId || req.session?.user?.id || req.userId;
-    let userEmail = (req.user?.email || req.session?.user?.email || req.body?.email || '').toLowerCase().trim();
+    let userId = req.user?.id || req.session?.userId || req.session?.user?.id || req.userId || req.body?.userId || req.body?.id || req.query?.userId || req.headers['x-user-id'];
+    let userEmail = (
+      req.user?.email || 
+      req.user?.workEmail || 
+      req.session?.user?.email || 
+      req.session?.user?.workEmail || 
+      req.session?.userEmail || 
+      req.body?.email || 
+      req.body?.userEmail || 
+      req.query?.email || 
+      req.headers['x-user-email'] || 
+      ''
+    ).toLowerCase().trim();
 
-    if (!userId && req.body?.userId) {
-      userId = String(req.body.userId);
-    }
+    if (userId) userId = String(userId).trim();
 
     // Try finding the user if only email or only userId was provided
     let existingUser = null;
@@ -163,16 +172,31 @@ async function deleteAccount(req, res) {
     }
     if (!existingUser && userEmail) {
       existingUser = await prisma.user.findFirst({
-        where: { email: { equals: userEmail } },
+        where: {
+          OR: [
+            { email: { equals: userEmail } },
+            { workEmail: { equals: userEmail } }
+          ]
+        },
         include: { organization: true }
       }).catch(() => null);
     }
 
     const targetUserId = existingUser?.id || userId;
-    const targetUserEmail = (existingUser?.email || userEmail || '').toLowerCase().trim();
+    const targetUserEmail = (existingUser?.email || existingUser?.workEmail || userEmail || '').toLowerCase().trim();
+
+    console.log(`🗑️ [DELETE ACCOUNT INITIATED]:`, { targetUserId, targetUserEmail });
 
     if (!targetUserId && !targetUserEmail) {
       return res.status(401).json({ success: false, message: 'Unable to identify account to delete. Please sign in.' });
+    }
+
+    // 0. Unlink user from organization first to break foreign key cycles
+    if (targetUserId) {
+      await prisma.user.update({
+        where: { id: targetUserId },
+        data: { organizationId: null }
+      }).catch(() => {});
     }
 
     // 1. Direct User relations cleanup
@@ -245,7 +269,6 @@ async function deleteAccount(req, res) {
 
     const employeeIds = employees.map(e => e.id);
     if (employeeIds.length > 0) {
-      // Unlink reportingManagerId and reviewedById so foreign keys don't block
       await prisma.employee.updateMany({
         where: { reportingManagerId: { in: employeeIds } },
         data: { reportingManagerId: null }
@@ -278,13 +301,11 @@ async function deleteAccount(req, res) {
       const orgIds = administeredOrgs.map(o => o.id);
 
       if (orgIds.length > 0) {
-        // Unlink other member users
         await prisma.user.updateMany({
           where: { organizationId: { in: orgIds } },
           data: { organizationId: null }
         }).catch(() => {});
 
-        // Clean all employees in these orgs
         const orgEmployees = await prisma.employee.findMany({
           where: { organizationId: { in: orgIds } },
           select: { id: true }
@@ -323,31 +344,75 @@ async function deleteAccount(req, res) {
       });
     }
     if (targetUserEmail) {
-      await prisma.user.deleteMany({ where: { email: { equals: targetUserEmail } } }).catch(async () => {
+      await prisma.user.deleteMany({
+        where: {
+          OR: [
+            { email: { equals: targetUserEmail } },
+            { workEmail: { equals: targetUserEmail } }
+          ]
+        }
+      }).catch(async () => {
         await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE LOWER(email) = LOWER(?)`, targetUserEmail).catch(() => {});
+        await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE LOWER(workEmail) = LOWER(?)`, targetUserEmail).catch(() => {});
       });
     }
 
-    // 5. Clean up live PostgreSQL tables if connected
+    // Safety check: verify if record still exists in SQLite
+    let stillExists = targetUserId 
+      ? await prisma.user.findUnique({ where: { id: targetUserId } }).catch(() => null)
+      : null;
+    if (!stillExists && targetUserEmail) {
+      stillExists = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: { equals: targetUserEmail } },
+            { workEmail: { equals: targetUserEmail } }
+          ]
+        }
+      }).catch(() => null);
+    }
+
+    if (stillExists) {
+      console.warn('⚠️ User record lingered due to constraint locks. Executing forced cascade delete...');
+      await prisma.$executeRawUnsafe(`PRAGMA foreign_keys = OFF;`).catch(() => {});
+      if (targetUserId) {
+        await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE id = ?;`, targetUserId).catch(() => {});
+      }
+      if (targetUserEmail) {
+        await prisma.$executeRawUnsafe(`DELETE FROM "User" WHERE LOWER(email) = LOWER(?) OR LOWER(workEmail) = LOWER(?);`, targetUserEmail, targetUserEmail).catch(() => {});
+      }
+      await prisma.$executeRawUnsafe(`PRAGMA foreign_keys = ON;`).catch(() => {});
+    }
+
+    // 5. Clean up live PostgreSQL tables if connected (with 1500ms timeout)
     if (targetUserEmail && pgDb && typeof pgDb.query === 'function') {
       try {
-        await pgDb.query('DELETE FROM employees WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
-      } catch (err) {
-        console.warn('PostgreSQL employees delete warning:', err.message);
-      }
-      try {
-        await pgDb.query('DELETE FROM candidates WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
-      } catch (err) {
-        console.warn('PostgreSQL candidates delete warning:', err.message);
-      }
-      try {
-        await pgDb.query('DELETE FROM complaints WHERE LOWER(email) = LOWER($1);', [targetUserEmail]);
-      } catch (err) {
-        console.warn('PostgreSQL complaints delete warning:', err.message);
+        const pgTimeout = new Promise(resolve => setTimeout(resolve, 1500));
+        await Promise.race([
+          Promise.allSettled([
+            pgDb.query('DELETE FROM employees WHERE LOWER(email) = LOWER($1);', [targetUserEmail]),
+            pgDb.query('DELETE FROM candidates WHERE LOWER(email) = LOWER($1);', [targetUserEmail]),
+            pgDb.query('DELETE FROM complaints WHERE LOWER(email) = LOWER($1);', [targetUserEmail])
+          ]),
+          pgTimeout
+        ]);
+      } catch (pgErr) {
+        console.warn('PostgreSQL cleanup warning:', pgErr.message);
       }
     }
 
-    // 6. Session and cookie cleanup
+    // 6. Direct purge from SQLite session store table
+    if (targetUserId) {
+      try {
+        await prisma.$executeRawUnsafe(
+          `DELETE FROM sessions WHERE sess LIKE ? OR sess LIKE ?;`,
+          `%"userId":"${targetUserId}"%`,
+          `%"id":"${targetUserId}"%`
+        ).catch(() => {});
+      } catch (_) {}
+    }
+
+    // 7. Session and cookie cleanup
     if (req.session && typeof req.logout === 'function') {
       try { req.logout({ keepSessionInfo: false }, () => {}); } catch (e) {}
     }
@@ -360,6 +425,7 @@ async function deleteAccount(req, res) {
     res.clearCookie('jwt', { path: '/' });
     res.clearCookie('rankly_session', { path: '/' });
 
+    console.log(`✅ [DELETE ACCOUNT COMPLETED]: Account permanently removed.`);
     return res.json({ success: true, message: 'Account permanently deleted from system.' });
   } catch (error) {
     console.error('Delete Account Error:', error);
