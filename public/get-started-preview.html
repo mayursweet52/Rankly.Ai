@@ -349,7 +349,7 @@
                         <div class="relative flex items-center">
                             <input type="text" id="previewOrgDomain" class="step-input pr-12 font-medium" placeholder="e.g. stripe.com or Airbnb" oninput="handleLogoLookup(this.value)" value="stripe.com" />
                             <div class="absolute right-3 w-7 h-7 rounded-lg border border-[var(--card-border)] bg-white p-0.5 flex items-center justify-center overflow-hidden shadow-sm">
-                                <img id="logoDevAvatar" src="https://img.logo.dev/stripe.com?token=pk_EJiYI6zfSfSYg_x25fXJSg&size=64" class="w-full h-full object-contain" alt="Company Logo" />
+                                <img id="logoDevAvatar" src="https://img.logo.dev/stripe.com?token=pk_EJiYI6zfSfSYg_x25fXJSg&size=64" onerror="this.onerror=null; this.src='/assets/brand/rankly-full-logo-light.png';" class="w-full h-full object-contain" alt="Company Logo" />
                             </div>
                         </div>
                         <p class="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 font-mono flex items-center gap-1">
