@@ -1,60 +1,47 @@
-# 🚀 Proposal & Architecture Plan: Dedicated NVIDIA Nemotron + Local Ollama AI Engine
+﻿# 🎨 Proposal & Fix Plan: Sidebar Navigation Alignment & Light/Dark Theme Harmonization
+
 **Project:** Rankly.ai  
-**Primary Architect:** Mayur Jadhav (`Antigravity-Agent-Mayur`)  
+**Primary Architect:** Mayur Jadhav & Sumit Khomne  
 **Status:** 🟡 **AWAITING DEVELOPER APPROVAL ("Proceed / Approved")**  
-**Team Allocation:**
-- **Mayur (Primary AI & Backend Architect)**: 🟢 **100% ACTIVE — DEDICATED TO NEMOTRON + OLLAMA**
-- **Sumit (Frontend Lead)**: 💤 **RESTING / ON STANDBY** (Frontend HTML/CSS locked)
-- **Vaibhav (Database Lead)**: 💤 **RESTING / ON STANDBY** (Database & Infra locked)
 
 ---
 
-## 🎯 1. Objective: 100% Zero-Cost Dual Engine (No Gemini, No GPT)
+## 🔍 1. Issue Analysis & Root Cause
 
-Aapki requirement ke anusar:
-1. **Gemini aur GPT (OpenAI) ko completely band (disable/bypass) kiya jayega** kyunki tokens exhaust ho chuke hain.
-2. Pura AI engine ab **NVIDIA Nemotron (Cloud Flagship Reasoning)** aur **Local Ollama (Offline Unlimited, 0 Token Cost)** par shift hoga.
-3. Sumit aur Vaibhav resting mode me rahenge (koi bhi UI ya DB change nahi hoga). Pura focus sirf AI inference aur scoring engine par rahega.
+### Issue A: Sidebar Navigation Alignment Glitch (User Image)
+1. **Root Cause**:
+   - In `dashNav`, active item displays `<span class="nav-dot" style="display:inline-block"></span>` with `margin-right: 10px`.
+   - Inactive items have `<span class="nav-dot" style="display:none"></span>`.
+   - Jab dot hide hota hai, inactive items left-most position par chale jaate hain. Jab dot show hota hai, active item ka text **16px right me push ho jata hai**.
+   - Result: Screenshot me dekha ja sakta hai — `Candidate Profile`, `Job Listings & Apply`, aur `Application Tracker` ek line me hain, jabki `🔴 AI Resume & ATS Studio` aage jump kar raha hai!
 
----
-
-## 🔍 2. Live Tested & Verified Model Matrix
-
-Humne live test kar ke confirm kar liya hai:
-
-| Engine | Model ID | Status | Cost / Token | Latency | Capability |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **NVIDIA Cloud (Tier 0A)** | `nvidia/nemotron-3-ultra-550b-a55b` | 🟢 Active | NVIDIA API Key | ~8.4s | 550B Ultra Reasoning, Deep ATS Match |
-| **NVIDIA Cloud (Tier 0B)** | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | 🟢 Active | NVIDIA API Key | ~3.2s | 30B Fast Reasoning |
-| **Local Ollama (Tier 1A)** | `llama3.2:latest` | 🟢 Active | **₹0.00 / Free** | ~2.1s | Fast ATS Extraction, JSON parsing |
-| **Local Ollama (Tier 1B)** | `qwen2.5-coder:7b` | 🟢 Active | **₹0.00 / Free** | ~3.8s | Precision Code & Skill Analysis |
-| **Heuristic Net (Tier 2)** | `evaluateResumeRuleBased` | 🟢 Active | **₹0.00 / Free** | <1ms | 100% Guaranteed Uptime Fallback |
+2. **Fix**:
+   - Har nav-item me `.nav-dot-wrapper` ya fixed-width container denge (`width: 14px; display: inline-flex; justify-content: center; margin-right: 8px;`).
+   - Inactive state me dot `opacity: 0; transform: scale(0.6);` rahega, aur active state me `opacity: 1; transform: scale(1); background: #D95D39 (light) / #10B981 (dark)`.
+   - **Result**: Har ek tab ka text **exact 100% vertical straight line me aligned** rahega! Zero layout shift.
 
 ---
 
-## 🏛️ 3. Execution Scope (Mayur Only)
+### Issue B: Light Mode vs Dark Mode Inconsistencies & Clashing Overrides
+1. **Root Cause**:
+   - Generic overrides `body:not(.dark-theme):not(.dark) .dash-sidebar { background: #FFFFFF }` aur `.dash-main { background: #F8FAFC }` add ho gaye the jo original luxury cellular mesh `#F3F3ED` / radial-gradient se clash kar rahe the.
+   - Text contrast in light mode: `.nav-item` inactive text `#475569` aur `#555550` me clash tha.
+   - Dark mode toggle button state transitions aur background contrast ko uniform banaya jayega.
 
-### File 1: `src/services/aiService.js`
-- `executeAiInference` ko restructure karenge:
-  - **Tier 0**: NVIDIA Nemotron (`nvidia/nemotron-3-ultra-550b-a55b` -> fallback `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning`) with reasoning extraction.
-  - **Tier 1**: Local Ollama (`http://localhost:11434/api/generate`) with `llama3.2:latest` / `qwen2.5-coder:7b`.
-  - **Gemini & OpenAI GPT**: Strictly skipped/disabled. Zero tokens used!
-  - Export `queryAI` helper function for backward compatibility across services.
-
-### File 2: `src/services/aiMatcher.js`
-- Dedicated ATS candidate match evaluator using Nemotron reasoning:
-  - Candidate scoring (0-100)
-  - Key competencies vs gap analysis
-  - 3 targeted interview probe questions based on candidate weaknesses
-  - Chain-of-thought AI reasoning output for recruiter auditability.
-
-### File 3: `scratch/test_ai_pipeline.js`
-- Automated test script to verify end-to-end inference across Nemotron and Ollama.
+2. **Fix**:
+   - Unify both themes to high-contrast, luxury design system:
+     - **Light Theme**: Clean `#F5F5F0` / `#FFFFFF` card surfaces, `#183B33` primary green, `#D95D39` coral active dot with soft rounded pill background `rgba(24, 59, 51, 0.07)` on active item.
+     - **Dark Theme**: `#0B0D14` obsidian canvas, `#12141F` sidebar, `#10B981` emerald active dot with subtle glow `rgba(16, 185, 129, 0.12)` active pill background.
+   - Theme toggle micro-animation: Perfect sync between light and dark pill switch without flickering.
 
 ---
 
-## 🚦 4. Mandatory Developer Permission Gate
+## 🛠️ 2. Files To Update Once Approved
+1. `public/index.html` — Update nav-item HTML mapping and CSS rules.
+2. `public/index-3.html` — Mirror the exact same fix to preserve sync.
+3. `AGENT_BRIDGE.json` & `AGENT_BRIDGE.md` — Log the update and agent states.
 
-> [!IMPORTANT]
-> **Awaiting Developer Permission:**  
-> Plan aur dual-engine architecture tayyar hai. Execution start karne ke liye kripya **"Proceed"** ya **"Approved"** confirm karein.
+---
+
+## 🚦 3. Developer Permission Gate
+Bhai, plan bilkul clear aur ready hai. Jaise hi aap **"Proceed"** ya **"Approved"** bologe, main turant dono files me yeh fix push karke commit & push kar dunga!
