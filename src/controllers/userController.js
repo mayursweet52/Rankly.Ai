@@ -413,12 +413,8 @@ async function deleteAccount(req, res) {
     }
 
     // 7. Session and cookie cleanup
-    if (req.session && typeof req.logout === 'function') {
-      try { req.logout({ keepSessionInfo: false }, () => {}); } catch (e) {}
-    }
-
     if (req.session) {
-      try { req.session.destroy(); } catch (e) {}
+      try { req.session.destroy(() => {}); } catch (_) {}
     }
     res.clearCookie('connect.sid', { path: '/' });
     res.clearCookie('token', { path: '/' });
