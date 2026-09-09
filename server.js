@@ -119,11 +119,15 @@ app.use((req, res, next) => {
   const start = process.hrtime();
   res.setHeader('Connection', 'keep-alive');
   res.setHeader('Keep-Alive', 'timeout=65');
-  res.on('finish', () => {
-    const diff = process.hrtime(start);
-    const timeMs = (diff[0] * 1e3 + diff[1] * 1e-6).toFixed(2);
-    res.setHeader('X-Response-Time', `${timeMs}ms`);
-  });
+  const originalEnd = res.end;
+  res.end = function(...args) {
+    if (!res.headersSent) {
+      const diff = process.hrtime(start);
+      const timeMs = (diff[0] * 1e3 + diff[1] * 1e-6).toFixed(2);
+      res.setHeader('X-Response-Time', `${timeMs}ms`);
+    }
+    return originalEnd.apply(this, args);
+  };
   next();
 });
 
@@ -1024,7 +1028,7 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 process.on('uncaughtException', (err) => {
-  console.error('⚠️ [UncaughtException Safeguard]:', err.message);
+  console.error('⚠️ [UncaughtException Safeguard]:', err.message, err.stack);
 });
 
 process.on('unhandledRejection', (reason) => {

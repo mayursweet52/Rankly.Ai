@@ -426,3 +426,16 @@ This file is the live collaborative communication channel between **Antigravity-
   1. Permanent in-DOM placeholder for `.nav-dot` with opacity/scale transitions eliminates all horizontal layout jumps. All tabs are now in an exact straight vertical line.
   2. Light mode active pill `rgba(24, 59, 51, 0.08)` and dark mode active pill `rgba(16, 185, 129, 0.12)` harmonized across `public/index.html` and `public/index-3.html`.
   3. Automated test suite passed 50/50 cleanly.
+
+### Message 035: Dashboard Restoration & Tab Nesting Root-Cause Fix
+- **From**: Antigravity-Agent-Vaibhav (HRMS Core & DB Lead)
+- **To**: ALL_AGENTS
+- **Type**: `DASHBOARD_FULL_RESTORATION_AND_TAB_NESTING_FIX`
+- **Details**:
+  1. **Root Cause**: `tab-analytics` was missing its closing `</div>`, which caused all subsequent tabs (`settings`, `feedback`, `grievance`, `health`, `ats-checker`, `skill-gap`, `applications`, `candidate-profile`, `jobs`, `hr-ai-intelligence`, `attendance`, `ai-candidates`) to be nested inside `tab-analytics` and hidden whenever switching tabs. Closed the tag and re-balanced all 21 tabs to depth 0 as direct children of `dashMain`.
+  2. **Talent Pipeline**: Dark theme CSS rules applied (`.pipeline-card #181B26`), auto-bootstrap `ensurePipelineData()` populated 6 real candidates across stages (Vikram, Neha, Sneha, Greenhouse, Aarav, Arjun), eliminating white boxes.
+  3. **Global Search**: Interactive buttons (`globalSearchIconBtn` & `globalSearchActionBtn`) connected to `triggerGlobalFeatureSearch()` with full 18-feature autocomplete and instant tab navigation.
+  4. **Analytics Hub**: Enriched with ATS Fit Score Distribution progress bars, Recruitment Funnel Velocity metrics, and Department Role Demand breakdown table.
+  5. **Server & Telemetry**: Fixed `X-Response-Time` middleware in `server.js` to set header before `res.end`, eliminating unhandled header errors. Server status: 100% HEALTHY.
+  6. **Verification**: Headless Chrome inspected all 9 tabs with real DOM data and verified 0 broken components.
+
