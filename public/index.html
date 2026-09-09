@@ -5357,6 +5357,43 @@ body.dark-theme .resume-tip-box,
 </style>
 
 <style id="rankly-luxury-palette">
+        /* System Health: Calm Flat Luxury (Zero pulse, Zero glow, Zero radar) */
+        #healthStatusOrb {
+            animation: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            transform: none !important;
+        }
+        body.dark-theme #tab-health .card,
+        .dark #tab-health .card {
+            background-color: #12151E !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme #tab-health h2,
+        body.dark-theme #tab-health h3,
+        .dark #tab-health h2,
+        .dark #tab-health h3 {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme #tab-health p,
+        .dark #tab-health p {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme #tab-health .stat-card,
+        .dark #tab-health .stat-card {
+            background-color: #181D29 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme #healthAuditLogsContainer,
+        body.dark-theme #securityThreatsContainer,
+        body.dark-theme #snapshotsListContainer,
+        .dark #healthAuditLogsContainer,
+        .dark #securityThreatsContainer,
+        .dark #snapshotsListContainer {
+            background-color: #141722 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
         /* ─── PERFORMANCE TURBO-BOOST (60FPS/120FPS SILKY SMOOTH) ─── */
         .pebble-3d-grey,
         .pebble-3d-coral,
@@ -8941,12 +8978,12 @@ body.dark-theme .resume-tip-box,
 
                     <!-- ─── TAB 8: SYSTEM HEALTH & AUTONOMOUS SELF-HEALING ─── -->
                     <div class="tab-content" id="tab-health" style="display:none;">
-                        <div class="card max-w-5xl mx-auto p-6 md:p-8 rounded-2xl shadow-sm border border-[#E5E5DF] bg-white mb-8">
+                        <div class="card max-w-5xl mx-auto p-6 md:p-8 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900/90 mb-8">
                             <!-- Header & Status Orb -->
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E5E5DF] mb-6">
                                 <div>
                                     <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-500/50" id="healthStatusOrb"></div>
+                                        <div class="w-3.5 h-3.5 rounded-full bg-[#10B981] border border-[#059669]/30" id="healthStatusOrb"></div>
                                         <h2 class="text-2xl font-black text-[#111111] tracking-tight mb-0">System Health & Self-Healing Telemetry</h2>
                                     </div>
                                     <p class="text-xs text-[#666660] font-mono mt-1">Continuous 2-minute automated mistake detection, pre-tested healing & zero-downtime rollback</p>
@@ -8956,7 +8993,7 @@ body.dark-theme .resume-tip-box,
                                         <i class="fas fa-arrows-rotate" id="healthAuditIcon"></i>
                                         <span>Run Diagnostics & Heal Now</span>
                                     </button>
-                                    <button type="button" class="btn-secondary flex items-center gap-2 text-xs py-2.5 px-4 font-bold" onclick="sendTestAlertEmailUI()" id="testEmailBtn" style="background:#FAFAF8; border: 1px solid #E5E5DF; border-radius: 10px; color: #111111;">
+                                    <button type="button" class="btn-secondary flex items-center gap-2 text-xs py-2.5 px-4 font-bold" onclick="sendTestAlertEmailUI()" id="testEmailBtn">
                                         <i class="fas fa-envelope-circle-check text-[#183B33]" id="testEmailIcon"></i>
                                         <span>Send Test Alert Email</span>
                                     </button>
@@ -16016,7 +16053,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             statusEl.textContent = isHealthy ? '100% HEALTHY' : t.status;
                             statusEl.className = `text-lg font-black ${isHealthy ? 'text-emerald-600' : 'text-amber-500'}`;
                             if (orbEl) {
-                                orbEl.className = `w-4 h-4 rounded-full ${isHealthy ? 'bg-emerald-500 shadow-emerald-500/50' : 'bg-amber-500 shadow-amber-500/50'} animate-pulse shadow-lg`;
+                                orbEl.className = `w-3.5 h-3.5 rounded-full ${isHealthy ? 'bg-[#10B981] border border-[#059669]/30' : 'bg-amber-500 border border-amber-600/30'}`;
                             }
                         }
 
