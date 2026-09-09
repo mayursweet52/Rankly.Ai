@@ -60,15 +60,36 @@ const authLimiter = rateLimit({
 });
 
 // -----------------------------------------------------------------------------
-// 2. Dedicated OTP Limiter (Strict Bombing & Spam Protection)
+// 2. Dedicated OTP Limiter (High-Speed with Loopback/Localhost Bypass & Email Keying)
 // -----------------------------------------------------------------------------
 const otpLimiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_OTP_WINDOW_MS, 10) || 10 * 60 * 1000, // 10 minutes
-  max: parseInt(process.env.RATE_LIMIT_OTP_MAX, 10) || 5, // 5 requests per 10 minutes
+  windowMs: parseInt(process.env.RATE_LIMIT_OTP_WINDOW_MS, 10) || 5 * 60 * 1000, // 5 minutes
+  max: parseInt(process.env.RATE_LIMIT_OTP_MAX, 10) || 60, // 60 requests per 5 minutes
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => req.ip,
+  keyGenerator: (req) => {
+    const email = req.body?.email || req.body?.identifier || req.body?.workEmail || req.body?.to;
+    if (email && typeof email === 'string') {
+      return 'otp:' + email.toLowerCase().trim();
+    }
+    const forwarded = req.headers['x-forwarded-for'];
+    if (forwarded) {
+      return 'ip:' + forwarded.split(',')[0].trim();
+    }
+    return 'ip:' + (req.ip || req.connection?.remoteAddress || '127.0.0.1');
+  },
   skip: (req) => {
+    // Completely bypass rate limiting on local development/localhost to ensure lightning-fast dev testing
+    const clientIp = req.ip || req.connection?.remoteAddress || '';
+    if (
+      clientIp === '127.0.0.1' || 
+      clientIp === '::1' || 
+      clientIp === '::ffff:127.0.0.1' || 
+      clientIp.includes('127.0.0.1') ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      return true;
+    }
     if (process.env.RATE_LIMIT_BYPASS_SECRET && req.headers['x-bypass-rate-limit'] === process.env.RATE_LIMIT_BYPASS_SECRET) {
       return true;
     }
@@ -76,7 +97,7 @@ const otpLimiter = rateLimit({
   },
   validate: { xForwardedForHeader: false, trustProxy: false },
   handler: createRateLimitHandler(
-    'Too many OTP requests for this account. Please wait 10 minutes before requesting another code.',
+    'Too many verification code requests for this address. Please wait a moment before trying again.',
     'OTP_RATE_LIMIT_EXCEEDED'
   )
 });

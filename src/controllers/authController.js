@@ -23,61 +23,52 @@ async function findExistingUserByEmail(email, req = null) {
     }
   } catch (_) {}
 
-  // 2. Check Prisma SQLite User table (email, workEmail, username)
+  // 2. Ultra-fast concurrent check across Prisma User, Employee, and Candidate
   try {
-    const directUser = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: { equals: cleanEmail } },
-          { workEmail: { equals: cleanEmail } },
-          { username: { equals: cleanEmail } }
-        ]
-      }
-    });
-    if (directUser) return directUser;
-  } catch (_) {}
-
-  // 3. Case-insensitive raw SQLite query fallback on User table
-  try {
-    const rawUsers = await prisma.$queryRawUnsafe(
-      'SELECT id, email, role, isEmailVerified FROM "User" WHERE LOWER(email) = LOWER(?) OR LOWER(workEmail) = LOWER(?) OR LOWER(username) = LOWER(?) LIMIT 1',
-      cleanEmail, cleanEmail, cleanEmail
-    );
-    if (rawUsers && rawUsers.length > 0) return rawUsers[0];
-  } catch (_) {}
-
-  // 4. Check Prisma Employee & Candidate models
-  try {
-    if (prisma.employee) {
-      const emp = await prisma.employee.findFirst({
+    const [directUser, emp, cand] = await Promise.all([
+      prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: { equals: cleanEmail } },
+            { workEmail: { equals: cleanEmail } },
+            { username: { equals: cleanEmail } }
+          ]
+        }
+      }).catch(() => null),
+      prisma.employee ? prisma.employee.findFirst({
         where: {
           OR: [
             { personalEmail: { equals: cleanEmail } },
             { workEmail: { equals: cleanEmail } }
           ]
         }
-      });
-      if (emp) return { id: emp.id, email: emp.workEmail || emp.personalEmail, source: 'prisma_employee' };
-    }
-  } catch (_) {}
-
-  try {
-    if (prisma.candidate) {
-      const cand = await prisma.candidate.findFirst({
+      }).catch(() => null) : Promise.resolve(null),
+      prisma.candidate ? prisma.candidate.findFirst({
         where: { email: { equals: cleanEmail } }
-      });
-      if (cand && cand.email) return { id: cand.id, email: cand.email, source: 'prisma_candidate' };
-    }
+      }).catch(() => null) : Promise.resolve(null)
+    ]);
+
+    if (directUser) return directUser;
+    if (emp) return { id: emp.id, email: emp.workEmail || emp.personalEmail, source: 'prisma_employee' };
+    if (cand && cand.email) return { id: cand.id, email: cand.email, source: 'prisma_candidate' };
   } catch (_) {}
 
-  // 5. Check live PostgreSQL employees & candidates
+  // 3. Resilient PostgreSQL check with 120ms fast timeout
   try {
     if (pgDb && typeof pgDb.query === 'function') {
-      const pgEmp = await pgDb.query('SELECT employee_id as id, email, role FROM employees WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]);
-      if (pgEmp && pgEmp.rows && pgEmp.rows.length > 0) return { id: pgEmp.rows[0].id, email: pgEmp.rows[0].email, source: 'pg_employee' };
-
-      const pgCand = await pgDb.query('SELECT id, email, status FROM candidates WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]);
-      if (pgCand && pgCand.rows && pgCand.rows.length > 0) return { id: pgCand.rows[0].id, email: pgCand.rows[0].email, source: 'pg_candidate' };
+      const pgPromise = Promise.all([
+        pgDb.query('SELECT employee_id as id, email, role FROM employees WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail]),
+        pgDb.query('SELECT id, email, status FROM candidates WHERE LOWER(email) = LOWER($1) LIMIT 1;', [cleanEmail])
+      ]);
+      const pgRes = await Promise.race([
+        pgPromise,
+        new Promise(resolve => setTimeout(() => resolve(null), 120))
+      ]);
+      if (pgRes && Array.isArray(pgRes)) {
+        const [pgEmp, pgCand] = pgRes;
+        if (pgEmp && pgEmp.rows && pgEmp.rows.length > 0) return { id: pgEmp.rows[0].id, email: pgEmp.rows[0].email, source: 'pg_employee' };
+        if (pgCand && pgCand.rows && pgCand.rows.length > 0) return { id: pgCand.rows[0].id, email: pgCand.rows[0].email, source: 'pg_candidate' };
+      }
     }
   } catch (_) {}
 
@@ -693,19 +684,20 @@ async function sendOtp(req, res) {
       }
     }
 
-    // Cooldown check (2s) to prevent double clicks while allowing smooth Resend OTP
+    // Seamless debounce check: If requested within 1.5s, return active code confirmation gracefully without 429 error
     const recentOtp = await prisma.oTP.findFirst({
       where: {
         email: recipientEmail,
-        createdAt: { gte: new Date(Date.now() - 2 * 1000) }
+        createdAt: { gte: new Date(Date.now() - 1500) }
       },
       orderBy: { createdAt: 'desc' }
     });
     if (recentOtp) {
-      return res.status(429).json({
-        success: false,
-        error: 'Please wait 2 seconds before requesting another code.',
-        message: 'Please wait 2 seconds before requesting another code.'
+      return res.status(200).json({
+        success: true,
+        message: `A 6-digit verification code has been sent to ${recipientEmail}. Please check your inbox or spam folder.`,
+        email: recipientEmail,
+        details: `A 6-digit verification code has been sent to ${recipientEmail}. Please check your inbox or spam folder.`
       });
     }
 
@@ -727,17 +719,14 @@ async function sendOtp(req, res) {
       }
     });
 
-    // Ultra-Fast Email Dispatch: Fire real verification email with non-blocking 400ms quick-race
-    const emailPromise = sendOTPEmail(recipientEmail, otpCode, type).catch(emailErr => {
-      console.warn('⚠️ [OTP Email Dispatch Warning]:', emailErr.message);
+    // High-speed non-blocking asynchronous email dispatch (zero latency for user)
+    setImmediate(async () => {
+      try {
+        await sendOTPEmail(recipientEmail, otpCode, type);
+      } catch (emailErr) {
+        console.warn('⚠️ [Async OTP Email Dispatch Warning]:', emailErr.message);
+      }
     });
-
-    try {
-      await Promise.race([
-        emailPromise,
-        new Promise(resolve => setTimeout(resolve, 400))
-      ]);
-    } catch (e) {}
 
     return res.status(200).json({
       success: true,
@@ -1955,16 +1944,15 @@ async function resendOtp(req, res) {
       }
     });
 
-    // 3. Dispatch Email with user's resend subject
+    // 3. Ultra-fast non-blocking email dispatch (immediate response)
     const subject = `Your Rankly.ai verification code is ${newOtp}`;
-    try {
-      await Promise.race([
-        sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject),
-        new Promise(resolve => setTimeout(() => resolve(true), 4000))
-      ]);
-    } catch (emailErr) {
-      console.warn('⚠️ [Background Resend OTP Email Error]:', emailErr.message);
-    }
+    setImmediate(async () => {
+      try {
+        await sendOTPEmail(cleanEmail, newOtp, 'email_verification', subject);
+      } catch (emailErr) {
+        console.warn('⚠️ [Background Resend OTP Email Error]:', emailErr.message);
+      }
+    });
 
     return res.json({ 
       success: true, 
