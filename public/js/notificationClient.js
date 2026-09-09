@@ -46,6 +46,10 @@
     }
 
     function updateBadge(count) {
+        if (window.DesignMotion && window.DesignMotion.Notifications && typeof window.DesignMotion.Notifications.setBadgeCount === 'function') {
+            window.DesignMotion.Notifications.setBadgeCount(count);
+            return;
+        }
         const badge = document.getElementById('notifBadge');
         const countBadge = document.getElementById('notifDropdownCountBadge');
         if (badge) {

@@ -41,6 +41,7 @@
             if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load AI queue');
 
             currentQueueData = data.candidates || [];
+            window.currentQueueData = currentQueueData;
             renderAiCandidateQueue(currentQueueData);
             updateAiQueueStats(currentQueueData);
             loadRecentAuditBanner();
