@@ -1981,6 +1981,19 @@
             top: 0;
             z-index: 40;
             padding: 24px 0;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease !important;
+        }
+        .dash-sidebar.collapsed {
+            margin-left: -240px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        body.dark-theme .dash-sidebar.collapsed,
+        html.dark .dash-sidebar.collapsed,
+        .dark .dash-sidebar.collapsed {
+            margin-left: -240px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
         .dash-sidebar-header {
             padding: 0 24px 20px 24px;
@@ -7234,13 +7247,13 @@ body.dark-theme .resume-tip-box,
     <div id="updateProfileModal" class="modal-overlay" onclick="if(event.target===this) closeModal('updateProfileModal')">
         <div class="modal-box">
             <h3>Update Profile</h3>
-            <form id="updateProfileForm">
+            <form id="updateProfileForm" onsubmit="handleUpdateProfileSubmit(event)">
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div><label class="form-label">First Name</label><input type="text" id="upFname" class="form-input" /></div>
                     <div><label class="form-label">Last Name</label><input type="text" id="upLname" class="form-input" /></div>
                 </div>
                 <div class="mb-4"><label class="form-label">Username</label><input type="text" id="upUsername" class="form-input" /></div>
-                <div class="mb-4"><label class="form-label">Email</label><input type="email" id="upEmail" class="form-input" /></div>
+                <div class="mb-4"><label class="form-label">Email</label><input type="email" id="upEmail" class="form-input" readonly style="opacity: 0.75; cursor: not-allowed;" /></div>
                 <div class="mb-4"><label class="form-label">Profession / Title</label><input type="text" id="upProfession" class="form-input" /></div>
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal('updateProfileModal')">Cancel</button>
@@ -8080,11 +8093,11 @@ body.dark-theme .resume-tip-box,
 
                 <!-- Bottom User Card with Pill & Sign Out Button -->
                 <div class="p-6 mt-auto border-t border-[#E5E5DF]">
-                    <div class="flex items-center gap-3 mb-4">
+                    <div class="flex items-center gap-3 mb-4 cursor-pointer group hover:opacity-85 transition-opacity" id="dashUserProfileCard" onclick="openUserProfile()" title="Click to view & edit profile">
                         <div class="user-avatar" id="dashAvatar">G</div>
                         <div class="overflow-hidden">
-                            <p class="font-bold text-sm truncate text-[#111111]" id="dashUserName">Google User</p>
-                            <span class="tag-pill tag-pill-coral mt-1" id="dashRoleBadge">NORMAL</span>
+                            <p class="font-bold text-sm truncate text-[#111111]" id="dashUserName">User</p>
+                            <span class="tag-pill tag-pill-blue mt-1" id="dashRoleBadge">USER</span>
                         </div>
                     </div>
                     
@@ -8104,10 +8117,10 @@ body.dark-theme .resume-tip-box,
 
             <!-- Main Content Area -->
             <div class="dash-content-wrapper">
-                <!-- Topbar with Active Page Title, Global Feature Search & Profile -->
+                <!-- Topbar with Active Page Title, Global Feature Search & Notification Bell -->
                 <header class="dash-topbar">
-                    <div class="flex items-center gap-4 flex-shrink-0">
-                        <button class="md:hidden text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white flex items-center justify-center p-1 rounded-lg transition-all" id="sidebarToggle" title="Toggle Sidebar" aria-label="Toggle navigation sidebar">
+                    <div class="flex items-center gap-3 flex-shrink-0">
+                        <button class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white flex items-center justify-center p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer" id="sidebarToggle" title="Toggle Navigation Menu" aria-label="Toggle navigation sidebar">
                             <svg id="sidebarToggleSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.2288 21 5.3431 21 4.1716 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.1716 4.17157C5.3431 3 7.2288 3 11 3Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path id="sidebarToggleInnerPanel" d="M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z" style="fill: var(--bg-card, #ffffff); transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);"/>
@@ -8143,7 +8156,7 @@ body.dark-theme .resume-tip-box,
                     </div>
 
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <!-- Real-time Notification Bell Component with Live Unread Counter Badge -->
+                        <!-- Real-time Notification Bell Component with Live Unread Counter Badge (Rightmost Topbar Icon) -->
                         <div class="relative" id="notifBellWrapper">
                             <button type="button" id="notifBellBtn" onclick="toggleNotificationDropdown()" class="relative p-2 rounded-xl text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer" title="Notifications" aria-label="View Notifications">
                                 <i class="fa-solid fa-bell text-base"></i>
@@ -8168,9 +8181,6 @@ body.dark-theme .resume-tip-box,
                                 </div>
                             </div>
                         </div>
-                        <button onclick="openModal('updateProfileModal')" class="text-[#666660] hover:text-[#111111] dark:text-[#94A3B8] dark:hover:text-white p-1" title="User Profile" aria-label="Open user profile settings">
-                            <i class="fas fa-user-circle text-xl"></i>
-                        </button>
                     </div>
                 </header>
 
@@ -11703,6 +11713,68 @@ body.dark-theme .resume-tip-box,
             window.openModal = openModal;
             window.closeModal = closeModal;
 
+            function openUserProfile() {
+                let u = window.currentUser || currentUser;
+                try {
+                    const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        if (parsed) u = parsed;
+                    }
+                } catch(e) {}
+                if (u) {
+                    const fnameInput = document.getElementById('upFname');
+                    const lnameInput = document.getElementById('upLname');
+                    const usernameInput = document.getElementById('upUsername');
+                    const emailInput = document.getElementById('upEmail');
+                    const professionInput = document.getElementById('upProfession');
+
+                    if (fnameInput) fnameInput.value = u.firstName || u.fname || '';
+                    if (lnameInput) lnameInput.value = u.lastName || u.lname || '';
+                    if (usernameInput) usernameInput.value = u.username || '';
+                    if (emailInput) {
+                        emailInput.value = u.email || '';
+                    }
+                    if (professionInput) professionInput.value = u.profession || u.targetProfession || (u.role ? u.role.toUpperCase() : '');
+                }
+                openModal('updateProfileModal');
+            }
+            window.openUserProfile = openUserProfile;
+
+            async function handleUpdateProfileSubmit(e) {
+                if (e) e.preventDefault();
+                let u = currentUser || window.currentUser || {};
+                const fname = document.getElementById('upFname')?.value.trim();
+                const lname = document.getElementById('upLname')?.value.trim();
+                const username = document.getElementById('upUsername')?.value.trim();
+                const profession = document.getElementById('upProfession')?.value.trim();
+
+                if (fname) {
+                    u.firstName = fname;
+                    u.fname = fname;
+                }
+                if (lname !== undefined) {
+                    u.lastName = lname;
+                    u.lname = lname;
+                }
+                if (username) u.username = username;
+                if (profession) u.profession = profession;
+
+                currentUser = u;
+                window.currentUser = u;
+                try {
+                    sessionStorage.setItem('rankly_session', JSON.stringify(u));
+                    localStorage.setItem('rankly_session', JSON.stringify(u));
+                } catch(err) {}
+
+                if (typeof updateDashboard === 'function') {
+                    updateDashboard(u);
+                }
+                closeModal('updateProfileModal');
+                showToast('Profile updated successfully!', 'success');
+            }
+            window.handleUpdateProfileSubmit = handleUpdateProfileSubmit;
+
             function validateEmail(email, isCorporate = false) {
                 if (!email || typeof email !== 'string') {
                     showToast('Please enter an email address.', 'error');
@@ -12834,32 +12906,32 @@ body.dark-theme .resume-tip-box,
                 const name = (activeUser.firstName && activeUser.lastName) 
                     ? `${activeUser.firstName} ${activeUser.lastName}`.trim()
                     : (activeUser.fname ? `${activeUser.fname} ${activeUser.lname || ''}`.trim() 
-                    : (activeUser.name || (activeUser.email ? activeUser.email.split('@')[0] : 'Admin User')));
+                    : (activeUser.name || (activeUser.email ? activeUser.email.split('@')[0] : 'User')));
                 if (nameEl) {
                     nameEl.textContent = name;
                     nameEl.title = name;
                 }
                 if (welcomeNameEl) welcomeNameEl.textContent = (activeUser.firstName || activeUser.fname || activeUser.username || 'user').toLowerCase();
                 if (avatarEl) {
-                    const initial = (name ? name[0] : (activeUser.email ? activeUser.email[0] : 'A')).toUpperCase();
+                    const initial = (name ? name[0] : (activeUser.email ? activeUser.email[0] : 'U')).toUpperCase();
                     avatarEl.textContent = initial;
                 }
 
                 if (roleBadge) {
-                    const rawRole = (activeUser.role || (activeUser.isEmployee || activeUser.accountType === 'employee' ? 'employee' : 'admin')).toLowerCase();
-                    let roleDisplay = 'ADMIN';
-                    let roleBg = 'rgba(239, 68, 68, 0.15)';
-                    let roleColor = '#F87171';
-                    let roleBorder = 'rgba(239, 68, 68, 0.4)';
-                    let badgeClass = 'tag-pill-coral';
+                    const rawRole = (activeUser.role || activeUser.accountType || (activeUser.isEmployee ? 'employee' : 'user')).toLowerCase().trim();
+                    let roleDisplay = 'USER';
+                    let roleBg = 'rgba(59, 130, 246, 0.15)';
+                    let roleColor = '#60A5FA';
+                    let roleBorder = 'rgba(59, 130, 246, 0.4)';
+                    let badgeClass = 'tag-pill-blue';
 
-                    if (rawRole === 'admin' || rawRole === 'administrator') {
+                    if (rawRole === 'admin' || rawRole === 'administrator' || rawRole === 'super_admin') {
                         roleDisplay = 'ADMIN';
                         roleBg = 'rgba(239, 68, 68, 0.15)';
                         roleColor = '#F87171';
                         roleBorder = 'rgba(239, 68, 68, 0.4)';
                         badgeClass = 'tag-pill-coral';
-                    } else if (rawRole === 'hr' || rawRole === 'human_resources') {
+                    } else if (rawRole === 'hr' || rawRole === 'human_resources' || rawRole === 'hr_manager') {
                         roleDisplay = 'HR';
                         roleBg = 'rgba(245, 158, 11, 0.15)';
                         roleColor = '#FBBF24';
@@ -12871,12 +12943,24 @@ body.dark-theme .resume-tip-box,
                         roleColor = '#C084FC';
                         roleBorder = 'rgba(168, 85, 247, 0.4)';
                         badgeClass = 'tag-pill-purple';
-                    } else {
+                    } else if (rawRole === 'employee' || (activeUser.isEmployee && activeUser.accountType === 'employee')) {
                         roleDisplay = 'EMPLOYEE';
                         roleBg = 'rgba(16, 185, 129, 0.15)';
                         roleColor = '#34D399';
                         roleBorder = 'rgba(16, 185, 129, 0.4)';
                         badgeClass = 'tag-pill-emerald';
+                    } else if (rawRole === 'candidate' || rawRole === 'applicant' || rawRole === 'jobseeker') {
+                        roleDisplay = 'CANDIDATE';
+                        roleBg = 'rgba(14, 165, 233, 0.15)';
+                        roleColor = '#38BDF8';
+                        roleBorder = 'rgba(14, 165, 233, 0.4)';
+                        badgeClass = 'tag-pill-blue';
+                    } else {
+                        roleDisplay = 'USER';
+                        roleBg = 'rgba(59, 130, 246, 0.15)';
+                        roleColor = '#60A5FA';
+                        roleBorder = 'rgba(59, 130, 246, 0.4)';
+                        badgeClass = 'tag-pill-blue';
                     }
                     roleBadge.textContent = roleDisplay;
                     roleBadge.className = 'tag-pill ' + badgeClass + ' mt-1';
@@ -14417,13 +14501,31 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 if (sidebarToggle && dashSidebar) {
                     sidebarToggle.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        dashSidebar.classList.toggle('open');
-                        const isOpen = dashSidebar.classList.contains('open');
-                        updateSidebarToggleIcon(isOpen);
-                        if (sidebarBackdrop) {
-                            sidebarBackdrop.classList.toggle('active', isOpen);
+                        if (window.innerWidth > 1024) {
+                            dashSidebar.classList.toggle('collapsed');
+                            const isCollapsed = dashSidebar.classList.contains('collapsed');
+                            updateSidebarToggleIcon(!isCollapsed);
+                            try {
+                                localStorage.setItem('rankly_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+                            } catch(err) {}
+                        } else {
+                            dashSidebar.classList.toggle('open');
+                            const isOpen = dashSidebar.classList.contains('open');
+                            updateSidebarToggleIcon(isOpen);
+                            if (sidebarBackdrop) {
+                                sidebarBackdrop.classList.toggle('active', isOpen);
+                            }
                         }
                     });
+
+                    try {
+                        if (window.innerWidth > 1024 && localStorage.getItem('rankly_sidebar_collapsed') === 'true') {
+                            dashSidebar.classList.add('collapsed');
+                            updateSidebarToggleIcon(false);
+                        } else {
+                            updateSidebarToggleIcon(true);
+                        }
+                    } catch(err) {}
                 }
 
                 if (sidebarBackdrop && dashSidebar) {
@@ -15204,30 +15306,50 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 // ─── REGISTER ORGANIZATION OTP & AGE HANDLERS ───
                 const PERSONAL_WORKMAIL_BLACKLIST = [
-                    'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'yahoo.com.au', 'ymail.com', 'rocketmail.com',
+                    'gmail.com', 'googlemail.com', 'google.com',
+                    'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'yahoo.com.au', 'ymail.com', 'rocketmail.com',
                     'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'passport.com',
                     'icloud.com', 'me.com', 'mac.com',
                     'aol.com', 'aim.com',
                     'proton.me', 'protonmail.com', 'pm.me',
-                    'zoho.com', 'mail.com', 'email.com', 'gmx.com', 'gmx.net',
+                    'zoho.com', 'mail.com', 'email.com', 'usa.com', 'consultant.com',
+                    'gmx.com', 'gmx.net', 'gmx.de',
                     'yandex.com', 'yandex.ru', 'rediffmail.com',
-                    'tutanota.com', 'tuta.com', 'fastmail.com', 'inbox.com'
+                    'tutanota.com', 'tuta.com', 'tuta.io',
+                    'fastmail.com', 'inbox.com', 'lycos.com'
                 ];
 
                 window.checkOrgWorkEmailLive = function(inputEl) {
                     const val = (inputEl.value || '').trim().toLowerCase();
                     const warningEl = document.getElementById('orgWorkEmailWarning');
-                    if (!warningEl) return;
+                    const sendBtn = document.getElementById('sendOrgOtpBtn');
                     if (!val || !val.includes('@')) {
-                        warningEl.classList.add('hidden');
+                        if (warningEl) warningEl.classList.add('hidden');
+                        inputEl.classList.remove('border-red-500', 'focus:border-red-500', 'bg-red-50', 'dark:bg-red-950/20');
+                        if (sendBtn) {
+                            sendBtn.disabled = false;
+                            sendBtn.removeAttribute('title');
+                        }
                         return;
                     }
                     const domain = val.split('@')[1];
                     if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
-                        warningEl.classList.remove('hidden');
-                        warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i> <strong>Work email required:</strong> Personal accounts (@' + domain + ') cannot be used to register a workspace. Please use your official corporate domain (e.g. name@company.com).';
+                        if (warningEl) {
+                            warningEl.classList.remove('hidden');
+                            warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-red-500"></i> <strong class="text-red-600 dark:text-red-400">Official Work Email Required:</strong> Personal email accounts (@' + domain + ') are not permitted for Company Portal registration. Please use your official corporate domain (e.g. name@company.com).';
+                        }
+                        inputEl.classList.add('border-red-500', 'focus:border-red-500', 'bg-red-50', 'dark:bg-red-950/20');
+                        if (sendBtn) {
+                            sendBtn.disabled = true;
+                            sendBtn.setAttribute('title', 'Corporate work email required. Personal email (@' + domain + ') is blocked.');
+                        }
                     } else {
-                        warningEl.classList.add('hidden');
+                        if (warningEl) warningEl.classList.add('hidden');
+                        inputEl.classList.remove('border-red-500', 'focus:border-red-500', 'bg-red-50', 'dark:bg-red-950/20');
+                        if (sendBtn) {
+                            sendBtn.disabled = false;
+                            sendBtn.removeAttribute('title');
+                        }
                     }
                 };
 
@@ -15268,17 +15390,22 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                     const domain = email.split('@')[1]?.toLowerCase();
                     if (domain && PERSONAL_WORKMAIL_BLACKLIST.includes(domain)) {
-                        const errMsg = '❌ Personal email providers (@' + domain + ') are not allowed for Company Workspaces. Please use your official work email (e.g. name@company.com).';
+                        const errMsg = '❌ Personal email addresses (@' + domain + ') are strictly blocked for Company Workspaces. Please use your official corporate work email (e.g. name@company.com).';
                         showToast(errMsg, 'error');
                         const warningEl = document.getElementById('orgWorkEmailWarning');
                         if (warningEl) {
                             warningEl.classList.remove('hidden');
-                            warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i> <strong>Work email required:</strong> Personal accounts (@' + domain + ') cannot be used to register a workspace. Please use your official corporate domain (e.g. name@company.com).';
+                            warningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1 text-red-500"></i> <strong class="text-red-600 dark:text-red-400">Official Work Email Required:</strong> Personal email accounts (@' + domain + ') are not permitted for Company Portal registration. Please use your official corporate domain (e.g. name@company.com).';
                         }
-                        document.getElementById('orgWorkEmailInput')?.focus();
+                        const emailInput = document.getElementById('orgWorkEmailInput');
+                        if (emailInput) {
+                            emailInput.classList.add('border-red-500', 'focus:border-red-500', 'bg-red-50', 'dark:bg-red-950/20');
+                            emailInput.focus();
+                        }
                         if (sendBtn) {
-                            sendBtn.disabled = false;
+                            sendBtn.disabled = true;
                             sendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Send OTP';
+                            sendBtn.setAttribute('title', 'Corporate work email required. Personal email (@' + domain + ') is blocked.');
                         }
                         return;
                     }
