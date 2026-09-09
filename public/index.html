@@ -38,6 +38,18 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+    // Silences third-party CDN dev warnings in console for clean DevTools output
+    (function() {
+        const _origWarn = console.warn;
+        console.warn = function(...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) {
+                return;
+            }
+            _origWarn.apply(console, args);
+        };
+    })();
+    </script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <script>
@@ -243,7 +255,7 @@
     <link rel="preload" as="image" href="/assets/backgrounds/login-art.png" fetchpriority="high"/>
 
     <!-- Cloudflare Turnstile Verification API -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer onerror="console.warn('Turnstile CDN unavailable, running in local fallback mode')"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
@@ -5357,6 +5369,103 @@ body.dark-theme .resume-tip-box,
 </style>
 
 <style id="rankly-luxury-palette">
+        /* ─── MODAL OVERLAY BACKDROP OPACITY & LUXURY BLUR ─── */
+        .modal-overlay {
+            background: rgba(17, 17, 17, 0.5) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+        }
+
+        body.dark-theme .modal-overlay,
+        .dark .modal-overlay,
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.78) !important;
+            backdrop-filter: blur(6px) !important;
+            -webkit-backdrop-filter: blur(6px) !important;
+        }
+
+        body.dark-theme .modal-overlay > div,
+        body.dark-theme .modal-box,
+        body.dark-theme .modal-card,
+        body.dark-theme .modal-content,
+        .dark .modal-overlay > div,
+        .dark .modal-box,
+        .dark .modal-card,
+        .dark .modal-content {
+            background-color: #12151E !important;
+            background: #12151E !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        /* ─── DUAL THEME INPUT STANDARDIZATION (CANDIDATE PORTAL & HR DASHBOARD) ─── */
+        .form-input,
+        input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        select.form-input,
+        textarea.form-input {
+            min-height: 42px !important;
+            border-radius: 8px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13px !important;
+            transition: border-color 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        /* Light Mode Inputs */
+        body:not(.dark-theme):not(.dark) .form-input,
+        body:not(.dark-theme):not(.dark) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        body:not(.dark-theme):not(.dark) select.form-input,
+        body:not(.dark-theme):not(.dark) textarea.form-input {
+            background-color: #FFFFFF !important;
+            background: #FFFFFF !important;
+            border: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+        }
+
+        body:not(.dark-theme):not(.dark) .form-input:focus,
+        body:not(.dark-theme):not(.dark) input:focus,
+        body:not(.dark-theme):not(.dark) select:focus,
+        body:not(.dark-theme):not(.dark) textarea:focus {
+            border-color: #243E36 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Dark Mode Inputs */
+        body.dark-theme .form-input,
+        body.dark-theme input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        body.dark-theme select.form-input,
+        body.dark-theme textarea.form-input,
+        .dark .form-input,
+        .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        .dark select.form-input,
+        .dark textarea.form-input {
+            background-color: #161926 !important;
+            background: #161926 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .form-input:focus,
+        body.dark-theme input:focus,
+        body.dark-theme select:focus,
+        body.dark-theme textarea:focus,
+        .dark .form-input:focus,
+        .dark input:focus,
+        .dark select:focus,
+        .dark textarea:focus {
+            border-color: #10B981 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        body.dark-theme input::placeholder,
+        body.dark-theme textarea::placeholder,
+        .dark input::placeholder,
+        .dark textarea::placeholder {
+            color: #64748B !important;
+        }
+
         /* System Health: Calm Flat Luxury (Zero pulse, Zero glow, Zero radar) */
         #healthStatusOrb {
             animation: none !important;
@@ -6892,7 +7001,7 @@ body.dark-theme .resume-tip-box,
 
     <!-- ─── USER FEEDBACK MODAL (Rankly.ai Design Theme) ─── -->
     <div id="feedbackModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeFeedbackModal()">
-        <div class="modal-box" style="max-width:480px; background: #FFFFFF; border: 1px solid #E5E5DF; border-radius: 16px; padding: 24px; box-shadow: 0 12px 36px rgba(0,0,0,0.08);">
+        <div class="modal-box" class="modal-box p-6 rounded-2xl border border-[#E5E5DF] dark:border-zinc-800 bg-white dark:bg-zinc-900 max-w-[480px] w-full space-y-4">
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#E5E5DF]">
                 <div class="flex items-center gap-3">
                     <div style="width: 36px; height: 36px; border-radius: 10px; background: #F4F4F0; color: #D95D39; display: flex; align-items: center; justify-content: center; font-size: 15px;">
@@ -6910,7 +7019,7 @@ body.dark-theme .resume-tip-box,
                 <!-- Feedback Category -->
                 <div class="mb-3">
                     <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Category</label>
-                    <select id="feedbackCategory" class="form-input" style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 13px; color: #111111; padding: 8px 12px;">
+                    <select id="feedbackCategory" class="form-input">
                         <option value="general"> General Feedback</option>
                         <option value="feature"> Feature Request</option>
                         <option value="bug"> Bug / Issue Report</option>
@@ -8759,7 +8868,7 @@ body.dark-theme .resume-tip-box,
                                     <!-- Category -->
                                     <div>
                                         <label class="form-label" style="font-size: 11px; font-weight: 700; color: #666660; letter-spacing: 0.5px; text-transform: uppercase;">Feedback Category</label>
-                                        <select id="inPageFeedbackCategory" class="form-input" style="background: #FAFAF8; border: 1px solid #E5E5DF; border-radius: 8px; font-size: 14px; color: #111111; padding: 10px 14px;">
+                                        <select id="inPageFeedbackCategory" class="form-input">
                                             <option value="general">General Experience</option>
                                             <option value="feature">Feature Suggestion</option>
                                             <option value="bug"> Bug / Issue Report</option>
@@ -9752,7 +9861,7 @@ body.dark-theme .resume-tip-box,
                             </div>
 
                             <!-- ─── CANDIDATE CV UPLOAD & APPLICATION FORM ─── -->
-                            <div class="card p-6 rounded-3xl border border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-b from-white via-white to-emerald-50/20 dark:from-zinc-900 dark:via-zinc-900 dark:to-emerald-950/20 shadow-md space-y-5">
+                            <div class="card p-6 rounded-2xl border border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-b from-white via-white to-emerald-50/20 dark:from-zinc-900 dark:via-zinc-900 dark:to-emerald-950/20 shadow-md space-y-5">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5E5DF] dark:border-zinc-800">
                                     <div class="flex items-center gap-3">
                                         <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg font-bold">
@@ -10787,8 +10896,8 @@ body.dark-theme .resume-tip-box,
 
                     <!-- ─── TAB: UNAUTHORIZED ACCESS (403 FORBIDDEN ERROR PAGE FOR NORMAL EMPLOYEES) ─── -->
                     <div class="tab-content" id="tab-unauthorized-access" style="display:none;">
-                        <div class="max-w-xl mx-auto my-12 p-8 rounded-3xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-zinc-900 shadow-xl text-center space-y-6">
-                            <div class="w-20 h-20 mx-auto rounded-3xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-3xl border border-rose-500/20 shadow-md">
+                        <div class="max-w-xl mx-auto my-12 p-8 rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-zinc-900 shadow-xl text-center space-y-6">
+                            <div class="w-20 h-20 mx-auto rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-3xl border border-rose-500/20 shadow-md">
                                 <i class="fa-solid fa-shield-halved animate-pulse"></i>
                             </div>
                             <div>
@@ -10821,7 +10930,7 @@ body.dark-theme .resume-tip-box,
 
                     <!-- Modal: Candidate Evaluation Dossier Panel -->
                     <div id="aiCheatSheetModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeAiCheatSheet()">
-                        <div class="modal-card max-w-3xl w-full p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+                        <div class="modal-card max-w-3xl w-full p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
                             <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-sm font-bold">
@@ -10840,7 +10949,7 @@ body.dark-theme .resume-tip-box,
 
                     <!-- Modal: Immutable HR Candidate Audit Logs -->
                     <div id="hrAuditLogsModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeAuditLogsModal()">
-                        <div class="modal-card max-w-4xl w-full p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+                        <div class="modal-card max-w-4xl w-full p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E5DF] dark:border-zinc-800 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
                             <div class="flex items-center justify-between pb-3 border-b border-[#E5E5DF] dark:border-zinc-800">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-sm font-bold">
