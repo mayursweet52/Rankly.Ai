@@ -68,17 +68,17 @@
             .settings-nav-btn.active {
                 background: #183B33 !important;
                 color: #ffffff !important;
-                box-shadow: 0 2px 8px rgba(24, 59, 51, 0.2);
+                box-shadow: none;
             }
             body.dark-theme .settings-nav-btn.active {
                 background: #10B981 !important;
                 color: #090A0F !important;
-                box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+                box-shadow: none;
             }
             .settings-nav-btn.danger-nav.active {
                 background: #DC2626 !important;
                 color: #ffffff !important;
-                box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+                box-shadow: none;
             }
 
             /* ─── SYSTEM 2: NOTIFICATION BADGE STYLES ─── */
@@ -164,7 +164,7 @@
                 border-radius: 6px;
                 background: #FFFFFF;
                 border: 1px solid #E5E5DF;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                box-shadow: none;
                 transition: all 0.15s ease;
             }
             body.dark-theme .splitter-grabber-dots {
@@ -192,20 +192,13 @@
 
             /* ─── SYSTEM 4: SCROLL RESTORATION FOCUS HIGHLIGHT ─── */
             @keyframes focusRingPulse {
-                0% {
-                    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7), 0 2px 10px rgba(16, 185, 129, 0.2);
-                    border-color: #10B981;
-                }
-                50% {
-                    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3), 0 4px 18px rgba(16, 185, 129, 0.25);
-                    border-color: #10B981;
-                }
-                100% {
-                    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0), 0 1px 3px rgba(0, 0, 0, 0.05);
-                }
+                0% { border-color: #243E36; }
+                50% { border-color: #10B981; }
+                100% { border-color: #243E36; }
             }
             .dm-focus-highlight {
                 animation: focusRingPulse 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+            }
                 position: relative;
                 z-index: 10;
             }
@@ -227,14 +220,14 @@
                     border: 1px solid #E5E5DF !important;
                     border-radius: 1rem !important;
                     background: #FFFFFF !important;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+                    box-shadow: none;
                     padding: 1rem !important;
                     overflow: hidden !important;
                 }
                 body.dark-theme .dm-responsive-table tr {
                     background: #141721 !important;
                     border-color: rgba(255, 255, 255, 0.08) !important;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+                    box-shadow: none;
                 }
             }
 
@@ -250,7 +243,7 @@
                 border: 1px solid #E5E5DF;
                 border-radius: 1.25rem;
                 padding: 1.25rem;
-                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+                box-shadow: none;
                 transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 flex-direction: column;
@@ -260,16 +253,16 @@
             body.dark-theme .dm-candidate-card {
                 background: #141721;
                 border-color: rgba(255, 255, 255, 0.08);
-                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+                box-shadow: none;
             }
             .dm-candidate-card:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+                box-shadow: none;
                 border-color: #10B981;
             }
             body.dark-theme .dm-candidate-card:hover {
                 border-color: rgba(16, 185, 129, 0.4);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+                box-shadow: none;
             }
 
             /* ─── SYSTEM 6: HOLD TO CONFIRM BUTTON & UNDO TOAST ─── */
@@ -306,7 +299,7 @@
                 border: 1px solid rgba(255, 255, 255, 0.15);
                 border-radius: 1rem;
                 padding: 0.85rem 1.25rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+                box-shadow: none;
                 display: flex;
                 align-items: center;
                 gap: 1rem;
@@ -1194,7 +1187,7 @@
 
                         <!-- MOVE 6: Fixed Bottom 1-Click Action Buttons -->
                         <div class="pt-2 flex items-center gap-2 border-t border-[#E5E5DF] dark:border-zinc-800">
-                            <button type="button" onclick="window.DesignMotion.Scroll.saveScroll('candidate_queue', '${card.id}'); if(window.openResumeViewerModal) openResumeViewerModal('${cand.resumeUrl || ''}', '${name}', ${score}, '${cand.skills || 'TypeScript, Node.js'}', '${candId}');" class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
+                            <button type="button" onclick="window.DesignMotion.Scroll.saveScroll('candidate_queue', '${card.id}'); if(window.openResumeViewerModal) openResumeViewerModal('${cand.resumeUrl || ''}', '${name}', ${score}, '${cand.skills || 'TypeScript, Node.js'}', '${candId}');" class="flex-1 py-2 px-3 rounded-xl bg-[#243E36] hover:bg-[#1B302A] text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
                                 <i class="fa-regular fa-file-lines"></i>
                                 <span>View Dossier</span>
                             </button>
@@ -1279,7 +1272,7 @@
 
                     <!-- MOVE 6: Fixed Bottom 1-Click Action Buttons -->
                     <div class="pt-2 flex items-center gap-2 border-t border-[#E5E5DF] dark:border-zinc-800">
-                        <button type="button" onclick="window.DesignMotion.Scroll.saveScroll('candidate_queue', '${card.id}'); if(window.openResumeViewerModal) openResumeViewerModal('', '${name}', 92, 'TypeScript, Distributed Architecture', '${candId}');" class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
+                        <button type="button" onclick="window.DesignMotion.Scroll.saveScroll('candidate_queue', '${card.id}'); if(window.openResumeViewerModal) openResumeViewerModal('', '${name}', 92, 'TypeScript, Distributed Architecture', '${candId}');" class="flex-1 py-2 px-3 rounded-xl bg-[#243E36] hover:bg-[#1B302A] text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
                             <i class="fa-regular fa-file-lines"></i>
                             <span>View Dossier</span>
                         </button>

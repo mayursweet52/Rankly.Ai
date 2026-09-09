@@ -4166,37 +4166,14 @@
             overflow: hidden;
         }
 
-        body.dark-theme .upload-zone::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, #10b981 20%, #34d399 50%, #10b981 80%, transparent 100%);
-            box-shadow: 0 0 16px 2px rgba(16, 185, 129, 0.4);
-            opacity: 0;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        body.dark-theme .upload-zone:hover::before,
-        body.dark-theme .upload-zone.dragover::before {
-            opacity: 1;
-            animation: radarLaserScan 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
+        /* Upload zone laser beam removed */
 
         body.dark-theme .upload-zone:hover,
         body.dark-theme .upload-zone.dragover {
             border-color: #10B981 !important; box-shadow: 0 0 25px rgba(16, 185, 129, 0.15) inset, 0 8px 30px rgba(0, 0, 0, 0.6) !important;
         }
 
-        @keyframes radarLaserScan {
-            0% { top: 0%; opacity: 0; }
-            15% { opacity: 1; }
-            85% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
+        
 
         /* ─── DARK MODE SHIMMERING NEON STATUS BADGES ─── */
         body.dark-theme .tag-pill-coral,
@@ -4217,22 +4194,9 @@
             box-shadow: 0 0 12px rgba(217, 93, 57, 0.2);
         }
 
-        body.dark-theme .tag-pill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            animation: badgeShimmer 4s infinite;
-        }
+        
 
-        @keyframes badgeShimmer {
-            0% { left: -150%; }
-            30% { left: 150%; }
-            100% { left: 150%; }
-        }
+        
     
         /* ═══════════════════════════════════════════════════════════════════════
            UNIVERSAL DARK MODE ENGINE – 100% COVERAGE FOR ALL WHITE/LIGHT ELEMENTS
@@ -7164,7 +7128,7 @@ body.dark-theme .resume-tip-box,
                 <div class="space-y-1.5 text-center">
                     <canvas id="voiceWaveformCanvas" width="500" height="70" class="w-full h-18 bg-zinc-900 dark:bg-black rounded-xl border border-zinc-800"></canvas>
                     <div class="flex justify-between items-center px-1 text-[11px] text-gray-400 font-mono">
-                        <span>Web Audio API Visualizer</span>
+                        <span>Live Voice Visualizer</span>
                         <span id="voiceStatusBadge" class="text-xs font-mono font-bold px-3 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-zinc-800 dark:text-zinc-300">Ready to Record</span>
                     </div>
                 </div>
@@ -8205,28 +8169,7 @@ body.dark-theme .resume-tip-box,
                         </div>
 
                         <!-- API Key Manager Card -->
-                        <div class="card mb-8">
-                            <div class="flex justify-between items-center mb-4">
-                                <div>
-                                    <h3 class="card-title mb-1">Production API Keys</h3>
-                                    <p class="text-xs text-[#888880] font-mono">Use keys to integrate Rankly Talent Intelligence with your ATS pipelines</p>
-                                </div>
-                                <button class="btn-primary cursor-pointer" onclick="generateRealApiKey(); if(typeof generateEnterpriseApiKey === 'function') generateEnterpriseApiKey();">
-                                    <i class="fas fa-plus mr-1"></i> Generate Key
-                                </button>
-                            </div>
-                            <div class="border border-[#E5E5DF] dark:border-zinc-800 rounded-xl p-4 bg-[#FAFAFA] dark:bg-zinc-900/60 flex justify-between items-center font-mono text-xs">
-                                <div>
-                                    <p class="font-bold text-[#111111] dark:text-white">Active Production Key</p>
-                                    <p class="text-emerald-600 dark:text-emerald-400 mt-1 font-mono select-all" id="liveApiKeyDisplay">rk_live_89a7f34c98d7f6e5... (Active)</p>
-                                    <p class="hidden" id="prodApiKeyDisplay">rk_live_89a7f34c98d7... (Active)</p>
-                                </div>
-                                <button onclick="copyRealApiKey()" class="btn-secondary text-xs py-1.5 px-3 cursor-pointer">
-                                    <i class="fas fa-copy mr-1"></i> Copy
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                        
 
                     <!-- ─── TAB 6: VAULTS (Settings) ─── -->
                     <div class="tab-content" id="tab-settings" style="display:none;">
@@ -9422,7 +9365,7 @@ body.dark-theme .resume-tip-box,
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between pt-2 border-t border-indigo-500/10 dark:border-zinc-800">
-                                        <span class="text-[11px] font-mono text-gray-400">Speech Audio API • Real-Time</span>
+                                        <span class="text-[11px] font-mono text-gray-400">AI Voice Assessment • Real-Time</span>
                                         <button type="button" onclick="openVoiceInterviewModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
                                             <i class="fa-solid fa-microphone text-[10px]"></i>
                                             <span>Practice Interview</span>
@@ -9915,7 +9858,7 @@ body.dark-theme .resume-tip-box,
                                                 <i class="fa-solid fa-heart-pulse text-emerald-500 text-lg"></i>
                                                 <div>
                                                     <h3 class="text-sm font-bold text-[#111111] dark:text-white">Talent Health & Performance Diagnostic</h3>
-                                                    <span class="text-[10px] text-gray-400 font-mono">Endpoint: /api/analytics/ai-report</span>
+                                                    <span class="text-[10px] text-gray-400 font-mono">Automated Intelligence Diagnostic</span>
                                                 </div>
                                             </div>
                                             <button type="button" onclick="fetchAiTalentReport()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
@@ -10010,7 +9953,7 @@ body.dark-theme .resume-tip-box,
                                                 <i class="fa-solid fa-file-contract text-blue-500 text-lg"></i>
                                                 <div>
                                                     <h3 class="text-sm font-bold text-[#111111] dark:text-white">Corporate Policy Auto-Summary</h3>
-                                                    <span class="text-[10px] text-gray-400 font-mono">Endpoint: /api/documents/internal/summarize</span>
+                                                    <span class="text-[10px] text-gray-400 font-mono">Automated Document Intelligence</span>
                                                 </div>
                                             </div>
                                             <button type="button" onclick="fetchPolicySummary()" id="btnRunPolicySummary" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
@@ -16717,6 +16660,161 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
         /* Snappy 0.15s transitions for instant UI response */
         button, a, .nav-item, .dock-item, input, select {
             transition-duration: 0.15s !important;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════
+           FLAT LUXURY ARCHITECTURE: ZERO SHADOWS & QUICK-APPLY BUTTON PALETTE
+           ═══════════════════════════════════════════════════════════════════════ */
+        
+        /* 1. Universal Zero-Shadow Architecture across entire web */
+        *, *::before, *::after {
+            box-shadow: none !important;
+            text-shadow: none !important;
+            filter: none !important;
+        }
+
+        /* Preserve clean borders for cards, inputs, and modals */
+        .card, .stat-card, .tab-content .card {
+            border: 1px solid #E5E5DF !important;
+        }
+        body.dark-theme .card, body.dark-theme .stat-card, body.dark-theme .tab-content .card {
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: #141721 !important;
+        }
+
+        /* 2. MATCH ALL PRIMARY BUTTONS TO THE SIGNATURE QUICK-APPLY BUTTON (#243E36) */
+        .btn-primary,
+        .login-btn,
+        .auth-btn-main,
+        .btn-ai-generate,
+        .btn-rankly-pill,
+        #genResumeBtn,
+        #grievanceSubmitBtn,
+        #runAtsCheckBtn,
+        #generateCoverLetterBtn,
+        #btnRunSkillScan,
+        #btnSubmitCandApplication,
+        #btnQuickTalentReport,
+        #btnSubmitLeave,
+        #btnPunchIn,
+        #saveProfileTopBtn,
+        #saveProfileBottomBtn,
+        #btnSubmitPolicySummary,
+        button.btn-primary,
+        body.dark-theme .btn-primary,
+        body.dark-theme .login-btn,
+        body.dark-theme .auth-btn-main,
+        body.dark-theme #genResumeBtn,
+        body.dark-theme #grievanceSubmitBtn,
+        body.dark-theme #btnPunchIn,
+        body.dark-theme #saveProfileTopBtn,
+        body.dark-theme #saveProfileBottomBtn {
+            background-color: #243E36 !important;
+            background: #243E36 !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            transition: background-color 0.15s ease, opacity 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        .btn-primary:hover,
+        .login-btn:hover,
+        .auth-btn-main:hover,
+        .btn-ai-generate:hover,
+        #genResumeBtn:hover,
+        #grievanceSubmitBtn:hover,
+        #runAtsCheckBtn:hover,
+        #generateCoverLetterBtn:hover,
+        #btnRunSkillScan:hover,
+        #btnSubmitCandApplication:hover,
+        #btnQuickTalentReport:hover,
+        #btnSubmitLeave:hover,
+        #btnPunchIn:hover,
+        #saveProfileTopBtn:hover,
+        #saveProfileBottomBtn:hover,
+        #btnSubmitPolicySummary:hover,
+        body.dark-theme .btn-primary:hover,
+        body.dark-theme .login-btn:hover,
+        body.dark-theme .auth-btn-main:hover,
+        body.dark-theme #genResumeBtn:hover {
+            background-color: #1B302A !important;
+            background: #1B302A !important;
+            color: #FFFFFF !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        /* 3. HARMONIZED SECONDARY & UTILITY BUTTONS (LIGHT & DARK) */
+        .btn-secondary,
+        .btn-outline,
+        body.dark-theme .btn-secondary,
+        body.dark-theme #tab-settings .btn-secondary {
+            background-color: #FAFAF8 !important;
+            background: #FAFAF8 !important;
+            border: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            transition: background-color 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        .btn-secondary:hover,
+        .btn-outline:hover {
+            background-color: #F0F0EC !important;
+            background: #F0F0EC !important;
+            border-color: #D5D5CF !important;
+            color: #111111 !important;
+            transform: none !important;
+        }
+
+        body.dark-theme .btn-secondary,
+        body.dark-theme .btn-outline,
+        body.dark-theme #tab-settings .btn-secondary {
+            background-color: #161926 !important;
+            background: #161926 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme .btn-secondary:hover,
+        body.dark-theme .btn-outline:hover,
+        body.dark-theme #tab-settings .btn-secondary:hover {
+            background-color: #1F2436 !important;
+            background: #1F2436 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: #FFFFFF !important;
+            transform: none !important;
+        }
+
+        /* Danger Action Buttons */
+        .btn-danger,
+        .hold-confirm-btn {
+            background-color: #DC2626 !important;
+            background: #DC2626 !important;
+            color: #FFFFFF !important;
+            box-shadow: none !important;
+        }
+        .btn-danger:hover {
+            background-color: #B91C1C !important;
+            background: #B91C1C !important;
+            transform: none !important;
         }
 </style></head><body><h1>' + title + '</h1><pre style="white-space:pre-wrap;font-family:inherit;">' + text + '</pre></body></html>');
                 printWin.document.close();
