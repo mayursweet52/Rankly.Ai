@@ -1,7 +1,23 @@
-# https://www.robotstxt.org/robotstxt.html
+# Robots.txt for Rankly.ai Enterprise Recruitment Platform
+# https://ranklyai-production.up.railway.app/
+
 User-agent: *
 Allow: /
+Allow: /services
+Allow: /locations
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /login
+Allow: /assets/
+
+# Protect Private & Internal Endpoints
 Disallow: /api/
 Disallow: /uploads/
+Disallow: /admin/
+Disallow: /dashboard
 
-Sitemap: http://localhost:3000/sitemap.xml
+# Crawl Delay & Sitemap Reference
+Crawl-delay: 1
+Sitemap: https://ranklyai-production.up.railway.app/sitemap.xml

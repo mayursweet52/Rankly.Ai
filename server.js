@@ -920,6 +920,38 @@ app.get(['/terms', '/terms-of-service', '/terms-of-use'], (req, res) => {
   return serveCachedHtml(termsPath, req, res);
 });
 
+app.get(['/services', '/services.html'], (req, res) => {
+  const servicesPath = path.join(__dirname, 'public', 'services.html');
+  return serveCachedHtml(servicesPath, req, res);
+});
+
+app.get(['/locations', '/locations.html', '/locations/:region'], (req, res) => {
+  const locationsPath = path.join(__dirname, 'public', 'locations.html');
+  return serveCachedHtml(locationsPath, req, res);
+});
+
+app.get(['/about', '/about-us', '/about.html'], (req, res) => {
+  const aboutPath = path.join(__dirname, 'public', 'about.html');
+  return serveCachedHtml(aboutPath, req, res);
+});
+
+app.get(['/contact', '/contact-us', '/contact.html'], (req, res) => {
+  const contactPath = path.join(__dirname, 'public', 'contact.html');
+  return serveCachedHtml(contactPath, req, res);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const sitemapPath = path.join(__dirname, 'public', 'sitemap.xml');
+  res.header('Content-Type', 'application/xml');
+  return res.sendFile(sitemapPath);
+});
+
+app.get('/robots.txt', (req, res) => {
+  const robotsPath = path.join(__dirname, 'public', 'robots.txt');
+  res.header('Content-Type', 'text/plain');
+  return res.sendFile(robotsPath);
+});
+
 app.get('/loading', (req, res) => {
   const loadingPath = path.join(__dirname, 'public', 'loading.html');
   return serveCachedHtml(loadingPath, req, res);
