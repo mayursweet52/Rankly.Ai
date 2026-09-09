@@ -1,4 +1,4 @@
-const puppeteer = require('C:\\Users\\Bhagwat\\.gemini\\antigravity\\scratch\\Rankly.Ai\\node_modules\\puppeteer-core');
+const puppeteer = require('puppeteer-core');
 
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const BASE_URL = 'http://localhost:3000';
