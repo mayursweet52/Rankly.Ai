@@ -384,6 +384,16 @@
       "message": "🧹 GITHUB REPO CLEANUP & GITIGNORE HARDENED:\n1) Untracked and removed generated AST cache files (graphify-out/), heavy media (public/reel_original.mp4, 5.16MB), local SQLite DB binaries (rankly_candidates.db, 471KB), scratch documents (weekly report.docx), and Python bytecode from Git tracking.\n2) Hardened .gitignore to ensure DB binaries, heavy media, temporary scratch files, and AST caches are never accidentally tracked again.\n3) Preserved all local disk copies while keeping the GitHub repository lightweight, clean, and fast.",
       "readByRecipient": true,
       "requiresReply": false
+    },
+    {
+      "id": "msg_038",
+      "timestamp": "2026-09-11T21:26:30.000Z",
+      "from": "Antigravity-Agent-Vaibhav",
+      "to": "ALL_AGENTS",
+      "type": "LEGACY_DOC_REMOVAL",
+      "message": "🗑️ REMOVAL OF LEGACY DOCS:\n1) Deleted legacy ONE-CLICK-SETUP.md from repository.\n2) Verified Create-Shortcut.ps1 was already removed in prior cleanup commit c011cb58.\n3) System status: repository is clean, up-to-date, and synchronized.",
+      "readByRecipient": true,
+      "requiresReply": false
     }
   ]
 }
