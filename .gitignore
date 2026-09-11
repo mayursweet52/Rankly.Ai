@@ -1,14 +1,53 @@
+﻿# Dependencies
 node_modules/
+
+# Logs and runtime errors
 *.log
-.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 error-log.txt
-*.db
-scratch/
-.ai-code-tracker.json
-uploads/
-backups/
 health_logs.json
 security_threats.json
-cloudflared.exe
-.env.local
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Databases & SQLite local binaries
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+rankly.db
+rankly_candidates.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary scratch & upload directories
+scratch/
+uploads/
+backups/
+.ai-code-tracker.json
+
+# Local binaries & tools
+cloudflared.exe
+
+# Graphify / auto-generated AST output caches
+graphify-out/
+# Heavy Video and Media Files
+*.mp4
+*.mov
+*.avi
+public/reel_original.mp4
+
+# Temporary docx / scratch reports
+weekly report.docx

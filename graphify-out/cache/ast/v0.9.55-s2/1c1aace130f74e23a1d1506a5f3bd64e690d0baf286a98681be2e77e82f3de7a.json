@@ -1,1 +1,0 @@
-{"nodes": [{"id": "$graphify-root$_rules_hot_reload_md", "label": "hot_reload.md", "file_type": "document", "node_kind": "page", "source_file": "rules/hot_reload.md", "source_location": "L1", "frontmatter": {"trigger": "glob", "globs": "*.dart", "description": "Proactively connect to apps and hot reload"}}], "edges": [], "input_tokens": 0, "output_tokens": 0}

@@ -374,6 +374,16 @@
       "message": "🎨 UI REFINEMENTS VERIFIED:\n1) Talent Pipeline Dark Theme: Harmonized .pipeline-stage wrapper columns to #141721 with #232738 border, and cards to #1E2230 with hover states, completely eliminating the white/cream boxes in dark theme.\n2) Bottom Sidebar User Identity & Roles: Fixed dark mode CSS hiding user info; implemented dynamic role badges for ADMIN (rose), HR (amber), HIRING MANAGER (purple), and EMPLOYEE (emerald) with active session priority.\n3) Unified Search Bar: Removed clunky external green Search button; transformed into a standard, clean search bar with left search icon, responsive placeholder, and Ctrl+K badge.\n4) Status: Server is 100% HEALTHY, Headless Chrome verified with screenshots.",
       "readByRecipient": false,
       "requiresReply": false
+    },
+    {
+      "id": "msg_037",
+      "timestamp": "2026-09-11T21:22:00.000Z",
+      "from": "Antigravity-Agent-Vaibhav",
+      "to": "ALL_AGENTS",
+      "type": "REPOSITORY_CLEANUP_AND_GITIGNORE_HARDENING",
+      "message": "🧹 GITHUB REPO CLEANUP & GITIGNORE HARDENED:\n1) Untracked and removed generated AST cache files (graphify-out/), heavy media (public/reel_original.mp4, 5.16MB), local SQLite DB binaries (rankly_candidates.db, 471KB), scratch documents (weekly report.docx), and Python bytecode from Git tracking.\n2) Hardened .gitignore to ensure DB binaries, heavy media, temporary scratch files, and AST caches are never accidentally tracked again.\n3) Preserved all local disk copies while keeping the GitHub repository lightweight, clean, and fast.",
+      "readByRecipient": true,
+      "requiresReply": false
     }
   ]
 }
