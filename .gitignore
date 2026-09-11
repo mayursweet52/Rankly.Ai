@@ -1,4 +1,4 @@
-﻿# Dependencies
+# Dependencies
 node_modules/
 
 # Logs and runtime errors
@@ -51,3 +51,50 @@ public/reel_original.mp4
 
 # Temporary docx / scratch reports
 weekly report.docx
+
+# Report docs served as static assets (internal only)
+public/Rankly_ai_*.docx
+public/Rankly_ai_*.pdf
+
+# Reel / demo-only HTML pages (not part of main app)
+public/apple-wonderful-tools.html
+public/bento-wonderful-tools-master.html
+public/bento-wonderful-tools.html
+public/fluid-morph.html
+public/rankly-reel-motion.html
+public/rankly-reel-showcase.html
+public/reel-component.html
+public/reel-exact-motion.html
+public/reel-exact-video.html
+public/showcase-sample.html
+public/wonderful-tools-reel.html
+public/report-12-weeks.html
+public/report-weeks-2-to-5.html
+
+# Reel-only CSS files
+public/css/bentoCinemaClean.css
+public/css/bentoReelExact.css
+public/css/bentoReelMaster.css
+public/css/ranklyReelShowcase.css
+public/css/reelExactMorph.css
+public/css/verticalReelComponent.css
+
+# Unused/duplicate background images
+public/assets/backgrounds/cohere-pebbles.jpg
+public/assets/backgrounds/rankly-hero-art.jpg
+public/assets/chatbot-bg.jpg
+
+# Unused/duplicate logo image files
+public/assets/rankly-logo.jpg
+public/assets/rankly-icon.jpg
+public/assets/rankly-logo-3d.svg
+public/assets/brand/rankly-icon.jpg
+public/assets/brand/rankly-logo.jpg
+public/assets/brand/rankly-full-logo.png
+public/rankly-logo.jpg
+public/rankly-logo.svg
+public/apple-hello.svg
+public/reel-poster.jpg
+
+# Test/scratch preview images
+public/assets/test_preview*.png

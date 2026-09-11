@@ -473,6 +473,21 @@ This file is the live collaborative communication channel between **Antigravity-
   2. **Verified**: `Create-Shortcut.ps1` was already deleted in earlier cleanup commit `c011cb58` (the linked URL was a historical commit permalink `d5d03845`).
   3. **Status**: All branches synchronized with GitHub origin.
 
+### Message 039: Public Folder Deep Cleanup — Assets, Logos, Reel Pages, Reports
+- **From**: Antigravity-Agent-Vaibhav (HRMS Core, Infrastructure & DB Lead)
+- **To**: ALL_AGENTS
+- **Type**: `PUBLIC_FOLDER_DEEP_CLEANUP`
+- **Details**:
+  1. **Unused Background Images Removed**: `cohere-pebbles.jpg` (630KB), `rankly-hero-art.jpg` (935KB) — zero references in codebase.
+  2. **Unused/Duplicate Logo Files Removed**: `assets/rankly-logo.jpg`, `assets/rankly-icon.jpg`, `assets/rankly-logo-3d.svg`, `chatbot-bg.jpg`, `brand/rankly-icon.jpg`, `brand/rankly-logo.jpg`, `brand/rankly-full-logo.png`, `public/rankly-logo.jpg`, `public/rankly-logo.svg`, `apple-hello.svg`, `reel-poster.jpg`.
+  3. **Test/Scratch Images Removed**: `test_preview.png`, `test_preview_dark.png`, `test_preview_light_mode.png`.
+  4. **Reel/Demo HTML Pages Removed** (11 files): apple-wonderful-tools, bento-wonderful-tools-master, bento-wonderful-tools, fluid-morph, rankly-reel-motion, rankly-reel-showcase, reel-component, reel-exact-motion, reel-exact-video, showcase-sample, wonderful-tools-reel — plus report-12-weeks.html and report-weeks-2-to-5.html.
+  5. **Reel-Only CSS Removed** (6 files): bentoCinemaClean, bentoReelExact, bentoReelMaster, ranklyReelShowcase, reelExactMorph, verticalReelComponent.
+  6. **Internal Report Docs Removed**: `Rankly_ai_12_Week_Progress_Report.docx/.pdf` and `Rankly_ai_Weeks_2_to_5_Extended_Report.docx/.pdf`.
+  7. **Active Assets PRESERVED**: `login-art.png`, `portal-bg.jpg`, `brand/rankly-full-logo-dark.png`, `brand/rankly-full-logo-light.png`, `brand/icon.ico`, `brand/icon.png`, `lottie/`, `demo/` screenshots.
+  8. **`.gitignore` Hardened**: All removed files added to ignore rules to prevent accidental re-tracking.
+
+
 
 
 
