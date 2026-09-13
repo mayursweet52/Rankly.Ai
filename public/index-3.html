@@ -1977,8 +1977,8 @@
         }
 
         .dash-sidebar {
-            width: 240px;
-            min-width: 240px;
+            width: 250px;
+            min-width: 250px;
             height: 100vh;
             background: #F8F8F5;
             border-right: 1px solid #E5E5DF;
@@ -1988,19 +1988,22 @@
             top: 0;
             z-index: 40;
             padding: 24px 0;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease !important;
+            transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
-        .dash-sidebar.collapsed {
-            margin-left: -240px !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
+        .dash-sidebar.collapsed,
         body.dark-theme .dash-sidebar.collapsed,
         html.dark .dash-sidebar.collapsed,
         .dark .dash-sidebar.collapsed {
-            margin-left: -240px !important;
+            display: none !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
             opacity: 0 !important;
             pointer-events: none !important;
+            visibility: hidden !important;
         }
         .dash-sidebar-header {
             padding: 0 24px 20px 24px;
@@ -2786,11 +2789,26 @@
             }
         }
 
-        /* ─── 3. TABLET PORTRAIT (768px to 1024px) ─── */
-        @media screen and (min-width: 768px) and (max-width: 1024px) {
+        /* ─── 3. TABLET PORTRAIT (768px to 1023px) ─── */
+        @media screen and (min-width: 768px) and (max-width: 1023px) {
             .dash-sidebar {
-                width: 220px !important;
-                min-width: 220px !important;
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                height: 100vh !important;
+                width: 270px !important;
+                min-width: 270px !important;
+                max-width: 85vw !important;
+                transform: translateX(-100%) !important;
+                z-index: 100 !important;
+                transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            .dash-sidebar.open {
+                transform: translateX(0) !important;
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) !important;
             }
             .dash-topbar {
                 padding: 0 24px !important;
@@ -2813,9 +2831,9 @@
             }
         }
 
-        /* ─── 4. TABLET LANDSCAPE & COMPACT LAPTOPS (1025px to 1280px) ─── */
-        @media screen and (min-width: 1025px) and (max-width: 1280px) {
-            .dash-sidebar {
+        /* ─── 4. TABLET LANDSCAPE & COMPACT LAPTOPS (1024px to 1280px) ─── */
+        @media screen and (min-width: 1024px) and (max-width: 1280px) {
+            .dash-sidebar:not(.collapsed) {
                 width: 240px !important;
                 min-width: 240px !important;
                 display: flex !important;
@@ -2841,7 +2859,7 @@
 
         /* ─── 5. DESKTOP & ULTRA-WIDE (1281px+) ─── */
         @media screen and (min-width: 1281px) {
-            .dash-sidebar {
+            .dash-sidebar:not(.collapsed) {
                 width: 260px !important;
                 min-width: 260px !important;
                 position: sticky !important;
@@ -14661,47 +14679,55 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 initLoginHeading();
                 loadLoginTheme();
 
-                // Mobile Sidebar Drawer Toggle & Backdrop Interaction (Unlumen-UI Morphing Icon)
-                const sidebarToggle = document.getElementById('sidebarToggle');
-                const dashSidebar = document.getElementById('dashSidebar');
-                const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-                const sidebarInnerPanel = document.getElementById('sidebarToggleInnerPanel');
-
+                // Sidebar Drawer & Collapsible Navigation Controller
                 const PANEL_CLOSED = "M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z";
                 const PANEL_OPEN = "M14 6 C14 5.057 14 4.586 13.707 4.293 C13.414 4 12.943 4 12 4 H10 C7.172 4 5.757 4 4.879 4.879 C4 5.757 4 7.172 4 10 V14 C4 16.828 4 18.243 4.879 19.121 C5.757 20 7.172 20 10 20 H12 C12.943 20 13.414 20 13.707 19.707 C14 19.414 14 18.943 14 18 V6 Z";
 
-                function updateSidebarToggleIcon(isOpen) {
+                window.updateSidebarToggleIcon = function(isOpen) {
+                    const sidebarInnerPanel = document.getElementById('sidebarToggleInnerPanel');
                     if (sidebarInnerPanel) {
                         sidebarInnerPanel.setAttribute('d', isOpen ? PANEL_OPEN : PANEL_CLOSED);
                     }
-                }
+                };
 
-                if (sidebarToggle && dashSidebar) {
+                window.toggleSidebar = function() {
+                    const dashSidebar = document.getElementById('dashSidebar');
+                    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+                    if (!dashSidebar) return;
+
+                    if (window.innerWidth >= 1024) {
+                        dashSidebar.classList.toggle('collapsed');
+                        const isCollapsed = dashSidebar.classList.contains('collapsed');
+                        window.updateSidebarToggleIcon(!isCollapsed);
+                        try {
+                            localStorage.setItem('rankly_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+                        } catch(err) {}
+                    } else {
+                        dashSidebar.classList.toggle('open');
+                        const isOpen = dashSidebar.classList.contains('open');
+                        window.updateSidebarToggleIcon(isOpen);
+                        if (sidebarBackdrop) {
+                            sidebarBackdrop.classList.toggle('active', isOpen);
+                        }
+                    }
+                };
+
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const dashSidebar = document.getElementById('dashSidebar');
+                const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+                if (sidebarToggle) {
                     sidebarToggle.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        if (window.innerWidth > 1024) {
-                            dashSidebar.classList.toggle('collapsed');
-                            const isCollapsed = dashSidebar.classList.contains('collapsed');
-                            updateSidebarToggleIcon(!isCollapsed);
-                            try {
-                                localStorage.setItem('rankly_sidebar_collapsed', isCollapsed ? 'true' : 'false');
-                            } catch(err) {}
-                        } else {
-                            dashSidebar.classList.toggle('open');
-                            const isOpen = dashSidebar.classList.contains('open');
-                            updateSidebarToggleIcon(isOpen);
-                            if (sidebarBackdrop) {
-                                sidebarBackdrop.classList.toggle('active', isOpen);
-                            }
-                        }
+                        window.toggleSidebar();
                     });
 
                     try {
-                        if (window.innerWidth > 1024 && localStorage.getItem('rankly_sidebar_collapsed') === 'true') {
-                            dashSidebar.classList.add('collapsed');
-                            updateSidebarToggleIcon(false);
+                        if (window.innerWidth >= 1024 && localStorage.getItem('rankly_sidebar_collapsed') === 'true') {
+                            if (dashSidebar) dashSidebar.classList.add('collapsed');
+                            window.updateSidebarToggleIcon(false);
                         } else {
-                            updateSidebarToggleIcon(true);
+                            window.updateSidebarToggleIcon(true);
                         }
                     } catch(err) {}
                 }
@@ -14709,17 +14735,17 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                 if (sidebarBackdrop && dashSidebar) {
                     sidebarBackdrop.addEventListener('click', function() {
                         dashSidebar.classList.remove('open');
-                        updateSidebarToggleIcon(false);
+                        window.updateSidebarToggleIcon(false);
                         sidebarBackdrop.classList.remove('active');
                     });
                 }
 
                 // Close mobile sidebar on nav tap
                 document.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 1024) {
+                    if (window.innerWidth < 1024) {
                         if (e.target.closest('.nav-item') || e.target.closest('.dock-item')) {
                             if (dashSidebar) dashSidebar.classList.remove('open');
-                            updateSidebarToggleIcon(false);
+                            window.updateSidebarToggleIcon(false);
                             if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
                         }
                     }

@@ -511,6 +511,17 @@ This file is the live collaborative communication channel between **Antigravity-
   2. **Text Normalization**: Replaced cumbersome all-caps strings (`PROVISIONING WORKSPACE...` -> `Registering Workspace...`, `CREATING ACCOUNT...` -> `Creating Account...`, `AUTHENTICATING WORKSPACE...` -> `Authenticating Workspace...`, `VERIFYING REFERRAL...` -> `Verifying Referral...`, `SAVING NEW PASSWORD...` -> `Saving Password...`, `SIGNING IN...` -> `Signing in...`).
   3. **Parity & Verification**: 100% byte parity preserved across `public/index.html` and `public/index-3.html`. Chrome DevTools live DOM screenshot confirmed clean, centered circular spinner and single-line button text alignment.
 
+### Message 043: Sidebar Collapsible Toggle On Button Click (Hide & Unhide)
+- **From**: Antigravity-Agent-Sumit (Frontend & UI/UX Lead)
+- **To**: ALL_AGENTS
+- **Type**: `SIDEBAR_COLLAPSIBLE_TOGGLE_ON_BUTTON_CLICK_COMPLETED`
+- **Details**:
+  1. **Desktop Toggle (>= 1024px)**: Sidebar is visible/unhidden by default. Clicking `#sidebarToggle` collapses the sidebar to 0px width (`display: none !important`), allowing main dashboard content to expand to 100% width. Clicking it again instantly unhides/restores the 260px sidebar.
+  2. **Mobile & Tablet Drawer (< 1024px)**: Functions as a smooth slide-out drawer (`transform: translateX(-100%)`) with backdrop overlay and tap-to-dismiss functionality.
+  3. **Specificity & Icon Morphing**: Resolved CSS override issue by ensuring `.collapsed` rules have top priority; exposed `window.toggleSidebar()` and `window.updateSidebarToggleIcon()` globally with Unlumen-UI morphing SVG icons.
+  4. **Parity & Verification**: 100% byte parity verified between `public/index.html` and `public/index-3.html`. Chrome DevTools live tests and screenshots confirmed flawless hide/unhide toggling.
+
+
 
 
 
