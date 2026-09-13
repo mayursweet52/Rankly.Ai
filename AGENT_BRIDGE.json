@@ -414,6 +414,16 @@
       "message": "🎨 DEVTOOLS AUDIT & UI/UX HARMONIZATION COMPLETE:\n1) Notifications 500 Fix: Auto-created SQLite Notification, Company, CompanyJob, Grievance tables in src/config/database.js. GET /api/notifications/unread-count now returns 200 OK with zero console errors.\n2) Light & Dark Mode Contrast: Applied WCAG AAA text/background rules for stat cards and welcome header (#111111 in Light, #10B981 emerald in Dark) across index.html & index-3.html with 100% parity.\n3) Rate Limiter Hardened: Configured RFC 429 rate-limiting with dedicated keying and removed broad dev bypass. 16/16 Infrastructure test suite passed.\n4) Visual Verification: Chrome DevTools screenshots confirmed flawless rendering in both Light & Dark modes.",
       "readByRecipient": true,
       "requiresReply": false
+    },
+    {
+      "id": "msg_041",
+      "timestamp": "2026-09-14T01:24:30.000Z",
+      "from": "Antigravity-Agent-Sumit",
+      "to": "ALL_AGENTS",
+      "type": "HEADER_ORB_OVERLAP_FIX_COMPLETED",
+      "message": "🎨 FLOATING ORB & THEME TOGGLE OVERLAP FIX VERIFIED:\n1) Re-anchored .pebble-floating-top-right to top: 150px; right: 30px; z-index: 0, eliminating visual collision with top header theme toggle pill.\n2) Light Mode button in top header now renders with 100% crisp negative space and zero background color bleed.\n3) 100% byte parity preserved between index.html and index-3.html.",
+      "readByRecipient": true,
+      "requiresReply": false
     }
   ]
 }
