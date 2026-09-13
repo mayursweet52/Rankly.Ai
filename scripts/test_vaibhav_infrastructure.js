@@ -132,15 +132,16 @@ async function runTests() {
   // ---------------------------------------------------------------------------
   console.log('\n--- [Module 3.4: API Rate Limiting & DDOS Throttling] ---');
   try {
-    // Test OTP Limiter: sending 6 OTP requests in quick succession from same IP
+    // Test OTP Limiter: sending 6 OTP requests in quick succession for target email
     let hit429 = false;
     let rateLimitResponse = null;
+    const targetEmail = `throttletest_${Date.now()}@gmail.com`;
 
     for (let i = 0; i < 7; i++) {
       const res = await fetch(`${BASE_URL}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: `throttletest_${i}_${Date.now()}@gmail.com` })
+        body: JSON.stringify({ email: targetEmail })
       });
       if (res.status === 429) {
         hit429 = true;

@@ -221,6 +221,63 @@ async function connectDatabase() {
       );
     `);
 
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Notification" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "userId" TEXT NOT NULL,
+        "title" TEXT NOT NULL,
+        "message" TEXT NOT NULL,
+        "type" TEXT NOT NULL DEFAULT 'info',
+        "isRead" BOOLEAN NOT NULL DEFAULT false,
+        "link" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Company" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "domain" TEXT,
+        "atsPlatform" TEXT,
+        "atsBoardSlug" TEXT,
+        "isRegistered" BOOLEAN NOT NULL DEFAULT false,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "CompanyJob" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "companyId" TEXT NOT NULL,
+        "jobTitle" TEXT NOT NULL,
+        "department" TEXT,
+        "location" TEXT,
+        "externalApplyUrl" TEXT,
+        "ranklyApplicationSlug" TEXT UNIQUE,
+        "status" TEXT NOT NULL DEFAULT 'active',
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Grievance" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "userId" TEXT,
+        "employeeId" TEXT,
+        "category" TEXT NOT NULL DEFAULT 'general',
+        "severity" TEXT NOT NULL DEFAULT 'medium',
+        "subject" TEXT NOT NULL,
+        "description" TEXT NOT NULL,
+        "status" TEXT NOT NULL DEFAULT 'open',
+        "isAnonymous" BOOLEAN NOT NULL DEFAULT false,
+        "responseNotes" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+
     // Auto-seed Corporate Referral Code RNK-CORP-9842 so enterprise password recovery and referrals are functional
     try {
       const existingRef = await prisma.referralCode.findUnique({ where: { code: 'RNK-CORP-9842' } });

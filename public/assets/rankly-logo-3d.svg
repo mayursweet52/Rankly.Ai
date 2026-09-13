@@ -1,0 +1,39 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="rankly-3d-logo-svg">
+  <defs>
+    <linearGradient id="r3d-base" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#282830"/>
+      <stop offset="50%" stop-color="#16161A"/>
+      <stop offset="100%" stop-color="#0A0A0D"/>
+    </linearGradient>
+    <linearGradient id="r3d-rim" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="r3d-violet" x1="16" y1="12" x2="48" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D8B4FE"/>
+      <stop offset="30%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#6B21A8"/>
+    </linearGradient>
+    <linearGradient id="r3d-coral" x1="28" y1="32" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="40%" stop-color="#FB923C"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="r3d-gem" x1="42" y1="10" x2="54" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="50%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <filter id="r3d-glow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#r3d-base)" stroke="url(#r3d-rim)" stroke-width="1.5" />
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+  <path d="M18 14H32C38.6 14 43 17.8 43 23.5C43 29.2 38.6 33 32 33H25V48H18V14Z" fill="url(#r3d-violet)" filter="url(#r3d-glow)"/>
+  <circle cx="32" cy="23.5" r="4" fill="#FFFFFF" opacity="0.95"/>
+  <path d="M29 33L42 48H32.5L22 33H29Z" fill="url(#r3d-coral)" />
+  <circle cx="48" cy="14" r="5" fill="url(#r3d-gem)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+</svg>

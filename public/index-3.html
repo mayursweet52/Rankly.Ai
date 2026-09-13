@@ -4794,6 +4794,38 @@
             color: #FFFFFF !important;
         }
 
+        body.dark-theme .stat-card, .dark .stat-card {
+            background-color: #141724 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+            color: #FFFFFF !important;
+        }
+        body.dark-theme .stat-card .stat-value, .dark .stat-card .stat-value {
+            color: #10B981 !important;
+        }
+        body.dark-theme .stat-card .stat-label, .dark .stat-card .stat-label {
+            color: #94A3B8 !important;
+        }
+        body:not(.dark-theme):not(.dark) .stat-card {
+            background-color: #FFFFFF !important;
+            border: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+        }
+        body:not(.dark-theme):not(.dark) .stat-card .stat-value {
+            color: #111111 !important;
+        }
+        body:not(.dark-theme):not(.dark) .stat-card .stat-label {
+            color: #64748B !important;
+        }
+        body:not(.dark-theme):not(.dark) #tab-dashboard h2,
+        body:not(.dark-theme):not(.dark) #welcomeUserName {
+            color: #111111 !important;
+        }
+        body.dark-theme #tab-dashboard h2, .dark #tab-dashboard h2,
+        body.dark-theme #welcomeUserName, .dark #welcomeUserName {
+            color: #FFFFFF !important;
+        }
+
         body.dark-theme .form-input, .dark .form-input,
         body.dark-theme input[type="text"].form-input, .dark input[type="text"].form-input,
         body.dark-theme textarea.form-input, .dark textarea.form-input {

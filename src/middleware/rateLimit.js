@@ -64,7 +64,7 @@ const authLimiter = rateLimit({
 // -----------------------------------------------------------------------------
 const otpLimiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_OTP_WINDOW_MS, 10) || 5 * 60 * 1000, // 5 minutes
-  max: parseInt(process.env.RATE_LIMIT_OTP_MAX, 10) || 60, // 60 requests per 5 minutes
+  max: parseInt(process.env.RATE_LIMIT_OTP_MAX, 10) || 5, // 5 requests per 5 minutes per key
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => {
@@ -79,17 +79,6 @@ const otpLimiter = rateLimit({
     return 'ip:' + (req.ip || req.connection?.remoteAddress || '127.0.0.1');
   },
   skip: (req) => {
-    // Completely bypass rate limiting on local development/localhost to ensure lightning-fast dev testing
-    const clientIp = req.ip || req.connection?.remoteAddress || '';
-    if (
-      clientIp === '127.0.0.1' || 
-      clientIp === '::1' || 
-      clientIp === '::ffff:127.0.0.1' || 
-      clientIp.includes('127.0.0.1') ||
-      process.env.NODE_ENV !== 'production'
-    ) {
-      return true;
-    }
     if (process.env.RATE_LIMIT_BYPASS_SECRET && req.headers['x-bypass-rate-limit'] === process.env.RATE_LIMIT_BYPASS_SECRET) {
       return true;
     }
