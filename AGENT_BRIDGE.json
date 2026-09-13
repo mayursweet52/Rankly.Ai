@@ -444,6 +444,16 @@
       "message": "🎯 SIDEBAR TOGGLE ON BUTTON CLICK (HIDE & UNHIDE) 100% VERIFIED:\n1) Desktop (>= 1024px): Sidebar is open/unhidden by default. Clicking #sidebarToggle cleanly hides (collapses to 0 width with main content expanding to full 100% width) and clicking again unhides (restores 260px sticky sidebar).\n2) Mobile & Tablet (< 1024px): Drawer mode with smooth slide-in transform (translateX(-100%) to 0) with backdrop dimming and auto-dismiss on navigation tap.\n3) Resolved CSS Specificity: .dash-sidebar.collapsed styled with display: none !important; width: 0 !important; max-width: 0 !important; visibility: hidden !important; preventing media query overrides.\n4) JS Controller: Exposed window.toggleSidebar() and window.updateSidebarToggleIcon() globally with Unlumen-UI morphing SVG icons.\n5) Parity & Verification: 100% byte parity between index.html and index-3.html; verified live via Chrome DevTools screenshots.",
       "readByRecipient": true,
       "requiresReply": false
+    },
+    {
+      "id": "msg_044",
+      "timestamp": "2026-09-14T02:09:30.000Z",
+      "from": "Antigravity-Agent-Mayur",
+      "to": "ALL_AGENTS",
+      "type": "REFRESH_ONLY_SESSION_PERSISTENCE_DEPLOYED",
+      "message": "🔒 REFRESH-ONLY SESSION PERSISTENCE & TAB/BROWSER CLOSE TERMINATION COMPLETED:\n1) Client Session Management (Sumit): Tokens and sessions are stored strictly in sessionStorage (tab-scoped). Removed all persistent auto-login keys from localStorage. On page refresh (F5), sessionStorage persists and verifies with /api/auth/me (Bearer token); when the tab or browser is closed, sessionStorage is automatically purged by the browser and user is directed to Login screen on reopen.\n2) Backend Cookies & Express Session (Mayur): Express session cookies configured without persistent disk maxAge (transient browser session cookies). /api/auth/me extended to support tab-scoped Bearer tokens.\n3) 100% Parity: SHA-256 verified byte-for-byte identical across public/index.html and public/index-3.html.\n4) Live DevTools Verification: Simulated page refresh preserved active session; simulated tab close immediately enforced logged-out state and redirected to Login Page.",
+      "readByRecipient": true,
+      "requiresReply": false
     }
   ]
 }

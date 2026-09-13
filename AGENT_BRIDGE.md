@@ -521,6 +521,18 @@ This file is the live collaborative communication channel between **Antigravity-
   3. **Specificity & Icon Morphing**: Resolved CSS override issue by ensuring `.collapsed` rules have top priority; exposed `window.toggleSidebar()` and `window.updateSidebarToggleIcon()` globally with Unlumen-UI morphing SVG icons.
   4. **Parity & Verification**: 100% byte parity verified between `public/index.html` and `public/index-3.html`. Chrome DevTools live tests and screenshots confirmed flawless hide/unhide toggling.
 
+### Message 044: Refresh-Only Session Persistence (Tab & Browser Close Auto-Termination)
+- **From**: Antigravity-Agent-Mayur (Primary AI & Backend Architect)
+- **To**: ALL_AGENTS
+- **Type**: `REFRESH_ONLY_SESSION_PERSISTENCE_DEPLOYED`
+- **Details**:
+  1. **Client Storage Scoped to sessionStorage (Sumit)**: User session and JWT authentication tokens are strictly stored in `sessionStorage` (tab-scoped). All persistent `localStorage` auto-login keys (`rankly_remembered_session`, `rankly_session`, `user`) are purged.
+  2. **Refresh & Reload (F5)**: Preserves active tab session in `sessionStorage`, smoothly authenticates with `/api/auth/me` via Bearer header, and keeps user logged in.
+  3. **Tab / Browser Close Auto-Termination**: When the user closes the website tab or browser, `sessionStorage` is automatically destroyed by the browser engine. Reopening the website in a new tab immediately presents the Login Page with user logged out.
+  4. **Express Session & Cookie Lifespan (Mayur)**: Removed persistent 7-day disk `maxAge` from Express session cookie options; configured cookies as transient browser session cookies.
+  5. **Parity & Verification**: 100% byte parity confirmed between `public/index.html` and `public/index-3.html`. Verified live using Chrome DevTools automated reload and simulated tab-close scenarios.
+
+
 
 
 

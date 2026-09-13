@@ -11779,7 +11779,7 @@ body.dark-theme .resume-tip-box,
             function openUserProfile() {
                 let u = window.currentUser || currentUser;
                 try {
-                    const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                    const stored = sessionStorage.getItem('rankly_session');
                     if (stored) {
                         const parsed = JSON.parse(stored);
                         if (parsed) u = parsed;
@@ -11827,7 +11827,6 @@ body.dark-theme .resume-tip-box,
                 window.currentUser = u;
                 try {
                     sessionStorage.setItem('rankly_session', JSON.stringify(u));
-                    localStorage.setItem('rankly_session', JSON.stringify(u));
                 } catch(err) {}
 
                 if (typeof updateDashboard === 'function') {
@@ -12846,7 +12845,7 @@ body.dark-theme .resume-tip-box,
                 let activeUser = window.currentUser || currentUser;
                 if (!activeUser) {
                     try {
-                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                        const stored = sessionStorage.getItem('rankly_session');
                         if (stored) {
                             activeUser = JSON.parse(stored);
                             currentUser = activeUser;
@@ -12948,7 +12947,7 @@ body.dark-theme .resume-tip-box,
                 let activeUser = overrideUser || null;
                 if (!activeUser) {
                     try {
-                        const stored = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                        const stored = sessionStorage.getItem('rankly_session');
                         if (stored) {
                             activeUser = JSON.parse(stored);
                         }
@@ -13216,7 +13215,7 @@ body.dark-theme .resume-tip-box,
                     window.currentUser = currentUser;
                 } else if (!currentUser && !window.currentUser) {
                     try {
-                        const saved = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
+                        const saved = sessionStorage.getItem('rankly_session');
                         if (saved) {
                             currentUser = JSON.parse(saved);
                             window.currentUser = currentUser;
@@ -14887,12 +14886,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                             }
                             currentUser = data.user;
                             sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            if (rememberMe) {
-                                localStorage.setItem('rankly_remembered_session', JSON.stringify(currentUser));
-                            } else {
-                                localStorage.removeItem('rankly_remembered_session');
-                                localStorage.removeItem('rankly_session');
-                            }
+                            if (data.token) sessionStorage.setItem('rankly_jwt', data.token);
+                            localStorage.removeItem('rankly_remembered_session');
+                            localStorage.removeItem('rankly_session');
+                            localStorage.removeItem('user');
                             showToast('Authentication successful', 'success');
                             loginUser();
                         } catch (err) {
@@ -15493,12 +15490,10 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         }
                         currentUser = data.user;
                         sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                        if (rememberMe) {
-                            localStorage.setItem('rankly_remembered_session', JSON.stringify(currentUser));
-                        } else {
-                            localStorage.removeItem('rankly_remembered_session');
-                            localStorage.removeItem('rankly_session');
-                        }
+                        if (data.token) sessionStorage.setItem('rankly_jwt', data.token);
+                        localStorage.removeItem('rankly_remembered_session');
+                        localStorage.removeItem('rankly_session');
+                        localStorage.removeItem('user');
                         if (typeof window.playChatSendSound === 'function') window.playChatSendSound();
                         showToast('Enterprise Workspace Authenticated! Welcome, ' + (currentUser.firstName || 'Admin'), 'success');
                         loginUser();
@@ -17384,27 +17379,68 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     showToast('Authentication failed: ' + decodeURIComponent(errorParam), 'error');
                 }
 
-                // Transient session restoration: restore from sessionStorage (active tab) or remembered session
-                if (!localStorage.getItem('rankly_remembered_session')) {
-                    localStorage.removeItem('rankly_session');
-                    localStorage.removeItem('user');
-                }
-                const savedSession = sessionStorage.getItem('rankly_session') || localStorage.getItem('rankly_remembered_session');
-                if (savedSession) {
+                // Refresh-Only Session Restoration (Tab-Scoped via sessionStorage)
+                // When page is refreshed (F5 / Reload): sessionStorage persists -> user stays logged in.
+                // When tab or browser is closed: sessionStorage is destroyed -> user is logged out.
+                localStorage.removeItem('rankly_remembered_session');
+                localStorage.removeItem('rankly_session');
+                localStorage.removeItem('user');
+
+                const activeTabSession = sessionStorage.getItem('rankly_session');
+                const activeTabJwt = sessionStorage.getItem('rankly_jwt') || '';
+
+                if (activeTabSession) {
                     try {
-                        const parsedUser = JSON.parse(savedSession);
-                        if (parsedUser && (parsedUser.isEmailVerified === false || parsedUser.verified?.email === false)) {
-                            sessionStorage.removeItem('rankly_session');
-                            localStorage.removeItem('rankly_session');
-                            localStorage.removeItem('rankly_remembered_session');
-                            currentUser = null;
-                        } else if (parsedUser) {
+                        const parsedUser = JSON.parse(activeTabSession);
+                        if (parsedUser && parsedUser.isEmailVerified !== false && parsedUser.verified?.email !== false) {
                             currentUser = parsedUser;
+                            window.currentUser = parsedUser;
                             loginUser();
+
+                            // Verify active session with backend
+                            const authHeaders = { 'Content-Type': 'application/json' };
+                            if (activeTabJwt) authHeaders['Authorization'] = 'Bearer ' + activeTabJwt;
+
+                            fetch('/api/auth/me', { credentials: 'include', headers: authHeaders })
+                                .then(r => {
+                                    if (!r.ok) throw new Error('Session expired');
+                                    return r.json();
+                                })
+                                .then(data => {
+                                    if (data && (data.authenticated || data.success) && data.user) {
+                                        currentUser = data.user;
+                                        window.currentUser = data.user;
+                                        sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
+                                    } else {
+                                        throw new Error('Unauthenticated');
+                                    }
+                                })
+                                .catch(() => {
+                                    sessionStorage.clear();
+                                    currentUser = null;
+                                    window.currentUser = null;
+                                    const dashPage = document.getElementById('dashboardPage');
+                                    const loginPage = document.getElementById('loginPage');
+                                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
+                                });
+                        } else {
+                            sessionStorage.clear();
+                            currentUser = null;
                         }
                     } catch (e) {
+                        sessionStorage.clear();
                         currentUser = null;
                     }
+                } else {
+                    // No active tab session: User opened a new tab or reopened after browser/tab close
+                    sessionStorage.clear();
+                    currentUser = null;
+                    window.currentUser = null;
+                    const dashPage = document.getElementById('dashboardPage');
+                    const loginPage = document.getElementById('loginPage');
+                    if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
+                    if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
                 }
 
                 // Cross-tab auto-sync: instantly unlock main site when email is verified in another tab
@@ -17414,22 +17450,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         if (typeof window.triggerAutoVerifiedLogin === 'function') {
                             window.triggerAutoVerifiedLogin(email);
                         }
-                    }
-                    if (e.key === 'rankly_session' && e.newValue) {
-                        try {
-                            const user = JSON.parse(e.newValue);
-                            if (user && user.isEmailVerified !== false && user.verified?.email !== false) {
-                                if (window._verifyPollTimer) {
-                                    clearInterval(window._verifyPollTimer);
-                                    window._verifyPollTimer = null;
-                                }
-                                const noticeModal = document.getElementById('emailVerificationNoticeModal');
-                                if (noticeModal) noticeModal.classList.add('hidden');
-                                currentUser = user;
-                                window.currentUser = currentUser;
-                                loginUser();
-                            }
-                        } catch (err) {}
                     }
                 });
 
@@ -17445,54 +17465,6 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                         };
                     } catch (e) {}
                 }
-
-                // Strictly verify active backend session
-                fetch('/api/auth/me', { credentials: 'include' })
-                    .then(r => {
-                        if (!r.ok) throw new Error('Session invalid or logged out');
-                        return r.json();
-                    })
-                    .then(data => {
-                        if (data && (data.authenticated || data.success) && data.user) {
-                            if (data.user.isEmailVerified === false || data.user.verified?.email === false) {
-                                sessionStorage.clear();
-                                localStorage.removeItem('rankly_session');
-                                localStorage.removeItem('user');
-                                currentUser = null;
-                                const dashPage = document.getElementById('dashboardPage');
-                                const loginPage = document.getElementById('loginPage');
-                                if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
-                                if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-                                return;
-                            }
-                            currentUser = data.user;
-                            sessionStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            localStorage.setItem('rankly_session', JSON.stringify(currentUser));
-                            loginUser();
-                        } else {
-                            // Backend confirms: NOT logged in! Clear all local states
-                            sessionStorage.clear();
-                            localStorage.removeItem('rankly_session');
-                            localStorage.removeItem('user');
-                            localStorage.removeItem('token');
-                            localStorage.removeItem('rankly_jwt');
-                            currentUser = null;
-                            const dashPage = document.getElementById('dashboardPage');
-                            const loginPage = document.getElementById('loginPage');
-                            if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
-                            if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-                        }
-                    }).catch(() => {
-                        // Backend returned 401 or invalid: ensure client reflects logged out state
-                        sessionStorage.clear();
-                        localStorage.removeItem('rankly_session');
-                        localStorage.removeItem('user');
-                        currentUser = null;
-                        const dashPage = document.getElementById('dashboardPage');
-                        const loginPage = document.getElementById('loginPage');
-                        if (dashPage) { dashPage.style.display = 'none'; dashPage.classList.remove('active'); }
-                        if (loginPage) { loginPage.style.display = 'flex'; loginPage.classList.add('active'); }
-                    });
             });
         })();
     </script>

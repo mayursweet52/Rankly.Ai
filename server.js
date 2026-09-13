@@ -183,8 +183,8 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 Days
+    sameSite: 'lax'
+    // No fixed maxAge: Browser session cookie that terminates on tab/browser close
   }
 }));
 

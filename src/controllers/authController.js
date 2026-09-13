@@ -598,7 +598,23 @@ function logout(req, res) {
  */
 async function getMe(req, res) {
   try {
-    if (!req.session || !req.session.userId) {
+    let userId = req.session?.userId;
+
+    // Check Bearer Token in Authorization header if session userId is missing
+    if (!userId && req.headers && req.headers.authorization) {
+      const parts = req.headers.authorization.split(' ');
+      if (parts.length === 2 && /^Bearer$/i.test(parts[0])) {
+        try {
+          const jwtSecret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+          const decoded = jwt.verify(parts[1], jwtSecret);
+          if (decoded && (decoded.id || decoded.userId)) {
+            userId = decoded.id || decoded.userId;
+          }
+        } catch (jwtErr) {}
+      }
+    }
+
+    if (!userId) {
       return res.json({
         success: true,
         authenticated: false,
@@ -608,12 +624,12 @@ async function getMe(req, res) {
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: req.session.userId },
+      where: { id: userId },
       include: { organization: true }
     });
 
     if (!user) {
-      req.session.destroy();
+      if (req.session) req.session.destroy();
       return res.json({
         success: true,
         authenticated: false,
@@ -1699,8 +1715,7 @@ async function verifyEmailLink(req, res) {
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'lax'
       };
       res.cookie('token', sessionToken, cookieOptions);
       res.cookie('jwt', sessionToken, cookieOptions);
@@ -1794,8 +1809,7 @@ async function verifyEmailLink(req, res) {
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'lax'
       };
       res.cookie('token', sessionToken, cookieOptions);
       res.cookie('jwt', sessionToken, cookieOptions);
@@ -1866,8 +1880,7 @@ async function checkVerificationStatus(req, res) {
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'lax'
       };
       res.cookie('token', sessionToken, cookieOptions);
       res.cookie('jwt', sessionToken, cookieOptions);

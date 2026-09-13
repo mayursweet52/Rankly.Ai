@@ -1,47 +1,52 @@
-﻿# 🎨 Proposal & Fix Plan: Sidebar Navigation Alignment & Light/Dark Theme Harmonization
+# 🔒 Architecture Proposal & Plan: Tab & Browser Close Session Termination (Refresh-Only Persistence)
 
 **Project:** Rankly.ai  
-**Primary Architect:** Mayur Jadhav & Sumit Khomne  
+**Primary Architect:** Mayur Jadhav, Sumit Khomne & Vaibhav Aakhade  
 **Status:** 🟡 **AWAITING DEVELOPER APPROVAL ("Proceed / Approved")**  
 
 ---
 
-## 🔍 1. Issue Analysis & Root Cause
+## 📌 1. Objective / समस्या aur Solution (Simple Hinglish)
 
-### Issue A: Sidebar Navigation Alignment Glitch (User Image)
-1. **Root Cause**:
-   - In `dashNav`, active item displays `<span class="nav-dot" style="display:inline-block"></span>` with `margin-right: 10px`.
-   - Inactive items have `<span class="nav-dot" style="display:none"></span>`.
-   - Jab dot hide hota hai, inactive items left-most position par chale jaate hain. Jab dot show hota hai, active item ka text **16px right me push ho jata hai**.
-   - Result: Screenshot me dekha ja sakta hai — `Candidate Profile`, `Job Listings & Apply`, aur `Application Tracker` ek line me hain, jabki `🔴 AI Resume & ATS Studio` aage jump kar raha hai!
+**User Directive:**
+> *"dekh bs refresh krne pr na login rakho pr jab na browser band ho ya website ka tab band kiya hain to login hatna chahioye session terminate krdo thiko"*
 
-2. **Fix**:
-   - Har nav-item me `.nav-dot-wrapper` ya fixed-width container denge (`width: 14px; display: inline-flex; justify-content: center; margin-right: 8px;`).
-   - Inactive state me dot `opacity: 0; transform: scale(0.6);` rahega, aur active state me `opacity: 1; transform: scale(1); background: #D95D39 (light) / #10B981 (dark)`.
-   - **Result**: Har ek tab ka text **exact 100% vertical straight line me aligned** rahega! Zero layout shift.
+### Requirement:
+1. **Jab user page Refresh kare (F5 ya Ctrl+R)**: Login barkarar rehna chahiye (Dashboard khula rahe, logout na ho).
+2. **Jab user Tab close kare ya pura Browser band kare**: Session turant **terminate (destroy)** hona chahiye. Agli baar website open karne par direct **Login Page** dikhna chahiye aur user logged out rehna chahiye.
 
 ---
 
-### Issue B: Light Mode vs Dark Mode Inconsistencies & Clashing Overrides
-1. **Root Cause**:
-   - Generic overrides `body:not(.dark-theme):not(.dark) .dash-sidebar { background: #FFFFFF }` aur `.dash-main { background: #F8FAFC }` add ho gaye the jo original luxury cellular mesh `#F3F3ED` / radial-gradient se clash kar rahe the.
-   - Text contrast in light mode: `.nav-item` inactive text `#475569` aur `#555550` me clash tha.
-   - Dark mode toggle button state transitions aur background contrast ko uniform banaya jayega.
+## ⚙️ 2. Root Cause & Technical Mechanism
 
-2. **Fix**:
-   - Unify both themes to high-contrast, luxury design system:
-     - **Light Theme**: Clean `#F5F5F0` / `#FFFFFF` card surfaces, `#183B33` primary green, `#D95D39` coral active dot with soft rounded pill background `rgba(24, 59, 51, 0.07)` on active item.
-     - **Dark Theme**: `#0B0D14` obsidian canvas, `#12141F` sidebar, `#10B981` emerald active dot with subtle glow `rgba(16, 185, 129, 0.12)` active pill background.
-   - Theme toggle micro-animation: Perfect sync between light and dark pill switch without flickering.
+1. **Abhi kya ho raha tha?**
+   - User jab login karta tha, toh `localStorage` me `rankly_remembered_session` aur backend Express cookie me `maxAge: 7 days` save ho jaata tha.
+   - `localStorage` aur 7-day cookies hard disk me hamesha store rehti hain, is wajah se browser band karke dobara kholne par bhi auto-login ho jaata tha.
 
----
-
-## 🛠️ 2. Files To Update Once Approved
-1. `public/index.html` — Update nav-item HTML mapping and CSS rules.
-2. `public/index-3.html` — Mirror the exact same fix to preserve sync.
-3. `AGENT_BRIDGE.json` & `AGENT_BRIDGE.md` — Log the update and agent states.
+2. **Fix Mechanism (Standard Browser Session Model):**
+   - **`sessionStorage` (Tab-Scoped)**:
+     - Page refresh karne par `sessionStorage` **survive karta hai** (user login rehta hai).
+     - Tab band karne par ya browser close karne par browser khud `sessionStorage` ko **100% delete/clear** kar deta hai.
+   - **`localStorage` Cleaning**:
+     - `localStorage` se persistent login session keys (`rankly_remembered_session`, `rankly_session`, `user`) ko remove karenge.
+   - **Backend Cookie Transient Lifespan**:
+     - Cookies ko browser-session-only banayenge (`expires: false`, no persistent 7-day maxAge).
+   - **Client App Startup**:
+     - Jab page load hoga, agar `sessionStorage` me active session hai (jaise ki Refresh ke time), tabhi user dashboard me rahega. Agar `sessionStorage` khali hai (naya tab / browser reopen), toh directly **Login Page** aayega.
 
 ---
 
-## 🚦 3. Developer Permission Gate
-Bhai, plan bilkul clear aur ready hai. Jaise hi aap **"Proceed"** ya **"Approved"** bologe, main turant dono files me yeh fix push karke commit & push kar dunga!
+## 👥 3. Divided Tripartite Ownership
+
+| Lead | Target Files | Task Description |
+| :--- | :--- | :--- |
+| **Mayur (Backend Architect)** | `server.js`, `src/controllers/authController.js` | Express session cookies ko browser session mode me configure karna aur `/api/auth/me` ko tab session Bearer token ke sath bind karna. |
+| **Sumit (Frontend UI Lead)** | `public/index.html`, `public/index-3.html` | Client login state ko strictly `sessionStorage` par map karna, `localStorage` persistent auto-login ko disable karna, aur 100% byte parity rakhna. |
+| **Vaibhav (DB & Infra Lead)** | `src/config/database.js` | Session database tables aur SQLite health check ko steady rakhna. |
+
+---
+
+## 🚦 4. Developer Permission Gate
+
+Aapka plan bilkul ready hai! Jaise hi aap **"Proceed"** ya **"Approved"** ka message denge, hum teenon agents turant code implement karke live verify karenge aur GitHub par push karenge!
+
