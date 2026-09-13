@@ -1875,18 +1875,25 @@
             position: relative !important;
             pointer-events: none !important;
             cursor: wait !important;
-            opacity: 0.85 !important;
+            opacity: 0.9 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            white-space: nowrap !important;
+            text-align: center !important;
         }
 
         .btn-loading-spinner {
             display: inline-block;
-            width: 13px;
-            height: 13px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
             border-top-color: #FFFFFF;
             border-radius: 50%;
             animation: standardSpin 0.7s linear infinite;
-            margin-right: 6px;
+            margin: 0 !important;
+            flex-shrink: 0;
             vertical-align: middle;
         }
 
@@ -12507,7 +12514,7 @@ body.dark-theme .resume-tip-box,
                     return;
                 }
 
-                if (btn) setButtonLoading(btn, true, 'SAVING NEW PASSWORD...');
+                if (btn) setButtonLoading(btn, true, 'Saving Password...');
                 try {
                     const res = await fetch('/api/auth/reset-password-with-token', {
                         method: 'POST',
@@ -12556,7 +12563,7 @@ body.dark-theme .resume-tip-box,
                 }
 
                 if (submitBtn) {
-                    setButtonLoading(submitBtn, true, 'VERIFYING REFERRAL...');
+                    setButtonLoading(submitBtn, true, 'Verifying Referral...');
                 }
 
                 try {
@@ -13706,7 +13713,7 @@ body.dark-theme .resume-tip-box,
                     btn = document.querySelector('.oauth-google-btn');
                 }
                 if (btn) {
-                    setButtonLoading(btn, true, 'CONNECTING TO GOOGLE...');
+                    setButtonLoading(btn, true, 'Connecting to Google...');
                 }
 
                 // Tier 1: Try Google Identity Services Popup / Prompt (Zero redirect_uri_mismatch!)
@@ -14781,7 +14788,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     if (!email) { showToast('Please enter your account email', 'error'); return; }
 
                     if (btn) {
-                        setButtonLoading(btn, true, 'CHECKING ACCOUNT...');
+                        setButtonLoading(btn, true, 'Checking Account...');
                     }
                     try {
                         const res = await fetch('/api/auth/forgot-password', {
@@ -14836,7 +14843,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                         // Trigger loading beam state immediately on button click
                         if (submitBtn) {
-                            setButtonLoading(submitBtn, true, 'SIGNING IN...');
+                            setButtonLoading(submitBtn, true, 'Signing in...');
                         }
 
                         try {
@@ -15243,7 +15250,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (submitBtn) {
-                        setButtonLoading(submitBtn, true, 'CREATING ACCOUNT...');
+                        setButtonLoading(submitBtn, true, 'Creating Account...');
                     }
 
                     try {
@@ -15374,7 +15381,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (submitBtn) {
-                        setButtonLoading(submitBtn, true, 'VERIFYING REFERRAL...');
+                        setButtonLoading(submitBtn, true, 'Verifying Referral...');
                     }
 
                     try {
@@ -15436,7 +15443,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (submitBtn) {
-                        setButtonLoading(submitBtn, true, 'AUTHENTICATING WORKSPACE...');
+                        setButtonLoading(submitBtn, true, 'Authenticating Workspace...');
                     }
 
                     try {
@@ -15783,7 +15790,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     }
 
                     if (submitBtn) {
-                        setButtonLoading(submitBtn, true, 'PROVISIONING WORKSPACE...');
+                        setButtonLoading(submitBtn, true, 'Registering Workspace...');
                     }
 
                     const verificationToken = window.orgVerificationToken || sessionStorage.getItem('org_verified_token') || '';

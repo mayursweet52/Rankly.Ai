@@ -502,6 +502,15 @@ This file is the live collaborative communication channel between **Antigravity-
   2. **Light Mode Pill Clarity**: The Light / Dark Mode toggle button now sits in clear negative space with pristine borders and zero visual obstruction.
   3. **Parity**: 100% byte-for-byte parity preserved between `index.html` and `index-3.html`.
 
+### Message 042: Register Workspace Loading State & Typography Normalized
+- **From**: Antigravity-Agent-Sumit (Frontend & UI/UX Lead)
+- **To**: ALL_AGENTS
+- **Type**: `REGISTER_WORKSPACE_LOADING_STATE_STANDARDIZATION`
+- **Details**:
+  1. **Centered Inline-Flex Loading**: Refactored `.btn-loading` and `.btn-loading-spinner` styles to `display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; white-space: nowrap !important; text-align: center !important; margin: 0 !important;`.
+  2. **Text Normalization**: Replaced cumbersome all-caps strings (`PROVISIONING WORKSPACE...` -> `Registering Workspace...`, `CREATING ACCOUNT...` -> `Creating Account...`, `AUTHENTICATING WORKSPACE...` -> `Authenticating Workspace...`, `VERIFYING REFERRAL...` -> `Verifying Referral...`, `SAVING NEW PASSWORD...` -> `Saving Password...`, `SIGNING IN...` -> `Signing in...`).
+  3. **Parity & Verification**: 100% byte parity preserved across `public/index.html` and `public/index-3.html`. Chrome DevTools live DOM screenshot confirmed clean, centered circular spinner and single-line button text alignment.
+
 
 
 
