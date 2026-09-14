@@ -119,7 +119,7 @@
     }
     </script>
 
-    <script src="/js/socket.io.min.js"></script>
+    <script src="/js/socket.io.min.js" defer></script>
     <script>
     // Silences third-party CDN dev warnings in console for clean DevTools output
     (function() {
@@ -342,8 +342,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
     <!-- Performance & Animation Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 
     
     <style>
@@ -16825,8 +16825,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                     const updateToggleBtn = (btn, isDark) => {
                         if (!btn) return;
-                        const sun = btn.querySelector('.theme-sun-icon');
-                        const moon = btn.querySelector('.theme-moon-icon');
+                        const sun = btn.querySelector('.theme-sun-icon, .theme-sun-svg');
+                        const moon = btn.querySelector('.theme-moon-icon, .theme-moon-svg');
                         const label = btn.querySelector('.theme-text-label');
                         /* instant smooth transition */
                         if (isDark) {
@@ -16903,8 +16903,8 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
 
                 const syncInitialToggleBtn = (btn, isDark) => {
                     if (!btn) return;
-                    const sun = btn.querySelector('.theme-sun-icon');
-                    const moon = btn.querySelector('.theme-moon-icon');
+                    const sun = btn.querySelector('.theme-sun-icon, .theme-sun-svg');
+                    const moon = btn.querySelector('.theme-moon-icon, .theme-moon-svg');
                     const label = btn.querySelector('.theme-text-label');
                     if (isDark) {
                         sun?.classList.add('hidden');
