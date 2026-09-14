@@ -596,3 +596,7 @@ Redesigned the scrollbar global styles for both light and dark modes. Removed th
 
 ### msg_050: Fix Test Alert Email Routing (Mayur)
 Updated healthController.js to route the test email to the logged-in user email rather than defaulting to hardcoded fallback emails. This ensures the dashboard user receives their test email correctly.
+
+
+### msg_051: Modernize Dropdown Select Component (Sumit)
+Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom vanilla JS dropdown component integrated seamlessly into uiPolishSuite.js. This completely overrides the OS default select box and ensures absolute design consistency across all browsers and operating systems, adhering strictly to the modern design tokens of the site. index-3.html was also synced.

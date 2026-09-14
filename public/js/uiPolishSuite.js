@@ -780,3 +780,75 @@
   });
 
 })();
+
+// ─── 21. MODERN CUSTOM SELECT INITIALIZER (OS Default Override) ───
+document.addEventListener('DOMContentLoaded', () => {
+    function initCustomSelect(selectElement) {
+        if (selectElement.hasAttribute('data-custom-select-init')) return;
+        selectElement.setAttribute('data-custom-select-init', 'true');
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        selectElement.parentNode.insertBefore(wrapper, selectElement);
+        wrapper.appendChild(selectElement);
+
+        const trigger = document.createElement('div');
+        trigger.className = selectElement.className + ' custom-select-trigger';
+        trigger.textContent = selectElement.options[selectElement.selectedIndex]?.textContent || 'Select...';
+        
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'custom-select-options custom-scrollbar';
+
+        Array.from(selectElement.options).forEach((option, index) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'custom-select-option';
+            if (index === selectElement.selectedIndex) optDiv.classList.add('selected');
+            optDiv.textContent = option.textContent;
+            optDiv.setAttribute('data-value', option.value);
+
+            optDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement.selectedIndex = index;
+                trigger.textContent = option.textContent;
+                
+                Array.from(optionsContainer.children).forEach(c => c.classList.remove('selected'));
+                optDiv.classList.add('selected');
+                
+                wrapper.classList.remove('open');
+                selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+            optionsContainer.appendChild(optDiv);
+        });
+
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(optionsContainer);
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+                if (w !== wrapper) w.classList.remove('open');
+            });
+            wrapper.classList.toggle('open');
+        });
+    }
+
+    document.querySelectorAll('select.form-input').forEach(initCustomSelect);
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+    });
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1) {
+                    if (node.tagName === 'SELECT' && node.classList.contains('form-input')) {
+                        initCustomSelect(node);
+                    }
+                    node.querySelectorAll?.('select.form-input').forEach(initCustomSelect);
+                }
+            });
+        });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+});
