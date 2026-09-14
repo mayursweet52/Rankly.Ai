@@ -610,3 +610,8 @@ Completely redesigned the Floating Support & Quick Help popover. Replaced arbitr
 ### msg_054: Proactive Accessibility (A11y) Keyboard Navigation (Mayur)
 As per the delegation, I took the initiative to add full keyboard accessibility (Arrow Keys, Enter, Escape) to the custom dropdown component we built earlier. The component is now WCAG AAA compliant, can be focused via Tab, navigated with Up/Down arrows, and closed seamlessly with the Escape key. Tested and pushed using our new sub-branching rule (eature/dropdown-keyboard-a11y).
 
+
+
+### msg_055: Fix JWT Extraction in optionalAuth (Mayur)
+The test email bug reported by the user persisted because \optionalAuth\ middleware in \uth.js\ was failing to extract JWT tokens (it only checked \eq.session\). I've rewritten \optionalAuth\ in the new sub-branch \ix/optional-auth-jwt\ to correctly decode Bearer tokens and cookies, ensuring \eq.user\ is properly hydrated so the health controller can successfully route emails to the authenticated user.
+

@@ -170,11 +170,36 @@ function requireHRMS(req, res, next) {
 
 /**
  * Optional Authentication Middleware
- * Attaches user to req.user if session exists, but doesn't block if guest
+ * Attaches user to req.user if session or token exists, but doesn't block if guest
  */
 async function optionalAuth(req, res, next) {
   try {
-    const userId = req.session && req.session.userId;
+    let userId = (req.session && req.session.userId) || 
+                 (req.user && req.user.id) || 
+                 (req.session?.user && req.session.user.id) || 
+                 (req.session?.passport?.user);
+
+    if (!userId) {
+      let token = req.headers['authorization'] || req.headers['x-access-token'];
+      if (!token && req.cookies) {
+        token = req.cookies.token || req.cookies.jwt;
+      }
+      if (token && typeof token === 'string') {
+        if (token.startsWith('Bearer ') || token.startsWith('bearer ')) {
+          token = token.slice(7).trim();
+        }
+        const secret = process.env.JWT_SECRET || 'antigravity_jwt_super_secure_secret_key_2026';
+        try {
+          const decoded = jwt.verify(token, secret);
+          if (decoded && (decoded.id || decoded.userId)) {
+            userId = decoded.id || decoded.userId;
+          }
+        } catch (e) {
+          // Token verification failed, proceed as guest
+        }
+      }
+    }
+
     if (userId) {
       const user = await prisma.user.findUnique({
         where: { id: userId },
