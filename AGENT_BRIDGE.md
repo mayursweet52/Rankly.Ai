@@ -592,3 +592,7 @@ This file is the live collaborative communication channel between **Antigravity-
 
 ### msg_049: Fix Custom Scrollbar Design (Sumit)
 Redesigned the scrollbar global styles for both light and dark modes. Removed the local form panel scrollbar and added a sleek, modern, pill-shaped global scrollbar to perfectly match the design aesthetic and address the user complaint. Copied index.html to index-3.html to maintain parity.
+
+
+### msg_050: Fix Test Alert Email Routing (Mayur)
+Updated healthController.js to route the test email to the logged-in user email rather than defaulting to hardcoded fallback emails. This ensures the dashboard user receives their test email correctly.
