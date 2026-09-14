@@ -781,7 +781,7 @@
 
 })();
 
-// ─── 21. MODERN CUSTOM SELECT INITIALIZER (OS Default Override) ───
+// ─── 21. MODERN CUSTOM SELECT INITIALIZER (OS Default Override + Ultimate A11y & Form Sync) ───
 document.addEventListener('DOMContentLoaded', () => {
     function initCustomSelect(selectElement) {
         if (selectElement.hasAttribute('data-custom-select-init')) return;
@@ -795,47 +795,156 @@ document.addEventListener('DOMContentLoaded', () => {
         const trigger = document.createElement('div');
         trigger.className = selectElement.className + ' custom-select-trigger';
         trigger.textContent = selectElement.options[selectElement.selectedIndex]?.textContent || 'Select...';
+        trigger.setAttribute('tabindex', '0'); // Keyboard focus
+        trigger.setAttribute('role', 'combobox');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-haspopup', 'listbox');
         
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'custom-select-options custom-scrollbar';
+        optionsContainer.setAttribute('role', 'listbox');
 
-        Array.from(selectElement.options).forEach((option, index) => {
-            const optDiv = document.createElement('div');
-            optDiv.className = 'custom-select-option';
-            if (index === selectElement.selectedIndex) optDiv.classList.add('selected');
-            optDiv.textContent = option.textContent;
-            optDiv.setAttribute('data-value', option.value);
+        let highlightedIndex = selectElement.selectedIndex;
 
-            optDiv.addEventListener('click', (e) => {
-                e.stopPropagation();
-                selectElement.selectedIndex = index;
-                trigger.textContent = option.textContent;
-                
-                Array.from(optionsContainer.children).forEach(c => c.classList.remove('selected'));
-                optDiv.classList.add('selected');
-                
-                wrapper.classList.remove('open');
-                selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+        const updateHighlight = (index) => {
+            const options = Array.from(optionsContainer.children);
+            options.forEach(c => c.classList.remove('highlighted', 'selected'));
+            if (options[index]) {
+                options[index].classList.add('highlighted', 'selected');
+                options[index].scrollIntoView({ block: 'nearest' });
+            }
+        };
+
+        const renderOptions = () => {
+            optionsContainer.innerHTML = '';
+            Array.from(selectElement.options).forEach((option, index) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'custom-select-option';
+                if (index === selectElement.selectedIndex) {
+                    optDiv.classList.add('selected', 'highlighted');
+                }
+                optDiv.textContent = option.textContent;
+                optDiv.setAttribute('data-value', option.value);
+                optDiv.setAttribute('role', 'option');
+
+                optDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectOption(index, option.textContent);
+                });
+                optionsContainer.appendChild(optDiv);
             });
-            optionsContainer.appendChild(optDiv);
+        };
+        renderOptions();
+
+        const syncUIFromSelect = () => {
+            trigger.textContent = selectElement.options[selectElement.selectedIndex]?.textContent || 'Select...';
+            highlightedIndex = selectElement.selectedIndex;
+            updateHighlight(highlightedIndex);
+        };
+
+        // Sync when original select changes programmatically
+        selectElement.addEventListener('change', (e) => {
+            if (!e.detail?.customOrigin) syncUIFromSelect();
         });
+
+        // Form Reset Sync
+        const form = selectElement.closest('form');
+        if (form) {
+            form.addEventListener('reset', () => {
+                setTimeout(syncUIFromSelect, 0); // Wait for form to reset native select
+            });
+        }
+
+        // Label Click Sync
+        if (selectElement.id) {
+            const label = document.querySelector(`label[for="${selectElement.id}"]`);
+            if (label) {
+                label.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    trigger.focus();
+                    if (!wrapper.classList.contains('open')) openSelect();
+                });
+            }
+        }
+
+        const selectOption = (index, text) => {
+            selectElement.selectedIndex = index;
+            trigger.textContent = text;
+            Array.from(optionsContainer.children).forEach((c, i) => {
+                c.classList.toggle('selected', i === index);
+                c.classList.toggle('highlighted', i === index);
+            });
+            closeSelect();
+            selectElement.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: { customOrigin: true } }));
+        };
+
+        const openSelect = () => {
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+            wrapper.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+            highlightedIndex = selectElement.selectedIndex;
+            updateHighlight(highlightedIndex);
+        };
+
+        const closeSelect = () => {
+            wrapper.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+            trigger.focus();
+        };
 
         wrapper.appendChild(trigger);
         wrapper.appendChild(optionsContainer);
 
         trigger.addEventListener('click', (e) => {
             e.stopPropagation();
-            document.querySelectorAll('.custom-select-wrapper').forEach(w => {
-                if (w !== wrapper) w.classList.remove('open');
-            });
-            wrapper.classList.toggle('open');
+            if (wrapper.classList.contains('open')) closeSelect();
+            else openSelect();
+        });
+
+        trigger.addEventListener('keydown', (e) => {
+            const isOpen = wrapper.classList.contains('open');
+            const optionsCount = selectElement.options.length;
+            
+            switch(e.key) {
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    if (isOpen) selectOption(highlightedIndex, selectElement.options[highlightedIndex].textContent);
+                    else openSelect();
+                    break;
+                case 'Escape':
+                    if (isOpen) {
+                        e.preventDefault();
+                        closeSelect();
+                    }
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (!isOpen) openSelect();
+                    else {
+                        highlightedIndex = (highlightedIndex + 1) % optionsCount;
+                        updateHighlight(highlightedIndex);
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (!isOpen) openSelect();
+                    else {
+                        highlightedIndex = (highlightedIndex - 1 + optionsCount) % optionsCount;
+                        updateHighlight(highlightedIndex);
+                    }
+                    break;
+            }
         });
     }
 
     document.querySelectorAll('select.form-input').forEach(initCustomSelect);
 
     document.addEventListener('click', () => {
-        document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+        document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+            w.classList.remove('open');
+            w.querySelector('.custom-select-trigger')?.setAttribute('aria-expanded', 'false');
+        });
     });
 
     const observer = new MutationObserver((mutations) => {
