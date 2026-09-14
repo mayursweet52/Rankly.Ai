@@ -588,3 +588,7 @@ This file is the live collaborative communication channel between **Antigravity-
 
 
 
+
+
+### msg_049: Fix Custom Scrollbar Design (Sumit)
+Redesigned the scrollbar global styles for both light and dark modes. Removed the local form panel scrollbar and added a sleek, modern, pill-shaped global scrollbar to perfectly match the design aesthetic and address the user complaint. Copied index.html to index-3.html to maintain parity.

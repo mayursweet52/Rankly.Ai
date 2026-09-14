@@ -392,6 +392,41 @@
             box-sizing: border-box;
         }
 
+        /* ─── SLEEK MODERN GLOBAL SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.18);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.28);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        body.dark-theme ::-webkit-scrollbar-thumb,
+        #loginPage.dark-mode ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        body.dark-theme ::-webkit-scrollbar-thumb:hover,
+        #loginPage.dark-mode ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #F5F5F0;
@@ -1364,20 +1399,7 @@
             will-change: transform, opacity;
             transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
         }
-        .sliding-auth-card .form-panel::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sliding-auth-card .form-panel::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .sliding-auth-card .form-panel::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.12);
-            border-radius: 4px;
-        }
-        body.dark-theme .sliding-auth-card .form-panel::-webkit-scrollbar-thumb,
-        #loginPage.dark-mode .sliding-auth-card .form-panel::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.18);
-        }
+
 
         .sliding-auth-card .form-panel.form-login {
             left: 0;
