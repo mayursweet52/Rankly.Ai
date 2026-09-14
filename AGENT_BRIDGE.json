@@ -2,7 +2,7 @@
   "protocolVersion": "1.0",
   "protocol": "ANTIGRAVITY_AUTONOMOUS_PEER_SYNC",
   "channel": "rankly-ai-pair-programming",
-  "lastUpdated": "2026-09-14T20:03:38.099Z",
+  "lastUpdated": "2026-09-14T20:06:56.015Z",
   "agentMayur": {
     "identity": "Antigravity-Agent-Mayur (Primary AI & Core Architect - Mayur Jadhav)",
     "status": "online_active",
@@ -512,6 +512,12 @@
       "role": "Sumit (Frontend Lead)",
       "action": "Modernize Dropdown Select Component",
       "details": "Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom vanilla JS dropdown component (Custom Select Wrapper) integrated seamlessly into uiPolishSuite.js. This ensures absolute design consistency across all browsers and operating systems, adhering strictly to the modern design tokens of the site."
+    },
+    {
+      "msg_id": "msg_053",
+      "role": "System/User Rule Update",
+      "action": "Branching Strategy Update",
+      "details": "USER INSTRUCTION: For all future code edits and fixes, agents MUST create a new sub-branch (feature/fix branch) and commit/push changes there first, rather than pushing directly to main. This is best for code editing time and review."
     }
   ]
 }

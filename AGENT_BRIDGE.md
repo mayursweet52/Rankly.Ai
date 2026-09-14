@@ -605,3 +605,7 @@ Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom
 ### msg_052: Redesign Support & Feedback Floating Widget (Sumit)
 Completely redesigned the Floating Support & Quick Help popover. Replaced arbitrary, chaotic Tailwind utility classes with a rigorous semantic custom CSS block (.support-drawer) aligned with the neo-minimalist site tokens. Fixed the misaligned borders, broken corner radiuses, and clamped bottom padding issues to ensure it no longer looks like an "odd man out". index-3.html was also synced.
 
+
+
+### msg_053: Branching Strategy Update (System/User Rule)
+**CRITICAL RULE UPDATE**: The user has strictly requested that for all future code edits and fixes, we must create a **new sub-branch** (feature or fix branch) and commit/push the fixes there, instead of pushing directly to main. All agents (Sumit, Mayur, Vaibhav) must adhere to this branching strategy for safety and proper code editing workflows.
