@@ -347,13 +347,31 @@
 
     
     <style>
-        /* ─── RANKLY.AI MODERN PRECISION STYLING ─── */
+        /* ─── RANKLY.AI MODERN PRECISION STYLING & DESIGN TOKENS ─── */
         :root {
+            /* Radius Scale (4-tier standard) */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+
+            /* Modular Type Scale */
+            --text-xs: 0.75rem;    /* 12px */
+            --text-sm: 0.875rem;   /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg: 1.125rem;   /* 18px */
+            --text-xl: 1.25rem;    /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+
+            /* Semantic Colors (Light Mode) */
             --bg-card: #FFFFFF;
             --bg-input: #FAFAF8;
             --border-color: #E5E5DF;
             --text-primary: #111111;
+            --text-secondary: #4B5563;
             --text-muted: #666660;
+            --text-brand: #183B33;
+            --text-accent: #D95D39;
         }
 
         body.dark-theme,
@@ -362,7 +380,10 @@
             --bg-input: #161926;
             --border-color: rgba(255, 255, 255, 0.1);
             --text-primary: #FFFFFF;
+            --text-secondary: #D1D5DB;
             --text-muted: #9CA3AF;
+            --text-brand: #5B998C;
+            --text-accent: #F97316;
         }
 
         * {
@@ -1298,29 +1319,31 @@
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
         .sliding-auth-card .hero-btn {
-            padding: 11px 36px;
-            border-radius: 32px;
-            letter-spacing: 1.2px;
+            padding: 10px 28px !important;
+            border-radius: var(--radius-md, 10px) !important;
             font-family: inherit;
-            font-size: 12px;
-            font-weight: 700;
-            color: #FFFFFF;
-            border: 1.5px solid rgba(255, 255, 255, 0.85);
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            color: #183B33 !important;
+            border: 1px solid rgba(255, 255, 255, 0.95) !important;
+            background: #FFFFFF !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1) !important;
             cursor: pointer;
-            will-change: transform;
+            will-change: transform, box-shadow;
         }
         .sliding-auth-card .hero-btn:hover {
-            background: #FFFFFF;
-            color: #183B33;
-            transform: scale(1.04) translateZ(0);
-            box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.22);
+            background: #F3F3ED !important;
+            color: #111111 !important;
+            transform: translateY(-1px) scale(1.02) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
         }
         .sliding-auth-card .hero-btn:active {
-            transform: scale(0.97) translateZ(0);
+            transform: scale(0.98) !important;
         }
 
         .sliding-auth-card .form-panel {
@@ -1849,16 +1872,17 @@
         }
         body.dark-theme .sliding-auth-card .hero-btn,
         #loginPage.dark-mode .sliding-auth-card .hero-btn {
-            border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-            color: #FFFFFF !important;
+            background: #10B981 !important;
+            color: #06281E !important;
+            border: 1px solid #34D399 !important;
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35) !important;
         }
         body.dark-theme .sliding-auth-card .hero-btn:hover,
         #loginPage.dark-mode .sliding-auth-card .hero-btn:hover {
-            background: #FFFFFF !important;
-            color: #183B33 !important;
-            transform: scale(1.04) translateZ(0) !important;
-            box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.3) !important;
+            background: #34D399 !important;
+            color: #021C14 !important;
+            transform: translateY(-1px) scale(1.02) !important;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45) !important;
         }
         body.dark-theme .sliding-auth-card .forgot-link,
         #loginPage.dark-mode .sliding-auth-card .forgot-link {
@@ -6164,24 +6188,19 @@ body.dark-theme .resume-tip-box,
         <main class="w-full flex-1 flex flex-col items-center justify-start z-10 py-6 min-h-0">
             
             <!-- Strategic Internal Linking Header Navigation (SEO Compliance) -->
-            <nav class="w-full max-w-4xl mx-auto mb-4 flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-[#666660] dark:text-zinc-400">
-                <a href="/services" class="hover:text-emerald-500 transition-colors">Services & Offerings</a>
-                <span class="text-gray-300 dark:text-zinc-700">•</span>
-                <a href="/locations" class="hover:text-emerald-500 transition-colors">Global Locations</a>
-                <span class="text-gray-300 dark:text-zinc-700">•</span>
-                <a href="/about" class="hover:text-emerald-500 transition-colors">About Rankly</a>
-                <span class="text-gray-300 dark:text-zinc-700">•</span>
-                <a href="/contact" class="hover:text-emerald-500 transition-colors">Contact Sales</a>
-                <span class="text-gray-300 dark:text-zinc-700">•</span>
-                <a href="/privacy" class="hover:text-emerald-500 transition-colors">Privacy Policy</a>
-                <span class="text-gray-300 dark:text-zinc-700">•</span>
-                <a href="/terms" class="hover:text-emerald-500 transition-colors">Terms of Service</a>
+            <nav class="w-full max-w-4xl mx-auto mb-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-medium text-[#4A4A45] dark:text-zinc-300" aria-label="Footer navigation">
+                <a href="/services" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">Services &amp; Offerings</a>
+                <a href="/locations" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">Global Locations</a>
+                <a href="/about" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">About Rankly</a>
+                <a href="/contact" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">Contact Sales</a>
+                <a href="/privacy" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">Privacy Policy</a>
+                <a href="/terms" class="hover:text-[#183B33] dark:hover:text-[#10B981] transition-colors py-1">Terms of Service</a>
             </nav>
 
             <!-- Semantic H1 Title Element (PRD SEO Requirement) -->
             <div class="text-center mb-8">
                 <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111111] dark:text-white tracking-tight">
-                    Rankly.ai — Enterprise AI Recruitment Intelligence & ATS Talent Platform
+                    Rankly.ai — Enterprise AI Recruitment Intelligence &amp; ATS Talent Platform
                 </h1>
                 <p class="text-xs sm:text-sm text-[#666660] dark:text-zinc-400 mt-1.5 max-w-lg mx-auto">
                     Calibrated talent screening, automated candidate ranking, and continuous HRMS intelligence.
@@ -6205,7 +6224,10 @@ body.dark-theme .resume-tip-box,
                                 <div class="flex flex-col items-center justify-center">
                                     <h2 class="hero-title">Welcome back</h2>
                                     <p class="hero-subtitle">Sign in to review candidates, manage pipelines and access AI screening analytics.</p>
-                                    <button type="button" class="hero-btn" onclick="toggleAuthSlide('login')">SIGN IN</button>
+                                    <button type="button" class="hero-btn inline-flex items-center gap-2" onclick="toggleAuthSlide('login')">
+                                        <span>Sign In</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                    </button>
                                 </div>
                             </div>
 
@@ -6213,7 +6235,7 @@ body.dark-theme .resume-tip-box,
                             <div class="form-panel form-register" id="formRegister" style="justify-content: flex-start; overflow-y: auto; scrollbar-width: thin; padding: 22px 24px;">
                                 <div class="w-full text-left mb-2">
                                     <h2 class="auth-form-title text-lg text-[#111111] dark:text-white mb-0.5 font-bold">Create Candidate Account</h2>
-                                    <p class="text-[11px] text-[#666660] dark:text-gray-400 font-medium">Enter your profile credentials for automated ATS ranking & evaluation.</p>
+                                    <p class="text-xs text-[#666660] dark:text-gray-400 font-medium leading-relaxed">Enter your profile credentials for automated ATS ranking &amp; evaluation.</p>
                                 </div>
 
                                 <form id="slidingRegisterForm" class="w-full" onsubmit="event.preventDefault(); handleCandidateRegistration();">
@@ -6307,25 +6329,25 @@ body.dark-theme .resume-tip-box,
 
                                         <!-- Confirm Password -->
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Confirm Password *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Confirm Password *</label>
                                             <div class="password-toggle w-full">
-                                                <input type="password" id="slideRegConfirmPassword" class="login-input" placeholder="Re-enter password" required / autocomplete="new-password">
+                                                <input type="password" id="slideRegConfirmPassword" class="login-input" placeholder="Re-enter password" required autocomplete="new-password">
                                                 <button type="button" class="toggle-eye" onclick="togglePassword('slideRegConfirmPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="my-2.5 text-[11px] text-[#666660] dark:text-gray-400 flex items-center gap-1.5 select-none">
+                                    <div class="my-2.5 text-xs text-[#666660] dark:text-gray-400 flex items-center gap-1.5 select-none">
                                         <input type="checkbox" id="regTermsCheck" required class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
-                                        <span>I accept <a href="/terms" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Terms of Service</a> & <a href="/privacy" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Privacy Policy</a></span>
+                                        <span>I accept <a href="/terms" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Terms of Service</a> &amp; <a href="/privacy" target="_blank" class="font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] underline transition-colors">Privacy Policy</a></span>
                                     </div>
 
-                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                        <span>CREATE CANDIDATE ACCOUNT</span>
-                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                    <button type="submit" id="slideRegSubmitBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group" aria-label="Create your candidate account">
+                                        <span>Create Candidate Account</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+                                            <path d="M20.2497 12L4.24993 12"></path>
+                                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12"></path>
+                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12"></path>
                                         </svg>
                                     </button>
 
@@ -6342,7 +6364,13 @@ body.dark-theme .resume-tip-box,
                                     </button>
 
                                     <div class="mt-2.5 text-center pb-1">
-                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400">Already have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign In</strong></button>
+                                        <button type="button" onclick="toggleAuthSlide('login')" class="text-xs text-[#666660] hover:text-[#111111] dark:text-gray-400 inline-flex items-center gap-1 group">
+                                            <span>Already have an account?</span>
+                                            <strong class="text-[#183B33] dark:text-[#5B998C] group-hover:text-[#D95D39] font-bold inline-flex items-center gap-1 transition-colors">
+                                                Sign In
+                                                <svg class="transition-transform duration-200 group-hover:translate-x-0.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                            </strong>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -6351,8 +6379,11 @@ body.dark-theme .resume-tip-box,
                             <div class="hero hero-login active" id="heroLogin">
                                 <div class="flex flex-col items-center justify-center">
                                     <h2 class="hero-title">Hello there</h2>
-                                    <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment & Candidate Evaluation platform.</p>
-                                    <button type="button" class="hero-btn" onclick="toggleAuthSlide('register')">SIGN UP</button>
+                                    <p class="hero-subtitle">Begin your journey with Rankly.ai's Next-Gen AI Recruitment &amp; Candidate Evaluation platform.</p>
+                                    <button type="button" class="hero-btn inline-flex items-center gap-2" onclick="toggleAuthSlide('register')">
+                                        <span>Sign Up</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                    </button>
                                 </div>
                             </div>
 
@@ -6364,12 +6395,12 @@ body.dark-theme .resume-tip-box,
                                         <div class="auth-input-stack">
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Email / Username</label>
-                                                <input type="text" id="loginUsername" class="login-input" placeholder="Enter email or username" required / autocomplete="username">
+                                                <input type="text" id="loginUsername" class="login-input" placeholder="Enter email or username" required autocomplete="username">
                                             </div>
                                             <div>
                                                 <label class="block text-xs font-semibold uppercase tracking-wider text-[#666660] dark:text-gray-400 mb-1">Password</label>
                                                 <div class="password-toggle w-full">
-                                                    <input type="password" id="loginPassword" class="login-input" placeholder="••••••••••••" required / autocomplete="current-password">
+                                                    <input type="password" id="loginPassword" class="login-input" placeholder="••••••••••••" required autocomplete="current-password">
                                                     <button type="button" class="toggle-eye" onclick="togglePassword('loginPassword', this)" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                                 </div>
                                             </div>
@@ -6383,13 +6414,9 @@ body.dark-theme .resume-tip-box,
                                             <button type="button" onclick="openModal('forgotPasswordModal')" class="forgot-link">Forgot password?</button>
                                         </div>
 
-                                        <button type="submit" id="loginBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                            <span>SIGN IN</span>
-                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            </svg>
+                                        <button type="submit" id="loginBtn" class="login-btn auth-btn-main flex items-center justify-center gap-2 group" aria-label="Sign in to your account">
+                                            <span>Sign In</span>
+                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M20.2497 12L4.24993 12"></path><path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12"></path><path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12"></path></svg>
                                         </button>
 
                                         <div class="auth-divider-line"><span>OR</span></div>
@@ -6407,7 +6434,13 @@ body.dark-theme .resume-tip-box,
                                         </div>
 
                                         <div class="mt-4 pt-2 border-t border-[#E5E5DF] dark:border-gray-800 flex justify-between items-center text-xs">
-                                            <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400">Don't have an account? <strong class="text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] font-bold transition-colors">Sign Up</strong></button>
+                                            <button type="button" onclick="toggleAuthSlide('register')" class="text-[#666660] hover:text-[#111111] dark:text-gray-400 inline-flex items-center gap-1 group">
+                                                <span>Don't have an account?</span>
+                                                <strong class="text-[#183B33] dark:text-[#5B998C] group-hover:text-[#D95D39] font-bold inline-flex items-center gap-1 transition-colors">
+                                                    Sign Up
+                                                    <svg class="transition-transform duration-200 group-hover:translate-x-0.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                                </strong>
+                                            </button>
                                             <!-- Switch to Company Full Card 3D Flip -->
                                             <button type="button" id="showCompanyForm" onclick="flipEntireAuthCard(true)" class="text-xs font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all cursor-pointer ml-auto inline-flex items-center gap-1.5 group">
                                                 <span>Company Portal</span>
@@ -6452,7 +6485,7 @@ body.dark-theme .resume-tip-box,
                                         </div>
                                         
                                         <button type="submit" id="inlineResetBtn" class="w-full login-btn auth-btn-main flex items-center justify-center gap-2 group mt-3">
-                                            <span>SEND RESET LINK & CODE</span>
+                                            <span>Send Reset Link & Code</span>
                                             <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                                 <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
@@ -6513,18 +6546,18 @@ body.dark-theme .resume-tip-box,
                             <div id="orgPortalLoginView" class="w-full">
                                 <div class="mb-3 text-left">
                                     <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Organization Sign In</h3>
-                                    <p class="text-[11px] text-[var(--text-muted)]">Sign in with your corporate email/username and master admin credentials.</p>
+                                    <p class="text-xs text-[var(--text-muted)] leading-relaxed">Sign in with your corporate email/username and master admin credentials.</p>
                                 </div>
                                 <form id="orgLoginForm" class="w-full" onsubmit="event.preventDefault(); handleOrgLogin();">
                                     <div class="auth-input-stack mb-3">
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email / Username *</label>
-                                            <input id="orgLoginIdentifier" class="login-input" placeholder="admin@company.com or username" required type="text" / autocomplete="username">
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email / Username *</label>
+                                            <input id="orgLoginIdentifier" class="login-input" placeholder="admin@company.com or username" required type="text" autocomplete="username">
                                         </div>
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Password *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Password *</label>
                                             <div class="password-toggle w-full">
-                                                <input id="orgLoginPassword" class="login-input" placeholder="••••••••••••" required type="password" / autocomplete="current-password">
+                                                <input id="orgLoginPassword" class="login-input" placeholder="••••••••••••" required type="password" autocomplete="current-password">
                                                 <button class="toggle-eye" onclick="togglePassword('orgLoginPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
                                             </div>
                                         </div>
@@ -6533,28 +6566,28 @@ body.dark-theme .resume-tip-box,
                                     <div class="flex justify-between items-center w-full my-2.5 text-xs">
                                         <label class="flex items-center gap-1.5 cursor-pointer text-[var(--text-muted)] select-none">
                                             <input type="checkbox" id="orgRememberMe" class="rounded border-[#E5E5DF] text-[#183B33] focus:ring-0 cursor-pointer" />
-                                            <span class="text-[11px]">Remember workspace session</span>
+                                            <span class="text-xs font-medium">Remember workspace session</span>
                                         </label>
-                                        <button type="button" onclick="switchOrgPortalTab('forgot')" class="forgot-link text-[11px]">Reset Password?</button>
+                                        <button type="button" onclick="switchOrgPortalTab('forgot')" class="forgot-link text-xs font-medium">Reset Password?</button>
                                     </div>
 
-                                    <button type="submit" id="orgLoginSubmitBtn" class="w-full login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                        <span>SIGN IN TO WORKSPACE</span>
-                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                    <button type="submit" id="orgLoginSubmitBtn" class="w-full login-btn auth-btn-main flex items-center justify-center gap-2 group" aria-label="Sign in to your organization workspace">
+                                        <span>Sign In to Workspace</span>
+                                        <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+                                            <path d="M20.2497 12L4.24993 12"></path>
+                                            <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12"></path>
+                                            <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12"></path>
                                         </svg>
                                     </button>
 
-                                    <div class="mt-3 pt-2.5 border-t border-[var(--border-color)] text-center">
-                                        <span class="text-[11px] text-[var(--text-muted)]">Don't have an enterprise workspace? </span>
-                                        <button type="button" onclick="switchOrgPortalTab('register')" class="text-[11px] font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all inline-flex items-center gap-1 group">
+                                    <div class="mt-3 pt-2.5 border-t border-[var(--border-color)] text-center text-xs">
+                                        <span class="text-xs text-[var(--text-muted)]">Don't have an enterprise workspace? </span>
+                                        <button type="button" onclick="switchOrgPortalTab('register')" class="text-xs font-bold text-[#183B33] dark:text-[#5B998C] hover:text-[#D95D39] dark:hover:text-[#81E4DA] transition-all inline-flex items-center gap-1 group">
                                             <span>Register Workspace</span>
-                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
-                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
+                                            <svg class="transition-transform duration-200 group-hover:translate-x-1" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+                                                <path d="M20.2497 12L4.24993 12"></path>
+                                                <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12"></path>
+                                                <path d="M14.59 6.33995C14.59 9.2497 17.1526 12 20.2501 12"></path>
                                             </svg>
                                         </button>
                                     </div>
@@ -6576,12 +6609,11 @@ body.dark-theme .resume-tip-box,
                                 </div>
 
                                 <div class="mb-3 text-left">
-                                    
                                     <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Reset Workspace Password</h3>
-                                    <p class="text-[11px] text-[var(--text-muted)]">Organization password resets require an authorized referral code.</p>
+                                    <p class="text-xs text-[var(--text-muted)]">Organization password resets require an authorized referral code.</p>
                                 </div>
 
-                                <div class="mb-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2">
+                                <div class="mb-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
                                     <i class="fa-solid fa-key mt-0.5 text-amber-600 dark:text-amber-400 shrink-0"></i>
                                     <span><strong>Referral Code Verification:</strong> Provide your organization's active referral code to authorize this password reset.</span>
                                 </div>
@@ -6589,12 +6621,12 @@ body.dark-theme .resume-tip-box,
                                 <form id="orgForgotForm" class="w-full" onsubmit="event.preventDefault(); handleOrgPasswordReset();">
                                     <div class="auth-input-stack mb-3">
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email / Username *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Corporate Email / Username *</label>
                                             <input id="orgForgotIdentifier" class="login-input" placeholder="admin@company.com or username" required type="text" / autocomplete="username">
                                         </div>
 
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Referral Code *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Referral Code *</label>
                                             <div class="relative w-full">
                                                 <input id="orgForgotReferralCode" class="login-input uppercase tracking-wider font-mono font-bold text-[#183B33] dark:text-emerald-400" placeholder="e.g. RNK-XXXXXX" maxlength="30" required type="text" oninput="this.value = this.value.toUpperCase();" />
                                                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)]"><i class="fa-solid fa-shield-halved"></i></span>
@@ -6602,7 +6634,7 @@ body.dark-theme .resume-tip-box,
                                         </div>
 
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">New Master Password *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">New Master Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgForgotNewPassword" class="login-input" placeholder="•••••••••••• (Min 6 chars)" required type="password" / autocomplete="new-password">
                                                 <button class="toggle-eye" onclick="togglePassword('orgForgotNewPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
@@ -6610,7 +6642,7 @@ body.dark-theme .resume-tip-box,
                                         </div>
 
                                         <div>
-                                            <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Confirm New Password *</label>
+                                            <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Confirm New Password *</label>
                                             <div class="password-toggle w-full">
                                                 <input id="orgForgotConfirmPassword" class="login-input" placeholder="Confirm new password" required type="password" / autocomplete="new-password">
                                                 <button class="toggle-eye" onclick="togglePassword('orgForgotConfirmPassword', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
@@ -6619,7 +6651,7 @@ body.dark-theme .resume-tip-box,
                                     </div>
 
                                     <button type="submit" id="orgForgotSubmitBtn" class="w-full login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                        <span>VERIFY REFERRAL & RESET PASSWORD</span>
+                                        <span>Verify Referral & Reset Password</span>
                                         <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                             <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
@@ -6640,25 +6672,25 @@ body.dark-theme .resume-tip-box,
                             <div id="orgPortalRegisterView" class="w-full hidden">
                                 <div class="mb-3 text-left">
                                     <h3 class="text-sm font-bold text-[var(--text-primary)] mb-0.5">Register Workspace</h3>
-                                    <p class="text-[11px] text-[var(--text-muted)]">Verify your email to setup your organization workspace.</p>
+                                    <p class="text-xs text-[var(--text-muted)]">Verify your email to setup your organization workspace.</p>
                                 </div>
                                 <form id="orgForm" class="w-full" autocomplete="off" onsubmit="event.preventDefault(); handleOrgRegistration();">
                                     <!-- Email & OTP Verification -->
                                     <div class="mb-3">
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Email *</label>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Email *</label>
                                         <div class="flex gap-2 mb-1">
                                             <input id="orgWorkEmailInput" name="org_workspace_email_field" oninput="checkOrgWorkEmailLive(this)" autocomplete="off" data-lpignore="true" data-form-type="other" autocorrect="off" autocapitalize="off" spellcheck="false" class="login-input flex-1" required type="email" placeholder="name@company.com" />
                                             <button type="button" id="sendOrgOtpBtn" onclick="handleSendOrgOtp()" class="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:border-[#183B33] hover:text-[#183B33] transition-all whitespace-nowrap cursor-pointer">
                                                 Send OTP
                                             </button>
                                         </div>
-                                        <p id="orgWorkEmailWarning" class="text-[11px] text-amber-700 dark:text-amber-300 mt-1.5 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 hidden"></p>
-                                        <p class="text-[10px] text-[var(--text-muted)] mt-1"><i class="fa-solid fa-briefcase mr-1 text-[#183B33] dark:text-[#5B998C]"></i> Corporate work email only (e.g. name@company.com). Personal Gmail / Yahoo not allowed.</p>
+                                        <p id="orgWorkEmailWarning" class="text-xs text-amber-700 dark:text-amber-300 mt-1.5 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 hidden"></p>
+                                        <p class="text-xs text-[var(--text-muted)] mt-1"><i class="fa-solid fa-briefcase mr-1 text-[#183B33] dark:text-[#5B998C]"></i> Corporate work email only (e.g. name@company.com). Personal Gmail / Yahoo not allowed.</p>
                                     </div>
 
                                     <!-- OTP Verification Box (Hidden until Send OTP clicked) -->
                                     <div id="orgOtpContainer" class="hidden mb-3">
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP *</label>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Enter 6-Digit OTP *</label>
                                         <div class="flex gap-2">
                                             <input id="orgOtpInput" name="org_otp_manual" autocomplete="off" data-lpignore="true" data-form-type="other" class="login-input flex-1 tracking-widest text-center font-bold" maxlength="6" placeholder="000000" type="text" value="" />
                                             <button type="button" id="verifyOrgOtpBtn" onclick="handleVerifyOrgOtp()" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#183B33] hover:bg-[#243E36] text-white transition-all whitespace-nowrap shadow-xs cursor-pointer">
@@ -6684,26 +6716,26 @@ body.dark-theme .resume-tip-box,
                                         <!-- 2-Column Responsive Grid for Organization Profile Fields -->
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-3">
                                             <div class="md:col-span-2">
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Organization Name *</label>
                                                 <input id="orgNameInput" class="login-input" placeholder="e.g. Acme Corporation or TechCorp AI" required type="text"/>
                                             </div>
 
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">First Name *</label>
                                                 <input id="orgFirstName" class="login-input" placeholder="First Name" required type="text"/>
                                             </div>
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Last Name</label>
                                                 <input id="orgLastName" class="login-input" placeholder="Last Name" type="text"/>
                                             </div>
 
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Work Username *</label>
                                                 <input id="orgUsername" class="login-input" placeholder="corporate.username" required type="text"/ autocomplete="username">
                                             </div>
 
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Role / Access Level</label>
                                                 <select id="orgRole" class="login-select">
                                                     <option value="admin">Administrator / Lead</option>
                                                     <option value="hr" selected>HR / Recruiter</option>
@@ -6712,17 +6744,17 @@ body.dark-theme .resume-tip-box,
                                             </div>
 
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Date of Birth *</label>
                                                 <input id="orgDob" class="login-input" type="date" onchange="calculateOrgAge(this.value)" required />
                                             </div>
 
                                             <div>
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Age (18+)</label>
                                                 <input id="orgAge" class="login-input" type="number" min="18" placeholder="Age" required />
                                             </div>
 
                                             <div class="md:col-span-2">
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone Number *</label>
                                                 <div class="login-phone-wrapper">
                                                     <span class="login-phone-prefix">+91</span>
                                                     <input id="orgPhone" class="login-phone-input" maxlength="10" placeholder="10-digit number" required type="tel" />
@@ -6730,7 +6762,7 @@ body.dark-theme .resume-tip-box,
                                             </div>
 
                                             <div class="md:col-span-2">
-                                                <label class="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
+                                                <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Master Admin Password *</label>
                                                 <div class="password-toggle w-full">
                                                     <input id="orgAdminPasswordInput" class="login-input" placeholder="Create Master Password" required type="password"/ autocomplete="new-password">
                                                     <button class="toggle-eye" onclick="togglePassword('orgAdminPasswordInput', this)" type="button" aria-label="Toggle password visibility"><i class="fa-regular fa-eye"></i></button>
@@ -6749,7 +6781,7 @@ body.dark-theme .resume-tip-box,
                                                 <span>Back to Sign In</span>
                                             </button>
                                             <button type="submit" id="registerOrgSubmitBtn" class="flex-1 login-btn auth-btn-main flex items-center justify-center gap-2 group">
-                                                <span>REGISTER WORKSPACE</span>
+                                                <span>Register Workspace</span>
                                                 <svg class="transition-transform duration-200 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M20.2497 12L4.24993 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                                                     <path d="M14.59 17.66C14.59 14.7503 17.1526 12 20.2501 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
@@ -8173,7 +8205,7 @@ body.dark-theme .resume-tip-box,
                                 <path d="M17.3789 16.7352C17.3789 14.3727 19.4595 12.1396 21.9744 12.1396" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"></path>
                             </g>
                         </svg>
-                        <span>SIGN OUT</span>
+                        <span>Sign Out</span>
                     </button>
                 </div>
             </aside>

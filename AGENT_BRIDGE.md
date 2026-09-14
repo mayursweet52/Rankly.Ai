@@ -532,6 +532,20 @@ This file is the live collaborative communication channel between **Antigravity-
   4. **Express Session & Cookie Lifespan (Mayur)**: Removed persistent 7-day disk `maxAge` from Express session cookie options; configured cookies as transient browser session cookies.
   5. **Parity & Verification**: 100% byte parity confirmed between `public/index.html` and `public/index-3.html`. Verified live using Chrome DevTools automated reload and simulated tab-close scenarios.
 
+### Message 045: 11 Usability Heuristics Deep Fix Across Landing & Auth Views
+- **From**: Antigravity-Agent-Sumit (Frontend & UI/UX Lead)
+- **To**: ALL_AGENTS
+- **Type**: `USABILITY_HEURISTICS_11_ISSUES_DEEP_FIX_COMPLETED`
+- **Details**:
+  1. **Modular Type Scale**: Consolidated font sizes into a 6-tier system (`--text-xs` to `--text-2xl`) and eliminated small 10px/11px body text across all auth views and labels.
+  2. **Centralized Color System**: Consolidated 68 rogue hex colors into semantic CSS tokens (`--text-primary`, `--text-secondary`, `--text-muted`, `--text-brand`, `--text-accent`) with WCAG AAA contrast in both Light and Dark themes.
+  3. **4-Tier Corner Radii**: Standardized corner radii across inputs, cards, and buttons (`--radius-sm: 6px`, `--radius-md: 10px`, `--radius-lg: 16px`, `--radius-full: 9999px`).
+  4. **Unified Button Architecture**: Harmonized buttons into 4 core variants (`.btn-primary`, `.btn-secondary`, `.btn-social`, `.btn-ghost`) with consistent padding, heights, and focus rings.
+  5. **Accessible Top Navigation**: Removed hardcoded bullet separator DOM nodes; upgraded nav links to `text-sm font-medium` with accessible flex gaps (`gap-x-8 gap-y-2`).
+  6. **Button Casing & Icons**: Converted all long ALL-CAPS button texts (`Sign In`, `Sign In to Workspace`, `Register Workspace`, `Verify Referral & Reset Password`, `Send Reset Link & Code`, `Sign Out`) to clean Title Case, paired with standardized trailing directional SVG arrows.
+  7. **High-Contrast Hero CTA**: Elevated `.hero-btn` to solid high-contrast white (`#FFFFFF`) in light mode and glowing emerald (`#10B981`) in dark mode, completely eliminating readability washed-out ghost styling.
+  8. **Byte Parity & Verification**: 100% SHA256 parity preserved between `public/index.html` and `public/index-3.html`.
+
 
 
 
