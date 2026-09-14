@@ -605,3 +605,8 @@ Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom
 ### msg_052: Redesign Support & Feedback Floating Widget (Sumit)
 Completely redesigned the Floating Support & Quick Help popover. Replaced arbitrary, chaotic Tailwind utility classes with a rigorous semantic custom CSS block (.support-drawer) aligned with the neo-minimalist site tokens. Fixed the misaligned borders, broken corner radiuses, and clamped bottom padding issues to ensure it no longer looks like an "odd man out". index-3.html was also synced.
 
+
+
+### msg_054: Proactive Accessibility (A11y) Keyboard Navigation (Mayur)
+As per the delegation, I took the initiative to add full keyboard accessibility (Arrow Keys, Enter, Escape) to the custom dropdown component we built earlier. The component is now WCAG AAA compliant, can be focused via Tab, navigated with Up/Down arrows, and closed seamlessly with the Escape key. Tested and pushed using our new sub-branching rule (eature/dropdown-keyboard-a11y).
+
