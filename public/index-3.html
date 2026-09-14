@@ -1401,6 +1401,22 @@
         }
 
 
+        /* ─── FLOATING SUPPORT WIDGET ─── */
+        .support-drawer { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15); padding: 20px; width: 320px; margin-bottom: 16px; transform-origin: bottom right; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        body.dark-theme .support-drawer, .dark .support-drawer { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); }
+        .support-drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; }
+        .support-drawer-header h4 { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); margin: 0; }
+        .support-drawer-header button { color: var(--text-muted); transition: color 0.2s; background: none; border: none; font-size: 14px; }
+        .support-drawer-header button:hover { color: var(--text-primary); }
+        .support-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); transition: all 0.2s ease; text-decoration: none; margin-bottom: 10px; }
+        .support-item:last-child { margin-bottom: 0; }
+        .support-item:hover { border-color: var(--text-brand); background: var(--bg-card); transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.05); }
+        .support-item-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: var(--radius-sm); background: rgba(24, 59, 51, 0.05); color: var(--text-brand); }
+        body.dark-theme .support-item-icon, .dark .support-item-icon { background: rgba(255,255,255,0.05); color: #4ade80; }
+        .support-item-content { display: flex; flex-direction: column; }
+        .support-item-title { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); }
+        .support-item-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
         /* ─── CUSTOM SELECT DROPDOWN (MODERN REPLACEMENT) ─── */
         .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
         .custom-select-wrapper select { display: none !important; }
@@ -8157,34 +8173,38 @@ body.dark-theme .resume-tip-box,
 
     <!-- 18. Floating Support & Feedback Widget (FAB) -->
     <div id="floatingSupportWidget" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-        <div id="floatingSupportDrawer" class="hidden mb-3 w-80 p-5 rounded-2xl bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-200 shadow-2xl border border-gray-200 dark:border-zinc-800 transition-all duration-200 origin-bottom-right scale-95 opacity-0 space-y-4">
-            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2.5">
+        <div id="floatingSupportDrawer" class="support-drawer hidden scale-95 opacity-0">
+            <div class="support-drawer-header">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-headset text-emerald-600"></i>
-                    <h4 class="text-xs font-bold text-gray-900 dark:text-white m-0">Rankly.ai Support & Quick Help</h4>
+                    <i class="fa-solid fa-headset" style="color: var(--text-brand);"></i>
+                    <h4>Rankly.ai Support & Quick Help</h4>
                 </div>
-                <button type="button" onclick="closeFloatingSupportDrawer()" aria-label="Close support drawer" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xs cursor-pointer">
+                <button type="button" onclick="closeFloatingSupportDrawer()" aria-label="Close support drawer" class="cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="space-y-2 text-xs">
-                <a href="#feedback" onclick="closeFloatingSupportDrawer(); document.getElementById('feedbackMessage')?.focus();" class="p-2.5 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-emerald-500 bg-gray-50/50 dark:bg-zinc-800/40 flex items-center gap-3 transition-all">
-                    <i class="fa-solid fa-comment-dots text-emerald-500"></i>
-                    <div>
-                        <div class="font-bold">Submit Feedback</div>
-                        <div class="text-[10px] text-gray-400">Directly contact core developers</div>
+            <div class="support-drawer-body">
+                <a href="#feedback" onclick="closeFloatingSupportDrawer(); document.getElementById('feedbackMessage')?.focus();" class="support-item">
+                    <div class="support-item-icon">
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </div>
+                    <div class="support-item-content">
+                        <div class="support-item-title">Submit Feedback</div>
+                        <div class="support-item-desc">Directly contact core developers</div>
                     </div>
                 </a>
-                <a href="/api/health" target="_blank" class="p-2.5 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-emerald-500 bg-gray-50/50 dark:bg-zinc-800/40 flex items-center gap-3 transition-all">
-                    <i class="fa-solid fa-heart-pulse text-emerald-500"></i>
-                    <div>
-                        <div class="font-bold">System Status (Live)</div>
-                        <div class="text-[10px] text-gray-400">Check server health & latency</div>
+                <a href="/api/health" target="_blank" class="support-item">
+                    <div class="support-item-icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="support-item-content">
+                        <div class="support-item-title">System Status (Live)</div>
+                        <div class="support-item-desc">Check server health & latency</div>
                     </div>
                 </a>
             </div>
         </div>
-        <button type="button" id="btnToggleSupportFab" aria-label="Open support and quick help" onclick="toggleFloatingSupportDrawer()" class="w-12 h-12 rounded-full bg-zinc-900 hover:bg-black dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer">
+        <button type="button" id="btnToggleSupportFab" aria-label="Open support and quick help" onclick="toggleFloatingSupportDrawer()" class="w-12 h-12 rounded-full shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer" style="background: var(--text-primary); color: var(--bg-card);">
             <i class="fa-solid fa-headset text-base"></i>
         </button>
     </div>

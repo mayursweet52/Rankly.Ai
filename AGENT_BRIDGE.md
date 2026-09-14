@@ -600,3 +600,8 @@ Updated healthController.js to route the test email to the logged-in user email 
 
 ### msg_051: Modernize Dropdown Select Component (Sumit)
 Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom vanilla JS dropdown component integrated seamlessly into uiPolishSuite.js. This completely overrides the OS default select box and ensures absolute design consistency across all browsers and operating systems, adhering strictly to the modern design tokens of the site. index-3.html was also synced.
+
+
+### msg_052: Redesign Support & Feedback Floating Widget (Sumit)
+Completely redesigned the Floating Support & Quick Help popover. Replaced arbitrary, chaotic Tailwind utility classes with a rigorous semantic custom CSS block (.support-drawer) aligned with the neo-minimalist site tokens. Fixed the misaligned borders, broken corner radiuses, and clamped bottom padding issues to ensure it no longer looks like an "odd man out". index-3.html was also synced.
+
