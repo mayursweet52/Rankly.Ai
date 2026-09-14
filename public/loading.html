@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,16 +16,31 @@
         }
 
         :root {
-            --bg-page: #080A10;
-            --tile-border: rgba(255, 255, 255, 0.16);
-            --tile-bg: rgba(255, 255, 255, 0.04);
-            --tile-inset-glow: rgba(255, 255, 255, 0.3);
+            --bg-page: #F4F4EE;
+            --tile-border: rgba(0, 0, 0, 0.1);
+            --tile-bg: rgba(0, 0, 0, 0.04);
+            --tile-inset-glow: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(0, 0, 0, 0.02);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-primary: #111111;
+            --text-muted: #666666;
             --brand-emerald: #183B33;
             --brand-teal: #5B998C;
             --brand-mint: #81E4DA;
             --brand-cyan: #06B6D4;
             --brand-violet: #8B5CF6;
             --brand-magenta: #EC4899;
+        }
+
+        body.dark-theme, .dark {
+            --bg-page: #080A10;
+            --tile-border: rgba(255, 255, 255, 0.16);
+            --tile-bg: rgba(255, 255, 255, 0.04);
+            --tile-inset-glow: rgba(255, 255, 255, 0.3);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-primary: #FFFFFF;
+            --text-muted: #94A3B8;
         }
 
         body {
@@ -105,10 +120,10 @@
 
         /* Glassmorphic Panel housing the Liquid Glass Grid */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--glass-bg);
             backdrop-filter: blur(28px);
             -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid var(--glass-border);
             border-radius: 28px;
             padding: 28px 34px;
             box-shadow: 
@@ -232,14 +247,14 @@
             font-size: 26px;
             font-weight: 900;
             letter-spacing: -0.03em;
-            color: #FFFFFF;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 3px;
         }
 
         .brand-title .text-gradient {
-            background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 35%, #81E4DA 70%, #6EE7B7 100%);
+            background: linear-gradient(135deg, var(--text-primary) 0%, #C4B5FD 35%, #81E4DA 70%, #6EE7B7 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -271,7 +286,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11.5px;
             font-weight: 600;
-            color: #94A3B8;
+            color: var(--text-muted);
             letter-spacing: 0.04em;
         }
 

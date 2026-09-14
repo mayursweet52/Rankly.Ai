@@ -184,7 +184,7 @@
 
             overlay.innerHTML = `
                 <div class="modal-box text-center" style="max-width:440px; width:100%; padding:36px 26px; border-radius:24px; background:var(--bg-card, #ffffff); border:2px solid #ef4444; box-shadow:0 25px 60px -12px rgba(239,68,68,0.35), 0 0 40px rgba(0,0,0,0.5); position:relative; animation:fadeIn 0.2s ease;">
-                    <button type="button" onclick="closeEmailAlreadyExistsPopup()" aria-label="Close email notification" style="position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; border:none; background:rgba(0,0,0,0.06); color:#64748b; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">
+                    <button type="button" onclick="closeEmailAlreadyExistsPopup()" aria-label="Close email notification" style="position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; border:none; background:var(--bg-input); color:var(--text-muted); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">
                         ✕
                     </button>
                     <div style="width:76px; height:76px; margin:0 auto 18px; border-radius:50%; background:rgba(239, 68, 68, 0.12); color:#ef4444; display:flex; align-items:center; justify-content:center; font-size:36px; border:2px solid rgba(239, 68, 68, 0.3); box-shadow:0 0 24px rgba(239, 68, 68, 0.25);">
@@ -207,7 +207,7 @@
                             <span>Sign In with This Account</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
-                        <button type="button" onclick="closeEmailAlreadyExistsPopup()" style="width:100%; padding:11px 18px; border-radius:12px; background:transparent; color:#64748b; font-size:13px; font-weight:600; border:1px solid var(--border-color, #e2e8f0); cursor:pointer;">
+                        <button type="button" onclick="closeEmailAlreadyExistsPopup()" style="width:100%; padding:11px 18px; border-radius:12px; background:transparent; color:var(--text-muted); font-size:13px; font-weight:600; border:1px solid var(--border-color, #e2e8f0); cursor:pointer;">
                             Cancel
                         </button>
                     </div>
@@ -803,7 +803,7 @@
         }
 
         .btn-ai-generate {
-            background: linear-gradient(135deg, #183B33 0%, #243E36 100%) !important;
+            background: linear-gradient(135deg, #183B33 0%, #243E36 100%);
             color: #FFFFFF !important;
             border: none !important;
             border-radius: 10px !important;
@@ -821,7 +821,7 @@
             width: 100% !important;
         }
         .btn-ai-generate:hover {
-            background: linear-gradient(135deg, #112822 0%, #183B33 100%) !important;
+            background: linear-gradient(135deg, #112822 0%, #183B33 100%);
             transform: translateY(-1.5px) !important;
             box-shadow: 0 6px 22px rgba(24, 59, 51, 0.38) !important;
         }
@@ -1062,6 +1062,10 @@
             background: #FEF2F2;
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.12);
         }
+        body.dark-theme .btn-signout:hover, .dark .btn-signout:hover {
+            color: #FCA5A5;
+            background: rgba(239, 68, 68, 0.15);
+        }
         .btn-signout:hover .logout-arrow,
         .btn-secondary:hover .logout-arrow {
             transform: translateX(3.5px);
@@ -1185,6 +1189,12 @@
         .skill-tag:hover {
             border-color: #111111;
             background: #FAFAFA;
+        }
+
+        body.dark-theme .skill-tag, .dark .skill-tag {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #E5E7EB;
         }
 
         /* ─── LOGIN CARD ─── */
@@ -4518,6 +4528,9 @@
         .dark .text-\[\#555550\], .dark .text-\[\#666660\] {
             color: #9CA3AF !important;
         }
+
+        body.dark-theme .text-\[\#4B5563\] { color: #9CA3AF !important; }
+        body.dark-theme .text-\[\#333333\] { color: #D1D5DB !important; }
 
         body.dark-theme .border-\[\#E5E5DF\], .dark .border-\[\#E5E5DF\],
         body.dark-theme .border-gray-200, .dark .border-gray-200 {

@@ -66,18 +66,18 @@
                 border: 1px solid transparent;
             }
             .settings-nav-btn.active {
-                background: #183B33 !important;
-                color: #ffffff !important;
+                background: var(--text-brand, #183B33) !important;
+                color: var(--bg-card, #ffffff) !important;
                 box-shadow: none;
             }
             body.dark-theme .settings-nav-btn.active {
-                background: #10B981 !important;
+                background: var(--text-accent, #10B981) !important;
                 color: #090A0F !important;
                 box-shadow: none;
             }
             .settings-nav-btn.danger-nav.active {
                 background: #DC2626 !important;
-                color: #ffffff !important;
+                color: var(--bg-card, #ffffff) !important;
                 box-shadow: none;
             }
 
@@ -117,11 +117,11 @@
                 transition: all 0.15s ease;
             }
             .notif-filter-tab.active {
-                background: #183B33;
-                color: #ffffff !important;
+                background: var(--text-brand, #183B33);
+                color: var(--bg-card, #ffffff) !important;
             }
             body.dark-theme .notif-filter-tab.active {
-                background: #10B981;
+                background: var(--text-accent, #10B981);
                 color: #090A0F !important;
             }
 

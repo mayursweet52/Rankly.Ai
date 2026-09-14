@@ -436,7 +436,7 @@
     styleEl.id = 'rankly-focus-rings-style';
     styleEl.textContent = `
       :focus-visible {
-        outline: 2px solid #10B981 !important;
+        outline: 2px solid var(--text-accent, #10B981) !important;
         outline-offset: 2px !important;
         border-radius: 6px !important;
       }

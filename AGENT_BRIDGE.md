@@ -605,3 +605,8 @@ Replaced the native, dated OS dropdown <select> lists with a sleek, fully custom
 ### msg_052: Redesign Support & Feedback Floating Widget (Sumit)
 Completely redesigned the Floating Support & Quick Help popover. Replaced arbitrary, chaotic Tailwind utility classes with a rigorous semantic custom CSS block (.support-drawer) aligned with the neo-minimalist site tokens. Fixed the misaligned borders, broken corner radiuses, and clamped bottom padding issues to ensure it no longer looks like an "odd man out". index-3.html was also synced.
 
+
+
+### msg_057: Comprehensive Global Theme Audit & Resolution (Sumit)
+A massive deep-scan audit was executed across all 11 HTML pages and JS files to detect and resolve light/dark mode inconsistencies. 19 discrete issues were successfully patched across a new branch \ix/theme-audit-all-pages\. Key highlights: \get-started-preview.html\ now properly responds to Tailwind dark variants, \demo.html\ and \loading.html\ now have full light mode support, JS-injected modals in \index.html\ no longer vanish in dark mode, and native inputs across all secondary pages now respect system \color-scheme\ for UI consistency.
+

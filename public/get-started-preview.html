@@ -198,7 +198,7 @@
                         <stop offset="100%" stop-color="#45A89E"/>
                     </linearGradient>
                 </defs>
-                <rect width="32" height="32" rx="9" fill="#111111" />
+                <rect width="32" height="32" rx="9" fill="currentColor" />
                 <path d="M10 8H16.5C19.5 8 21.5 9.8 21.5 12.5C21.5 15.2 19.5 17 16.5 17H13.5V24H10V8Z" fill="url(#rk-g1)"/>
                 <circle cx="16.5" cy="12.5" r="2.2" fill="#FFFFFF"/>
                 <path d="M15.5 17L21.5 24H17L12 17H15.5Z" fill="url(#rk-g2)"/>
@@ -502,6 +502,9 @@
 
         // Toggle Theme
         function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            document.body.classList.toggle('dark-theme');
+            // Keep dark-mode for backward compatibility with inline styles in this file
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             document.getElementById('themeToggleText').textContent = isDark ? 'Light Mode' : 'Dark Mode';

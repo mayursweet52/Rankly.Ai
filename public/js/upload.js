@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="p-2.5 font-bold text-[var(--text-muted)]">${index || '•'}</td>
                 <td class="p-2.5">
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full bg-[var(--bg-input)] border border-[var(--border-color)] flex items-center justify-center text-[#6366f1] font-bold text-xs">${initials}</div>
+                        <div class="w-7 h-7 rounded-full bg-[var(--bg-input)] border border-[var(--border-color)] flex items-center justify-center text-indigo-500 dark:text-indigo-400 font-bold text-xs">${initials}</div>
                         <div>
                             <p class="font-bold text-[var(--text-primary)]">${c.name}</p>
                             <p class="text-[10px] text-[var(--text-muted)]">${primarySkill}</p>
@@ -98,16 +98,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td class="p-2.5">
                     <div class="flex items-center gap-2">
-                        <span class="font-extrabold text-[#6366f1] text-sm">${score}%</span>
+                        <span class="font-extrabold text-indigo-500 dark:text-indigo-400 text-sm">${score}%</span>
                         <div class="w-14 bg-[var(--border-color)] h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-[#6366f1] h-full" style="width:${score}%"></div>
+                            <div class="bg-indigo-500 dark:bg-indigo-400 h-full" style="width:${score}%"></div>
                         </div>
                     </div>
                 </td>
                 <td class="p-2.5"><div class="flex gap-1 flex-wrap">${strengthsTags}</div></td>
                 <td class="p-2.5 text-[var(--text-muted)] max-w-[180px] truncate">${summary}</td>
                 <td class="p-2.5 text-right">
-                    <button onclick="openScorecard('${safeName}', '${score}%', '${primarySkill}', ${JSON.stringify(keyStrengths)}, '${safeSummary}', ${JSON.stringify(keyStrengths)}, ${JSON.stringify(missingSkills)})" class="text-[var(--text-muted)] hover:text-[#6366f1] p-1 rounded-full" title="View Scorecard">
+                    <button onclick="openScorecard('${safeName}', '${score}%', '${primarySkill}', ${JSON.stringify(keyStrengths)}, '${safeSummary}', ${JSON.stringify(keyStrengths)}, ${JSON.stringify(missingSkills)})" class="text-[var(--text-muted)] hover:text-indigo-500 dark:hover:text-indigo-400 p-1 rounded-full" title="View Scorecard">
                         <span class="material-symbols-outlined text-base">chevron_right</span>
                     </button>
                     ${(window.currentUser && (window.currentUser.role === 'admin' || window.currentUser.role === 'hr')) ? `
@@ -136,16 +136,16 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-2">
                     <div class="flex gap-2 items-center">
-                        <div class="w-8 h-8 rounded-full bg-[var(--bg-input)] border border-[var(--border-color)] flex items-center justify-center text-[#6366f1] font-bold text-xs">${initials}</div>
+                        <div class="w-8 h-8 rounded-full bg-[var(--bg-input)] border border-[var(--border-color)] flex items-center justify-center text-indigo-500 dark:text-indigo-400 font-bold text-xs">${initials}</div>
                         <div>
                             <h4 class="font-bold text-xs text-[var(--text-primary)]">${c.name}</h4>
                             <p class="text-[10px] text-[var(--text-muted)]">${primarySkill}</p>
                         </div>
                     </div>
-                    <span class="text-[#6366f1] font-bold text-xs bg-[var(--bg-input)] px-1.5 py-0.5 rounded border border-[var(--border-color)]">${score}%</span>
+                    <span class="text-indigo-500 dark:text-indigo-400 font-bold text-xs bg-[var(--bg-input)] px-1.5 py-0.5 rounded border border-[var(--border-color)]">${score}%</span>
                 </div>
                 <div class="flex gap-1 mt-2 pt-2 border-t border-[var(--border-color)] items-center justify-between text-[11px]">
-                    <button onclick="openScorecard('${c.name.replace(/'/g, "\\'")}', '${score}%', '${primarySkill}', ${JSON.stringify(keyStrengths)}, '${summary.replace(/'/g, "\\'")}', ${JSON.stringify(keyStrengths)}, ${JSON.stringify(missingSkills)})" class="text-[#6366f1] hover:underline font-bold">Scorecard</button>
+                    <button onclick="openScorecard('${c.name.replace(/'/g, "\\'")}', '${score}%', '${primarySkill}', ${JSON.stringify(keyStrengths)}, '${summary.replace(/'/g, "\\'")}', ${JSON.stringify(keyStrengths)}, ${JSON.stringify(missingSkills)})" class="text-indigo-500 dark:text-indigo-400 hover:underline font-bold">Scorecard</button>
                     ${(window.currentUser && (window.currentUser.role === 'admin' || window.currentUser.role === 'hr')) ? `
                         <button onclick="deleteCandidate('${c.id}', '${candId}')" class="text-red-500 hover:text-red-700">Remove</button>
                     ` : ''}

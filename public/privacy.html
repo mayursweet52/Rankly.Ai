@@ -52,9 +52,13 @@
             --brand-dot: #D95D39;
             --brand-pill: #395BDE;
             --badge-bg: #EAEAE4;
+            --alert-green-bg: rgba(36, 62, 54, 0.05);
+            --alert-green-border: rgba(36, 62, 54, 0.15);
+            --alert-purple-bg: rgba(181, 136, 247, 0.05);
+            --alert-purple-border: #B588F7;
         }
 
-        body.dark-theme {
+        body.dark-theme, .dark {
             --bg-color: #121316;
             --card-bg: #1A1B1E;
             --border-color: #2C2E33;
@@ -65,6 +69,10 @@
             --brand-dot: #E06D4B;
             --brand-pill: #4C6EF5;
             --badge-bg: #25262B;
+            --alert-green-bg: rgba(129, 228, 218, 0.05);
+            --alert-green-border: rgba(129, 228, 218, 0.2);
+            --alert-purple-bg: rgba(181, 136, 247, 0.1);
+            --alert-purple-border: #B588F7;
         }
 
         * {
@@ -230,7 +238,7 @@
         <div class="rankly-card p-6 sm:p-10 space-y-10">
             
             <!-- Quick Summary Callout -->
-            <div class="p-5 rounded-xl border flex flex-col sm:flex-row gap-4 items-start" style="background: rgba(36, 62, 54, 0.05); border-color: rgba(36, 62, 54, 0.15);">
+            <div class="p-5 rounded-xl border flex flex-col sm:flex-row gap-4 items-start" style="background: var(--alert-green-bg); border-color: var(--alert-green-border);">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: var(--brand-green); color: #FFF;">
                     <i class="fas fa-shield-halved"></i>
                 </div>
@@ -293,7 +301,7 @@
                 <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
                     Rankly.ai integrates enterprise inference providers (including Google Gemini, Groq, OpenRouter, and DeepSeek) to match candidates against job descriptions.
                 </p>
-                <div class="p-4 rounded-xl border border-dashed text-xs space-y-1.5" style="border-color: #B588F7; background: rgba(181, 136, 247, 0.05); color: var(--text-muted);">
+                <div class="p-4 rounded-xl border border-dashed text-xs space-y-1.5" style="border-color: var(--alert-purple-border); background: var(--alert-purple-bg); color: var(--text-muted);">
                     <div class="font-bold text-sm" style="color: var(--text-main);">🔒 Enterprise Zero-Retention LLM Processing</div>
                     <p>
                         All AI screening requests are transmitted via encrypted API channels under zero-data-retention agreements. Your resumes are <strong>never used to train, fine-tune, or improve public foundational AI models</strong>.
@@ -384,14 +392,17 @@
     <script>
         function applyTheme(isDark) {
             const body = document.body;
+            const html = document.documentElement;
             const icon = document.getElementById('themeIcon');
             const label = document.getElementById('themeLabel');
             if (isDark) {
                 body.classList.add('dark-theme');
+                html.classList.add('dark');
                 if (icon) icon.className = 'fas fa-sun';
                 if (label) label.textContent = 'Light';
             } else {
                 body.classList.remove('dark-theme');
+                html.classList.remove('dark');
                 if (icon) icon.className = 'fas fa-moon';
                 if (label) label.textContent = 'Dark';
             }
