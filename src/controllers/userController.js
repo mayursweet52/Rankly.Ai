@@ -357,10 +357,10 @@ async function deleteAccount(req, res) {
       });
     }
 
-    // Safety check: verify if record still exists in SQLite
-    let stillExists = targetUserId 
-      ? await prisma.user.findUnique({ where: { id: targetUserId } }).catch(() => null)
-      : null;
+    let stillExists = null;
+    if (targetUserId) {
+      stillExists = await prisma.user.findUnique({ where: { id: targetUserId } }).catch(() => null);
+    }
     if (!stillExists && targetUserEmail) {
       stillExists = await prisma.user.findFirst({
         where: {
