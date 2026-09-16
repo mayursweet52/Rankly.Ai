@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankly.ai - System Architecture Blueprint</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f8fafc;
+        }
+        h1 {
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .mermaid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin: 30px 0;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        .breakdown {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        h2 { color: #1e293b; margin-top: 30px; }
+        h3 { color: #334155; margin-top: 20px; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        .btn-print {
+            display: block;
+            width: 200px;
+            margin: 0 auto 30px auto;
+            padding: 12px 24px;
+            background: #10b981;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        .btn-print:hover { background: #059669; }
+        @media print {
+            body { background: white; padding: 0; }
+            .btn-print { display: none; }
+            .mermaid-container, .breakdown { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚙️ Rankly.ai — System Architecture Blueprint</h1>
+    
+    <button class="btn-print" onclick="window.print()">🖨️ Save as PDF / Print</button>
+
+    <div class="mermaid-container">
+        <div class="mermaid">
+flowchart TB
+    %% ==========================================
+    %% STYLING DEFINITIONS
+    %% ==========================================
+    classDef client fill:#f8fafc,stroke:#cbd5e1,stroke-width:2px,color:#0f172a
+    classDef frontend fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef backend fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#064e3b
+    classDef middleware fill:#d1fae5,stroke:#059669,stroke-width:1px,color:#047857
+    classDef aiEngine fill:#eef2ff,stroke:#6366f1,stroke-width:2px,color:#312e81
+    classDef database fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#7c2d12
+    classDef external fill:#f3f4f6,stroke:#9ca3af,stroke-width:1px,stroke-dasharray: 5 5,color:#111827
+
+    %% ==========================================
+    %% 1. CLIENT LAYER (BROWSER)
+    %% ==========================================
+    subgraph Client ["🌐 Client Layer (Browser)"]
+        UI["DOM / HTML Views\n(index.html, about.html, etc.)"]:::frontend
+        ThemeEngine["Theme & Polish Engine\n(uiPolishSuite.js)"]:::frontend
+        Animations["Motion & UI State\n(designMotionSuite.js)"]:::frontend
+        Features["Core Features\n(upload.js, hrCandidateQueue.js)"]:::frontend
+        
+        UI <--> ThemeEngine
+        UI <--> Animations
+        UI <--> Features
+    end
+    class Client client
+
+    %% ==========================================
+    %% 2. SECURITY & NETWORK GATEWAY
+    %% ==========================================
+    subgraph Network ["🛡️ Security & API Gateway"]
+        RateLimiter["Rate Limiting\n(express-rate-limit)"]:::middleware
+        AuthMiddleware["Auth & RBAC\n(auth.js: requireHRMS, etc.)"]:::middleware
+    end
+
+    %% ==========================================
+    %% 3. BACKEND SERVER (NODE.JS)
+    %% ==========================================
+    subgraph Backend ["⚙️ Node.js Express Backend"]
+        Routers["API Routers\n(/api/health, /api/export)"]:::backend
+        
+        subgraph Controllers ["Controllers"]
+            HealthCtrl["Health & Telemetry\n(healthController.js)"]:::backend
+            UserCtrl["User & Auth\n(userController.js)"]:::backend
+            ExportCtrl["Data Export\n(exportRoutes.js)"]:::backend
+        end
+        
+        subgraph Services ["Internal Services"]
+            EmailService["Email Service\n(emailService.js)"]:::backend
+            HealthDaemon["Self-Healing Daemon\n(healthChecker.js)"]:::backend
+        end
+        
+        Routers --> Controllers
+        Controllers --> Services
+    end
+
+    %% ==========================================
+    %% 4. AI & PARSING ENGINE
+    %% ==========================================
+    subgraph AI ["🧠 AI Processing Engine"]
+        DocParser["Document Parser\n(documentParser.js)"]:::aiEngine
+        AIMatcher["AI Candidate Matcher\n(aiMatcher.js)"]:::aiEngine
+    end
+
+    %% ==========================================
+    %% 5. DATA LAYER
+    %% ==========================================
+    subgraph DataLayer ["🗄️ Database & Realtime"]
+        Prisma["Prisma ORM"]:::database
+        Supabase["Supabase Workers\n(Realtime Sync)"]:::database
+        DB[("PostgreSQL / SQLite\nDatabase")]:::database
+        
+        Prisma <--> DB
+        Supabase <--> DB
+    end
+
+    %% ==========================================
+    %% 6. EXTERNAL SERVICES
+    %% ==========================================
+    subgraph External ["☁️ External Providers"]
+        Nvidia["NVIDIA Nemotron AI API"]:::external
+        SMTP["SMTP / Email Provider"]:::external
+    end
+
+    %% ==========================================
+    %% RELATIONSHIPS & DATA FLOW
+    %% ==========================================
+    Features -- "HTTP/REST (Fetch)" --> RateLimiter
+    RateLimiter --> AuthMiddleware
+    AuthMiddleware --> Routers
+    
+    Controllers <--> Prisma
+    HealthDaemon <--> Prisma
+    
+    Controllers --> DocParser
+    DocParser --> AIMatcher
+    AIMatcher <--> Nvidia
+    
+    EmailService --> SMTP
+        </div>
+    </div>
+
+    <div class="breakdown">
+        <h2>Mechanical Component Breakdown</h2>
+
+        <h3>1. The Frontend UI Shell (Sumit)</h3>
+        <ul>
+            <li><strong>DOM Views:</strong> The 11 core public HTML files built on a strict neo-minimalist Tailwind system.</li>
+            <li><strong>Theme Engine (<code>uiPolishSuite.js</code>):</strong> Injects dynamic behavior, overriding standard OS inputs and applying WCAG AAA focus rings.</li>
+            <li><strong>Feature Scripts (<code>upload.js</code>, <code>hrCandidateQueue.js</code>):</strong> Handle drag-and-drop resume ingestion, scorecard rendering, and real-time candidate list population.</li>
+        </ul>
+
+        <h3>2. The Gateway & Middleware Layer (Mayur)</h3>
+        <ul>
+            <li><strong>Security Checkpoint:</strong> Before any data reaches the backend, requests pass through <code>express-rate-limit</code> (DDoS protection).</li>
+            <li><strong>JWT & Session Verification (<code>auth.js</code>):</strong> Intercepts requests, validates Bearer tokens or cookies, and enforces Role-Based Access Control.</li>
+        </ul>
+
+        <h3>3. The Core Backend Mechanics (Mayur)</h3>
+        <ul>
+            <li><strong>Controllers & Routing:</strong> Map frontend requests to internal actions. The <code>healthController.js</code> acts as a diagnostic hub, while <code>userController.js</code> processes HR logic.</li>
+            <li><strong>Self-Healing Daemon (<code>healthChecker.js</code>):</strong> Runs continuously in the background, verifying system integrity, checking database connections, and catching anomalies without human intervention.</li>
+            <li><strong>Export Engine:</strong> Uses <code>ExcelJS</code> to serialize candidate queues into downloadable CSV/Excel formats for external HR processing.</li>
+        </ul>
+
+        <h3>4. The AI Processing Pipeline (Mayur)</h3>
+        <ul>
+            <li><strong>Ingestion:</strong> <code>documentParser.js</code> mechanically strips formatting from uploaded resumes, extracting raw semantic text.</li>
+            <li><strong>Evaluation:</strong> <code>aiMatcher.js</code> packages the parsed text and job requirements, streaming them out to the <strong>NVIDIA Nemotron AI</strong> engine. It then structures the AI's response into numerical scorecards for the frontend.</li>
+        </ul>
+
+        <h3>5. The Data Infrastructure (Vaibhav)</h3>
+        <ul>
+            <li><strong>Prisma ORM:</strong> The absolute source of truth mapping JavaScript objects strictly to the SQL database schema (<code>prisma/schema.prisma</code>).</li>
+            <li><strong>Supabase Realtime Workers:</strong> Listen for database mutations (like a new candidate applying) and push live WebSocket updates directly back to the <code>hrCandidateQueue.js</code> on the frontend, ensuring the recruiter dashboard never needs to refresh.</li>
+        </ul>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+</html>

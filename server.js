@@ -246,6 +246,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/cache', cacheRoutes);
 app.use('/api/backup', backupRoutes);
+app.use('/api/hrms', require('./src/routes/hrmsRoutes')); // Zoho Blueprint HRMS Routes
 app.use('/api/webhooks', require('./src/routes/webhookRoutes'));
 app.use('/health', healthRoutes);
 

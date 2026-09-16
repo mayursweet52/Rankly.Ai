@@ -14,46 +14,46 @@ datasource db {
 // User Model (Dual Track: Normal Jobseeker vs HR/Enterprise)
 // ---------------------------------------------------------
 model User {
-  id              String        @id @default(uuid())
-  accountType     String        @default("normal_user") // "normal_user" | "employee"
-  firstName       String
-  lastName        String?
-  username        String?       @unique
-  email           String        @unique
-  phone           String?       @unique
-  password        String
-  
+  id          String  @id @default(uuid())
+  accountType String  @default("normal_user") // "normal_user" | "employee"
+  firstName   String
+  lastName    String?
+  username    String? @unique
+  email       String  @unique
+  phone       String? @unique
+  password    String
+
   // Normal Jobseeker Details
   dob             DateTime?
   age             Int?
   gender          String?
   profession      String?
   linkedInUrl     String?
-  isEmailVerified Boolean       @default(false)
-  isPhoneVerified Boolean       @default(false)
+  isEmailVerified Boolean   @default(false)
+  isPhoneVerified Boolean   @default(false)
 
   // Enterprise / HR Specific
-  role            String        @default("normal_user") // "admin" | "hr" | "hiring_manager" | "normal_user"
-  workEmail       String?
-  status          String        @default("active")      // "active" | "pending_approval" | "suspended"
-  organizationId  String?
-  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  role           String        @default("normal_user") // "admin" | "hr" | "hiring_manager" | "normal_user"
+  workEmail      String?
+  status         String        @default("active") // "active" | "pending_approval" | "suspended"
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
 
   // Relations
   evaluations      Evaluation[]
   candidates       Candidate[]
   chatMessages     ChatMessage[]
   feedbacks        Feedback[]
-  createdReferrals ReferralCode[] @relation("CreatedReferrals")
-  administeredOrgs Organization[] @relation("AdminOrgs")
+  createdReferrals ReferralCode[]         @relation("CreatedReferrals")
+  administeredOrgs Organization[]         @relation("AdminOrgs")
   employeeProfile  Employee?
   companyDocuments CompanyDocument[]
   grievances       Grievance[]
   applications     CandidateApplication[]
   notifications    Notification[]
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([accountType, role, status])
   @@index([createdAt])
@@ -63,23 +63,23 @@ model User {
 // Organization Model
 // ---------------------------------------------------------
 model Organization {
-  id          String           @id @default(uuid())
-  name        String
-  adminId     String
-  admin       User             @relation("AdminOrgs", fields: [adminId], references: [id], onDelete: Cascade)
-  
-  members     User[]
-  evaluations Evaluation[]
-  candidates  Candidate[]
-  referrals   ReferralCode[]
-  invitations TeamInvitation[]
-  departments Department[]
-  employees   Employee[]
-  companyDocuments CompanyDocument[]
-  grievances  Grievance[]
+  id      String @id @default(uuid())
+  name    String
+  adminId String
+  admin   User   @relation("AdminOrgs", fields: [adminId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  members          User[]
+  evaluations      Evaluation[]
+  candidates       Candidate[]
+  referrals        ReferralCode[]
+  invitations      TeamInvitation[]
+  departments      Department[]
+  employees        Employee[]
+  companyDocuments CompanyDocument[]
+  grievances       Grievance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ---------------------------------------------------------
@@ -98,48 +98,48 @@ model ReferralCode {
   usedCount      Int          @default(0)
   isUsed         Boolean      @default(false)
 
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ---------------------------------------------------------
 // Candidate / Resume Evaluation Model
 // ---------------------------------------------------------
 model Evaluation {
-  id              String        @id @default(uuid())
-  userId          String?
-  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  organizationId  String?
-  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  
-  isPractice      Boolean       @default(false)
-  candidateName   String?
-  candidateEmail  String?
-  candidatePhone  String?
-  targetRole      String
-  resumeFileName  String?
-  resumeFilePath  String?
-  extractedText   String?
+  id             String        @id @default(uuid())
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
 
-  matchScore      Float         @default(0)
-  skillsScore     Float         @default(0)
-  experienceScore Float         @default(0)
-  toolsScore      Float         @default(0)
-  educationScore  Float         @default(0)
-  fitVerdict      String?       // "Strong Fit", "Moderate Fit", "Potential Fit", "Not a Fit"
+  isPractice     Boolean @default(false)
+  candidateName  String?
+  candidateEmail String?
+  candidatePhone String?
+  targetRole     String
+  resumeFileName String?
+  resumeFilePath String?
+  extractedText  String?
+
+  matchScore      Float   @default(0)
+  skillsScore     Float   @default(0)
+  experienceScore Float   @default(0)
+  toolsScore      Float   @default(0)
+  educationScore  Float   @default(0)
+  fitVerdict      String? // "Strong Fit", "Moderate Fit", "Potential Fit", "Not a Fit"
 
   summary         String?
-  matchedSkills   String?       // Stored as JSON array string
-  missingSkills   String?       // Stored as JSON array string
-  recommendations String?       // Stored as JSON array string
+  matchedSkills   String? // Stored as JSON array string
+  missingSkills   String? // Stored as JSON array string
+  recommendations String? // Stored as JSON array string
 
-  pipelineStage   String        @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
-  status          String        @default("screened") // "submitted" | "screened" | "sent_to_hr" | "shortlisted" | "rejected"
-  hmNotes         String?
-  rawAiResponse   String?
+  pipelineStage String  @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
+  status        String  @default("screened") // "submitted" | "screened" | "sent_to_hr" | "shortlisted" | "rejected"
+  hmNotes       String?
+  rawAiResponse String?
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, createdAt])
   @@index([organizationId, createdAt])
@@ -150,35 +150,35 @@ model Evaluation {
 // Pipeline Candidate Model (For ATS Kanban & Tracking)
 // ---------------------------------------------------------
 model Candidate {
-  id              String        @id @default(uuid())
-  name            String
-  email           String?
-  phone           String?
-  targetRole      String
-  stage           String        @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
-  
-  score           Float         @default(0)
-  skillsScore     Float         @default(0)
-  experienceScore Float         @default(0)
-  toolsScore      Float         @default(0)
-  educationScore  Float         @default(0)
+  id         String  @id @default(uuid())
+  name       String
+  email      String?
+  phone      String?
+  targetRole String
+  stage      String  @default("applied") // "applied" | "ai_screened" | "hm_review" | "interview" | "offered" | "rejected"
+
+  score           Float   @default(0)
+  skillsScore     Float   @default(0)
+  experienceScore Float   @default(0)
+  toolsScore      Float   @default(0)
+  educationScore  Float   @default(0)
   fitVerdict      String?
   summary         String?
-  matchedSkills   String?       // JSON array string
-  missingSkills   String?       // JSON array string
-  recommendations String?       // JSON array string
+  matchedSkills   String? // JSON array string
+  missingSkills   String? // JSON array string
+  recommendations String? // JSON array string
   notes           String?
   resumeUrl       String?
   extractedText   String?
 
-  organizationId  String?
-  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  userId          String?
-  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  evaluationId    String?
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  evaluationId   String?
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId, stage])
   @@index([email])
@@ -209,9 +209,9 @@ model ChatMessage {
   id        String   @id @default(uuid())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role      String   // "user" | "assistant" | "system"
+  role      String // "user" | "assistant" | "system"
   content   String
-  meta      String?  // JSON metadata (e.g., target role, match context)
+  meta      String? // JSON metadata (e.g., target role, match context)
   createdAt DateTime @default(now())
 }
 
@@ -251,15 +251,15 @@ model Feedback {
 // ---------------------------------------------------------
 model Department {
   id             String       @id @default(uuid())
-  name           String       // e.g. "Engineering", "Human Resources", "Finance", "Product"
-  code           String       // e.g. "ENG", "HR", "FIN", "PROD"
+  name           String // e.g. "Engineering", "Human Resources", "Finance", "Product"
+  code           String // e.g. "ENG", "HR", "FIN", "PROD"
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
-  employees      Employee[]
-  
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+
+  employees Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([organizationId, code])
 }
@@ -268,22 +268,22 @@ model Department {
 // Employee Model (Core Profile & Hierarchy)
 // ---------------------------------------------------------
 model Employee {
-  id                       String               @id @default(uuid())
-  employeeCode             String               @unique // e.g. "EMP-001"
-  userId                   String?              @unique
-  user                     User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
-  organizationId           String
-  organization             Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid())
+  employeeCode   String       @unique // e.g. "EMP-001"
+  userId         String?      @unique
+  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   // Basic Personal Information
   firstName                String
   lastName                 String?
   personalEmail            String?
-  workEmail                String               @unique
+  workEmail                String    @unique
   phoneNumber              String?
   dob                      DateTime?
-  gender                   String?              // "male" | "female" | "other" | "prefer_not_to_say"
-  maritalStatus            String?              // "single" | "married" | "other"
+  gender                   String? // "male" | "female" | "other" | "prefer_not_to_say"
+  maritalStatus            String? // "single" | "married" | "other"
   currentAddress           String?
   permanentAddress         String?
   emergencyContactName     String?
@@ -291,134 +291,137 @@ model Employee {
   emergencyContactRelation String?
 
   // Role, Department & Employment Details
-  departmentId             String
-  department               Department           @relation(fields: [departmentId], references: [id], onDelete: Restrict)
-  designation              String               // e.g. "Lead Software Engineer"
-  employmentType           String               @default("full_time") // "full_time" | "part_time" | "contract" | "intern"
-  employmentStatus         String               @default("active")    // "active" | "probation" | "notice_period" | "terminated" | "on_leave"
-  dateOfJoining            DateTime
-  dateOfExit               DateTime?
+  departmentId     String
+  department       Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  designation      String // e.g. "Lead Software Engineer"
+  employmentType   String     @default("full_time") // "full_time" | "part_time" | "contract" | "intern"
+  employmentStatus String     @default("active") // "active" | "probation" | "notice_period" | "terminated" | "on_leave"
+  dateOfJoining    DateTime
+  dateOfExit       DateTime?
 
   // Reporting Hierarchy (Self-referencing relationship)
-  reportingManagerId       String?
-  reportingManager         Employee?            @relation("ManagementHierarchy", fields: [reportingManagerId], references: [id], onDelete: SetNull)
-  reportees                Employee[]           @relation("ManagementHierarchy")
+  reportingManagerId String?
+  reportingManager   Employee?  @relation("ManagementHierarchy", fields: [reportingManagerId], references: [id], onDelete: SetNull)
+  reportees          Employee[] @relation("ManagementHierarchy")
 
   // Financial & Compensation Relations
-  bankDetails              EmployeeBankDetails?
-  salary                   EmployeeSalary?
-  salaryRevisions          SalaryRevision[]
+  bankDetails     EmployeeBankDetails?
+  salary          EmployeeSalary?
+  salaryRevisions SalaryRevision[]
 
   // Access Control Roles
-  accessRoles              EmployeeAccessRole[]
+  accessRoles EmployeeAccessRole[]
 
   // Skill Marketplace & Upskilling
-  skills                   EmployeeSkill[]
-  trainingRecommendations  RecommendedTraining[]
-  draftedEmails            AgentEmailDraft[]
+  skills                  EmployeeSkill[]
+  trainingRecommendations RecommendedTraining[]
+  draftedEmails           AgentEmailDraft[]
 
   // Attendance & Leave Management
-  attendances              Attendance[]
-  leaveRequests            LeaveRequest[]       @relation("EmployeeLeaves")
-  reviewedLeaves           LeaveRequest[]       @relation("ReviewedLeaves")
+  attendances    Attendance[]
+  leaveRequests  LeaveRequest[] @relation("EmployeeLeaves")
+  reviewedLeaves LeaveRequest[] @relation("ReviewedLeaves")
 
-  createdAt                DateTime             @default(now())
-  updatedAt                DateTime             @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  employeeShifts     Shift[]             @relation("EmployeeShifts")
+  employeeTimesheets Timesheet[]         @relation("EmployeeTimesheets")
+  employeeReviews    PerformanceReview[] @relation("EmployeeReviews")
 }
 
 // ---------------------------------------------------------
 // Employee Bank Details Model (Financials)
 // ---------------------------------------------------------
 model EmployeeBankDetails {
-  id                String    @id @default(uuid())
-  employeeId        String    @unique
-  employee          Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  employeeId String   @unique
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   accountHolderName String
   bankName          String
-  accountNumber     String    // Stored with encryption or masking
+  accountNumber     String // Stored with encryption or masking
   ifscCode          String
   branchName        String?
   panNumber         String?
   aadhaarNumber     String?
 
-  isVerified        Boolean   @default(false)
-  verifiedAt        DateTime?
+  isVerified Boolean   @default(false)
+  verifiedAt DateTime?
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ---------------------------------------------------------
 // Employee Salary Model (Current Compensation Breakdown)
 // ---------------------------------------------------------
 model EmployeeSalary {
-  id               String    @id @default(uuid())
-  employeeId       String    @unique
-  employee         Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  employeeId String   @unique
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
-  annualCtc        Float     // Gross annual CTC
-  basicSalary      Float     // Base pay
-  hra              Float     // House Rent Allowance
-  specialAllowance Float     @default(0)
-  pfDeduction      Float     @default(0) // Provident Fund deduction
-  professionalTax  Float     @default(0) // PT
-  tds              Float     @default(0) // Tax deducted at source
-  netMonthlyPay    Float     // In-hand monthly salary
+  annualCtc        Float // Gross annual CTC
+  basicSalary      Float // Base pay
+  hra              Float // House Rent Allowance
+  specialAllowance Float @default(0)
+  pfDeduction      Float @default(0) // Provident Fund deduction
+  professionalTax  Float @default(0) // PT
+  tds              Float @default(0) // Tax deducted at source
+  netMonthlyPay    Float // In-hand monthly salary
 
-  currency         String    @default("INR")
-  paymentFrequency String    @default("monthly") // "monthly" | "bi_weekly"
-  effectiveFrom    DateTime  @default(now())
+  currency         String   @default("INR")
+  paymentFrequency String   @default("monthly") // "monthly" | "bi_weekly"
+  effectiveFrom    DateTime @default(now())
 
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ---------------------------------------------------------
 // Salary Revision Audit Trail Model
 // ---------------------------------------------------------
 model SalaryRevision {
-  id             String    @id @default(uuid())
-  employeeId     String
-  employee       Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   previousCtc    Float
   newCtc         Float
   hikePercentage Float
-  reason         String?   // "annual_appraisal" | "promotion" | "market_correction" | "probation_confirmation"
+  reason         String? // "annual_appraisal" | "promotion" | "market_correction" | "probation_confirmation"
   effectiveDate  DateTime
   approvedById   String?
 
-  createdAt      DateTime  @default(now())
+  createdAt DateTime @default(now())
 }
 
 // ---------------------------------------------------------
 // Access Control Models (Multi-Level RBAC)
 // ---------------------------------------------------------
 model AccessRole {
-  id          String               @id @default(uuid())
-  name        String               @unique // "employee", "team_lead", "dept_head", "hr_admin", "super_admin"
+  id          String  @id @default(uuid())
+  name        String  @unique // "employee", "team_lead", "dept_head", "hr_admin", "super_admin"
   displayName String
-  level       Int                  @default(1) // Level 1 (lowest) to Level 5 (highest executive)
+  level       Int     @default(1) // Level 1 (lowest) to Level 5 (highest executive)
   description String?
 
   permissions RolePermission[]
   employees   EmployeeAccessRole[]
 
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Permission {
-  id          String           @id @default(uuid())
-  code        String           @unique // e.g. "employee:read", "salary:write", "leaves:approve"
+  id          String  @id @default(uuid())
+  code        String  @unique // e.g. "employee:read", "salary:write", "leaves:approve"
   name        String
-  category    String           // "employee" | "salary" | "leaves" | "ats" | "system"
+  category    String // "employee" | "salary" | "leaves" | "ats" | "system"
   description String?
 
-  roles       RolePermission[]
+  roles RolePermission[]
 
-  createdAt   DateTime         @default(now())
+  createdAt DateTime @default(now())
 }
 
 model RolePermission {
@@ -428,7 +431,7 @@ model RolePermission {
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime   @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([roleId, permissionId])
 }
@@ -440,7 +443,7 @@ model EmployeeAccessRole {
   roleId     String
   role       AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  assignedAt DateTime   @default(now())
+  assignedAt DateTime @default(now())
 
   @@unique([employeeId, roleId])
 }
@@ -449,71 +452,71 @@ model EmployeeAccessRole {
 // 2. AI AGENT MODULE DATA MODELS (Anti-Gravity Spec v1.0)
 // =========================================================
 model AiAgent {
-  id                  String                  @id @default(uuid())
-  agentId             String                  @unique // e.g. "agent_ai_8892"
-  name                String                  // e.g. "Operations Co-Pilot", "HR Assistant Agent"
-  modelType           String                  @default("nvidia/nemotron-3-ultra-550b-a55b") // "llama3.3:8b" | "nvidia/nemotron-3-ultra-550b-a55b"
-  capabilities        String                  @default("[]") // JSON Array: ["automated_email_drafting", "database_semantic_retrieval", "skill_gap_analysis"]
-  status              String                  @default("active")
+  id           String @id @default(uuid())
+  agentId      String @unique // e.g. "agent_ai_8892"
+  name         String // e.g. "Operations Co-Pilot", "HR Assistant Agent"
+  modelType    String @default("nvidia/nemotron-3-ultra-550b-a55b") // "llama3.3:8b" | "nvidia/nemotron-3-ultra-550b-a55b"
+  capabilities String @default("[]") // JSON Array: ["automated_email_drafting", "database_semantic_retrieval", "skill_gap_analysis"]
+  status       String @default("active")
 
-  conversations       AgentConversation[]
-  emailDrafts         AgentEmailDraft[]
-  analyticsMetrics    AgentAnalyticsMetrics?
+  conversations    AgentConversation[]
+  emailDrafts      AgentEmailDraft[]
+  analyticsMetrics AgentAnalyticsMetrics?
 
-  createdAt           DateTime                @default(now())
-  updatedAt           DateTime                @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AgentConversation {
   id        String   @id @default(uuid())
   agentId   String
   agent     AiAgent  @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
-  role      String   // "user" | "assistant" | "system"
+  role      String // "user" | "assistant" | "system"
   message   String
   createdAt DateTime @default(now())
 }
 
 model AgentEmailDraft {
-  id          String    @id @default(uuid())
-  draftId     String    @unique // e.g. "drf_1029"
-  agentId     String
-  agent       AiAgent   @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
-  recipient   String    // Recipient email
-  subject     String
-  body        String?
-  status      String    @default("pending_approval") // "pending_approval" | "approved" | "sent" | "rejected"
-  employeeId  String?
-  employee    Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  id         String    @id @default(uuid())
+  draftId    String    @unique // e.g. "drf_1029"
+  agentId    String
+  agent      AiAgent   @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
+  recipient  String // Recipient email
+  subject    String
+  body       String?
+  status     String    @default("pending_approval") // "pending_approval" | "approved" | "sent" | "rejected"
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AgentAnalyticsMetrics {
-  id                 String   @id @default(uuid())
-  agentId            String   @unique
-  agent              AiAgent  @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
-  satisfactionScore  Float    @default(4.85)
-  responseTimeMs     Int      @default(320)
-  totalQueriesServed Int      @default(0)
+  id                 String  @id @default(uuid())
+  agentId            String  @unique
+  agent              AiAgent @relation(fields: [agentId], references: [agentId], onDelete: Cascade)
+  satisfactionScore  Float   @default(4.85)
+  responseTimeMs     Int     @default(320)
+  totalQueriesServed Int     @default(0)
 
-  updatedAt          DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
 
 // =========================================================
 // 3. INTERNAL SKILL MARKETPLACE DATA MODELS (Anti-Gravity Spec v1.0)
 // =========================================================
 model Skill {
-  id          String                @id @default(uuid())
-  skillId     String                @unique // Master Primary Key, e.g. "SKL_NODE_01", "SKILL_REACT"
-  name        String                // e.g. "Node.js & Express Microservices"
-  category    String                // Domain: "Backend Engineering", "Frontend", "Cloud Infra"
+  id       String @id @default(uuid())
+  skillId  String @unique // Master Primary Key, e.g. "SKL_NODE_01", "SKILL_REACT"
+  name     String // e.g. "Node.js & Express Microservices"
+  category String // Domain: "Backend Engineering", "Frontend", "Cloud Infra"
 
-  employees   EmployeeSkill[]
-  trainings   RecommendedTraining[]
+  employees EmployeeSkill[]
+  trainings RecommendedTraining[]
 
-  createdAt   DateTime              @default(now())
-  updatedAt   DateTime              @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model EmployeeSkill {
@@ -523,11 +526,11 @@ model EmployeeSkill {
   employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   skillId           String
   skill             Skill    @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
-  proficiencyLevel  String   // "Beginner" | "Intermediate" | "Advanced" | "Master"
-  yearsOfExperience Float    // e.g. 4.5
+  proficiencyLevel  String // "Beginner" | "Intermediate" | "Advanced" | "Master"
+  yearsOfExperience Float // e.g. 4.5
 
-  assignedAt        DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  assignedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([employeeId, skillId])
 }
@@ -539,11 +542,11 @@ model RecommendedTraining {
   employee         Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   skillId          String
   skill            Skill    @relation(fields: [skillId], references: [skillId], onDelete: Cascade)
-  courseName       String   // e.g. "Cloud Native Kubernetes Architecture"
+  courseName       String // e.g. "Cloud Native Kubernetes Architecture"
   status           String   @default("Assigned") // "Assigned" | "In Progress" | "Completed" | "Waived"
 
-  assignedAt       DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  assignedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 // ---------------------------------------------------------
@@ -557,7 +560,7 @@ model CompanyDocument {
   fileUrl        String?
   fileName       String?
   fileSize       String?
-  content        String?       // Document body / rich text / guidelines
+  content        String? // Document body / rich text / guidelines
   uploadedById   String
   uploadedBy     User          @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
   organizationId String?
@@ -576,9 +579,9 @@ model Grievance {
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String?
   user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  employeeName   String?       // "Anonymous Employee" if isAnonymous is true
-  employeeEmail  String?       // null if isAnonymous is true
-  category       String        // "HR Issue", "Payroll", "Workplace", "Harassment", "Ethics", "Other"
+  employeeName   String? // "Anonymous Employee" if isAnonymous is true
+  employeeEmail  String? // null if isAnonymous is true
+  category       String // "HR Issue", "Payroll", "Workplace", "Harassment", "Ethics", "Other"
   priority       String        @default("Normal") // "Normal", "Urgent", "Critical"
   subject        String
   description    String
@@ -594,19 +597,19 @@ model Grievance {
 // Attendance Model (Daily Tracking & Shift Work Hours)
 // ---------------------------------------------------------
 model Attendance {
-  id           String    @id @default(uuid())
-  employeeId   String
-  employee     Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  date         DateTime  // Normalized date for the attendance day
-  checkIn      DateTime?
-  checkOut     DateTime?
-  workHours    Float?    // Total work hours logged for the shift
-  status       String    @default("present") // "present" | "absent" | "half_day" | "late" | "on_leave" | "remote"
-  notes        String?
-  ipAddress    String?
+  id         String    @id @default(uuid())
+  employeeId String
+  employee   Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  date       DateTime // Normalized date for the attendance day
+  checkIn    DateTime?
+  checkOut   DateTime?
+  workHours  Float? // Total work hours logged for the shift
+  status     String    @default("present") // "present" | "absent" | "half_day" | "late" | "on_leave" | "remote"
+  notes      String?
+  ipAddress  String?
 
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([employeeId, date])
   @@index([date])
@@ -631,8 +634,8 @@ model LeaveRequest {
   reviewRemarks String?
   reviewedAt    DateTime?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([employeeId])
   @@index([status])
@@ -642,23 +645,23 @@ model LeaveRequest {
 // Candidate Job Application Tracker Model
 // ---------------------------------------------------------
 model CandidateApplication {
-  id              String        @id @default(uuid())
-  userId          String?
-  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  candidateEmail  String?
-  companyName     String
-  jobTitle        String
-  location        String?
-  salaryRange     String?
-  jobUrl          String?
-  appliedDate     DateTime      @default(now())
-  stage           String        @default("applied") // "applied" | "under_review" | "shortlisted" | "interview" | "offered" | "rejected"
-  notes           String?
-  nextStep        String?
-  matchScore      Float?
+  id             String   @id @default(uuid())
+  userId         String?
+  user           User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  candidateEmail String?
+  companyName    String
+  jobTitle       String
+  location       String?
+  salaryRange    String?
+  jobUrl         String?
+  appliedDate    DateTime @default(now())
+  stage          String   @default("applied") // "applied" | "under_review" | "shortlisted" | "interview" | "offered" | "rejected"
+  notes          String?
+  nextStep       String?
+  matchScore     Float?
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, stage])
   @@index([candidateEmail])
@@ -669,24 +672,24 @@ model CandidateApplication {
 // Applications Model (Strict Lifecycle Status Workflow)
 // ---------------------------------------------------------
 model Application {
-  id               String      @id @default(uuid())
+  id               String   @id @default(uuid())
   candidateId      String
   jobTitle         String
-  companyName      String?     @default("Rankly.ai")
+  companyName      String?  @default("Rankly.ai")
   resumeUrl        String?
-  matchScore       Float?      @default(0.0)
-  status           String      @default("pending_screening") // "pending_screening" | "ai_shortlisted" | "hr_review_pending" | "hr_shortlisted" | "rejected"
+  matchScore       Float?   @default(0.0)
+  status           String   @default("pending_screening") // "pending_screening" | "ai_shortlisted" | "hr_review_pending" | "hr_shortlisted" | "rejected"
   screeningVerdict String?
   screeningNotes   String?
-  matchedSkills    String?     // JSON array string
-  missingSkills    String?     // JSON array string
+  matchedSkills    String? // JSON array string
+  missingSkills    String? // JSON array string
   hrReviewerId     String?
   hrFeedback       String?
   rejectionReason  String?
-  appliedAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  appliedAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  auditLogs        AuditLog[]
+  auditLogs AuditLog[]
 
   @@index([candidateId])
   @@index([status])
@@ -700,14 +703,14 @@ model AuditLog {
   id             String       @id @default(uuid())
   applicationId  String?
   application    Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  action         String       // "STATUS_CHANGE" | "APPLICATION_CREATED" | "AI_SCREENED" | "HR_REVIEW" | "REJECTED"
+  action         String // "STATUS_CHANGE" | "APPLICATION_CREATED" | "AI_SCREENED" | "HR_REVIEW" | "REJECTED"
   previousStatus String?
   newStatus      String
   actorType      String       @default("system") // "system_ai" | "hr_admin" | "candidate"
   actorId        String?
   actorEmail     String?
   changeReason   String?
-  metadata       String?      // JSON details string
+  metadata       String? // JSON details string
   ipAddress      String?
   userAgent      String?
   createdAt      DateTime     @default(now())
@@ -727,6 +730,7 @@ model Notification {
   isRead    Boolean  @default(false)
   link      String?
   createdAt DateTime @default(now())
+
   @@index([userId, isRead])
   @@index([createdAt])
 }
@@ -735,8 +739,8 @@ model Company {
   id           String       @id @default(uuid())
   name         String
   domain       String?
-  atsPlatform  String?      
-  atsBoardSlug String?      
+  atsPlatform  String?
+  atsBoardSlug String?
   isRegistered Boolean      @default(false)
   createdAt    DateTime     @default(now())
   jobs         CompanyJob[]
@@ -753,4 +757,82 @@ model CompanyJob {
   ranklyApplicationSlug String   @unique
   status                String   @default("active")
   createdAt             DateTime @default(now())
+}
+
+// =========================================================
+// HIGH-TRAFFIC HRMS MODULES (ZOHO BLUEPRINT)
+// =========================================================
+
+// ---------------------------------------------------------
+// Shift Management
+// ---------------------------------------------------------
+model Shift {
+  id                   String     @id @default(uuid())
+  name                 String // e.g., "General[09AM - 06PM]"
+  startTime            String // "09:00"
+  endTime              String // "18:00"
+  isDefault            Boolean    @default(false)
+  allowanceRate        Float?     @default(0.0)
+  minHoursForAllowance Float?     @default(0.0)
+  employees            Employee[] @relation("EmployeeShifts")
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  @@index([isDefault])
+}
+
+// ---------------------------------------------------------
+// Timesheet & Billing Management
+// ---------------------------------------------------------
+model Client {
+  id        String    @id @default(uuid())
+  name      String
+  projects  Project[]
+  createdAt DateTime  @default(now())
+}
+
+model Project {
+  id         String      @id @default(uuid())
+  name       String
+  clientId   String
+  client     Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  timesheets Timesheet[]
+  createdAt  DateTime    @default(now())
+
+  @@index([clientId])
+}
+
+model Timesheet {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation("EmployeeTimesheets", fields: [employeeId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  date        DateTime
+  hoursWorked Float
+  billable    Boolean  @default(true)
+  status      String   @default("pending") // pending, approved, rejected
+  createdAt   DateTime @default(now())
+
+  @@index([employeeId, date])
+  @@index([projectId, status])
+}
+
+// ---------------------------------------------------------
+// Performance & Evaluation Management
+// ---------------------------------------------------------
+model PerformanceReview {
+  id           String   @id @default(uuid())
+  employeeId   String
+  employee     Employee @relation("EmployeeReviews", fields: [employeeId], references: [id], onDelete: Cascade)
+  reviewerId   String?
+  reviewPeriod String // e.g., "Q3 2026"
+  kraData      String? // JSON string of KRA & Goals
+  feedback     String?
+  competency   String? // JSON string
+  finalRating  Float?
+  status       String   @default("draft") // draft, submitted, acknowledged
+  createdAt    DateTime @default(now())
+
+  @@index([employeeId, reviewPeriod])
 }
