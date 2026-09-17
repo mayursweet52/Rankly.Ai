@@ -27,23 +27,14 @@ if (!organization) {
             return sendError(res, 404, 'Invalid Company Code. Tenant database space not found.', 'TENANT_NOT_FOUND');
         }
 
-        // --- DEFCON 1 KILL SWITCH (2-HOUR LOCKDOWN) ---
-        if (organization.isUnderLockdown && organization.lockdownExpiresAt) {
-            const now = new Date();
-            if (now < new Date(organization.lockdownExpiresAt)) {
-                console.error(?? [DEFCON 1] Request blocked for locked-down domain: );
-                return res.status(423).json({
-                    success: false,
-                    message: ?? SECURITY LOCKDOWN: We detected a severe hacking attempt on this domain. To protect your data, all access has been jammed for 2 hours. Please contact Rankly Support.,
-                    code: 'DEFCON_1_ACTIVE'
-                });
-            } else {
-                // Auto-lift lockdown after 2 hours
-                await prisma.organization.update({
-                    where: { id: organization.id },
-                    data: { isUnderLockdown: false, lockdownExpiresAt: null }
-                });
-            }
+        // --- DEFCON 1 KILL SWITCH (INDEFINITE LOCKDOWN) ---
+        if (organization.isUnderLockdown) {
+            console.error(?? [DEFCON 1] Request blocked for locked-down domain: );
+            return res.status(423).json({
+                success: false,
+                message: ?? SECURITY LOCKDOWN: We detected a severe hacking attempt on this domain. To protect your data, all access has been jammed. The Rankly Security Team is investigating the matter and will restore access once verified.,
+                code: 'DEFCON_1_ACTIVE'
+            });
         }
         // ----------------------------------------------
 

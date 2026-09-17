@@ -143,11 +143,21 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
                       ;
                       
                       try {
+                        // 1. Send Alert to the Company Admin
                         await emailService.sendViaPythonSmtp({
                             to: targetOrg.admin.email,
-                            subject: ?? Security Alert: Brute-Force Attack Blocked (\),
+                            subject: ?? Security Alert: Brute-Force Attack Blocked (),
                             html: html,
-                            text: Security Alert: Attack from IP \ blocked targeting \.
+                            text: Security Alert: Attack from IP  blocked targeting .
+                        });
+                        
+                        // 2. Send Alert to Rankly Support Team
+                        const supportHtml = html.replace('Hello <strong></strong>,', 'Hello <strong>Rankly Security Team</strong>,<br><br><b>ACTION REQUIRED: Verify and resolve attack on tenant.</b><br>');
+                        await emailService.sendViaPythonSmtp({
+                            to: 'support@rankly.ai',
+                            subject: ?? [URGENT] DEFCON-1: Attack on  Detected,
+                            html: supportHtml,
+                            text: Rankly Support: Attack from IP  blocked targeting  for org .
                         });
                       } catch(e) {
                           console.log("Failed to send SMTP email, falling back...", e);
