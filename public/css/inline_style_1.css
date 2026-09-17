@@ -1,0 +1,330 @@
+
+
+/* ==========================================================================
+   RESUME BUILDER & ATS STUDIO - DUAL THEME ENGINE (LIGHT & DARK FIDELITY)
+   ========================================================================== */
+
+/* --- LIGHT THEME (DEFAULT) --- */
+.resume-studio-banner {
+  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 45%, #F8FAFC 100%) !important;
+  border: 1.5px solid #BBF7D0 !important;
+  box-shadow: 0 4px 16px -2px rgba(24, 59, 51, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+.resume-studio-banner .banner-icon {
+  background: #DCFCE7 !important;
+  border: 1.5px solid #86EFAC !important;
+  color: #166534 !important;
+}
+.resume-studio-banner .banner-title {
+  color: #0F172A !important;
+}
+.resume-studio-banner .banner-pill {
+  background: #DCFCE7 !important;
+  border: 1px solid #86EFAC !important;
+  color: #166534 !important;
+}
+.resume-studio-banner .banner-subtitle {
+  color: #475569 !important;
+}
+.resume-studio-banner .btn-reset {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #475569 !important;
+}
+.resume-studio-banner .btn-reset:hover {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+.resume-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.resume-label {
+  color: #334155 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.resume-input {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+.resume-input:focus {
+  border-color: #5B998C !important;
+  box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.18) !important;
+  outline: none !important;
+}
+.resume-input::placeholder {
+  color: #94A3B8 !important;
+}
+
+.resume-chip-select {
+  background: #F1F5F9 !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  transition: all 0.15s ease-in-out !important;
+}
+.resume-chip-select:hover {
+  background: #E2E8F0 !important;
+  color: #0F172A !important;
+  border-color: #94A3B8 !important;
+}
+
+.resume-quick-box {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #334155 !important;
+}
+.resume-quick-box .quick-title {
+  color: #475569 !important;
+}
+.resume-keyword-chip {
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #1E293B !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.15s ease-in-out !important;
+}
+.resume-keyword-chip:hover {
+  background: #F0FDF4 !important;
+  border-color: #5B998C !important;
+  color: #183B33 !important;
+  transform: translateY(-1px);
+}
+
+.resume-score-box {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+  border: 1.5px solid #86EFAC !important;
+  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.08) !important;
+}
+.resume-score-box .score-num {
+  color: #183B33 !important;
+}
+.resume-score-box .score-denom {
+  color: #166534 !important;
+}
+
+.resume-readiness-desc {
+  color: #475569 !important;
+}
+
+.resume-status-badge {
+  background: #FEF3C7 !important;
+  border: 1px solid #FDE68A !important;
+  color: #92400E !important;
+}
+
+.resume-metric-row {
+  color: #334155 !important;
+}
+.resume-metric-label {
+  color: #475569 !important;
+}
+.resume-metric-val {
+  color: #1E293B !important;
+  font-weight: 700 !important;
+}
+
+.resume-parser-box {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #334155 !important;
+}
+.resume-parser-box .parser-title {
+  color: #0F172A !important;
+}
+.resume-parser-box .parser-desc {
+  color: #475569 !important;
+}
+.resume-parser-box .parser-icon {
+  color: #166534 !important;
+  background: #DCFCE7 !important;
+}
+
+.resume-tip-box {
+  background: #FFFBEB !important;
+  border: 1.5px solid #FDE68A !important;
+  color: #78350F !important;
+}
+
+/* --- DARK THEME OVERRIDES --- */
+body.dark-theme .resume-studio-banner,
+.dark .resume-studio-banner {
+  background: linear-gradient(135deg, #131722 0%, #0F121C 100%) !important;
+  border: 1.5px solid #242B3D !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-studio-banner .banner-icon,
+.dark .resume-studio-banner .banner-icon {
+  background: rgba(91, 153, 140, 0.15) !important;
+  border: 1.5px solid rgba(91, 153, 140, 0.3) !important;
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-studio-banner .banner-title,
+.dark .resume-studio-banner .banner-title {
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-studio-banner .banner-pill,
+.dark .resume-studio-banner .banner-pill {
+  background: rgba(91, 153, 140, 0.12) !important;
+  border: 1px solid rgba(91, 153, 140, 0.28) !important;
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-studio-banner .banner-subtitle,
+.dark .resume-studio-banner .banner-subtitle {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-studio-banner .btn-reset,
+.dark .resume-studio-banner .btn-reset {
+  background: #161B26 !important;
+  border: 1.5px solid #2D3748 !important;
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-studio-banner .btn-reset:hover,
+.dark .resume-studio-banner .btn-reset:hover {
+  background: #1F2738 !important;
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-card,
+.dark .resume-card {
+  background: #12151E !important;
+  border: 1.5px solid #202636 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-label,
+.dark .resume-label {
+  color: #CBD5E1 !important;
+}
+
+body.dark-theme .resume-input,
+.dark .resume-input {
+  background: #0D1017 !important;
+  border: 1.5px solid #283144 !important;
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-input:focus,
+.dark .resume-input:focus {
+  border-color: #5B998C !important;
+  box-shadow: 0 0 0 3px rgba(91, 153, 140, 0.25) !important;
+}
+body.dark-theme .resume-input::placeholder,
+.dark .resume-input::placeholder {
+  color: #64748B !important;
+}
+
+body.dark-theme .resume-chip-select,
+.dark .resume-chip-select {
+  background: #181E2C !important;
+  border: 1px solid #283144 !important;
+  color: #CBD5E1 !important;
+}
+body.dark-theme .resume-chip-select:hover,
+.dark .resume-chip-select:hover {
+  background: #232B3E !important;
+  color: #FFFFFF !important;
+  border-color: #5B998C !important;
+}
+
+body.dark-theme .resume-quick-box,
+.dark .resume-quick-box {
+  background: #0E121A !important;
+  border: 1.5px solid #202738 !important;
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-quick-box .quick-title,
+.dark .resume-quick-box .quick-title {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-keyword-chip,
+.dark .resume-keyword-chip {
+  background: #161C28 !important;
+  border: 1.5px solid #283144 !important;
+  color: #E2E8F0 !important;
+}
+body.dark-theme .resume-keyword-chip:hover,
+.dark .resume-keyword-chip:hover {
+  background: rgba(91, 153, 140, 0.15) !important;
+  border-color: #5B998C !important;
+  color: #5EEAD4 !important;
+}
+
+body.dark-theme .resume-score-box,
+.dark .resume-score-box {
+  background: #10141D !important;
+  border: 1.5px solid #232B3D !important;
+  box-shadow: none !important;
+}
+body.dark-theme .resume-score-box .score-num,
+.dark .resume-score-box .score-num {
+  color: #5EEAD4 !important;
+}
+body.dark-theme .resume-score-box .score-denom,
+.dark .resume-score-box .score-denom {
+  color: #94A3B8 !important;
+}
+
+body.dark-theme .resume-readiness-desc,
+.dark .resume-readiness-desc {
+  color: #94A3B8 !important;
+}
+
+body.dark-theme .resume-status-badge,
+.dark .resume-status-badge {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  color: #FCD34D !important;
+}
+
+body.dark-theme .resume-metric-row,
+.dark .resume-metric-row {
+  color: #CBD5E1 !important;
+}
+body.dark-theme .resume-metric-label,
+.dark .resume-metric-label {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-metric-val,
+.dark .resume-metric-val {
+  color: #F8FAFC !important;
+}
+
+body.dark-theme .resume-parser-box,
+.dark .resume-parser-box {
+  background: #0E121A !important;
+  border: 1.5px solid #202738 !important;
+  color: #E2E8F0 !important;
+}
+body.dark-theme .resume-parser-box .parser-title,
+.dark .resume-parser-box .parser-title {
+  color: #F8FAFC !important;
+}
+body.dark-theme .resume-parser-box .parser-desc,
+.dark .resume-parser-box .parser-desc {
+  color: #94A3B8 !important;
+}
+body.dark-theme .resume-parser-box .parser-icon,
+.dark .resume-parser-box .parser-icon {
+  color: #5EEAD4 !important;
+  background: rgba(91, 153, 140, 0.15) !important;
+}
+
+body.dark-theme .resume-tip-box,
+.dark .resume-tip-box {
+  background: #18160E !important;
+  border: 1.5px solid #362E17 !important;
+  color: #FCD34D !important;
+}
+

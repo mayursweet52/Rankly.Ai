@@ -1,0 +1,491 @@
+
+        /* ─── MODAL OVERLAY BACKDROP OPACITY & LUXURY BLUR ─── */
+        .modal-overlay {
+            background: rgba(17, 17, 17, 0.5) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+        }
+
+        body.dark-theme .modal-overlay,
+        .dark .modal-overlay,
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.78) !important;
+            backdrop-filter: blur(6px) !important;
+            -webkit-backdrop-filter: blur(6px) !important;
+        }
+
+        body.dark-theme .modal-overlay > div,
+        body.dark-theme .modal-box,
+        body.dark-theme .modal-card,
+        body.dark-theme .modal-content,
+        .dark .modal-overlay > div,
+        .dark .modal-box,
+        .dark .modal-card,
+        .dark .modal-content {
+            background-color: #12151E !important;
+            background: #12151E !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #FFFFFF !important;
+        }
+
+        /* ─── DUAL THEME INPUT STANDARDIZATION (CANDIDATE PORTAL & HR DASHBOARD) ─── */
+        .form-input,
+        input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        select.form-input,
+        textarea.form-input {
+            min-height: 42px !important;
+            border-radius: 8px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13px !important;
+            transition: border-color 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        /* Light Mode Inputs */
+        body:not(.dark-theme):not(.dark) .form-input,
+        body:not(.dark-theme):not(.dark) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        body:not(.dark-theme):not(.dark) select.form-input,
+        body:not(.dark-theme):not(.dark) textarea.form-input {
+            background-color: #FFFFFF !important;
+            background: #FFFFFF !important;
+            border: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+        }
+
+        body:not(.dark-theme):not(.dark) .form-input:focus,
+        body:not(.dark-theme):not(.dark) input:focus,
+        body:not(.dark-theme):not(.dark) select:focus,
+        body:not(.dark-theme):not(.dark) textarea:focus {
+            border-color: #243E36 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Dark Mode Inputs */
+        body.dark-theme .form-input,
+        body.dark-theme input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        body.dark-theme select.form-input,
+        body.dark-theme textarea.form-input,
+        .dark .form-input,
+        .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+        .dark select.form-input,
+        .dark textarea.form-input {
+            background-color: #161926 !important;
+            background: #161926 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .form-input:focus,
+        body.dark-theme input:focus,
+        body.dark-theme select:focus,
+        body.dark-theme textarea:focus,
+        .dark .form-input:focus,
+        .dark input:focus,
+        .dark select:focus,
+        .dark textarea:focus {
+            border-color: #10B981 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        body.dark-theme input::placeholder,
+        body.dark-theme textarea::placeholder,
+        .dark input::placeholder,
+        .dark textarea::placeholder {
+            color: #64748B !important;
+        }
+
+        /* System Health: Calm Flat Luxury (Zero pulse, Zero glow, Zero radar) */
+        #healthStatusOrb {
+            animation: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            transform: none !important;
+        }
+        body.dark-theme #tab-health .card,
+        .dark #tab-health .card {
+            background-color: #12151E !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme #tab-health h2,
+        body.dark-theme #tab-health h3,
+        .dark #tab-health h2,
+        .dark #tab-health h3 {
+            color: #FFFFFF !important;
+        }
+        body.dark-theme #tab-health p,
+        .dark #tab-health p {
+            color: #94A3B8 !important;
+        }
+        body.dark-theme #tab-health .stat-card,
+        .dark #tab-health .stat-card {
+            background-color: #181D29 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-theme #healthAuditLogsContainer,
+        body.dark-theme #securityThreatsContainer,
+        body.dark-theme #snapshotsListContainer,
+        .dark #healthAuditLogsContainer,
+        .dark #securityThreatsContainer,
+        .dark #snapshotsListContainer {
+            background-color: #141722 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        /* ─── PERFORMANCE TURBO-BOOST (60FPS/120FPS SILKY SMOOTH) ─── */
+        .pebble-3d-grey,
+        .pebble-3d-coral,
+        .pebble-3d-iridescent,
+        .pebble-3d-sage,
+        .pebble-floating-top-right,
+        .pebble-floating-mid-right {
+            animation: none !important;
+            transform: none !important;
+            will-change: auto !important;
+        }
+
+        .tab-content {
+            contain: content;
+        }
+
+        .dash-main,
+        .dash-sidebar {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Snappy 0.15s transitions for instant UI response */
+        button, a, .nav-item, .dock-item, input, select {
+            transition-duration: 0.15s !important;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════
+           FLAT LUXURY ARCHITECTURE: ZERO SHADOWS & QUICK-APPLY BUTTON PALETTE
+           ═══════════════════════════════════════════════════════════════════════ */
+        
+        /* 1. Universal Zero-Shadow Architecture across entire web */
+        *, *::before, *::after {
+            box-shadow: none !important;
+            text-shadow: none !important;
+            filter: none !important;
+        }
+
+        /* Preserve clean borders for cards, inputs, and modals */
+        .card, .stat-card, .tab-content .card {
+            border: 1px solid #E5E5DF !important;
+        }
+        body.dark-theme .card, body.dark-theme .stat-card, body.dark-theme .tab-content .card {
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: #141721 !important;
+        }
+
+        /* 2. MATCH ALL PRIMARY BUTTONS TO THE SIGNATURE QUICK-APPLY BUTTON (#243E36) */
+        .btn-primary,
+        .login-btn,
+        .auth-btn-main,
+        .btn-ai-generate,
+        .btn-rankly-pill,
+        #genResumeBtn,
+        #grievanceSubmitBtn,
+        #runAtsCheckBtn,
+        #generateCoverLetterBtn,
+        #btnRunSkillScan,
+        #btnSubmitCandApplication,
+        #btnQuickTalentReport,
+        #btnSubmitLeave,
+        #btnPunchIn,
+        #saveProfileTopBtn,
+        #saveProfileBottomBtn,
+        #btnSubmitPolicySummary,
+        button.btn-primary,
+        body.dark-theme .btn-primary,
+        body.dark-theme .login-btn,
+        body.dark-theme .auth-btn-main,
+        body.dark-theme #genResumeBtn,
+        body.dark-theme #grievanceSubmitBtn,
+        body.dark-theme #btnPunchIn,
+        body.dark-theme #saveProfileTopBtn,
+        body.dark-theme #saveProfileBottomBtn {
+            background-color: #243E36 !important;
+            background: #243E36 !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            transition: background-color 0.15s ease, opacity 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        .btn-primary:hover,
+        .login-btn:hover,
+        .auth-btn-main:hover,
+        .btn-ai-generate:hover,
+        #genResumeBtn:hover,
+        #grievanceSubmitBtn:hover,
+        #runAtsCheckBtn:hover,
+        #generateCoverLetterBtn:hover,
+        #btnRunSkillScan:hover,
+        #btnSubmitCandApplication:hover,
+        #btnQuickTalentReport:hover,
+        #btnSubmitLeave:hover,
+        #btnPunchIn:hover,
+        #saveProfileTopBtn:hover,
+        #saveProfileBottomBtn:hover,
+        #btnSubmitPolicySummary:hover,
+        body.dark-theme .btn-primary:hover,
+        body.dark-theme .login-btn:hover,
+        body.dark-theme .auth-btn-main:hover,
+        body.dark-theme #genResumeBtn:hover {
+            background-color: #1B302A !important;
+            background: #1B302A !important;
+            color: #FFFFFF !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        /* 3. HARMONIZED SECONDARY & UTILITY BUTTONS (LIGHT & DARK) */
+        .btn-secondary,
+        .btn-outline,
+        body.dark-theme .btn-secondary,
+        body.dark-theme #tab-settings .btn-secondary {
+            background-color: #FAFAF8 !important;
+            background: #FAFAF8 !important;
+            border: 1px solid #E5E5DF !important;
+            color: #111111 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            transition: background-color 0.15s ease !important;
+            box-shadow: none !important;
+        }
+
+        .btn-secondary:hover,
+        .btn-outline:hover {
+            background-color: #F0F0EC !important;
+            background: #F0F0EC !important;
+            border-color: #D5D5CF !important;
+            color: #111111 !important;
+            transform: none !important;
+        }
+
+        body.dark-theme .btn-secondary,
+        body.dark-theme .btn-outline,
+        body.dark-theme #tab-settings .btn-secondary,
+        .dark .btn-secondary,
+        .dark .btn-outline,
+        html.dark .btn-secondary,
+        html.dark .btn-outline {
+            background-color: #161926 !important;
+            background: #161926 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #E2E8F0 !important;
+        }
+
+        body.dark-theme .btn-secondary:hover,
+        body.dark-theme .btn-outline:hover,
+        body.dark-theme #tab-settings .btn-secondary:hover,
+        .dark .btn-secondary:hover,
+        .dark .btn-outline:hover,
+        html.dark .btn-secondary:hover,
+        html.dark .btn-outline:hover {
+            background-color: #1F2436 !important;
+            background: #1F2436 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: #FFFFFF !important;
+            transform: none !important;
+        }
+
+        /* Dark Mode Precision Checkboxes & Radios */
+        html.dark input[type="checkbox"],
+        html.dark input[type="radio"],
+        body.dark-theme input[type="checkbox"],
+        body.dark-theme input[type="radio"],
+        #loginPage.dark-mode input[type="checkbox"],
+        #loginPage.dark-mode input[type="radio"] {
+            background-color: #161926 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: #10B981 !important;
+        }
+
+        /* Danger Action Buttons */
+        .btn-danger,
+        .hold-confirm-btn {
+            background-color: #DC2626 !important;
+            background: #DC2626 !important;
+            color: #FFFFFF !important;
+            box-shadow: none !important;
+        }
+        .btn-danger:hover {
+            background-color: #B91C1C !important;
+            background: #B91C1C !important;
+            transform: none !important;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════
+           CLEAN LUXURY PALETTE: ZERO CIRCUS IN DARK MODE (COHESIVE COLOR CORRECTION)
+           ═══════════════════════════════════════════════════════════════════════ */
+
+        /* 1. Eliminate Multi-Colored Floating 3D Pebbles in Dark Mode */
+        body.dark-theme [class*="pebble-"],
+        #loginPage.dark-mode [class*="pebble-"],
+        .dark [class*="pebble-"],
+        [data-theme="dark"] [class*="pebble-"],
+        body.dark-theme .pebble-cluster-bottom-left,
+        body.dark-theme .pebble-floating-top-right,
+        body.dark-theme .pebble-floating-mid-right,
+        body.dark-theme .pebble-3d-grey,
+        body.dark-theme .pebble-3d-coral,
+        body.dark-theme .pebble-3d-iridescent,
+        body.dark-theme .pebble-3d-sage,
+        #loginPage.dark-mode .pebble-cluster-bottom-left,
+        #loginPage.dark-mode .pebble-floating-top-right,
+        #loginPage.dark-mode .pebble-floating-mid-right,
+        #loginPage.dark-mode .pebble-3d-grey,
+        #loginPage.dark-mode .pebble-3d-coral,
+        #loginPage.dark-mode .pebble-3d-iridescent,
+        #loginPage.dark-mode .pebble-3d-sage {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+
+        /* 2. Cohesive Luxury Stat Cards (No rainbow numbers in Dark Mode) */
+        body.dark-theme .stat-card,
+        body.dark-theme .stat-card.bg-amber-50\/40,
+        body.dark-theme .stat-card.bg-blue-50\/40 {
+            background-color: #12151E !important;
+            background: #12151E !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.dark-theme .stat-card .text-2xl,
+        body.dark-theme #empStatProbation,
+        body.dark-theme #empStatDepts,
+        body.dark-theme #docStatPolicies,
+        body.dark-theme #docStatNdas,
+        body.dark-theme #docStatCompliance,
+        body.dark-theme [id^="statVal-"],
+        body.dark-theme [id$="StatCount"] {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme .stat-card span[class*="font-mono"],
+        body.dark-theme .stat-label {
+            color: #94A3B8 !important;
+        }
+
+        /* 3. Executive Charcoal/Emerald Icon Tiles in Dark Mode (No rainbow circus tiles) */
+        body.dark-theme .rounded-xl[class*="bg-indigo-"],
+        body.dark-theme .rounded-xl[class*="bg-blue-"],
+        body.dark-theme .rounded-xl[class*="bg-purple-"],
+        body.dark-theme .rounded-xl[class*="bg-teal-"],
+        body.dark-theme .rounded-xl[class*="bg-amber-"],
+        body.dark-theme .rounded-xl[class*="bg-[#EFF6FF]"],
+        body.dark-theme .rounded-xl[class*="bg-[#FEF3C7]"],
+        body.dark-theme .rounded-xl[class*="bg-[#FFFBEB]"],
+        body.dark-theme .rounded-xl[class*="bg-[#F4F4F0]"],
+        body.dark-theme .mention-icon-box {
+            background-color: #181D29 !important;
+            background: #181D29 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #CBD5E1 !important;
+        }
+
+        /* Subtle corporate emerald for primary status icon tiles */
+        body.dark-theme .rounded-xl.bg-emerald-500\/10,
+        body.dark-theme .rounded-xl.bg-\[\#183B33\]\/10 {
+            background-color: rgba(36, 62, 54, 0.35) !important;
+            background: rgba(36, 62, 54, 0.35) !important;
+            border: 1px solid rgba(36, 62, 54, 0.6) !important;
+            color: #10B981 !important;
+        }
+
+        /* Subtle crimson for danger icon tiles */
+        body.dark-theme .rounded-xl[class*="bg-[#FEF2F2]"],
+        body.dark-theme .rounded-xl[class*="bg-red-"],
+        body.dark-theme .mention-icon-box.bg-red-500\/10 {
+            background-color: rgba(220, 38, 38, 0.15) !important;
+            background: rgba(220, 38, 38, 0.15) !important;
+            border: 1px solid rgba(220, 38, 38, 0.3) !important;
+            color: #F87171 !important;
+        }
+
+        /* 4. Elegant Status Badges & Pills in Dark Mode */
+        body.dark-theme .tag-pill,
+        body.dark-theme .tag-pill-coral,
+        body.dark-theme .tag-pill-blue,
+        body.dark-theme .tag-pill-amber,
+        body.dark-theme .tag-pill-emerald,
+        body.dark-theme .tag-pill-indigo {
+            box-shadow: none !important;
+            font-weight: 600 !important;
+        }
+
+        body.dark-theme .tag-pill-coral {
+            background: rgba(220, 38, 38, 0.15) !important;
+            border: 1px solid rgba(220, 38, 38, 0.3) !important;
+            color: #F87171 !important;
+        }
+
+        body.dark-theme .tag-pill-amber {
+            background: rgba(217, 119, 6, 0.15) !important;
+            border: 1px solid rgba(217, 119, 6, 0.3) !important;
+            color: #FBBF24 !important;
+        }
+
+        body.dark-theme .tag-pill-blue,
+        body.dark-theme .tag-pill-indigo,
+        body.dark-theme .tag-pill-purple {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #94A3B8 !important;
+        }
+
+        body.dark-theme .tag-pill-emerald,
+        body.dark-theme .tag-pill-green {
+            background: rgba(36, 62, 54, 0.35) !important;
+            border: 1px solid rgba(36, 62, 54, 0.6) !important;
+            color: #10B981 !important;
+        }
+
+        /* Candidate Portal Gradient Banners in Dark Mode: Keep Deep Obsidian/Emerald */
+        body.dark-theme [class*="bg-gradient-to-br"][class*="dark:from-indigo-950"] {
+            background: #12151E !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.dark-theme [class*="bg-gradient-to-br"][class*="dark:from-emerald-950"] {
+            background: #12151E !important;
+            border: 1px solid rgba(36, 62, 54, 0.4) !important;
+        }
+
+        /* 5. Document category pills and quick skill pills in Dark Mode */
+        body.dark-theme .doc-cat-pill:hover,
+        body.dark-theme .doc-cat-pill.active {
+            background-color: #243E36 !important;
+            background: #243E36 !important;
+            border-color: #243E36 !important;
+            color: #FFFFFF !important;
+        }
+
+        body.dark-theme #quickSkillPills button:hover,
+        body.dark-theme #tab-resume button[onclick^="setQuickProfession"]:hover,
+        body.dark-theme .resume-chip:hover {
+            background-color: #1A2421 !important;
+            border-color: #243E36 !important;
+            color: #10B981 !important;
+        }
