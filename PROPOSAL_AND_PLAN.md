@@ -1,33 +1,21 @@
-# ??? PROPOSAL: Enterprise Identity & Access Management (IAM) Upgrade
+# ?? PROPOSAL: Complete the Employee Login & Invitation Flow
 
 ## ?? Goal
-Upgrade Rankly's authentication system to Zoho-level enterprise security by implementing **Contextual Security & IP Whitelisting**. This ensures employees can only log into the HRMS from approved office networks or devices.
+Currently, when an employee is added via the dashboard, an \Employee\ record is created, but no \User\ authentication profile is built. We need to auto-create their login credentials and send them an invitation email so they can log into the Rankly HRMS.
 
-## ??? Tripartite Task Division
+## ??? Task Division
 
-### 1. ??? Vaibhav (Database & Infrastructure)
-- **Target File:** \prisma/schema.prisma\
-- **Action:** 
-  - Add \llowedIps\ (String, representing comma-separated IPs) and \isIpRestrictionEnabled\ (Boolean) to \model Organization\.
-  - Add \lastLoginIp\ (String) and \lastLoginDevice\ (String) to \model User\.
-- **Validation:** Run \
-px prisma db push\ to apply the schema migration.
-
-### 2. ?? Mayur (Backend API & Security)
-- **Target File:** \src/controllers/authController.js\ & \src/routes/organizationRoutes.js\
+### 1. ?? Mayur (Backend Architect)
+- **Target File:** \src/services/employeeService.js\
 - **Action:**
-  - Update \erifyOtp\ and login logic to extract the user's \eq.ip\ and \eq.headers['user-agent']\.
-  - Check if the user belongs to an Organization with \isIpRestrictionEnabled == true\.
-  - If enabled, verify the \eq.ip\ exists in the \llowedIps\ list. If not, **block access immediately** and throw a "Security Risk: Unrecognized Network" error.
-  - Create an endpoint for HR to update Organization Security Settings (\PATCH /api/organization/security\).
+  - After creating the \Employee\ record, check if a \User\ with that \workEmail\ exists.
+  - If not, create a \User\ profile with \ole: 'employee'\ and link it to the employee's \organizationId\.
+  - Link the \User.id\ to the \Employee.userId\.
+  - Use \emailService.sendInvitationEmail()\ to email the new employee telling them they have been added to the organization and instructing them to log in via OTP.
 
-### 3. ?? Sumit (Frontend UI/UX)
-- **Target File:** \public/index.html\ & \public/js/securitySuite.js\
-- **Action:**
-  - Add a **"Security & IAM"** tab in the main settings area for HR Admins.
-  - Create an interface with a toggle switch to enable "Strict Network Restrictions (IP Whitelisting)" and a tag-input for adding allowed IPv4/IPv6 addresses.
-  - Update the Login screen to handle the new security error codes smoothly (e.g., "Access Denied: Please connect to office VPN").
+### 2. ?? Sumit (Frontend UI/UX)
+- No new UI changes needed. The existing "Add Employee" modal will now trigger the backend to send an email seamlessly.
 
 ## ?? Mandatory Developer Gate
-This modifies core authentication and requires schema updates.
+This connects the HR database to the Auth system and triggers outbound emails. 
 **Awaiting Developer Approval ("Proceed" / "Approved") before executing code.**

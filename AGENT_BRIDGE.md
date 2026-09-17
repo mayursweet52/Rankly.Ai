@@ -1,18 +1,18 @@
 # ?? Antigravity Multi-Agent Bridge
 
-**Current Phase:** Enterprise IAM & IP Whitelisting (Awaiting Approval)
-**Architectural Plan:** Modify Prisma schema to track allowed IPs for Orgs and last login IPs for Users. Inject IP validation middleware into authController. Build a UI in settings for HR to configure IAM.
+**Current Phase:** Employee Authentication & Invitation Linkage (Awaiting Approval)
+**Architectural Plan:** Update employeeService.js to automatically create User authentication records for newly added employees and dispatch welcome emails.
 
 ## ?? Strict Domain Briefings
 
 ### ????? Mayur (Backend Architect)
-* **MUST DO:** Implement IP capture (req.ip) and block logic in authController. Build PATCH API for updating org security.
-* **MUST NOT DO:** Do not build frontend HTML.
+* **MUST DO:** Create \User\ profile, link \User\ to \Employee\, and \sendInvitationEmail\.
+* **MUST NOT DO:** Do not touch frontend HTML.
 
 ### ?? Sumit (Frontend Lead)
-* **MUST DO:** Create Security settings tab for HR to toggle IP restrictions and input IPs.
-* **MUST NOT DO:** Do not write database queries.
+* **MUST DO:** Nothing for this phase, backend handles it silently.
+* **MUST NOT DO:** Do not touch backend controllers.
 
 ### ??? Vaibhav (Database Lead)
-* **MUST DO:** Add allowedIps, isIpRestrictionEnabled to Organization. Add lastLoginIp, lastLoginDevice to User.
-* **MUST NOT DO:** Do not touch Express controllers.
+* **MUST DO:** Schema is already prepared.
+* **MUST NOT DO:** Do not write Express logic.
