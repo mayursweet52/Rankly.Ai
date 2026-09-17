@@ -86,3 +86,91 @@ async function fetchTimesheets(employeeId) {
         console.error('Failed to fetch timesheets:', e);
     }
 }
+
+// --- Geofenced Web Check-In ---
+window.handleWebCheckIn = async function() {
+    const btn = document.getElementById('webCheckInBtn');
+    const statusDiv = document.getElementById('geofenceStatus');
+    
+    if (!btn) return;
+    
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Getting Location...';
+    
+    statusDiv.classList.remove('hidden', 'text-emerald-500', 'text-amber-500', 'text-red-500');
+    statusDiv.innerHTML = 'Requesting GPS coordinate access...';
+    
+    if (!navigator.geolocation) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        statusDiv.classList.add('text-red-500');
+        statusDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolocation not supported by browser.';
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            statusDiv.innerHTML = 'Location found. Verifying with office geofence...';
+
+            try {
+                // Hardcoded employee ID for demo purposes if not logged in.
+                // In production, backend reads from session/JWT.
+                const empId = window.currentUser?.employeeId || 'DEMO_EMP_ID'; 
+
+                const res = await fetch('/api/hrms/attendance/punch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        employeeId: empId,
+                        type: 'checkIn',
+                        latitude,
+                        longitude
+                    })
+                });
+
+                const data = await res.json();
+                
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Checked In';
+                
+                if (data.isGeofenceValid) {
+                    statusDiv.classList.add('text-emerald-500');
+                    statusDiv.innerHTML = '<i class="fa-solid fa-shield-check"></i> ' + (data.message || 'Location Verified (Within Geofence)');
+                } else if (data.isGeofenceValid === false && data.distance) {
+                    statusDiv.classList.add('text-amber-500');
+                    statusDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + (data.message || 'Outside Office Geofence (' + Math.round(data.distance) + 'm away)');
+                } else {
+                    statusDiv.classList.add('text-emerald-500');
+                    statusDiv.innerHTML = '<i class="fa-solid fa-check"></i> ' + (data.message || 'Checked In');
+                }
+                
+                if (!res.ok) {
+                   btn.disabled = false;
+                   btn.innerHTML = originalText;
+                   statusDiv.classList.add('text-red-500');
+                   statusDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error: ' + (data.message || 'Failed to punch in');
+                }
+
+            } catch (err) {
+                console.error('Punch API Error:', err);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                statusDiv.classList.add('text-red-500');
+                statusDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Network error during verification.';
+            }
+        },
+        (error) => {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            statusDiv.classList.add('text-red-500');
+            let errStr = 'Location access denied.';
+            if (error.code === 2) errStr = 'Position unavailable.';
+            if (error.code === 3) errStr = 'Location request timed out.';
+            statusDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + errStr + ' Please allow location access.';
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+};

@@ -10,4 +10,7 @@ router.get('/shifts', apiCacheMiddleware(300), hrmsController.getShifts);
 router.get('/timesheets', apiCacheMiddleware(60), hrmsController.getTimesheets);
 router.post('/timesheets', hrmsController.submitTimesheet); // No cache on writes
 
+router.post('/attendance/punch', hrmsController.punchAttendance);
+
 module.exports = router;
+

@@ -80,6 +80,11 @@ model Organization {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Geofencing Defaults
+  officeLatitude  Float?
+  officeLongitude Float?
+  geofenceRadius  Int?   @default(100) // in meters
 }
 
 // ---------------------------------------------------------
@@ -607,6 +612,11 @@ model Attendance {
   status     String    @default("present") // "present" | "absent" | "half_day" | "late" | "on_leave" | "remote"
   notes      String?
   ipAddress  String?
+
+  // Geofencing
+  latitude        Float?
+  longitude       Float?
+  isGeofenceValid Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
