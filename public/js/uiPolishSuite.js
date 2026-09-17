@@ -736,7 +736,6 @@
     initKeyboardFocusRings();
     initStickyHeaderShadow();
     initBackToTopButton();
-    initScrollProgressBar();
     window.initDragAndDropUpload?.('.drag-drop-zone', (files) => {
       if (typeof window.handleFiles === 'function') window.handleFiles(files);
     });
