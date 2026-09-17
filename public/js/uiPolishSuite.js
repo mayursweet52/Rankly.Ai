@@ -559,43 +559,6 @@
 
 
   // =========================================================================
-  // 14. EXPANDABLE FAQS (Accordion)
-  // =========================================================================
-  window.toggleFaqAccordion = function(headerBtn) {
-    const content = headerBtn.nextElementSibling;
-    const chevron = headerBtn.querySelector('.faq-chevron');
-    if (!content) return;
-
-    const isExpanded = !content.classList.contains('hidden');
-    if (isExpanded) {
-      content.classList.add('hidden');
-      headerBtn.setAttribute('aria-expanded', 'false');
-      if (chevron) chevron.style.transform = 'rotate(0deg)';
-    } else {
-      content.classList.remove('hidden');
-      headerBtn.setAttribute('aria-expanded', 'true');
-      if (chevron) chevron.style.transform = 'rotate(180deg)';
-    }
-  };
-
-
-  // =========================================================================
-  // 15. TOP SCROLL PROGRESS BAR
-  // =========================================================================
-  function initScrollProgressBar() {
-    const bar = document.getElementById('scrollProgressBar');
-    if (!bar) return;
-
-    window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-      bar.style.width = `${Math.min(100, Math.max(0, scrolled))}%`;
-    }, { passive: true });
-  }
-
-
-  // =========================================================================
   // 16. HIGH-RISK ACTION CONFIRMATION MODALS (Promise-based)
   // =========================================================================
   let confirmResolve = null;
