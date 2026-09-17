@@ -86,11 +86,6 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
   // If IP or Account is blocked due to 5+ failed attempts, trigger Admin Alert
   const ip = req.ip || req.connection?.remoteAddress || 'unknown';
   
-  // Check if failureRecord is returning a blocked state (if recordAuthFailure was modified to return it)
-  // Or just check if authRateLimit has blocked it. For now, since recordAuthFailure in the other file
-  // might not return the record, we can safely just check if we hit this failAuth multiple times.
-  // Actually, we'll implement a fast local tracker here to trigger the email if failAuth is hit 5 times.
-  
   if (!alertedIps.has(ip)) {
       const ipFailures = req.app.locals.ipFailures || new Map();
       let count = (ipFailures.get(ip) || 0) + 1;
@@ -100,7 +95,6 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
       if (count >= 5) {
           alertedIps.add(ip);
           
-          // Try to find the Organization under attack based on the identifier/email domain
           if (identifier && identifier.includes('@')) {
               const domain = identifier.split('@')[1].toLowerCase().trim();
               try {
@@ -112,14 +106,14 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
                   const targetOrg = orgs.find(o => o.allowedDomains.toLowerCase().includes(domain));
                   
                   if (targetOrg && targetOrg.admin && targetOrg.admin.email) {
-                      console.log(?? [SECURITY ALERT] Notifying \ admin about attack from IP: \);
+                      console.log(`🚨 [SECURITY ALERT] Notifying ${targetOrg.admin.email} admin about attack from IP: ${ip}`);
                       const emailService = require('../services/emailService');
                       
-                      const html = 
+                      const html = `
                         <div style="font-family: Arial, sans-serif; border: 2px solid #ef4444; border-radius: 8px; padding: 20px; max-width: 600px;">
-                            <h2 style="color: #ef4444;">?? Critical Security Alert</h2>
-                            <p>Hello <strong>\</strong>,</p>
-                            <p>We detected abnormal activity targeting your organization's workspace (<strong>\</strong>) on Rankly.ai.</p>
+                            <h2 style="color: #ef4444;">🚨 Critical Security Alert</h2>
+                            <p>Hello <strong>${targetOrg.admin.firstName || 'Admin'}</strong>,</p>
+                            <p>We detected abnormal activity targeting your organization's workspace (<strong>${targetOrg.name}</strong>) on Rankly.ai.</p>
                             <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
                                 <tr style="background: #fee2e2; border-bottom: 1px solid #fca5a5;">
                                     <td style="padding: 10px; font-weight: bold;">Attack Type</td>
@@ -127,11 +121,11 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
                                 </tr>
                                 <tr style="border-bottom: 1px solid #fca5a5;">
                                     <td style="padding: 10px; font-weight: bold;">Attacker IP</td>
-                                    <td style="padding: 10px;">\</td>
+                                    <td style="padding: 10px;">${ip}</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #fca5a5;">
                                     <td style="padding: 10px; font-weight: bold;">Target Email Used</td>
-                                    <td style="padding: 10px;">\</td>
+                                    <td style="padding: 10px;">${identifier}</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #fca5a5;">
                                     <td style="padding: 10px; font-weight: bold;">Action Taken</td>
@@ -140,30 +134,29 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
                             </table>
                             <p style="margin-top: 20px; font-size: 13px; color: #6b7280;">Our Zero-Trust architecture has successfully neutralized this threat. No data was compromised. You can review full logs in your Security Dashboard.</p>
                         </div>
-                      ;
+                      `;
                       
                       try {
                         // 1. Send Alert to the Company Admin
                         await emailService.sendViaPythonSmtp({
                             to: targetOrg.admin.email,
-                            subject: ?? Security Alert: Brute-Force Attack Blocked (),
+                            subject: `🚨 Security Alert: Brute-Force Attack Blocked (${targetOrg.name})`,
                             html: html,
-                            text: Security Alert: Attack from IP  blocked targeting .
+                            text: `Security Alert: Attack from IP ${ip} blocked targeting ${identifier}.`
                         });
                         
                         // 2. Send Alert to Rankly Support Team
-                        const supportHtml = html.replace('Hello <strong></strong>,', 'Hello <strong>Rankly Security Team</strong>,<br><br><b>ACTION REQUIRED: Verify and resolve attack on tenant.</b><br>');
+                        const supportHtml = html.replace(`Hello <strong>${targetOrg.admin.firstName || 'Admin'}</strong>,`, `Hello <strong>Rankly Security Team</strong>,<br><br><b>ACTION REQUIRED: Verify and resolve attack on tenant.</b><br>`);
                         await emailService.sendViaPythonSmtp({
                             to: 'support@rankly.ai',
-                            subject: ?? [URGENT] DEFCON-1: Attack on  Detected,
+                            subject: `🔴 [URGENT] DEFCON-1: Attack on ${targetOrg.name} Detected`,
                             html: supportHtml,
-                            text: Rankly Support: Attack from IP  blocked targeting  for org .
+                            text: `Rankly Support: Attack from IP ${ip} blocked targeting ${identifier} for org ${targetOrg.name}.`
                         });
                       } catch(e) {
                           console.log("Failed to send SMTP email, falling back...", e);
                       }
                       
-                      // Clear the IP from alert set after 24 hours
                       setTimeout(() => alertedIps.delete(ip), 24 * 60 * 60 * 1000);
                   }
               } catch (e) {
@@ -941,8 +934,8 @@ async function verifyOtp(req, res) {
               const allowedDomainsList = org.allowedDomains.split(',').map(d => d.trim().toLowerCase());
               
               if (!allowedDomainsList.includes(userDomain)) {
-                  console.log([ZERO-TRUST BLOCK] Email domain \ is not whitelisted for Organization \);
-                  securityError = ?? Security Alert: This Database is not connected with your company. Domain (\) is strictly prohibited.;
+                  console.log(`[ZERO-TRUST BLOCK] Email domain ${userDomain} is not whitelisted for Organization ${org.name}`);
+                  securityError = `🚨 Security Alert: This Database is not connected with your company. Domain (${userDomain}) is strictly prohibited.`;
               }
            }
 
@@ -951,8 +944,8 @@ async function verifyOtp(req, res) {
                const userIp = req.ip || req.connection.remoteAddress || 'unknown';
                const allowed = org.allowedIps.split(',').map(ip => ip.trim());
                if (userIp !== 'unknown' && !allowed.includes(userIp) && userIp !== '::1' && userIp !== '127.0.0.1') {
-                   console.log([IAM BLOCK] User \ blocked from unauthorized IP: \);
-                   securityError = Access Denied: Your IP address (\) is not whitelisted for this organization's network.;
+                   console.log(`[IAM BLOCK] User ${user.email} blocked from unauthorized IP: ${userIp}`);
+                   securityError = `Access Denied: Your IP address (${userIp}) is not whitelisted for this organization's network.`;
                }
            }
         }
