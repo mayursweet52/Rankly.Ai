@@ -1,18 +1,18 @@
 {
-  "current_phase": "Geofenced Attendance Implementation",
-  "architectural_plan": "Implement HTML5 Geolocation API on frontend, Haversine distance formula on backend, and schema modifications for tracking coordinate data.",
+  "current_phase": "Onboarding Workflows Implementation",
+  "architectural_plan": "Create Prisma models for Onboarding templates and employee tasks. Build Express APIs to manage checklists. Build new UI tab in index.html to track new hire progress.",
   "status": "Awaiting User Approval",
   "team_briefing": {
     "Mayur": {
-      "must_do": "Implement Haversine distance calculation in hrmsController.js and handle lat/lng payload in punch API.",
-      "must_not_do": "Do not touch HTML/CSS or run Prisma push directly."
+      "must_do": "Create onboardingController.js with assign and update-task endpoints. Mount to server.js.",
+      "must_not_do": "Do not touch HTML UI or CSS styles."
     },
     "Sumit": {
-      "must_do": "Implement navigator.geolocation in frontend JS. Create loading states and verified/unverified badges.",
-      "must_not_do": "Do not write backend logic or calculate distance on frontend (security risk)."
+      "must_do": "Add #tab-onboarding in index.html. Write onboardingSuite.js for fetching and checking off tasks.",
+      "must_not_do": "Do not write Prisma queries or backend Express logic."
     },
     "Vaibhav": {
-      "must_do": "Update prisma/schema.prisma with latitude/longitude fields for Attendance and Organization models.",
+      "must_do": "Add OnboardingTemplate, OnboardingTaskTemplate, EmployeeOnboarding, and EmployeeOnboardingTask models to schema.prisma.",
       "must_not_do": "Do not touch UI templates or Express controllers."
     }
   }
