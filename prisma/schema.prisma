@@ -86,7 +86,9 @@ model Organization {
   // Security & IAM
   isIpRestrictionEnabled Boolean @default(false)
   allowedIps             String?
-  allowedDomains         String? // Comma separated list of domains (Zero-Trust) // Comma separated list of IPs
+  allowedDomains         String? // Comma separated list of domains (Zero-Trust)
+  isUnderLockdown        Boolean @default(false) // DEFCON 1 Kill Switch
+  lockdownExpiresAt      DateTime? // 2-hour jam timer // Comma separated list of IPs
 
   // Geofencing Defaults
   officeLatitude  Float?
