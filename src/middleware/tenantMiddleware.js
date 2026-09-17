@@ -29,10 +29,10 @@ if (!organization) {
 
         // --- DEFCON 1 KILL SWITCH (INDEFINITE LOCKDOWN) ---
         if (organization.isUnderLockdown) {
-            console.error(?? [DEFCON 1] Request blocked for locked-down domain: );
+            console.error(`🚨 [DEFCON 1] Request blocked for locked-down domain: ${organization.name}`);
             return res.status(423).json({
                 success: false,
-                message: ?? SECURITY LOCKDOWN: We detected a severe hacking attempt on this domain. To protect your data, all access has been jammed. The Rankly Security Team is investigating the matter and will restore access once verified.,
+                message: `🚨 SECURITY LOCKDOWN: We detected a severe hacking attempt on this domain. To protect your data, all access has been jammed. The Rankly Security Team is investigating the matter and will restore access once verified.`,
                 code: 'DEFCON_1_ACTIVE'
             });
         }
@@ -42,8 +42,8 @@ if (!organization) {
         // If user is authenticated, ensure their JWT token matches this Tenant Database
         if (req.user && req.user.tenantCode) {
             if (req.user.tenantCode !== organization.tenantCode) {
-                console.warn([ZERO-TRUST BLOCK] Cross-Tenant Access Attempt! User  tried to access );
-                return sendError(res, 403, '?? Security Alert: Invalid Session Signature. This Database is not connected with your company.', 'ZERO_TRUST_VIOLATION');
+                console.warn(`[ZERO-TRUST BLOCK] Cross-Tenant Access Attempt! User ${req.user.email} tried to access ${organization.tenantCode}`);
+                return sendError(res, 403, '🚨 Security Alert: Invalid Session Signature. This Database is not connected with your company.', 'ZERO_TRUST_VIOLATION');
             }
         }
         // ---------------------------
