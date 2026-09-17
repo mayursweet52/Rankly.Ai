@@ -1,19 +1,19 @@
 {
-  "current_phase": "Onboarding Workflows Implementation",
-  "architectural_plan": "Create Prisma models for Onboarding templates and employee tasks. Build Express APIs to manage checklists. Build new UI tab in index.html to track new hire progress.",
+  "current_phase": "Enterprise IAM & IP Whitelisting",
+  "architectural_plan": "Modify Prisma schema to track allowed IPs for Orgs and last login IPs for Users. Inject IP validation middleware into authController. Build a UI in settings for HR to configure IAM.",
   "status": "Awaiting User Approval",
   "team_briefing": {
     "Mayur": {
-      "must_do": "Create onboardingController.js with assign and update-task endpoints. Mount to server.js.",
-      "must_not_do": "Do not touch HTML UI or CSS styles."
+      "must_do": "Implement IP capture (req.ip) and block logic in authController. Build PATCH API for updating org security.",
+      "must_not_do": "Do not build frontend HTML."
     },
     "Sumit": {
-      "must_do": "Add #tab-onboarding in index.html. Write onboardingSuite.js for fetching and checking off tasks.",
-      "must_not_do": "Do not write Prisma queries or backend Express logic."
+      "must_do": "Create Security settings tab for HR to toggle IP restrictions and input IPs.",
+      "must_not_do": "Do not write database queries."
     },
     "Vaibhav": {
-      "must_do": "Add OnboardingTemplate, OnboardingTaskTemplate, EmployeeOnboarding, and EmployeeOnboardingTask models to schema.prisma.",
-      "must_not_do": "Do not touch UI templates or Express controllers."
+      "must_do": "Add allowedIps, isIpRestrictionEnabled to Organization. Add lastLoginIp, lastLoginDevice to User.",
+      "must_not_do": "Do not touch Express controllers."
     }
   }
 }

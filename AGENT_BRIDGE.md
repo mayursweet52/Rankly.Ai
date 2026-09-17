@@ -1,18 +1,18 @@
 # ?? Antigravity Multi-Agent Bridge
 
-**Current Phase:** Onboarding Workflows Implementation (Awaiting Approval)
-**Architectural Plan:** Create Prisma models for Onboarding templates and employee tasks. Build Express APIs to manage checklists. Build new UI tab in index.html to track new hire progress.
+**Current Phase:** Enterprise IAM & IP Whitelisting (Awaiting Approval)
+**Architectural Plan:** Modify Prisma schema to track allowed IPs for Orgs and last login IPs for Users. Inject IP validation middleware into authController. Build a UI in settings for HR to configure IAM.
 
 ## ?? Strict Domain Briefings
 
 ### ????? Mayur (Backend Architect)
-* **MUST DO:** Create \onboardingController.js\ with assign and update-task endpoints. Mount to \server.js\.
-* **MUST NOT DO:** Do not touch HTML UI or CSS styles.
+* **MUST DO:** Implement IP capture (req.ip) and block logic in authController. Build PATCH API for updating org security.
+* **MUST NOT DO:** Do not build frontend HTML.
 
 ### ?? Sumit (Frontend Lead)
-* **MUST DO:** Add \#tab-onboarding\ in \index.html\. Write \onboardingSuite.js\ for fetching and checking off tasks.
-* **MUST NOT DO:** Do not write Prisma queries or backend Express logic.
+* **MUST DO:** Create Security settings tab for HR to toggle IP restrictions and input IPs.
+* **MUST NOT DO:** Do not write database queries.
 
 ### ??? Vaibhav (Database Lead)
-* **MUST DO:** Add Onboarding models to \schema.prisma\.
-* **MUST NOT DO:** Do not touch UI templates or Express controllers.
+* **MUST DO:** Add allowedIps, isIpRestrictionEnabled to Organization. Add lastLoginIp, lastLoginDevice to User.
+* **MUST NOT DO:** Do not touch Express controllers.
