@@ -85,7 +85,8 @@ model Organization {
 
   // Security & IAM
   isIpRestrictionEnabled Boolean @default(false)
-  allowedIps             String? // Comma separated list of IPs
+  allowedIps             String?
+  allowedDomains         String? // Comma separated list of domains (Zero-Trust) // Comma separated list of IPs
 
   // Geofencing Defaults
   officeLatitude  Float?

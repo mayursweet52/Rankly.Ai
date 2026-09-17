@@ -19,8 +19,7 @@ async function tenantMiddleware(req, res, next) {
             // For public routes (like root login) where tenant isn't established yet
             return next();
         }
-
-        // 2. Resolve Tenant Database Space (Organization)
+// 2. Resolve Tenant Database Space (Organization)
         const organization = await prisma.organization.findUnique({
             where: { tenantCode: tenantCode }
         });
@@ -28,6 +27,16 @@ async function tenantMiddleware(req, res, next) {
         if (!organization) {
             return sendError(res, 404, 'Invalid Company Code. Tenant database space not found.', 'TENANT_NOT_FOUND');
         }
+
+        // --- ZERO-TRUST JWT LOCK ---
+        // If user is authenticated, ensure their JWT token matches this Tenant Database
+        if (req.user && req.user.tenantCode) {
+            if (req.user.tenantCode !== organization.tenantCode) {
+                console.warn([ZERO-TRUST BLOCK] Cross-Tenant Access Attempt! User  tried to access );
+                return sendError(res, 403, '?? Security Alert: Invalid Session Signature. This Database is not connected with your company.', 'ZERO_TRUST_VIOLATION');
+            }
+        }
+        // ---------------------------
 
         // 3. Bind the Tenant Context to the Request
         // In a true sharded setup, this would be a specific connection string.
