@@ -24,7 +24,7 @@ async function tenantMiddleware(req, res, next) {
             where: { tenantCode: tenantCode }
         });
 if (!organization) {
-            return sendError(res, 404, 'Invalid Company Code. Tenant database space not found.', 'TENANT_NOT_FOUND');
+            return sendError(res, 'Invalid Company Code. Tenant database space not found.', 404, { code: 'TENANT_NOT_FOUND' });
         }
 
         // --- DEFCON 1 KILL SWITCH (INDEFINITE LOCKDOWN) ---
@@ -43,7 +43,7 @@ if (!organization) {
         if (req.user && req.user.tenantCode) {
             if (req.user.tenantCode !== organization.tenantCode) {
                 console.warn(`[ZERO-TRUST BLOCK] Cross-Tenant Access Attempt! User ${req.user.email} tried to access ${organization.tenantCode}`);
-                return sendError(res, 403, '🚨 Security Alert: Invalid Session Signature. This Database is not connected with your company.', 'ZERO_TRUST_VIOLATION');
+                return sendError(res, '🚨 Security Alert: Invalid Session Signature. This Database is not connected with your company.', 403, { code: 'ZERO_TRUST_VIOLATION' });
             }
         }
         // ---------------------------
@@ -58,7 +58,7 @@ if (!organization) {
         next();
     } catch (error) {
         console.error('Tenant Resolution Error:', error);
-        return sendError(res, 500, 'Failed to resolve tenant connection.', 'TENANT_ERROR');
+        return sendError(res, 'Failed to resolve tenant connection.', 500, { code: 'TENANT_ERROR' });
     }
 }
 

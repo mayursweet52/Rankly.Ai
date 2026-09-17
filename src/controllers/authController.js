@@ -166,7 +166,7 @@ async function failAuth(res, req, message, identifier = null, statusCode = 400, 
       }
   }
 
-  return sendError(res, statusCode, message, extra);
+  return sendError(res, message, statusCode, extra);
 }
 
 function formatUserResponse(user) {
