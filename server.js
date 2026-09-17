@@ -166,6 +166,9 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 // Structured Non-Leaking Request Logger with Credential Sanitization
 app.use(requestLogger);
 
+// Enterprise Tenant Routing Middleware
+app.use(tenantMiddleware);
+
 const passport = require('./src/config/passport');
 
 // Persistent SQLite Session Store with Cloud Proxy and Secure HTTPS Cookie support
