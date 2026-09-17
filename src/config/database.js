@@ -282,25 +282,26 @@ async function connectDatabase() {
     try {
       const existingRef = await prisma.referralCode.findUnique({ where: { code: 'RNK-CORP-9842' } });
       if (!existingRef) {
-        let defaultOrg = await prisma.organization.findFirst();
-        if (!defaultOrg) {
-          defaultOrg = await prisma.organization.create({
-            data: {
-              name: 'Rankly AI Technologies Inc.',
-              adminId: 'org-admin-root'
-            }
-          });
-        }
         let defaultUser = await prisma.user.findFirst();
         if (!defaultUser) {
           defaultUser = await prisma.user.create({
             data: {
+              id: 'org-admin-root',
               firstName: 'System',
               lastName: 'Administrator',
               email: 'admin@rankly.ai',
               password: '$2a$10$abcdefghijklmnopqrstuv',
               accountType: 'employee',
               role: 'admin'
+            }
+          });
+        }
+        let defaultOrg = await prisma.organization.findFirst();
+        if (!defaultOrg) {
+          defaultOrg = await prisma.organization.create({
+            data: {
+              name: 'Rankly AI Technologies Inc.',
+              adminId: defaultUser.id
             }
           });
         }
