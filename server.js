@@ -167,6 +167,7 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(requestLogger);
 
 // Enterprise Tenant Routing Middleware
+const tenantMiddleware = require('./src/middleware/tenantMiddleware');
 app.use(tenantMiddleware);
 
 const passport = require('./src/config/passport');
@@ -250,6 +251,9 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/cache', cacheRoutes);
 app.use('/api/backup', backupRoutes);
 app.use('/api/hrms', require('./src/routes/hrmsRoutes')); // Zoho Blueprint HRMS Routes
+app.use('/api/tenant', require('./src/routes/tenantRoutes'));
+app.use('/api/onboarding', require('./src/routes/onboardingRoutes'));
+app.use('/api/organization', require('./src/routes/organizationRoutes'));
 app.use('/api/webhooks', require('./src/routes/webhookRoutes'));
 app.use('/health', healthRoutes);
 
@@ -984,8 +988,22 @@ app.use(globalErrorHandler);
 // -----------------------------------------------------------------------------
 // Graceful Server Startup & Shutdown
 // -----------------------------------------------------------------------------
+let activePort = Number(PORT);
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    activePort = activePort === 3000 ? 3001 : activePort + 1;
+    console.warn(`⚠️ [Port Conflict]: Port is already in use. Automatically falling back to http://localhost:${activePort}...`);
+    setTimeout(() => {
+      server.listen(activePort, '0.0.0.0');
+    }, 500);
+  } else {
+    console.error('⚠️ [Server Error]:', err.message);
+  }
+});
+
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n🚀 Rankly.ai Backend Server is live on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
+  console.log(`\n🚀 Rankly.ai Backend Server is live on http://localhost:${activePort} and http://127.0.0.1:${activePort}`);
   console.log(`🔒 Session Authentication: Active (SQLite Store)`);
   console.log(`💾 Database: SQLite (Prisma ORM)`);
   console.log(`🤖 AI Engine: Groq / Gemini / OpenRouter / Ollama / Heuristic Tiered Fallback`);
