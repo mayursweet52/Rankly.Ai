@@ -82,12 +82,35 @@ try {
 // Security 1: Disable fingerprinting header
 app.disable('x-powered-by');
 
-// Security 2: Enforce essential HTTP Security Headers with Helmet
-const helmet = require('helmet');
-app.use(helmet({
-  contentSecurityPolicy: false, // Allows inline styles & scripts used by the front-end SPA
-  crossOriginEmbedderPolicy: false
-}));
+  // Security 2: Enforce essential HTTP Security Headers with Helmet
+  const helmet = require('helmet');
+  app.use(helmet({
+      contentSecurityPolicy: {
+          directives: {
+              defaultSrc: ["'self'"],
+              scriptSrc: [
+                  "'self'", 
+                  "'unsafe-inline'", 
+                  "'unsafe-eval'", 
+                  "https://cdn.tailwindcss.com", 
+                  "https://accounts.google.com", 
+                  "https://challenges.cloudflare.com", 
+                  "https://cdnjs.cloudflare.com", 
+                  "https://cdn.jsdelivr.net", 
+                  "https://www.googletagmanager.com"
+              ],
+              styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+              fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+              imgSrc: ["'self'", "data:", "https://www.googletagmanager.com"],
+              connectSrc: ["'self'", "https://www.google-analytics.com", "https://stats.g.doubleclick.net"],
+              objectSrc: ["'none'"],
+              baseUri: ["'self'"],
+              frameSrc: ["'self'", "https://accounts.google.com", "https://challenges.cloudflare.com"],
+              upgradeInsecureRequests: [],
+          },
+      },
+      crossOriginEmbedderPolicy: false
+  }));
 
 // Fix 3: Enable Reverse Proxy Trust for Render/Heroku load balancers
 app.set('trust proxy', 1);
