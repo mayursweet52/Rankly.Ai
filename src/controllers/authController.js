@@ -2390,7 +2390,70 @@ async function acceptTeamInvite(req, res) {
   }
 }
 
+
+/**
+ * Multi-Workspace Architecture
+ * GET /api/auth/workspaces
+ * Returns all organizations the user is a member of.
+ */
+async function getWorkspaces(req, res) {
+  try {
+    const userId = req.user?.id || req.session?.userId;
+    if (!userId) return res.status(401).json({ success: false, error: 'Unauthorized' });
+
+    const memberships = await prisma.organizationMember.findMany({
+      where: { userId, status: 'active' },
+      include: { organization: true }
+    });
+
+    return res.status(200).json({ success: true, workspaces: memberships });
+  } catch (err) {
+    console.error('getWorkspaces Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to fetch workspaces' });
+  }
+}
+
+/**
+ * Multi-Workspace Architecture
+ * POST /api/auth/switch-workspace
+ * Switches the active context for the user.
+ */
+async function switchWorkspace(req, res) {
+  try {
+    const userId = req.user?.id || req.session?.userId;
+    const { orgId } = req.body;
+    if (!userId) return res.status(401).json({ success: false, error: 'Unauthorized' });
+
+    // Validate membership
+    const membership = await prisma.organizationMember.findUnique({
+      where: { userId_organizationId: { userId, organizationId: orgId } }
+    });
+
+    if (!membership || membership.status !== 'active') {
+      return res.status(403).json({ success: false, error: 'Access denied to this workspace' });
+    }
+
+    // Update active context pointer
+    await prisma.user.update({
+      where: { id: userId },
+      data: { organizationId: orgId, role: membership.role }
+    });
+
+    if (req.session) {
+      req.session.organizationId = orgId;
+      req.session.role = membership.role;
+    }
+
+    return res.status(200).json({ success: true, message: 'Switched workspace context' });
+  } catch (err) {
+    console.error('switchWorkspace Error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to switch workspace' });
+  }
+}
+
 module.exports = {
+  getWorkspaces,
+  switchWorkspace,
   acceptTeamInvite,
 
   findExistingUserByEmail,

@@ -327,4 +327,7 @@ router.post('/enterprise/join-org', isAuthenticated, authController.joinOrganiza
 
 router.post('/accept-invite', authController.acceptTeamInvite);
 
+router.get('/workspaces', isAuthenticated, authController.getWorkspaces);
+router.post('/switch-workspace', isAuthenticated, authController.switchWorkspace);
+
 module.exports = router;
