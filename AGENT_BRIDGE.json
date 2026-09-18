@@ -1,19 +1,12 @@
 {
-  "current_phase": "Employee Authentication & Invitation Linkage",
-  "architectural_plan": "Update employeeService.js to automatically create User authentication records for newly added employees and dispatch welcome emails.",
-  "status": "Awaiting User Approval",
-  "team_briefing": {
-    "Mayur": {
-      "must_do": "Create User profile, link User to Employee, and sendInvitationEmail.",
-      "must_not_do": "Do not touch frontend HTML."
-    },
-    "Sumit": {
-      "must_do": "Nothing for this phase, backend handles it silently.",
-      "must_not_do": "Do not touch backend controllers."
-    },
-    "Vaibhav": {
-      "must_do": "Schema is already prepared.",
-      "must_not_do": "Do not write Express logic."
-    }
+  "current_architecture": "Zoho-Style Multi-Tenant (Many-to-Many)",
+  "active_features": {
+    "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active.",
+    "frontend": "accept-invite.html active. Needs Workspace Switcher UI."
+  },
+  "roles": {
+    "Sumit": "MUST DO: Build the 'Workspace Switcher' dropdown UI in index.html (Dashboard). MUST NOT: Touch backend APIs.",
+    "Mayur": "MUST DO: Build the GET /api/auth/workspaces and POST /api/auth/switch-workspace endpoints to feed Sumit's UI. MUST NOT: Edit HTML templates.",
+    "Vaibhav": "MUST DO: Ensure prisma db push ran successfully on production and Employee.userId unique constraints are resolved."
   }
 }
