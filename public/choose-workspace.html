@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Workspace - Rankly.ai</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+    .workspace-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .workspace-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+      border-color: #10B981;
+    }
+    .avatar-gradient {
+      background: linear-gradient(135deg, #10B981, #059669);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+
+  <div class="w-full max-w-4xl">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-black text-white mb-6 shadow-xl">
+        <i class="fa-solid fa-layer-group text-2xl"></i>
+      </div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight mb-3">Choose your workspace</h1>
+      <p class="text-gray-500 text-lg">You belong to multiple organizations. Where do you want to work today?</p>
+    </div>
+
+    <div id="workspacesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('workspacesContainer');
+      
+      try {
+        const res = await fetch('/api/auth/workspaces');
+        const data = await res.json();
+        
+        if (data.success && data.workspaces.length > 0) {
+          container.innerHTML = '';
+          
+          data.workspaces.forEach(ws => {
+            const orgName = ws.organization.name;
+            const role = ws.role.toUpperCase();
+            const initial = orgName.charAt(0).toUpperCase();
+
+            const card = document.createElement('div');
+            card.className = 'workspace-card bg-white border border-gray-200 rounded-2xl p-6 cursor-pointer flex flex-col items-center text-center';
+            card.onclick = () => selectWorkspace(ws.organizationId);
+
+            card.innerHTML = `
+              <div class="w-16 h-16 rounded-full avatar-gradient text-white flex items-center justify-center text-2xl font-bold shadow-lg mb-4">
+                ${initial}
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-1">${orgName}</h3>
+              <p class="text-xs font-semibold px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full">${role}</p>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = `<p class="text-red-500 col-span-3 text-center">No active workspaces found. Please contact support.</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<p class="text-red-500 col-span-3 text-center">Failed to load workspaces.</p>`;
+      }
+    });
+
+    async function selectWorkspace(orgId) {
+      try {
+        const res = await fetch('/api/auth/switch-workspace', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orgId })
+        });
+        const data = await res.json();
+        if (data.success) {
+          window.location.href = '/index.html'; // Redirect to dashboard after selection
+        } else {
+          alert('Failed to enter workspace: ' + data.error);
+        }
+      } catch (e) {
+        alert('Server error occurred.');
+      }
+    }
+  </script>
+</body>
+</html>
