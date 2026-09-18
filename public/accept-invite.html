@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accept Invitation - Rankly.ai</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; }
+    .glass-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="glass-card w-full max-w-md p-8">
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold text-gray-900 mb-2">Complete Your Setup</h1>
+      <p class="text-sm text-gray-500">You've been invited to join the HR Portal.</p>
+    </div>
+
+    <form id="acceptForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+        <input type="text" id="firstName" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+        <input type="text" id="lastName" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Create Password</label>
+        <input type="password" id="password" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition">
+        Create Account & Join
+      </button>
+      <p id="errorMsg" class="text-red-500 text-sm mt-3 text-center hidden"></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('acceptForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      btn.innerText = 'Provisioning...';
+      btn.disabled = true;
+      errorMsg.classList.add('hidden');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+
+      if (!token) {
+        errorMsg.innerText = 'Invalid invitation link.';
+        errorMsg.classList.remove('hidden');
+        btn.innerText = 'Create Account & Join';
+        btn.disabled = false;
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/accept-invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token: token,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            password: document.getElementById('password').value
+          })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          window.location.href = data.redirectUrl || '/employee-myspace.html';
+        } else {
+          throw new Error(data.error || 'Failed to accept invitation');
+        }
+      } catch (err) {
+        errorMsg.innerText = err.message;
+        errorMsg.classList.remove('hidden');
+        btn.innerText = 'Create Account & Join';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

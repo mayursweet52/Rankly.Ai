@@ -2315,7 +2315,83 @@ async function updateOrganizationSecurity(req, res) {
   }
 }
 
+
+/**
+ * Auto-Link Provisioning (Zoho-Style)
+ * POST /api/auth/accept-invite
+ */
+async function acceptTeamInvite(req, res) {
+  try {
+    const { token, password, firstName, lastName } = req.body;
+    
+    if (!token || !password || !firstName) {
+      return res.status(400).json({ success: false, error: 'Token, password, and first name are required.' });
+    }
+
+    const invite = await prisma.teamInvitation.findUnique({
+      where: { token }
+    });
+
+    if (!invite || invite.status !== 'pending' || invite.expiresAt < new Date()) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired invitation.' });
+    }
+
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the Identity (User)
+    const newUser = await prisma.user.create({
+      data: {
+        email: invite.email,
+        firstName,
+        lastName,
+        password: hashedPassword,
+        accountType: 'employee',
+        role: invite.role,
+        isEmailVerified: true // Pre-verified via email invite
+      }
+    });
+
+    // 1. Join Organization (Zoho Many-to-Many)
+    await prisma.organizationMember.create({
+      data: {
+        userId: newUser.id,
+        organizationId: invite.organizationId,
+        role: invite.role
+      }
+    });
+
+    // 2. Strict Identity Linkage (Link User.id to Employee.id)
+    if (invite.employeeId) {
+      await prisma.employee.update({
+        where: { id: invite.employeeId },
+        data: { userId: newUser.id }
+      });
+    }
+
+    // Mark invite as accepted
+    await prisma.teamInvitation.update({
+      where: { id: invite.id },
+      data: { status: 'accepted' }
+    });
+
+    // Login the user automatically
+    req.session.userId = newUser.id;
+    
+    return res.status(200).json({
+      success: true,
+      message: 'Identity provisioned and linked successfully.',
+      redirectUrl: '/employee-myspace.html'
+    });
+
+  } catch (error) {
+    console.error('Accept Invite Error:', error);
+    return res.status(500).json({ success: false, error: 'Failed to process invitation.' });
+  }
+}
+
 module.exports = {
+  acceptTeamInvite,
 
   findExistingUserByEmail,
   register,

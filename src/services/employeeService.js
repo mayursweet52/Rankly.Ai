@@ -246,7 +246,37 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
     });
   }
 
+
+  // 9. Auto-Link Identity Provisioning (Zoho-Style)
+  try {
+    const crypto = require('crypto');
+    const token = crypto.randomBytes(32).toString('hex');
+    
+    // Create the Team Invitation linked to this Employee ID
+    const invite = await prisma.teamInvitation.create({
+      data: {
+        organizationId: orgId,
+        email: employee.workEmail,
+        role: 'employee',
+        token: token,
+        employeeId: employee.id, // The critical link!
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+      }
+    });
+
+    const emailService = require('./emailService');
+    const org = await prisma.organization.findUnique({ where: { id: orgId } });
+    const inviteUrl = `${process.env.APP_URL || 'http://localhost:3000'}/accept-invite?token=${token}`;
+    
+    // Automatically trigger the email to the new employee
+    await emailService.sendInvitationEmail(employee.workEmail, org?.name || 'Rankly Enterprise', 'Employee', inviteUrl);
+    console.log(`Auto-Link Invitation Sent to ${employee.workEmail}`);
+  } catch (inviteErr) {
+    console.error('Failed to provision auto-link invitation:', inviteErr);
+  }
+
   return getEmployeeByCode(employee.employeeCode);
+
 }
 
 /**

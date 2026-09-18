@@ -260,7 +260,8 @@ model TeamInvitation {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   email          String
-  role           String       @default("hr") // "hr" | "hiring_manager"
+  role           String       @default("employee") // "admin", "hr", "employee"
+  employeeId     String?      // Links invite to HR Data
   token          String       @unique
   status         String       @default("pending") // "pending" | "accepted" | "rejected" | "expired"
   expiresAt      DateTime

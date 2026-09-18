@@ -325,4 +325,6 @@ router.post('/enterprise/create-org', isAuthenticated, authController.createOrga
 router.post('/join-org', isAuthenticated, authController.joinOrganization);
 router.post('/enterprise/join-org', isAuthenticated, authController.joinOrganization);
 
+router.post('/accept-invite', authController.acceptTeamInvite);
+
 module.exports = router;
