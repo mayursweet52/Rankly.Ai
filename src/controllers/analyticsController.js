@@ -15,7 +15,7 @@ async function getOverview(req, res) {
 
     const where = {};
     if (orgId) {
-      where.OR = [{ organizationId: orgId }, { userId }];
+      where.organizationId = orgId;
     } else if (userId) {
       where.userId = userId;
     }
@@ -166,7 +166,7 @@ async function getScoreDistribution(req, res) {
       const orgId = req.user?.organizationId;
       const userId = req.user?.id;
       const where = {};
-      if (orgId) where.OR = [{ organizationId: orgId }, { userId }];
+      if (orgId) where.organizationId = orgId;
       else if (userId) where.userId = userId;
       candidates = await prisma.candidate.findMany({ where });
     }
@@ -227,7 +227,7 @@ async function generateAiPerformanceReport(req, res) {
 
     const where = {};
     if (orgId) {
-      where.OR = [{ organizationId: orgId }, { userId }];
+      where.organizationId = orgId;
     } else if (userId) {
       where.userId = userId;
     }

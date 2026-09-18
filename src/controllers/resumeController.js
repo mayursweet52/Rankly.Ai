@@ -321,7 +321,7 @@ async function getEvaluations(req, res) {
 
     const where = {};
     if (orgId) {
-      where.OR = [{ organizationId: orgId }, { userId }];
+      where.organizationId = orgId;
     } else if (userId) {
       where.userId = userId;
     }
