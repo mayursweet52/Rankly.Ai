@@ -458,14 +458,21 @@
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark-theme');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark-theme');
     }
     updateThemeToggleIcons();
   };
 
   window.toggleDarkMode = function() {
     const isDark = document.documentElement.classList.toggle('dark');
+    if (isDark) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
     try {
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     } catch (e) {}
