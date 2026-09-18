@@ -495,6 +495,14 @@ async function register(req, res) {
         }
       });
 
+      await prisma.organizationMember.create({
+        data: {
+          userId: newUser.id,
+          organizationId: newOrg.id,
+          role: 'admin'
+        }
+      });
+
       await prisma.user.update({
         where: { id: newUser.id },
         data: { organizationId: newOrg.id, role: 'admin' }
@@ -1535,6 +1543,15 @@ async function createOrganization(req, res) {
       }
     });
 
+    // Create the Many-to-Many Zoho-Style Membership
+    await prisma.organizationMember.create({
+      data: {
+        userId: userId,
+        organizationId: organization.id,
+        role: 'admin'
+      }
+    });
+
     await prisma.user.update({
       where: { id: userId },
       data: { organizationId: organization.id, role: 'admin', accountType: 'employee' }
@@ -1575,6 +1592,23 @@ async function joinOrganization(req, res) {
     if (!referral || referral.isUsed || referral.expiresAt < new Date()) {
       return res.status(400).json({ success: false, error: 'Invalid or expired referral code.', message: 'Invalid or expired referral code.' });
     }
+
+    await prisma.organizationMember.upsert({
+      where: {
+        userId_organizationId: {
+          userId: userId,
+          organizationId: referral.organizationId
+        }
+      },
+      update: {
+        role: referral.assignedRole
+      },
+      create: {
+        userId: userId,
+        organizationId: referral.organizationId,
+        role: referral.assignedRole
+      }
+    });
 
     await prisma.user.update({
       where: { id: userId },
