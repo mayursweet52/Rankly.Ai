@@ -328,6 +328,15 @@ model Employee {
   emergencyContactPhone    String?
   emergencyContactRelation String?
 
+    // Zoho Org Chart & Assets
+    managerId      String?
+    manager        Employee?  @relation("ManagerToEmployee", fields: [managerId], references: [id], onDelete: SetNull)
+    subordinates   Employee[] @relation("ManagerToEmployee")
+    
+    documents      String?    // JSON representation of uploaded docs (Aadhaar, PAN, etc)
+    workLocation   String?    // E.g. "HQ - Mumbai", "Remote"
+
+
   // Role, Department & Employment Details
   departmentId     String
   department       Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
@@ -470,6 +479,12 @@ model RolePermission {
   role         AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  // Zoho-Style 4-Level Permission Matrix
+  dataAccessLevel String  @default("my_data") // "none", "my_data", "subordinates", "all_data"
+  fieldOverrides  String? // JSON map of field-level visibility (e.g. {"salary":"hidden"})
+  formAccess      Boolean @default(true)      // Can they view/edit the UI forms?
+
 
   createdAt DateTime @default(now())
 

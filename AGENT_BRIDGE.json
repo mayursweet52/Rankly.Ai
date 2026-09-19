@@ -1,12 +1,13 @@
 {
-  "current_architecture": "Zoho-Style Multi-Tenant (Many-to-Many)",
+  "current_architecture": "Zoho-Style Enterprise HRMS (Phase 1)",
   "active_features": {
     "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active.",
-    "frontend": "accept-invite.html active. Needs Workspace Switcher UI."
+    "frontend": "Multi-workspace selection portal active.",
+    "rbac": "Zoho-style 4-level Permission Matrix (Data, Form, Field, Function) active."
   },
   "roles": {
-    "Sumit": "MUST DO: Build the 'Workspace Switcher' dropdown UI in index.html (Dashboard). MUST NOT: Touch backend APIs.",
-    "Mayur": "MUST DO: Build the GET /api/auth/workspaces and POST /api/auth/switch-workspace endpoints to feed Sumit's UI. MUST NOT: Edit HTML templates.",
-    "Vaibhav": "MUST DO: Ensure prisma db push ran successfully on production and Employee.userId unique constraints are resolved."
+    "Sumit": "MUST DO: Build the 'Employee 360' profile UI in employee-myspace.html with Org Chart UI. Build a 'Role & Permissions' UI page to toggle RBAC settings.",
+    "Mayur": "MUST DO: Implemented requirePermission middleware. Next: Build CRUD APIs for Employee Documents upload and Manager assignment.",
+    "Vaibhav": "MUST DO: Successfully added ManagerToEmployee self-relation and dataAccessLevel matrix. Next: Seed default Zoho HR roles in DB."
   }
 }

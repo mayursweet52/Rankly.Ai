@@ -1,16 +1,16 @@
 # Antigravity Tripartite Bridge Sync
 
 ## The Architectural Plan
-We have successfully migrated the application from a Standard SaaS architecture to a **Zoho-Style Enterprise Multi-Tenant Architecture**. 
-We also shipped **Auto-Link Employee Provisioning**: When HR creates an employee, they now get a magic link via email that perfectly connects their new Login to their HR data.
-
-## Sumit (Frontend Lead)
-- **MUST DO:** You need to design and implement a "Company/Workspace Switcher" dropdown in the main dashboard (`index.html`). It should look modern (Glassmorphism) and sit either next to the user profile or in the sidebar.
-- **MUST NOT:** Do not touch `authController.js` or database schemas.
-
-## Mayur (Backend Lead)
-- **MUST DO:** Create the APIs that power the Switcher. Build `GET /api/auth/workspaces` (returns all `OrganizationMember` entries for the user) and `POST /api/auth/switch-workspace` (updates the user's active session to a different company).
-- **MUST NOT:** Do not write CSS or touch the DOM in `index.html`.
+We are transforming Rankly.ai into a full-scale Zoho-style HRMS. We have officially begun **Week 1: Foundation (RBAC & Employee Database)**.
 
 ## Vaibhav (Database Lead)
-- **MUST DO:** Monitor the database performance for the new `OrganizationMember` queries and ensure the removal of `@unique` on `Employee.userId` doesn't cause orphaned records.
+- **DONE:** Upgraded `RolePermission` schema to support 4-level granular constraints (Data, Form, Field, Function). Extended `Employee` schema for Org Chart (`ManagerToEmployee` self-relation), Documents, and Work Location.
+- **MUST DO NEXT:** Create a DB seeder script to populate default Zoho roles (`HR_Manager`, `Recruiter`, `Team_Member`) with initial permissions.
+
+## Mayur (Backend Lead)
+- **DONE:** Implemented `requirePermission` middleware in `src/middleware/rbac.js`. This gatekeeper intercepts requests, queries the user's role, and dynamically injects `req.rbac` (Data/Field overrides) into the controller.
+- **MUST DO NEXT:** Build CRUD APIs for Employee Documents (S3-compatible) and Manager Hierarchy assignments. Update the Employee endpoints to filter data based on `req.rbac.dataAccessLevel`.
+
+## Sumit (Frontend Lead)
+- **MUST DO:** Build the "Employee 360" profile UI in `employee-myspace.html`. It needs to show a visually appealing Org Chart (Manager hierarchy) and a Document Upload zone. Also, design a "Role & Permissions" Settings page where Admins can click checkboxes to toggle RBAC settings.
+- **MUST NOT:** Do not touch DB schemas or API routing logic.
