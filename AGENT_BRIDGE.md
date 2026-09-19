@@ -1,17 +1,23 @@
-# Antigravity Tripartite Bridge Sync
+# Antigravity Agent Bridge Briefing
 
-## The Architectural Plan
-We are transforming Rankly.ai into a full-scale Enterprise HRMS. We have officially completed **Step 1: RBAC (Roles & Permissions) Dynamic Architecture**.
+## Architectural State
+We are in **Phase 2 (Dynamic Employee Database)** of the Enterprise HRMS Upgrade. 
+We have successfully replaced the static Employee setup with a fully dynamic Custom Fields engine (`CustomField`, `EmployeeCustomFieldValue`).
+We have built:
+1. `public/admin-fields.html` - Admin Field Builder
+2. `public/employees.html` - Directory View
+3. `public/employee-form.html` - Add/Edit Form supporting dynamic sections.
 
-## Vaibhav (Database Lead)
-- **DONE:** Replaced old `AccessRole` schema with the exact `Role`, `Permission`, `FieldPermission`, `FunctionPermission`, `UserRole`, and `Module` schema requested by the user. Handled data migration using force reset (data wiped safely for RBAC tables only). Seeded default Modules.
-- **MUST DO NEXT:** Focus on Employee Database (Phase 1, Task 2).
+## Tripartite Briefing
 
-## Mayur (Backend Lead)
-- **DONE:** Created `roleController.js` and `roleRoutes.js` (translated from user's TS to JS). Mounted them to `/api/roles`. Built `setupSuperAdmin.js` and hooked it into the `register` flow so the first user becomes the system owner. Refactored `rbac.js` to match the exact schema (`requirePermission(formName, action)`).
-- **MUST DO NEXT:** Build CRUD APIs for the Employee Database.
+### For Sumit (Frontend Lead)
+- **MUST DO**: Review the newly created UI screens (`/employees.html`, `/employee-form.html`, `/admin-fields.html`). Integrate links to them in the massive main dashboard (`index.html`) sidebar. Add any missing animations and ensure WCAG AAA accessibility.
+- **MUST NOT DO**: Do not modify the API routes or Prisma schema. 
 
-## Sumit (Frontend Lead)
-- **DONE:** Translated the user's React `Roles.tsx` into a blazing fast Vanilla JS implementation in `public/roles.html` that integrates with Tailwind CSS and matches Rankly's design language.
-- **MUST DO NEXT:** Build the "Employee 360" profile UI in `employee-myspace.html`.
-- **MUST NOT:** Do not touch DB schemas or API routing logic.
+### For Mayur (Backend Architect)
+- **MUST DO**: Prepare the API layer for Phase 3 (Time & Attendance). Ensure the newly created Employee APIs and `dataScope.js` correctly enforce the dynamic Data Scopes (MY_DATA, SUBORDINATES, etc.).
+- **MUST NOT DO**: Do not modify the DOM UI layouts directly.
+
+### For Vaibhav (Database Lead)
+- **MUST DO**: Monitor the SQLite database structure. Phase 2 dropped old rigid HR tables to implement dynamic CustomFields. Ensure future tables for Phase 3 (Attendance) link correctly to the new `Employee` (UUID) model and are scoped by `organizationId`.
+- **MUST NOT DO**: Do not modify the frontend UI or backend Express business logic.

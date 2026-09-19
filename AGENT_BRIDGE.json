@@ -1,13 +1,13 @@
 {
-  "current_architecture": "Enterprise HRMS (Phase 1 - RBAC Dynamic)",
+  "current_architecture": "Enterprise HRMS (Phase 2 - Dynamic Employee Database)",
   "active_features": {
-    "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active. First user gets Super Admin automatically.",
-    "frontend": "Multi-workspace selection portal active. Roles Builder UI (public/roles.html) active.",
-    "rbac": "Admin-defined dynamic roles. No default permissions. 4-level Permission Matrix (Data, Form, Field, Function) active."
+    "auth": "OrganizationMember junction table active. First user gets Super Admin automatically.",
+    "frontend": "Multi-workspace selection portal active. Roles Builder UI (public/roles.html) active. Employee Dynamic Fields UI (/admin-fields.html) active. Employee Directory (/employees.html) active. Employee Profile Form (/employee-form.html) active.",
+    "rbac": "Admin-defined dynamic roles. Data scopes supported (NO_DATA, MY_DATA, SUBORDINATES, ALL_DATA)."
   },
   "roles": {
-    "Sumit": "MUST DO: Build the 'Employee 360' profile UI in employee-myspace.html. Connect it to the backend.",
-    "Mayur": "MUST DO: Build CRUD APIs for Employee Database. Verify roles API works.",
-    "Vaibhav": "MUST DO: Ensure Employee table migrations work properly without data loss on next push."
+    "Sumit": "MUST DO: Review `/employees.html`, `/employee-form.html` and `/admin-fields.html`. Ensure they are linked correctly to the main dashboard (`index.html`). Add missing animations, polish the UI, and verify Tailwind v3 compilation.",
+    "Mayur": "MUST DO: Prepare for Phase 3 (Time & Attendance). Check if `/api/employees` and `/api/admin/custom-fields` are working securely via RBAC middleware.",
+    "Vaibhav": "MUST DO: Phase 2 SQLite DB is pushed. Next, prepare Prisma schema for Phase 3 (Attendance & Shifts) and manage Postgres migration mapping."
   }
 }
