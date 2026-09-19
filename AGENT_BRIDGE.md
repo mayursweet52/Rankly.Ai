@@ -1,7 +1,7 @@
 # Antigravity Tripartite Bridge Sync
 
 ## The Architectural Plan
-We are transforming Rankly.ai into a full-scale Zoho-style HRMS. We have officially completed **Step 1: RBAC (Roles & Permissions) Dynamic Architecture**.
+We are transforming Rankly.ai into a full-scale Enterprise HRMS. We have officially completed **Step 1: RBAC (Roles & Permissions) Dynamic Architecture**.
 
 ## Vaibhav (Database Lead)
 - **DONE:** Replaced old `AccessRole` schema with the exact `Role`, `Permission`, `FieldPermission`, `FunctionPermission`, `UserRole`, and `Module` schema requested by the user. Handled data migration using force reset (data wiped safely for RBAC tables only). Seeded default Modules.

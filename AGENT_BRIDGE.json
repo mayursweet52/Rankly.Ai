@@ -1,5 +1,5 @@
 {
-  "current_architecture": "Zoho-Style Enterprise HRMS (Phase 1 - RBAC Dynamic)",
+  "current_architecture": "Enterprise HRMS (Phase 1 - RBAC Dynamic)",
   "active_features": {
     "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active. First user gets Super Admin automatically.",
     "frontend": "Multi-workspace selection portal active. Roles Builder UI (public/roles.html) active.",

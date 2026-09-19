@@ -1,6 +1,6 @@
 /**
  * mySpaceSuite.js
- * Frontend engine for Rankly HRMS (Zoho Blueprint)
+ * Frontend engine for Rankly HRMS (ENTERPRISE BLUEPRINT)
  * Implements lazy loading and optimized DOM updates for high traffic scale.
  */
 

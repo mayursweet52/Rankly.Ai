@@ -330,7 +330,7 @@ model Employee {
   emergencyContactPhone    String?
   emergencyContactRelation String?
 
-    // Zoho Org Chart & Assets
+    // Enterprise Org Chart & Assets
     managerId      String?
     manager        Employee?  @relation("ManagerToEmployee", fields: [managerId], references: [id], onDelete: SetNull)
     subordinates   Employee[] @relation("ManagerToEmployee")
@@ -774,7 +774,7 @@ model CompanyJob {
 }
 
 // =========================================================
-// HIGH-TRAFFIC HRMS MODULES (ZOHO BLUEPRINT)
+// HIGH-TRAFFIC HRMS MODULES (ENTERPRISE BLUEPRINT)
 // =========================================================
 
 // ---------------------------------------------------------

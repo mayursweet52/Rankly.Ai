@@ -4004,7 +4004,7 @@ Return a VALID JSON object (and strictly NO extra text or markdown wrap) with th
                     'icloud.com', 'me.com', 'mac.com',
                     'aol.com', 'aim.com',
                     'proton.me', 'protonmail.com', 'pm.me',
-                    'zoho.com', 'mail.com', 'email.com', 'usa.com', 'consultant.com',
+                    'mail.com', 'email.com', 'usa.com', 'consultant.com',
                     'gmx.com', 'gmx.net', 'gmx.de',
                     'yandex.com', 'yandex.ru', 'rediffmail.com',
                     'tutanota.com', 'tuta.com', 'tuta.io',

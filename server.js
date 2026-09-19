@@ -252,7 +252,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/cache', cacheRoutes);
 app.use('/api/backup', backupRoutes);
-app.use('/api/hrms', require('./src/routes/hrmsRoutes')); // Zoho Blueprint HRMS Routes
+app.use('/api/hrms', require('./src/routes/hrmsRoutes')); // ENTERPRISE BLUEPRINT HRMS Routes
 app.use('/api/tenant', require('./src/routes/tenantRoutes'));
 app.use('/api/onboarding', require('./src/routes/onboardingRoutes'));
 app.use('/api/organization', require('./src/routes/organizationRoutes'));

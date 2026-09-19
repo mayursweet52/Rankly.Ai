@@ -1,6 +1,6 @@
-# HRMS Features Blueprint (Zoho People Inspired)
+# HRMS Features Blueprint (Enterprise Inspired)
 
-**Source Reference:** [Zoho People - Rankly.ai MySpace](https://people.zoho.in/ranklyai/zp#home/myspace/overview-actionlist)
+**Source Reference:** [Rankly.ai MySpace Reference](#)
 
 ## 1. Page Structure Map
 ```text

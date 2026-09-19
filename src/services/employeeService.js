@@ -247,7 +247,7 @@ async function saveEmployeeFromJson(payload, explicitOrgId = null) {
   }
 
 
-  // 9. Auto-Link Identity Provisioning (Zoho-Style)
+  // 9. Auto-Link Identity Provisioning (ENTERPRISE-STYLE)
   try {
     const crypto = require('crypto');
     const token = crypto.randomBytes(32).toString('hex');

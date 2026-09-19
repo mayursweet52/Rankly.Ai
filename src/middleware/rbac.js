@@ -17,7 +17,7 @@ function authorizeRoles(...allowedRoles) {
 }
 
 /**
- * Zoho-Style Granular RBAC Gate
+ * ENTERPRISE-STYLE Granular RBAC Gate
  * @param {string} formName - e.g. "employee", "role"
  * @param {string} action - "view", "add", "edit", "delete"
  */

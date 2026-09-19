@@ -208,7 +208,6 @@ const PERSONAL_EMAIL_DOMAINS = new Set([
   'icloud.com', 'me.com', 'mac.com',
   'aol.com', 'aim.com',
   'proton.me', 'protonmail.com', 'pm.me',
-  'zoho.com',
   'mail.com', 'email.com', 'usa.com', 'consultant.com',
   'gmx.com', 'gmx.net', 'gmx.de',
   'yandex.com', 'yandex.ru',
@@ -1543,7 +1542,7 @@ async function createOrganization(req, res) {
       }
     });
 
-    // Create the Many-to-Many Zoho-Style Membership
+    // Create the Many-to-Many ENTERPRISE-STYLE Membership
     await prisma.organizationMember.create({
       data: {
         userId: userId,
@@ -2317,7 +2316,7 @@ async function updateOrganizationSecurity(req, res) {
 
 
 /**
- * Auto-Link Provisioning (Zoho-Style)
+ * Auto-Link Provisioning (ENTERPRISE-STYLE)
  * POST /api/auth/accept-invite
  */
 async function acceptTeamInvite(req, res) {
@@ -2352,7 +2351,7 @@ async function acceptTeamInvite(req, res) {
       }
     });
 
-    // 1. Join Organization (Zoho Many-to-Many)
+    // 1. Join Organization (Enterprise Many-to-Many)
     await prisma.organizationMember.create({
       data: {
         userId: newUser.id,
