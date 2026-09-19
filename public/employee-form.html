@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex flex-col">
+    <header class="bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm">
+        <div class="flex items-center space-x-4">
+            <a href="/employees.html" class="text-gray-500 hover:text-gray-700 font-medium">&larr; Back to Employees</a>
+            <h1 id="page-title" class="text-xl font-bold text-gray-800">New Employee</h1>
+        </div>
+        <button id="save-btn" class="bg-indigo-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 hidden">
+            Save Profile
+        </button>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-6 max-w-4xl mx-auto w-full">
+        <div id="error-msg" class="bg-red-50 text-red-700 p-4 rounded-md mb-6 hidden"></div>
+        <div id="success-msg" class="bg-green-50 text-green-700 p-4 rounded-md mb-6 hidden"></div>
+
+        <form id="emp-form" class="space-y-8">
+            <!-- Core Fixed Fields -->
+            <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Basic Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input type="text" id="firstName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input type="text" id="lastName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Work Email *</label>
+                        <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <input type="text" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dynamic Custom Fields Container -->
+            <div id="dynamic-sections" class="space-y-8">
+                <p class="text-center text-gray-500">Loading form structure...</p>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const empId = urlParams.get('id');
+            const pageTitle = document.getElementById('page-title');
+            const saveBtn = document.getElementById('save-btn');
+            const form = document.getElementById('emp-form');
+            const dynamicContainer = document.getElementById('dynamic-sections');
+
+            let customFieldsDef = [];
+            let existingData = null;
+            let canEdit = true;
+
+            if (empId) {
+                pageTitle.textContent = 'Edit Profile';
+            }
+
+            try {
+                // 1. Fetch Custom Fields definition
+                const fieldsRes = await fetch('/api/admin/custom-fields', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (fieldsRes.ok) {
+                    customFieldsDef = await fieldsRes.json();
+                }
+
+                // 2. If edit mode, fetch employee data
+                if (empId) {
+                    const empRes = await fetch(`/api/employees/${empId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (empRes.ok) {
+                        existingData = await empRes.json();
+                        populateBasicFields(existingData);
+                    } else {
+                        if (empRes.status === 403) {
+                            showError("You don't have permission to view this profile");
+                            form.innerHTML = '';
+                            return;
+                        }
+                    }
+                }
+
+                // 3. Render dynamic fields
+                renderDynamicFields();
+
+                // Wait a bit to ensure DOM is ready, then show save button if allowed
+                // (In a real app, check permissions for 'edit')
+                saveBtn.classList.remove('hidden');
+
+            } catch (err) {
+                console.error(err);
+                showError("Failed to load form data");
+            }
+
+            function populateBasicFields(data) {
+                document.getElementById('firstName').value = data.firstName || '';
+                document.getElementById('lastName').value = data.lastName || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+            }
+
+            function renderDynamicFields() {
+                // Group fields by section
+                const sectionsMap = {};
+                customFieldsDef.forEach(f => {
+                    const sec = f.section || 'General';
+                    if (!sectionsMap[sec]) sectionsMap[sec] = [];
+                    sectionsMap[sec].push(f);
+                });
+
+                let html = '';
+                
+                // Parse existing custom field values if editing
+                let empValues = {};
+                if (existingData && existingData.customFieldValues) {
+                    existingData.customFieldValues.forEach(cv => {
+                        empValues[cv.customField.key] = cv.value;
+                    });
+                } else if (existingData && existingData.customFields) {
+                    try { empValues = JSON.parse(existingData.customFields); } catch(e){}
+                }
+
+                for (const [section, fields] of Object.entries(sectionsMap)) {
+                    html += `
+                        <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">${section}</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    `;
+
+                    fields.forEach(f => {
+                        const val = empValues[f.key] || f.defaultValue || '';
+                        const req = f.isRequired ? 'required' : '';
+                        const star = f.isRequired ? '*' : '';
+                        
+                        html += `<div><label class="block text-sm font-medium text-gray-700 mb-1">${f.label} ${star}</label>`;
+                        
+                        if (f.fieldType === 'text' || f.fieldType === 'email' || f.fieldType === 'phone') {
+                            html += `<input type="${f.fieldType}" data-key="${f.key}" value="${val}" placeholder="${f.placeholder||''}" ${req} class="cf-input w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">`;
+                        } else if (f.fieldType === 'number') {
+                            html += `<input type="number" data-key="${f.key}" value="${val}" ${req} class="cf-input w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">`;
+                        } else if (f.fieldType === 'date') {
+                            const dVal = val ? val.split('T')[0] : '';
+                            html += `<input type="date" data-key="${f.key}" value="${dVal}" ${req} class="cf-input w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">`;
+                        } else if (f.fieldType === 'dropdown') {
+                            let opts = [];
+                            try { opts = JSON.parse(f.options); } catch(e){}
+                            html += `<select data-key="${f.key}" ${req} class="cf-input w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Select...</option>
+                                ${Array.isArray(opts) ? opts.map(o => `<option value="${o}" ${o===val?'selected':''}>${o}</option>`).join('') : ''}
+                            </select>`;
+                        } else if (f.fieldType === 'checkbox') {
+                            const chk = val === 'true' || val === true ? 'checked' : '';
+                            html += `<input type="checkbox" data-key="${f.key}" ${chk} class="cf-input h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">`;
+                        }
+
+                        if (f.helpText) {
+                            html += `<p class="mt-1 text-xs text-gray-500">${f.helpText}</p>`;
+                        }
+                        html += `</div>`;
+                    });
+
+                    html += `</div></section>`;
+                }
+
+                dynamicContainer.innerHTML = html || '<p class="text-gray-500">No custom fields defined by admin.</p>';
+            }
+
+            saveBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (!form.reportValidity()) return;
+
+                const payload = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    customFields: {}
+                };
+
+                document.querySelectorAll('.cf-input').forEach(el => {
+                    const key = el.getAttribute('data-key');
+                    if (el.type === 'checkbox') {
+                        payload.customFields[key] = el.checked;
+                    } else {
+                        payload.customFields[key] = el.value;
+                    }
+                });
+
+                try {
+                    const url = empId ? `/api/employees/${empId}` : '/api/employees';
+                    const method = empId ? 'PUT' : 'POST';
+                    const res = await fetch(url, {
+                        method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (res.ok) {
+                        showSuccess("Employee saved successfully");
+                        if (!empId) {
+                            setTimeout(() => window.location.href = '/employees.html', 1500);
+                        }
+                    } else {
+                        const err = await res.json();
+                        showError(err.error || 'Error saving employee');
+                    }
+                } catch(err) {
+                    showError(err.message);
+                }
+            });
+
+            function showError(msg) {
+                const el = document.getElementById('error-msg');
+                el.textContent = msg;
+                el.classList.remove('hidden');
+                setTimeout(() => el.classList.add('hidden'), 5000);
+            }
+            function showSuccess(msg) {
+                const el = document.getElementById('success-msg');
+                el.textContent = msg;
+                el.classList.remove('hidden');
+                setTimeout(() => el.classList.add('hidden'), 5000);
+            }
+        });
+    </script>
+</body>
+</html>

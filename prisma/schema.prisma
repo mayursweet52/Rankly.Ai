@@ -51,6 +51,8 @@ model User {
   administeredOrgs Organization[]         @relation("AdminOrgs")
   employeeProfiles Employee[]
   companyDocuments CompanyDocument[]
+
+
   grievances       Grievance[]
   applications     CandidateApplication[]
   notifications    Notification[]
@@ -102,11 +104,18 @@ model Organization {
   departments      Department[]
   employees        Employee[]
   companyDocuments CompanyDocument[]
+
+
   onboardingTemplates OnboardingTemplate[]
   grievances       Grievance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  designations Designation[]
+  locations Location[]
+  documentTypes DocumentType[]
+  customFields CustomField[]
 
   // Security & IAM
   isIpRestrictionEnabled Boolean @default(false)
@@ -289,96 +298,12 @@ model Feedback {
 // ---------------------------------------------------------
 // Department Model
 // ---------------------------------------------------------
-model Department {
-  id             String       @id @default(uuid())
-  name           String // e.g. "Engineering", "Human Resources", "Finance", "Product"
-  code           String // e.g. "ENG", "HR", "FIN", "PROD"
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  employees Employee[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([organizationId, code])
-}
 
 // ---------------------------------------------------------
 // Employee Model (Core Profile & Hierarchy)
 // ---------------------------------------------------------
-model Employee {
-  id             String       @id @default(uuid())
-  employeeCode   String       @unique // e.g. "EMP-001"
-  userId         String?
-  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // Basic Personal Information
-  firstName                String
-  lastName                 String?
-  personalEmail            String?
-  workEmail                String    @unique
-  phoneNumber              String?
-  dob                      DateTime?
-  gender                   String? // "male" | "female" | "other" | "prefer_not_to_say"
-  maritalStatus            String? // "single" | "married" | "other"
-  currentAddress           String?
-  permanentAddress         String?
-  emergencyContactName     String?
-  emergencyContactPhone    String?
-  emergencyContactRelation String?
-
-    // Enterprise Org Chart & Assets
-    managerId      String?
-    manager        Employee?  @relation("ManagerToEmployee", fields: [managerId], references: [id], onDelete: SetNull)
-    subordinates   Employee[] @relation("ManagerToEmployee")
-    
-    documents      String?    // JSON representation of uploaded docs (Aadhaar, PAN, etc)
-    workLocation   String?    // E.g. "HQ - Mumbai", "Remote"
-
-
-  // Role, Department & Employment Details
-  departmentId     String
-  department       Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
-  designation      String // e.g. "Lead Software Engineer"
-  employmentType   String     @default("full_time") // "full_time" | "part_time" | "contract" | "intern"
-  employmentStatus String     @default("active") // "active" | "probation" | "notice_period" | "terminated" | "on_leave"
-  dateOfJoining    DateTime
-  dateOfExit       DateTime?
-
-  // Reporting Hierarchy (Self-referencing relationship)
-  reportingManagerId String?
-  reportingManager   Employee?  @relation("ManagementHierarchy", fields: [reportingManagerId], references: [id], onDelete: SetNull)
-  reportees          Employee[] @relation("ManagementHierarchy")
-
-  // Financial & Compensation Relations
-  bankDetails     EmployeeBankDetails?
-  salary          EmployeeSalary?
-  salaryRevisions SalaryRevision[]
-
-  // Access Control Roles
-  
-
-  // Skill Marketplace & Upskilling
-  skills                  EmployeeSkill[]
-  trainingRecommendations RecommendedTraining[]
-  draftedEmails           AgentEmailDraft[]
-
-  // Attendance & Leave Management
-  attendances    Attendance[]
-  leaveRequests  LeaveRequest[] @relation("EmployeeLeaves")
-  reviewedLeaves LeaveRequest[] @relation("ReviewedLeaves")
-
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  employeeShifts     Shift[]             @relation("EmployeeShifts")
-  employeeTimesheets Timesheet[]         @relation("EmployeeTimesheets")
-  employeeReviews    PerformanceReview[] @relation("EmployeeReviews")
-  onboarding         EmployeeOnboarding?
-  @@unique([userId, organizationId])
-}
 
 // ---------------------------------------------------------
 // Employee Bank Details Model (Financials)
@@ -987,4 +912,196 @@ model Module {
   isActive    Boolean  @default(true)
   sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
+}
+
+
+// ==================== EMPLOYEE CORE ====================
+model Employee {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id             String   @id @default(uuid())
+  userId         String?  @unique  // Link to User (agar login access hai)
+  employeeCode   String   @unique  // EMP001, EMP002
+  firstName      String
+  lastName       String
+  email          String   @unique
+  personalEmail  String?
+  phone          String?
+  alternatePhone String?
+  dateOfBirth    DateTime?
+  gender         String?
+  maritalStatus  String?
+  bloodGroup     String?
+  
+  // Job Details
+  departmentId   String?
+  designationId  String?
+  locationId     String?
+  managerId      String?
+  joiningDate    DateTime?
+  confirmationDate DateTime?
+  employmentType String?  // Full-time, Part-time, Contract, Intern
+  workMode       String?  // Office, Remote, Hybrid
+  
+  // Status
+  status         String   @default("ACTIVE") // ACTIVE, PROBATION, NOTICE, RESIGNED, TERMINATED
+  
+  // Profile
+  profilePicture String?
+  
+  // Custom Fields (JSON for dynamic fields)
+  customFields   String?  @default("{}") // SQLite does not support Json well without Prisma Json fallback, we will use String for now or let Prisma handle it
+  
+  // Metadata
+  createdBy      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  updatedBy      String?
+
+  department     Department?  @relation(fields: [departmentId], references: [id])
+  designation    Designation? @relation(fields: [designationId], references: [id])
+  location       Location?    @relation(fields: [locationId], references: [id])
+  documents      EmployeeDocument[]
+  customFieldValues EmployeeCustomFieldValue[]
+
+  // Reverse relations to not break existing modules
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  bankDetails EmployeeBankDetails?
+  salary EmployeeSalary?
+  salaryRevisions SalaryRevision[]
+  agentEmails AgentEmailDraft[]
+  skills EmployeeSkill[]
+  recommendedTrainings RecommendedTraining[]
+  attendance Attendance[]
+  leaves LeaveRequest[] @relation("EmployeeLeaves")
+  leavesReviewed LeaveRequest[] @relation("ReviewedLeaves")
+  shifts Shift[] @relation("EmployeeShifts")
+  timesheets Timesheet[] @relation("EmployeeTimesheets")
+  reviews PerformanceReview[] @relation("EmployeeReviews")
+  onboarding EmployeeOnboarding?
+
+  @@index([email])
+  @@index([employeeCode])
+  @@index([status])
+}
+
+// ==================== ORG STRUCTURE ====================
+model Department {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  name        String   @unique
+  code        String?  @unique
+  description String?
+  parentId    String?
+  headId      String?     // Employee ID of department head
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  employees   Employee[]
+  parent      Department? @relation("DeptHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Department[] @relation("DeptHierarchy")
+}
+
+model Designation {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  name        String   @unique
+  level       Int?     // 1=Junior, 5=Senior, 10=C-level
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  employees   Employee[]
+}
+
+model Location {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  name        String   @unique
+  address     String?
+  city        String?
+  state       String?
+  country     String?
+  pincode     String?
+  timezone    String?  @default("Asia/Kolkata")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  employees   Employee[]
+}
+
+// ==================== DOCUMENTS ====================
+model DocumentType {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  name        String   @unique  // "Aadhaar", "PAN", "Resume"
+  description String?
+  isMandatory Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdBy   String
+  createdAt   DateTime @default(now())
+
+  documents   EmployeeDocument[]
+}
+
+model EmployeeDocument {
+  id             String   @id @default(uuid())
+  employeeId     String
+  documentTypeId String
+  fileName       String
+  fileUrl        String
+  fileSize       Int?
+  mimeType       String?
+  expiryDate     DateTime?
+  verified       Boolean  @default(false)
+  verifiedBy     String?
+  verifiedAt     DateTime?
+  uploadedBy     String
+  uploadedAt     DateTime @default(now())
+
+  employee       Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  documentType   DocumentType @relation(fields: [documentTypeId], references: [id])
+
+  @@index([employeeId])
+}
+
+// ==================== CUSTOM FIELDS (DYNAMIC) ====================
+model CustomField {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  id           String   @id @default(uuid())
+  key          String   @unique  // "blood_group", "emergency_contact"
+  label        String              // "Blood Group"
+  fieldType    String              // "text", "number", "date", "dropdown", "checkbox", "email", "phone"
+  options      String?               // Stored as JSON string
+  placeholder  String?
+  helpText     String?
+  isRequired   Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  section      String?  // "Personal", "Job", "Bank", "Emergency"
+  defaultValue String?
+  validation   String?    // Stored as JSON string
+  createdBy    String
+  createdAt    DateTime @default(now())
+
+  values       EmployeeCustomFieldValue[]
+}
+
+model EmployeeCustomFieldValue {
+  id            String   @id @default(uuid())
+  employeeId    String
+  customFieldId String
+  value         String?  // Store as string, parse on frontend
+  updatedAt     DateTime @updatedAt
+
+  employee      Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, customFieldId])
 }

@@ -1,27 +1,26 @@
-/**
- * Anti-Gravity Employee Routes
- * CRUD endpoints consuming and returning the drafted JSON format
- */
-
 const express = require('express');
 const router = express.Router();
-const employeeController = require('../controllers/employeeController');
-const { isAuthenticated, requireHRMS, requireRole } = require('../middleware/auth');
-const { publicLimiter } = require('../middleware/rateLimit');
+const { isAuthenticated } = require('../middleware/auth');
+const { requirePermission } = require('../middleware/rbac');
+const empCtrl = require('../controllers/employeeController');
+const docCtrl = require('../controllers/employeeDocumentController');
 
-// GET all employees formatted in Anti-Gravity schema (Internal HRMS only)
-router.get('/', isAuthenticated, requireHRMS, publicLimiter, employeeController.listEmployees);
+router.use(isAuthenticated);
 
-// POST create or upsert employee (Internal HR / Admin only)
-router.post('/', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.createOrUpdateEmployee);
+// Stats
+router.get('/stats', requirePermission('employee', 'view'), empCtrl.getEmployeeStats);
 
-// GET single employee by ID or employeeCode (Internal HRMS only)
-router.get('/:id', isAuthenticated, requireHRMS, publicLimiter, employeeController.getEmployee);
+// Employee CRUD
+router.get('/', requirePermission('employee', 'view'), empCtrl.getEmployees);
+router.get('/:id', requirePermission('employee', 'view'), empCtrl.getEmployee);
+router.post('/', requirePermission('employee', 'add'), empCtrl.createEmployee);
+router.put('/:id', requirePermission('employee', 'edit'), empCtrl.updateEmployee);
+router.delete('/:id', requirePermission('employee', 'delete'), empCtrl.deleteEmployee);
 
-// PUT update employee by ID (Internal HR / Admin only)
-router.put('/:id', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.createOrUpdateEmployee);
-
-// DELETE employee by ID (Internal HR / Admin only)
-router.delete('/:id', isAuthenticated, requireHRMS, requireRole(['admin', 'hr']), publicLimiter, employeeController.deleteEmployee);
+// Documents
+router.get('/:id/documents', requirePermission('employee', 'view'), docCtrl.getDocuments);
+router.post('/:id/documents', requirePermission('employee', 'edit'), docCtrl.upload.single('file'), docCtrl.uploadDocument);
+router.put('/:id/documents/:docId/verify', requirePermission('employee', 'edit'), docCtrl.verifyDocument);
+router.delete('/:id/documents/:docId', requirePermission('employee', 'delete'), docCtrl.deleteDocument);
 
 module.exports = router;

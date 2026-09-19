@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Field Builder - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 h-full flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <span class="font-bold text-xl text-gray-800">Rankly</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <a href="/dashboard.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Dashboard</a>
+            <a href="/employees.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Employees</a>
+            <a href="/roles.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Roles & Permissions</a>
+            <a href="/admin-fields.html" class="block px-3 py-2 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700">Custom Fields Builder</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Custom Fields Builder</h1>
+            <button id="add-field-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                + Add Custom Field
+            </button>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 p-6 overflow-y-auto">
+            <div id="fields-container" class="bg-white shadow rounded-lg p-6 space-y-4">
+                <!-- Fields will be dynamically loaded here -->
+                <p class="text-gray-500 text-center py-4">Loading custom fields...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Field Modal -->
+    <div id="field-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 id="modal-title" class="text-xl font-semibold text-gray-800">Add Custom Field</h2>
+                <button type="button" class="close-modal text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="p-6">
+                <form id="field-form" class="space-y-4">
+                    <input type="hidden" id="field-id">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Field Label *</label>
+                            <input type="text" id="field-label" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Field Key * (unique)</label>
+                            <input type="text" id="field-key" required pattern="[a-z0-9_]+" placeholder="e.g. blood_group" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Field Type *</label>
+                            <select id="field-type" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="text">Text</option>
+                                <option value="number">Number</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Phone</option>
+                                <option value="date">Date</option>
+                                <option value="dropdown">Dropdown</option>
+                                <option value="checkbox">Checkbox</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
+                            <select id="field-section" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Personal">Personal</option>
+                                <option value="Job">Job details</option>
+                                <option value="Bank">Bank Details</option>
+                                <option value="Emergency">Emergency Contact</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="options-container" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Dropdown Options (comma separated)</label>
+                        <input type="text" id="field-options" placeholder="e.g. A+, B+, O-" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Placeholder</label>
+                        <input type="text" id="field-placeholder" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" id="field-required" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="field-required" class="ml-2 block text-sm text-gray-900">Required Field</label>
+                    </div>
+
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button type="button" class="close-modal px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none">Save Field</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            const fieldsContainer = document.getElementById('fields-container');
+            const modal = document.getElementById('field-modal');
+            const form = document.getElementById('field-form');
+            const typeSelect = document.getElementById('field-type');
+            const optionsContainer = document.getElementById('options-container');
+
+            let customFields = [];
+
+            typeSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'dropdown') optionsContainer.classList.remove('hidden');
+                else optionsContainer.classList.add('hidden');
+            });
+
+            document.getElementById('add-field-btn').addEventListener('click', () => {
+                form.reset();
+                document.getElementById('field-id').value = '';
+                document.getElementById('modal-title').textContent = 'Add Custom Field';
+                optionsContainer.classList.add('hidden');
+                document.getElementById('field-key').readOnly = false;
+                modal.classList.remove('hidden');
+            });
+
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', () => modal.classList.add('hidden'));
+            });
+
+            async function fetchFields() {
+                try {
+                    const res = await fetch('/api/admin/custom-fields', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        customFields = await res.json();
+                        renderFields();
+                    } else {
+                        fieldsContainer.innerHTML = '<p class="text-red-500">Failed to load fields.</p>';
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            function renderFields() {
+                if (customFields.length === 0) {
+                    fieldsContainer.innerHTML = '<p class="text-gray-500 text-center py-4">No custom fields created yet.</p>';
+                    return;
+                }
+
+                fieldsContainer.innerHTML = `
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Label</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Section</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${customFields.map(f => `
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${f.label}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${f.key}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${f.fieldType}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${f.section || '-'}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${f.isRequired ? 'Yes' : 'No'}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3 edit-btn" data-id="${f.id}">Edit</button>
+                                        <button class="text-red-600 hover:text-red-900 delete-btn" data-id="${f.id}">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => editField(e.target.dataset.id));
+                });
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => deleteField(e.target.dataset.id));
+                });
+            }
+
+            function editField(id) {
+                const field = customFields.find(f => f.id === id);
+                if (!field) return;
+
+                document.getElementById('field-id').value = field.id;
+                document.getElementById('field-label').value = field.label;
+                document.getElementById('field-key').value = field.key;
+                document.getElementById('field-key').readOnly = true; // Key should not be edited ideally
+                document.getElementById('field-type').value = field.fieldType;
+                document.getElementById('field-section').value = field.section || 'Personal';
+                document.getElementById('field-placeholder').value = field.placeholder || '';
+                document.getElementById('field-required').checked = field.isRequired;
+
+                if (field.fieldType === 'dropdown') {
+                    optionsContainer.classList.remove('hidden');
+                    let opts = [];
+                    try { opts = JSON.parse(field.options); } catch(e){}
+                    document.getElementById('field-options').value = Array.isArray(opts) ? opts.join(', ') : '';
+                } else {
+                    optionsContainer.classList.add('hidden');
+                }
+
+                document.getElementById('modal-title').textContent = 'Edit Custom Field';
+                modal.classList.remove('hidden');
+            }
+
+            async function deleteField(id) {
+                if (!confirm('Are you sure you want to delete this field? Data may be lost.')) return;
+                try {
+                    const res = await fetch(`/api/admin/custom-fields/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) fetchFields();
+                    else alert('Failed to delete field');
+                } catch(e) { console.error(e); }
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('field-id').value;
+                const fieldType = document.getElementById('field-type').value;
+                
+                let options = null;
+                if (fieldType === 'dropdown') {
+                    const optStr = document.getElementById('field-options').value;
+                    options = optStr.split(',').map(s => s.trim()).filter(s => s);
+                }
+
+                const payload = {
+                    label: document.getElementById('field-label').value,
+                    key: document.getElementById('field-key').value,
+                    fieldType,
+                    section: document.getElementById('field-section').value,
+                    placeholder: document.getElementById('field-placeholder').value,
+                    isRequired: document.getElementById('field-required').checked,
+                    options
+                };
+
+                try {
+                    const url = id ? `/api/admin/custom-fields/${id}` : '/api/admin/custom-fields';
+                    const method = id ? 'PUT' : 'POST';
+                    const res = await fetch(url, {
+                        method,
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (res.ok) {
+                        modal.classList.add('hidden');
+                        fetchFields();
+                    } else {
+                        const err = await res.json();
+                        alert(err.error || 'Failed to save field');
+                    }
+                } catch(err) {
+                    console.error(err);
+                }
+            });
+
+            fetchFields();
+        });
+    </script>
+</body>
+</html>

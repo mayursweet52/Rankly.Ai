@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 h-full flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <span class="font-bold text-xl text-gray-800">Rankly</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <a href="/dashboard.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Dashboard</a>
+            <a href="/employees.html" class="block px-3 py-2 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700">Employees</a>
+            <a href="/roles.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Roles & Permissions</a>
+            <a href="/admin-fields.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Custom Fields Builder</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Employees</h1>
+            <a href="/employee-form.html" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                + Add Employee
+            </a>
+        </header>
+
+        <!-- Filters -->
+        <div class="bg-white border-b border-gray-200 p-4 flex space-x-4">
+            <input type="text" id="search-input" placeholder="Search by name, email..." class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <select id="filter-status" class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">All Statuses</option>
+                <option value="ACTIVE">Active</option>
+                <option value="PROBATION">Probation</option>
+                <option value="NOTICE">Notice Period</option>
+                <option value="RESIGNED">Resigned</option>
+            </select>
+            <button id="search-btn" class="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-200">Filter</button>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 p-6 overflow-y-auto">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200" id="employees-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role / Dept</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="employees-list">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+                <div id="loading-indicator" class="text-center py-8 text-gray-500 hidden">Loading...</div>
+                <div id="empty-state" class="text-center py-8 text-gray-500 hidden">No employees found.</div>
+            </div>
+            
+            <!-- Pagination -->
+            <div id="pagination" class="mt-4 flex justify-between items-center hidden">
+                <span class="text-sm text-gray-700">Showing page <span id="page-current" class="font-medium">1</span> of <span id="page-total" class="font-medium">1</span></span>
+                <div class="space-x-2">
+                    <button id="prev-btn" class="px-3 py-1 border border-gray-300 rounded-md text-sm bg-white hover:bg-gray-50">Previous</button>
+                    <button id="next-btn" class="px-3 py-1 border border-gray-300 rounded-md text-sm bg-white hover:bg-gray-50">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            const listEl = document.getElementById('employees-list');
+            const loadingEl = document.getElementById('loading-indicator');
+            const emptyEl = document.getElementById('empty-state');
+            const tableEl = document.getElementById('employees-table');
+            const searchInput = document.getElementById('search-input');
+            const statusSelect = document.getElementById('filter-status');
+            
+            let currentPage = 1;
+            let totalPages = 1;
+
+            async function fetchEmployees() {
+                loadingEl.classList.remove('hidden');
+                tableEl.classList.add('hidden');
+                emptyEl.classList.add('hidden');
+                document.getElementById('pagination').classList.add('hidden');
+
+                try {
+                    const params = new URLSearchParams({
+                        page: currentPage,
+                        limit: 10
+                    });
+                    if (searchInput.value.trim()) params.append('search', searchInput.value.trim());
+                    if (statusSelect.value) params.append('status', statusSelect.value);
+
+                    const res = await fetch(`/api/employees?${params.toString()}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (res.status === 403) {
+                        emptyEl.textContent = 'You do not have permission to view employees.';
+                        emptyEl.classList.remove('hidden');
+                        loadingEl.classList.add('hidden');
+                        return;
+                    }
+
+                    if (res.ok) {
+                        const { data, pagination } = await res.json();
+                        totalPages = pagination.totalPages;
+                        document.getElementById('page-current').textContent = currentPage;
+                        document.getElementById('page-total').textContent = totalPages;
+                        
+                        renderEmployees(data);
+
+                        if (data.length > 0) {
+                            tableEl.classList.remove('hidden');
+                            document.getElementById('pagination').classList.remove('hidden');
+                        } else {
+                            emptyEl.classList.remove('hidden');
+                        }
+                    }
+                } catch(e) {
+                    console.error(e);
+                } finally {
+                    loadingEl.classList.add('hidden');
+                }
+            }
+
+            function renderEmployees(emps) {
+                listEl.innerHTML = emps.map(emp => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="${emp.profilePicture || 'https://ui-avatars.com/api/?name='+emp.firstName+'+'+emp.lastName}" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">${emp.firstName} ${emp.lastName}</div>
+                                    <div class="text-sm text-gray-500">${emp.email} | ${emp.employeeCode}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${emp.designation?.name || 'N/A'}</div>
+                            <div class="text-sm text-gray-500">${emp.department?.name || 'N/A'}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                ${emp.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            ${emp.location?.name || 'N/A'}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="/employee-form.html?id=${emp.id}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit / View</a>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('search-btn').addEventListener('click', () => {
+                currentPage = 1;
+                fetchEmployees();
+            });
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    currentPage = 1;
+                    fetchEmployees();
+                }
+            });
+
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchEmployees();
+                }
+            });
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    fetchEmployees();
+                }
+            });
+
+            fetchEmployees();
+        });
+    </script>
+</body>
+</html>

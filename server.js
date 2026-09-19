@@ -38,6 +38,10 @@ const analyticsRoutes = require('./src/routes/analyticsRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
 const healthRoutes = require('./src/routes/healthRoutes');
 const employeeRoutes = require('./src/routes/employeeRoutes');
+
+const orgRoutes = require('./src/routes/orgRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
+
 const documentRoutes = require('./src/routes/documentRoutes');
 const aiAgentRoutes = require('./src/routes/aiAgentRoutes');
 const skillMarketplaceRoutes = require('./src/routes/skillMarketplaceRoutes');
@@ -233,6 +237,11 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/employees', employeeRoutes);
+
+app.use('/api/org', orgRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/uploads', require('express').static('uploads'));
+
 app.use('/api/documents', documentRoutes);
 app.use('/api/agents', aiAgentRoutes);
 app.use('/api/skills', skillMarketplaceRoutes);
