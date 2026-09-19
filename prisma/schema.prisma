@@ -50,6 +50,9 @@ model User {
   createdReferrals ReferralCode[]         @relation("CreatedReferrals")
   administeredOrgs Organization[]         @relation("AdminOrgs")
   employeeProfiles Employee[]
+
+  leaveApprovals LeaveApproval[] @relation("LeaveApprover")
+
   companyDocuments CompanyDocument[]
 
 
@@ -116,6 +119,16 @@ model Organization {
   locations Location[]
   documentTypes DocumentType[]
   customFields CustomField[]
+
+  leaveTypes LeaveType[]
+  leavePolicies LeavePolicy[]
+  leaveBalances LeaveBalance[]
+  leaveRequests LeaveRequest[]
+  leaveApprovals LeaveApproval[]
+  leaveDocuments LeaveDocument[]
+  holidays Holiday[]
+  leaveAccrualLogs LeaveAccrualLog[]
+
 
   // Security & IAM
   isIpRestrictionEnabled Boolean @default(false)
@@ -556,29 +569,9 @@ model Attendance {
 }
 
 // ---------------------------------------------------------
-// Leave Request Model (Leave Applications, Approvals & Workflow)
+
 // ---------------------------------------------------------
-model LeaveRequest {
-  id            String    @id @default(uuid())
-  employeeId    String
-  employee      Employee  @relation("EmployeeLeaves", fields: [employeeId], references: [id], onDelete: Cascade)
-  leaveType     String    @default("casual") // "casual" | "sick" | "earned" | "maternity" | "paternity" | "unpaid"
-  startDate     DateTime
-  endDate       DateTime
-  daysCount     Float     @default(1.0)
-  reason        String
-  status        String    @default("pending") // "pending" | "approved" | "rejected" | "cancelled"
-  reviewedById  String?
-  reviewedBy    Employee? @relation("ReviewedLeaves", fields: [reviewedById], references: [id], onDelete: SetNull)
-  reviewRemarks String?
-  reviewedAt    DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([employeeId])
-  @@index([status])
-}
 
 // ---------------------------------------------------------
 // Candidate Job Application Tracker Model
@@ -964,6 +957,10 @@ model Employee {
   documents      EmployeeDocument[]
   customFieldValues EmployeeCustomFieldValue[]
 
+  leaveRequests LeaveRequest[]
+  leaveBalances LeaveBalance[]
+
+
   // Reverse relations to not break existing modules
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
   bankDetails EmployeeBankDetails?
@@ -973,8 +970,6 @@ model Employee {
   skills EmployeeSkill[]
   recommendedTrainings RecommendedTraining[]
   attendance Attendance[]
-  leaves LeaveRequest[] @relation("EmployeeLeaves")
-  leavesReviewed LeaveRequest[] @relation("ReviewedLeaves")
   shifts Shift[] @relation("EmployeeShifts")
   timesheets Timesheet[] @relation("EmployeeTimesheets")
   reviews PerformanceReview[] @relation("EmployeeReviews")
@@ -1104,4 +1099,211 @@ model EmployeeCustomFieldValue {
   customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
 
   @@unique([employeeId, customFieldId])
+}
+
+
+// ==================== LEAVE TYPES (Admin) ====================
+model LeaveType {
+  id                String   @id @default(uuid())
+  organizationId    String
+  name              String   // "Annual Leave", "Sick Leave"
+  code              String   // "AL", "SL"
+  description       String?
+  color             String?  @default("#3B82F6")  // UI color
+  icon              String?  // "calendar", "heart", "plane"
+  
+  // Accrual Settings
+  accrualType       String   @default("YEARLY")  // YEARLY, MONTHLY, QUARTERLY, NONE
+  accrualAmount     Float    @default(0)  // Total days per year
+  accrualDay        Int?     // Day of month for accrual (1-31)
+  
+  // Policy
+  maxConsecutiveDays Int?    // Max days at once
+  minNoticeDays     Int      @default(0)  // Min days advance notice
+  allowHalfDay      Boolean  @default(true)
+  allowNegativeBalance Boolean @default(false)
+  
+  // Carry Forward
+  carryForwardEnabled Boolean @default(false)
+  carryForwardMax    Float?  // Max days to carry
+  carryForwardExpiry Int?    // Expiry in months
+  
+  // Approval
+  approvalLevels    Int      @default(1)  // 1 or 2
+  requireDocument   Boolean  @default(false)  // Medical cert for sick leave
+  
+  // Encashment
+  encashable        Boolean  @default(false)
+  
+  // Status
+  isActive          Boolean  @default(true)
+  sortOrder         Int      @default(0)
+  createdBy         String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requests          LeaveRequest[]
+  balances          LeaveBalance[]
+  policies          LeavePolicy[]
+  
+  @@unique([organizationId, name])
+  @@unique([organizationId, code])
+}
+
+// ==================== LEAVE POLICY ====================
+model LeavePolicy {
+  id             String   @id @default(uuid())
+  organizationId String
+  leaveTypeId    String
+  name           String
+  locationId     String?     // Optional: specific to location
+  departmentId   String?     // Optional: specific to department
+  employmentType String?  // "Full-time", "Intern"
+  accrualAmount  Float?   // Override leave type's amount
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  leaveType      LeaveType @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
+
+  @@index([leaveTypeId])
+}
+
+// ==================== LEAVE BALANCE ====================
+model LeaveBalance {
+  id              String   @id @default(uuid())
+  organizationId  String
+  employeeId      String
+  leaveTypeId     String
+  year            Int      // 2026
+  
+  totalAllocated  Float    @default(0)  // Total days allocated
+  used            Float    @default(0)  // Days used
+  pending         Float    @default(0)  // Days in pending approval
+  carriedForward  Float    @default(0)  // From last year
+  encashed        Float    @default(0)  // Days encashed
+  lapsed          Float    @default(0)  // Days expired
+  
+  updatedAt       DateTime @updatedAt
+
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee        Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  leaveType       LeaveType @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, leaveTypeId, year])
+  @@index([employeeId])
+}
+
+// ==================== LEAVE REQUEST ====================
+model LeaveRequest {
+  id              String   @id @default(uuid())
+  organizationId  String
+  requestNumber   String   // LR20260001
+  employeeId      String
+  leaveTypeId     String
+  
+  fromDate        DateTime
+  toDate          DateTime
+  totalDays       Float    // Can be 0.5 for half-day
+  isHalfDay       Boolean  @default(false)
+  halfDayType     String?  // "FIRST_HALF", "SECOND_HALF"
+  
+  reason          String
+  contactNumber   String?
+  contactAddress  String?
+  
+  status          String   @default("PENDING")  // PENDING, APPROVED, REJECTED, CANCELLED, WITHDRAWN
+  
+  currentLevel    Int      @default(1)
+  totalLevels     Int      @default(1)
+  
+  appliedAt       DateTime @default(now())
+  approvedAt      DateTime?
+  
+  createdBy       String
+  updatedAt       DateTime @updatedAt
+
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee        Employee           @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  leaveType       LeaveType          @relation(fields: [leaveTypeId], references: [id])
+  approvals       LeaveApproval[]
+  documents       LeaveDocument[]
+
+  @@unique([organizationId, requestNumber])
+  @@index([employeeId])
+  @@index([status])
+  @@index([fromDate, toDate])
+}
+
+// ==================== LEAVE APPROVAL ====================
+model LeaveApproval {
+  id             String   @id @default(uuid())
+  organizationId String
+  leaveRequestId String
+  level          Int      // 1, 2, ...
+  approverId     String      // Employee/User ID
+  status         String   @default("PENDING")  // PENDING, APPROVED, REJECTED
+  comment        String?
+  actionAt       DateTime?
+  createdAt      DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
+  approver       User         @relation("LeaveApprover", fields: [approverId], references: [id])
+
+  @@unique([leaveRequestId, level])
+  @@index([approverId, status])
+}
+
+// ==================== LEAVE DOCUMENTS ====================
+model LeaveDocument {
+  id             String   @id @default(uuid())
+  organizationId String
+  leaveRequestId String
+  fileName       String
+  fileUrl        String
+  fileSize       Int?
+  mimeType       String?
+  uploadedBy     String
+  uploadedAt     DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
+}
+
+// ==================== HOLIDAYS ====================
+model Holiday {
+  id          String   @id @default(uuid())
+  organizationId String
+  name        String
+  date        DateTime
+  year        Int
+  locationId  String?     // Optional: location-specific
+  isOptional  Boolean  @default(false)  // Optional holiday
+  description String?
+  isActive    Boolean  @default(true)
+  createdBy   String
+  createdAt   DateTime @default(now())
+  
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([year])
+  @@index([date])
+}
+
+// ==================== ACCRUAL LOG ====================
+model LeaveAccrualLog {
+  id           String   @id @default(uuid())
+  organizationId String
+  employeeId   String
+  leaveTypeId  String
+  amount       Float
+  type         String   // "ACCRUAL", "CARRY_FORWARD", "LAPSE", "MANUAL_ADJUST", "ENCASH"
+  reason       String?
+  processedBy  String?
+  processedAt  DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  @@index([employeeId])
 }

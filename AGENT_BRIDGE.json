@@ -1,13 +1,43 @@
 {
-  "current_architecture": "Enterprise HRMS (Phase 2 - Dynamic Employee Database)",
-  "active_features": {
-    "auth": "OrganizationMember junction table active. First user gets Super Admin automatically.",
-    "frontend": "Multi-workspace selection portal active. Roles Builder UI (public/roles.html) active. Employee Dynamic Fields UI (/admin-fields.html) active. Employee Directory (/employees.html) active. Employee Profile Form (/employee-form.html) active.",
-    "rbac": "Admin-defined dynamic roles. Data scopes supported (NO_DATA, MY_DATA, SUBORDINATES, ALL_DATA)."
+  "currentPhase": "Phase 3 - Time & Attendance / Leave Management",
+  "status": "In Progress (Leave Management Core Implemented)",
+  "architecturalPlan": {
+    "objective": "Implement a fully dynamic multi-tenant Leave Management System with custom Accruals, multi-level approvals, and RBAC visibility.",
+    "database": "Prisma SQLite: LeaveType, LeavePolicy, LeaveBalance, LeaveRequest, LeaveApproval, Holiday, LeaveAccrualLog (all organizationId scoped).",
+    "backend": "Vanilla Node.js / Express. Controllers for Leave Types, Balances, Requests, Holidays.",
+    "frontend": "Vanilla HTML/JS templates (`admin-leave-types.html`, `apply-leave.html`, `my-leave-requests.html`, `leave-approvals.html`). No React/TS."
   },
-  "roles": {
-    "Sumit": "MUST DO: Review `/employees.html`, `/employee-form.html` and `/admin-fields.html`. Ensure they are linked correctly to the main dashboard (`index.html`). Add missing animations, polish the UI, and verify Tailwind v3 compilation.",
-    "Mayur": "MUST DO: Prepare for Phase 3 (Time & Attendance). Check if `/api/employees` and `/api/admin/custom-fields` are working securely via RBAC middleware.",
-    "Vaibhav": "MUST DO: Phase 2 SQLite DB is pushed. Next, prepare Prisma schema for Phase 3 (Attendance & Shifts) and manage Postgres migration mapping."
+  "tripartiteBriefing": {
+    "Sumit": {
+      "role": "Frontend & UI/UX Lead",
+      "MUST_DO": [
+        "Review `apply-leave.html`, `my-leave-requests.html`, `leave-approvals.html`, `admin-leave-types.html`.",
+        "Polish the Tailwind UI to match the Rankly dashboard design language.",
+        "Add toast notifications or sweetalert for form submissions instead of raw browser `alert()`."
+      ],
+      "MUST_NOT_DO": [
+        "Do not change API endpoints or backend query parameters."
+      ]
+    },
+    "Vaibhav": {
+      "role": "Database & Infrastructure Lead",
+      "MUST_DO": [
+        "Review the updated `prisma/schema.prisma` for Leave Management.",
+        "Ensure `organizationId` cascades are working properly."
+      ],
+      "MUST_NOT_DO": [
+        "Do not alter HTML DOM IDs."
+      ]
+    },
+    "Mayur": {
+      "role": "AI & Backend Architect",
+      "MUST_DO": [
+        "Review `src/controllers/leave*Controller.js` logic for accrual math and multi-level approvals.",
+        "Ensure RBAC filters (`applyDataScope`) properly secure Leave Request fetching so managers only see subordinates."
+      ],
+      "MUST_NOT_DO": [
+        "Do not touch frontend CSS/UI classes."
+      ]
+    }
   }
 }

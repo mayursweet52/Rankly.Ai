@@ -239,6 +239,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/employees', employeeRoutes);
 
 app.use('/api/org', orgRoutes);
+app.use('/api/leave', leaveRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/uploads', require('express').static('uploads'));
 

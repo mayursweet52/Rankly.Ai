@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Leave Types - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 h-full flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <span class="font-bold text-xl text-gray-800">Rankly</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <a href="/dashboard.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Dashboard</a>
+            <a href="/employees.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Employees</a>
+            <a href="/admin-fields.html" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Custom Fields</a>
+            <a href="/admin-leave-types.html" class="block px-3 py-2 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700">Leave Types</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <header class="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Leave Types Configuration</h1>
+            <button id="add-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                + Create Leave Type
+            </button>
+        </header>
+
+        <div class="flex-1 p-6 overflow-y-auto">
+            <div id="loading" class="text-gray-500 py-4 hidden">Loading...</div>
+            <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+                <h2 id="modal-title" class="text-xl font-semibold text-gray-800">Create Leave Type</h2>
+                <button type="button" class="close-modal text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="p-6">
+                <form id="form" class="space-y-4">
+                    <input type="hidden" id="f-id">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Name *</label>
+                            <input type="text" id="f-name" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Code *</label>
+                            <input type="text" id="f-code" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-1">Description</label>
+                            <input type="text" id="f-desc" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Color Marker</label>
+                            <input type="color" id="f-color" value="#3B82F6" class="w-full h-10 border border-gray-300 rounded-md p-1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Accrual Type</label>
+                            <select id="f-accrualType" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="YEARLY">Yearly</option>
+                                <option value="MONTHLY">Monthly</option>
+                                <option value="QUARTERLY">Quarterly</option>
+                                <option value="NONE">None</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Days Allocated (per year)</label>
+                            <input type="number" step="0.5" id="f-accrualAmount" value="0" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Approval Levels</label>
+                            <select id="f-approvalLevels" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="1">1 (Manager)</option>
+                                <option value="2">2 (Manager + HR)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Min Notice (days)</label>
+                            <input type="number" id="f-minNotice" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Max Consecutive Days</label>
+                            <input type="number" id="f-maxConsecutive" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-4 border-t border-gray-100">
+                        <label class="flex items-center"><input type="checkbox" id="f-halfDay" checked class="mr-2"> Allow half-day requests</label>
+                        <label class="flex items-center"><input type="checkbox" id="f-negative" class="mr-2"> Allow negative balance</label>
+                        <label class="flex items-center"><input type="checkbox" id="f-doc" class="mr-2"> Require document (e.g., Medical cert)</label>
+                        <label class="flex items-center"><input type="checkbox" id="f-carry" class="mr-2"> Enable carry forward to next year</label>
+                        
+                        <div id="carry-options" class="hidden pl-6 pt-2">
+                            <label class="block text-sm font-medium mb-1">Max days to carry forward</label>
+                            <input type="number" id="f-carryMax" step="0.5" class="w-full px-3 py-2 border border-gray-300 rounded-md md:w-1/2">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end space-x-3 border-t border-gray-200 mt-6">
+                        <button type="button" class="close-modal px-4 py-2 border border-gray-300 rounded-md">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            const grid = document.getElementById('grid');
+            const modal = document.getElementById('modal');
+            let types = [];
+
+            document.getElementById('f-carry').addEventListener('change', (e) => {
+                document.getElementById('carry-options').classList.toggle('hidden', !e.target.checked);
+            });
+
+            document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', () => modal.classList.add('hidden')));
+
+            document.getElementById('add-btn').addEventListener('click', () => {
+                document.getElementById('form').reset();
+                document.getElementById('f-id').value = '';
+                document.getElementById('modal-title').textContent = 'Create Leave Type';
+                document.getElementById('carry-options').classList.add('hidden');
+                modal.classList.remove('hidden');
+            });
+
+            async function load() {
+                document.getElementById('loading').classList.remove('hidden');
+                try {
+                    const res = await fetch('/api/leave/types', { headers: { 'Authorization': `Bearer ${token}` }});
+                    types = await res.json();
+                    render();
+                } catch(e) { console.error(e); }
+                document.getElementById('loading').classList.add('hidden');
+            }
+
+            function render() {
+                grid.innerHTML = types.map(t => `
+                    <div class="bg-white border rounded-lg shadow-sm p-5 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full" style="background-color: ${t.color}"></div>
+                        <div class="flex justify-between items-start pl-2">
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">${t.name}</h3>
+                                <p class="text-sm text-gray-500">${t.code}</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="editType('${t.id}')" class="text-indigo-600 hover:text-indigo-900 text-sm">Edit</button>
+                                <button onclick="delType('${t.id}')" class="text-red-600 hover:text-red-900 text-sm">Del</button>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600 space-y-1 pl-2">
+                            <p>Accrual: <strong class="text-gray-900">${t.accrualAmount} days / ${t.accrualType.toLowerCase()}</strong></p>
+                            <p>Approval levels: <strong class="text-gray-900">${t.approvalLevels}</strong></p>
+                            ${t.carryForwardEnabled ? `<p>Carry forward: up to <strong class="text-gray-900">${t.carryForwardMax || 'Unlimited'}</strong> days</p>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                if (types.length === 0) grid.innerHTML = '<p class="text-gray-500">No leave types found.</p>';
+            }
+
+            window.editType = (id) => {
+                const t = types.find(x => x.id === id);
+                if (!t) return;
+                document.getElementById('f-id').value = t.id;
+                document.getElementById('f-name').value = t.name;
+                document.getElementById('f-code').value = t.code;
+                document.getElementById('f-desc').value = t.description || '';
+                document.getElementById('f-color').value = t.color;
+                document.getElementById('f-accrualType').value = t.accrualType;
+                document.getElementById('f-accrualAmount').value = t.accrualAmount;
+                document.getElementById('f-approvalLevels').value = t.approvalLevels;
+                document.getElementById('f-minNotice').value = t.minNoticeDays;
+                document.getElementById('f-maxConsecutive').value = t.maxConsecutiveDays || '';
+                
+                document.getElementById('f-halfDay').checked = t.allowHalfDay;
+                document.getElementById('f-negative').checked = t.allowNegativeBalance;
+                document.getElementById('f-doc').checked = t.requireDocument;
+                document.getElementById('f-carry').checked = t.carryForwardEnabled;
+                document.getElementById('f-carryMax').value = t.carryForwardMax || '';
+                
+                document.getElementById('carry-options').classList.toggle('hidden', !t.carryForwardEnabled);
+                document.getElementById('modal-title').textContent = 'Edit Leave Type';
+                modal.classList.remove('hidden');
+            };
+
+            window.delType = async (id) => {
+                if (!confirm('Are you sure?')) return;
+                try {
+                    await fetch(`/api/leave/types/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }});
+                    load();
+                } catch(e) { console.error(e); }
+            };
+
+            document.getElementById('form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('f-id').value;
+                const payload = {
+                    name: document.getElementById('f-name').value,
+                    code: document.getElementById('f-code').value,
+                    description: document.getElementById('f-desc').value,
+                    color: document.getElementById('f-color').value,
+                    accrualType: document.getElementById('f-accrualType').value,
+                    accrualAmount: document.getElementById('f-accrualAmount').value,
+                    approvalLevels: document.getElementById('f-approvalLevels').value,
+                    minNoticeDays: document.getElementById('f-minNotice').value,
+                    maxConsecutiveDays: document.getElementById('f-maxConsecutive').value,
+                    allowHalfDay: document.getElementById('f-halfDay').checked,
+                    allowNegativeBalance: document.getElementById('f-negative').checked,
+                    requireDocument: document.getElementById('f-doc').checked,
+                    carryForwardEnabled: document.getElementById('f-carry').checked,
+                    carryForwardMax: document.getElementById('f-carryMax').value,
+                };
+                
+                try {
+                    const res = await fetch(id ? `/api/leave/types/${id}` : '/api/leave/types', {
+                        method: id ? 'PUT' : 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        modal.classList.add('hidden');
+                        load();
+                    } else {
+                        const err = await res.json();
+                        alert(err.error || 'Failed');
+                    }
+                } catch(err) { console.error(err); }
+            });
+
+            load();
+        });
+    </script>
+</body>
+</html>

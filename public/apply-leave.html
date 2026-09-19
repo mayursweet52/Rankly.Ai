@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex flex-col md:flex-row overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 h-full flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-200">
+            <span class="font-bold text-xl text-gray-800">Rankly</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+            <a href="/dashboard.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">Dashboard</a>
+            <a href="/my-leave-requests.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">My Leaves</a>
+            <a href="/apply-leave.html" class="block px-3 py-2 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700">Apply Leave</a>
+            <a href="/leave-approvals.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">Approvals</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Apply for Leave</h1>
+        <div id="error-msg" class="bg-red-50 text-red-700 p-4 rounded-md mb-6 hidden"></div>
+
+        <!-- Balance Cards -->
+        <div id="balances-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <!-- Rendered via JS -->
+            <p class="text-gray-500">Loading balances...</p>
+        </div>
+
+        <div class="max-w-2xl bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <form id="apply-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Leave Type *</label>
+                    <select id="leaveType" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <!-- Rendered via JS -->
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">From Date *</label>
+                        <input type="date" id="fromDate" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">To Date *</label>
+                        <input type="date" id="toDate" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div id="halfday-container" class="hidden">
+                    <label class="flex items-center text-sm font-medium">
+                        <input type="checkbox" id="isHalfDay" class="mr-2"> Half day
+                    </label>
+                    <select id="halfDayType" class="mt-2 hidden w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="FIRST_HALF">First Half</option>
+                        <option value="SECOND_HALF">Second Half</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Reason *</label>
+                    <textarea id="reason" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Contact Number</label>
+                        <input type="text" id="contactNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Contact Address</label>
+                        <input type="text" id="contactAddress" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                </div>
+
+                <div id="doc-warning" class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-md text-sm hidden">
+                    ⚠️ A document (like a medical certificate) is required for this leave type.
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 flex gap-3">
+                    <button type="submit" id="submit-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">Submit Application</button>
+                    <a href="/my-leave-requests.html" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-200 text-center">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            let leaveTypes = [];
+            let balances = [];
+            let myEmployeeId = null;
+
+            // Fetch my employee profile
+            try {
+                // To get my employee ID, we can fetch from a generic 'me' route or decode JWT.
+                // Assuming `/api/leave/balances/me` fetches based on logged in user
+                const [typesRes, balRes] = await Promise.all([
+                    fetch('/api/leave/types', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/leave/balances/me', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                if (typesRes.ok && balRes.ok) {
+                    leaveTypes = await typesRes.json();
+                    balances = await balRes.json();
+                    
+                    if (balances.length > 0) {
+                        myEmployeeId = balances[0].employeeId;
+                    }
+
+                    renderBalances();
+                    renderTypesDropdown();
+                }
+            } catch (err) { console.error(err); }
+
+            function renderBalances() {
+                const container = document.getElementById('balances-container');
+                if (balances.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500">No balances found.</p>';
+                    return;
+                }
+                container.innerHTML = balances.map(b => `
+                    <div class="bg-white border rounded-lg p-4 shadow-sm" style="border-left: 4px solid ${b.leaveType.color}">
+                        <p class="text-sm text-gray-500 font-medium">${b.leaveType.name}</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-1">${b.available.toFixed(1)}</p>
+                        <p class="text-xs text-gray-400 mt-1">Available Days</p>
+                    </div>
+                `).join('');
+            }
+
+            function renderTypesDropdown() {
+                const select = document.getElementById('leaveType');
+                select.innerHTML = leaveTypes.map(t => `<option value="${t.id}">${t.name} (${t.code})</option>`).join('');
+                select.dispatchEvent(new Event('change'));
+            }
+
+            document.getElementById('leaveType').addEventListener('change', (e) => {
+                const type = leaveTypes.find(t => t.id === e.target.value);
+                const halfDayContainer = document.getElementById('halfday-container');
+                const docWarn = document.getElementById('doc-warning');
+                
+                if (type) {
+                    // Update half day logic
+                    if (type.allowHalfDay) halfDayContainer.classList.remove('hidden');
+                    else halfDayContainer.classList.add('hidden');
+                    
+                    if (type.requireDocument) docWarn.classList.remove('hidden');
+                    else docWarn.classList.add('hidden');
+                }
+            });
+
+            const fromDateInput = document.getElementById('fromDate');
+            const toDateInput = document.getElementById('toDate');
+            const isHalfDay = document.getElementById('isHalfDay');
+            const halfDayType = document.getElementById('halfDayType');
+
+            fromDateInput.addEventListener('change', () => { toDateInput.min = fromDateInput.value; });
+            
+            isHalfDay.addEventListener('change', (e) => {
+                if (e.target.checked) halfDayType.classList.remove('hidden');
+                else halfDayType.classList.add('hidden');
+            });
+
+            document.getElementById('apply-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // If myEmployeeId wasn't found from balances, we need a fallback.
+                // In a real app, the server would infer employeeId from req.user
+                // I will update the backend to fallback to req.user.id implicitly if employeeId is not provided, 
+                // but let's pass myEmployeeId if we have it.
+                if (!myEmployeeId) {
+                    // Fallback to fetch my employee ID
+                    try {
+                        const meRes = await fetch('/api/employees?page=1', { headers: { 'Authorization': `Bearer ${token}` } });
+                        const meData = await meRes.json();
+                        if (meData.data && meData.data.length > 0) {
+                            myEmployeeId = meData.data[0].id;
+                        }
+                    } catch(e) {}
+                }
+
+                const payload = {
+                    employeeId: myEmployeeId,
+                    leaveTypeId: document.getElementById('leaveType').value,
+                    fromDate: fromDateInput.value,
+                    toDate: toDateInput.value,
+                    isHalfDay: isHalfDay.checked,
+                    halfDayType: halfDayType.value,
+                    reason: document.getElementById('reason').value,
+                    contactNumber: document.getElementById('contactNumber').value,
+                    contactAddress: document.getElementById('contactAddress').value
+                };
+
+                const btn = document.getElementById('submit-btn');
+                btn.disabled = true;
+                btn.textContent = 'Submitting...';
+
+                try {
+                    const res = await fetch('/api/leave/requests', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        alert('Leave applied successfully');
+                        window.location.href = '/my-leave-requests.html';
+                    } else {
+                        const err = await res.json();
+                        const errEl = document.getElementById('error-msg');
+                        errEl.textContent = err.error || 'Failed to apply';
+                        errEl.classList.remove('hidden');
+                    }
+                } catch(err) {
+                    console.error(err);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Submit Application';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

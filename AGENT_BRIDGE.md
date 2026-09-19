@@ -1,23 +1,39 @@
-# Antigravity Agent Bridge Briefing
+# Rankly.Ai Agent Bridge Protocol
 
-## Architectural State
-We are in **Phase 2 (Dynamic Employee Database)** of the Enterprise HRMS Upgrade. 
-We have successfully replaced the static Employee setup with a fully dynamic Custom Fields engine (`CustomField`, `EmployeeCustomFieldValue`).
-We have built:
-1. `public/admin-fields.html` - Admin Field Builder
-2. `public/employees.html` - Directory View
-3. `public/employee-form.html` - Add/Edit Form supporting dynamic sections.
+**Current Phase:** Phase 3 - Time & Attendance (Leave Management)
+**Status:** In Progress (Leave Management Core Implemented)
 
-## Tripartite Briefing
+## 🏗️ Architectural Plan
+Implement a fully dynamic multi-tenant Leave Management System with custom Accruals, multi-level approvals, and RBAC visibility.
+- **Database:** Prisma SQLite (`LeaveType`, `LeavePolicy`, `LeaveBalance`, `LeaveRequest`, `LeaveApproval`, `Holiday`, `LeaveAccrualLog` — all scoped by `organizationId`).
+- **Backend:** Vanilla Node.js / Express Controllers (`leaveTypeController.js`, `leaveBalanceController.js`, `leaveRequestController.js`, `holidayController.js`).
+- **Frontend:** Vanilla HTML/JS templates for Admin Configuration, Employee Application, and Manager Approvals.
 
-### For Sumit (Frontend Lead)
-- **MUST DO**: Review the newly created UI screens (`/employees.html`, `/employee-form.html`, `/admin-fields.html`). Integrate links to them in the massive main dashboard (`index.html`) sidebar. Add any missing animations and ensure WCAG AAA accessibility.
-- **MUST NOT DO**: Do not modify the API routes or Prisma schema. 
+---
 
-### For Mayur (Backend Architect)
-- **MUST DO**: Prepare the API layer for Phase 3 (Time & Attendance). Ensure the newly created Employee APIs and `dataScope.js` correctly enforce the dynamic Data Scopes (MY_DATA, SUBORDINATES, etc.).
-- **MUST NOT DO**: Do not modify the DOM UI layouts directly.
+## 👨‍💻 Tripartite Briefing
 
-### For Vaibhav (Database Lead)
-- **MUST DO**: Monitor the SQLite database structure. Phase 2 dropped old rigid HR tables to implement dynamic CustomFields. Ensure future tables for Phase 3 (Attendance) link correctly to the new `Employee` (UUID) model and are scoped by `organizationId`.
-- **MUST NOT DO**: Do not modify the frontend UI or backend Express business logic.
+### Sumit (Frontend & UI/UX Lead)
+✅ **MUST DO:**
+- Review the new HTML pages: `apply-leave.html`, `my-leave-requests.html`, `leave-approvals.html`, `admin-leave-types.html`.
+- Polish the Tailwind UI to match the Rankly dashboard design language (add animations, refine spacing).
+- Replace raw browser `alert()` with modern toast notifications (e.g., SweetAlert).
+
+🚫 **MUST NOT DO:**
+- Do not change API endpoint paths or the JSON structure that the API expects.
+
+### Vaibhav (Database & Infrastructure Lead)
+✅ **MUST DO:**
+- Review the updated `prisma/schema.prisma` models for Leave Management.
+- Ensure all `organizationId` cascades are working properly for multi-tenancy.
+
+🚫 **MUST NOT DO:**
+- Do not touch frontend HTML DOM IDs as the Vanilla JS logic relies on them.
+
+### Mayur (AI & Backend Architect)
+✅ **MUST DO:**
+- Review `src/controllers/leave*Controller.js` logic for accrual math (excluding weekends/holidays) and multi-level approvals.
+- Ensure the custom RBAC scopes (`NO_DATA`, `MY_DATA`, `SUBORDINATES`, `ALL_DATA`) securely filter Leave Requests.
+
+🚫 **MUST NOT DO:**
+- Do not modify frontend CSS or Tailwind classes.

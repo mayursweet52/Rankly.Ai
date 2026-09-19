@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Approvals - Rankly.ai</title>
+    <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex flex-col md:flex-row overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 h-full flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-200">
+            <span class="font-bold text-xl text-gray-800">Rankly</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+            <a href="/dashboard.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">Dashboard</a>
+            <a href="/my-leave-requests.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">My Leaves</a>
+            <a href="/apply-leave.html" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50">Apply Leave</a>
+            <a href="/leave-approvals.html" class="block px-3 py-2 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700">Approvals</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-hidden flex flex-col">
+        <header class="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Pending Approvals</h1>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6" id="list-container">
+            <p class="text-gray-500">Loading...</p>
+        </div>
+    </main>
+
+    <!-- Review Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-800">Review Leave Request</h2>
+                <button type="button" class="close-modal text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3 text-sm mb-6 text-gray-700">
+                    <p><strong class="text-gray-900 w-24 inline-block">Employee:</strong> <span id="m-emp"></span></p>
+                    <p><strong class="text-gray-900 w-24 inline-block">Type:</strong> <span id="m-type"></span></p>
+                    <p><strong class="text-gray-900 w-24 inline-block">From:</strong> <span id="m-from"></span></p>
+                    <p><strong class="text-gray-900 w-24 inline-block">To:</strong> <span id="m-to"></span></p>
+                    <p><strong class="text-gray-900 w-24 inline-block">Days:</strong> <span id="m-days"></span></p>
+                    <p><strong class="text-gray-900 w-24 inline-block align-top">Reason:</strong> <span id="m-reason" class="inline-block w-64 bg-gray-50 p-2 rounded border"></span></p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Comment (optional)</label>
+                    <textarea id="comment" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+
+                <div class="mt-6 flex space-x-3">
+                    <button id="btn-approve" class="flex-1 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 font-medium">Approve</button>
+                    <button id="btn-reject" class="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 font-medium">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) window.location.href = '/login.html';
+
+            const container = document.getElementById('list-container');
+            const modal = document.getElementById('modal');
+            let approvals = [];
+            let selectedReqId = null;
+
+            document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', () => modal.classList.add('hidden')));
+
+            async function load() {
+                try {
+                    const res = await fetch('/api/leave/requests/me/pending-approvals', { headers: { 'Authorization': `Bearer ${token}` } });
+                    approvals = await res.json();
+                    
+                    if (approvals.length === 0) {
+                        container.innerHTML = '<div class="text-center text-gray-500 py-10">No pending approvals 🎉</div>';
+                        return;
+                    }
+
+                    container.innerHTML = '<div class="space-y-4">' + approvals.map(a => {
+                        const r = a.leaveRequest;
+                        return `
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 flex items-center justify-between shadow-sm">
+                            <div class="flex items-start space-x-4">
+                                <img src="${r.employee.profilePicture || 'https://ui-avatars.com/api/?name='+r.employee.firstName+'+'+r.employee.lastName}" class="w-12 h-12 rounded-full bg-gray-100">
+                                <div>
+                                    <h3 class="font-bold text-gray-900">${r.employee.firstName} ${r.employee.lastName} <span class="text-xs text-gray-500 ml-1 font-mono">(${r.employee.employeeCode})</span></h3>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        <span class="font-medium" style="color: ${r.leaveType.color}">${r.leaveType.name}</span>
+                                        <span class="mx-2 text-gray-300">&bull;</span>
+                                        ${new Date(r.fromDate).toLocaleDateString()} &rarr; ${new Date(r.toDate).toLocaleDateString()}
+                                        <span class="mx-2 text-gray-300">&bull;</span>
+                                        <span class="font-medium text-gray-900">${r.totalDays} day(s)</span>
+                                    </p>
+                                    <p class="text-sm text-gray-500 mt-1 truncate w-96">Reason: ${r.reason}</p>
+                                </div>
+                            </div>
+                            <button onclick="review('${r.id}')" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-md font-medium hover:bg-indigo-100 transition-colors border border-indigo-200">
+                                Review Request
+                            </button>
+                        </div>
+                        `;
+                    }).join('') + '</div>';
+                } catch(err) {
+                    console.error(err);
+                    container.innerHTML = '<div class="text-red-500">Failed to load</div>';
+                }
+            }
+
+            window.review = (reqId) => {
+                const approval = approvals.find(a => a.leaveRequest.id === reqId);
+                if (!approval) return;
+                const r = approval.leaveRequest;
+                selectedReqId = r.id;
+
+                document.getElementById('m-emp').textContent = `${r.employee.firstName} ${r.employee.lastName} (${r.employee.employeeCode})`;
+                document.getElementById('m-type').textContent = r.leaveType.name;
+                document.getElementById('m-from').textContent = new Date(r.fromDate).toLocaleDateString();
+                document.getElementById('m-to').textContent = new Date(r.toDate).toLocaleDateString();
+                document.getElementById('m-days').textContent = r.totalDays;
+                document.getElementById('m-reason').textContent = r.reason;
+                document.getElementById('comment').value = '';
+
+                modal.classList.remove('hidden');
+            };
+
+            async function takeAction(type) {
+                if (!selectedReqId) return;
+                const comment = document.getElementById('comment').value;
+                try {
+                    const res = await fetch(`/api/leave/requests/${selectedReqId}/${type}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ comment })
+                    });
+                    if (res.ok) {
+                        modal.classList.add('hidden');
+                        load();
+                    } else {
+                        const err = await res.json();
+                        alert(err.error || 'Failed');
+                    }
+                } catch(e) { console.error(e); }
+            }
+
+            document.getElementById('btn-approve').addEventListener('click', () => takeAction('approve'));
+            document.getElementById('btn-reject').addEventListener('click', () => takeAction('reject'));
+
+            load();
+        });
+    </script>
+</body>
+</html>
