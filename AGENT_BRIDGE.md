@@ -1,16 +1,17 @@
 # Antigravity Tripartite Bridge Sync
 
 ## The Architectural Plan
-We are transforming Rankly.ai into a full-scale Zoho-style HRMS. We have officially begun **Week 1: Foundation (RBAC & Employee Database)**.
+We are transforming Rankly.ai into a full-scale Zoho-style HRMS. We have officially completed **Step 1: RBAC (Roles & Permissions) Dynamic Architecture**.
 
 ## Vaibhav (Database Lead)
-- **DONE:** Upgraded `RolePermission` schema to support 4-level granular constraints (Data, Form, Field, Function). Extended `Employee` schema for Org Chart (`ManagerToEmployee` self-relation), Documents, and Work Location.
-- **MUST DO NEXT:** Create a DB seeder script to populate default Zoho roles (`HR_Manager`, `Recruiter`, `Team_Member`) with initial permissions.
+- **DONE:** Replaced old `AccessRole` schema with the exact `Role`, `Permission`, `FieldPermission`, `FunctionPermission`, `UserRole`, and `Module` schema requested by the user. Handled data migration using force reset (data wiped safely for RBAC tables only). Seeded default Modules.
+- **MUST DO NEXT:** Focus on Employee Database (Phase 1, Task 2).
 
 ## Mayur (Backend Lead)
-- **DONE:** Implemented `requirePermission` middleware in `src/middleware/rbac.js`. This gatekeeper intercepts requests, queries the user's role, and dynamically injects `req.rbac` (Data/Field overrides) into the controller.
-- **MUST DO NEXT:** Build CRUD APIs for Employee Documents (S3-compatible) and Manager Hierarchy assignments. Update the Employee endpoints to filter data based on `req.rbac.dataAccessLevel`.
+- **DONE:** Created `roleController.js` and `roleRoutes.js` (translated from user's TS to JS). Mounted them to `/api/roles`. Built `setupSuperAdmin.js` and hooked it into the `register` flow so the first user becomes the system owner. Refactored `rbac.js` to match the exact schema (`requirePermission(formName, action)`).
+- **MUST DO NEXT:** Build CRUD APIs for the Employee Database.
 
 ## Sumit (Frontend Lead)
-- **MUST DO:** Build the "Employee 360" profile UI in `employee-myspace.html`. It needs to show a visually appealing Org Chart (Manager hierarchy) and a Document Upload zone. Also, design a "Role & Permissions" Settings page where Admins can click checkboxes to toggle RBAC settings.
+- **DONE:** Translated the user's React `Roles.tsx` into a blazing fast Vanilla JS implementation in `public/roles.html` that integrates with Tailwind CSS and matches Rankly's design language.
+- **MUST DO NEXT:** Build the "Employee 360" profile UI in `employee-myspace.html`.
 - **MUST NOT:** Do not touch DB schemas or API routing logic.

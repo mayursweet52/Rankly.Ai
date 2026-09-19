@@ -1,13 +1,13 @@
 {
-  "current_architecture": "Zoho-Style Enterprise HRMS (Phase 1)",
+  "current_architecture": "Zoho-Style Enterprise HRMS (Phase 1 - RBAC Dynamic)",
   "active_features": {
-    "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active.",
-    "frontend": "Multi-workspace selection portal active.",
-    "rbac": "Zoho-style 4-level Permission Matrix (Data, Form, Field, Function) active."
+    "auth": "OrganizationMember junction table active. Auto-Link Email Onboarding active. First user gets Super Admin automatically.",
+    "frontend": "Multi-workspace selection portal active. Roles Builder UI (public/roles.html) active.",
+    "rbac": "Admin-defined dynamic roles. No default permissions. 4-level Permission Matrix (Data, Form, Field, Function) active."
   },
   "roles": {
-    "Sumit": "MUST DO: Build the 'Employee 360' profile UI in employee-myspace.html with Org Chart UI. Build a 'Role & Permissions' UI page to toggle RBAC settings.",
-    "Mayur": "MUST DO: Implemented requirePermission middleware. Next: Build CRUD APIs for Employee Documents upload and Manager assignment.",
-    "Vaibhav": "MUST DO: Successfully added ManagerToEmployee self-relation and dataAccessLevel matrix. Next: Seed default Zoho HR roles in DB."
+    "Sumit": "MUST DO: Build the 'Employee 360' profile UI in employee-myspace.html. Connect it to the backend.",
+    "Mayur": "MUST DO: Build CRUD APIs for Employee Database. Verify roles API works.",
+    "Vaibhav": "MUST DO: Ensure Employee table migrations work properly without data loss on next push."
   }
 }
