@@ -2377,6 +2377,7 @@ async function acceptTeamInvite(req, res) {
 
     // Login the user automatically
     req.session.userId = newUser.id;
+      await setupSuperAdmin(newUser.id);
     
     return res.status(200).json({
       success: true,

@@ -34,6 +34,8 @@ model User {
 
   // Enterprise / HR Specific
   role           String        @default("normal_user") // "admin" | "hr" | "hiring_manager" | "normal_user"
+    isSuperAdmin   Boolean       @default(false)
+    userRoles      UserRole[]
   workEmail      String?
   status         String        @default("active") // "active" | "pending_approval" | "suspended"
   organizationId String?
@@ -357,7 +359,7 @@ model Employee {
   salaryRevisions SalaryRevision[]
 
   // Access Control Roles
-  accessRoles EmployeeAccessRole[]
+  
 
   // Skill Marketplace & Upskilling
   skills                  EmployeeSkill[]
@@ -447,61 +449,13 @@ model SalaryRevision {
 // ---------------------------------------------------------
 // Access Control Models (Multi-Level RBAC)
 // ---------------------------------------------------------
-model AccessRole {
-  id          String  @id @default(uuid())
-  name        String  @unique // "employee", "team_lead", "dept_head", "hr_admin", "super_admin"
-  displayName String
-  level       Int     @default(1) // Level 1 (lowest) to Level 5 (highest executive)
-  description String?
-
-  permissions RolePermission[]
-  employees   EmployeeAccessRole[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Permission {
-  id          String  @id @default(uuid())
-  code        String  @unique // e.g. "employee:read", "salary:write", "leaves:approve"
-  name        String
-  category    String // "employee" | "salary" | "leaves" | "ats" | "system"
-  description String?
-
-  roles RolePermission[]
-
-  createdAt DateTime @default(now())
-}
-
-model RolePermission {
-  id           String     @id @default(uuid())
-  roleId       String
-  role         AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  permissionId String
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
-
-  // Zoho-Style 4-Level Permission Matrix
-  dataAccessLevel String  @default("my_data") // "none", "my_data", "subordinates", "all_data"
-  fieldOverrides  String? // JSON map of field-level visibility (e.g. {"salary":"hidden"})
-  formAccess      Boolean @default(true)      // Can they view/edit the UI forms?
 
 
-  createdAt DateTime @default(now())
 
-  @@unique([roleId, permissionId])
-}
 
-model EmployeeAccessRole {
-  id         String     @id @default(uuid())
-  employeeId String
-  employee   Employee   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  roleId     String
-  role       AccessRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  assignedAt DateTime @default(now())
 
-  @@unique([employeeId, roleId])
-}
+
 
 // =========================================================
 // 2. AI AGENT MODULE DATA MODELS (Anti-Gravity Spec v1.0)
@@ -955,4 +909,82 @@ model EmployeeOnboardingTask {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique  // Admin khud naam dega
+  description String?
+  isSystem    Boolean  @default(false)  // Sirf Super Admin ke liye true
+  createdBy   String?  // Kis admin ne banaya
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions Permission[]
+  userRoles   UserRole[]
+  functionPermissions FunctionPermission[]
+}
+
+model Permission {
+  id         String  @id @default(uuid())
+  roleId     String
+  formName   String  // "employee", "leave", "attendance", "payroll", etc.
+  dataScope  String  // "NO_DATA", "MY_DATA", "SUBORDINATES", "MY_DATA_AND_SUBORDINATES", "ALL_DATA"
+  canView    Boolean @default(false)
+  canAdd     Boolean @default(false)
+  canEdit    Boolean @default(false)
+  canDelete  Boolean @default(false)
+
+  role       Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  fields     FieldPermission[]
+
+  @@unique([roleId, formName])
+}
+
+model FieldPermission {
+  id           String     @id @default(uuid())
+  permissionId String
+  fieldName    String
+  canView      Boolean    @default(false)
+  canEdit      Boolean    @default(false)
+
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([permissionId, fieldName])
+}
+
+model FunctionPermission {
+  id           String  @id @default(uuid())
+  roleId       String
+  functionName String
+  allowed      Boolean @default(false)
+
+  role         Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, functionName])
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  userId     String
+  roleId     String
+  assignedBy String?
+  assignedAt DateTime @default(now())
+
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  key         String   @unique  // "employee", "leave"
+  label       String              // "Employee Management"
+  description String?
+  icon        String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
 }

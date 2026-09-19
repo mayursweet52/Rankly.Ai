@@ -94,13 +94,22 @@ async function getCandidates(req, res) {
     const userRole = (req.user?.role || req.session?.user?.role || '').toLowerCase();
     const isHrOrAdmin = ['admin', 'administrator', 'hr', 'human_resources', 'hiring', 'hiring_manager'].includes(userRole);
 
-    const where = {};
-
-    if (orgId) {
-      where.OR = [{ organizationId: orgId }, { organizationId: null }, { userId }];
-    } else if (userId && !isHrOrAdmin) {
-      where.userId = userId;
-    }
+      // ==========================================
+      // STRICT ZERO-TRUST TENANT ENFORCEMENT
+      // ==========================================
+      const where = {};
+      if (orgId) {
+        // If user belongs to an org, ONLY show candidates for that org. NO EXCEPTIONS.
+        where.organizationId = orgId;
+      } else if (userId) {
+        // Fallback for personal non-org accounts (if any)
+        where.userId = userId;
+        where.organizationId = null;
+      } else {
+        // Unauthorized
+        return res.status(403).json({ success: false, message: 'Unauthorized access.' });
+      }
+      // ==========================================
 
     if (stage) where.stage = stage;
     if (targetRole) where.targetRole = { contains: targetRole };
@@ -137,11 +146,24 @@ async function getAiCandidateQueue(req, res) {
   try {
     const { targetRole = 'all', minScore = '', stage = 'all', search = '' } = req.query;
     const redisCacheService = require('../services/redisCacheService');
-    const orgId = req.session?.organizationId || 'global';
-    const cacheKey = `candidates:queue:${orgId}:${targetRole}:${stage}:${minScore}:${search}`;
-
-    const { data, cached } = await redisCacheService.getOrSet(cacheKey, async () => {
-      const where = {};
+      const orgId = req.session?.organizationId || req.user?.organizationId || 'global';
+      const userId = req.session?.user?.id || req.user?.id;
+      const cacheKey = `candidates:queue:${orgId}:${targetRole}:${stage}:${minScore}:${search}`;
+  
+      const { data, cached } = await redisCacheService.getOrSet(cacheKey, async () => {
+        // ==========================================
+        // STRICT ZERO-TRUST TENANT ENFORCEMENT
+        // ==========================================
+        const where = {};
+        if (orgId && orgId !== 'global') {
+          where.organizationId = orgId;
+        } else if (userId) {
+          where.userId = userId;
+          where.organizationId = null;
+        } else {
+          throw new Error("Unauthorized access.");
+        }
+        // ==========================================
 
       if (stage && stage !== 'all') {
         where.stage = stage;

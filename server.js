@@ -30,6 +30,7 @@ const { candidateIdParamSchema } = require('./src/schemas/pipelineSchemas');
 
 // Modular Route Handlers
 const authRoutes = require('./src/routes/authRoutes');
+const roleRoutes = require('./src/routes/roleRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const resumeRoutes = require('./src/routes/resumeRoutes');
 const pipelineRoutes = require('./src/routes/pipelineRoutes');
@@ -222,6 +223,7 @@ app.use('/api', apiLimiter);
 // API Route Registration
 // -----------------------------------------------------------------------------
 app.use('/api/auth', authRoutes);
+app.use('/api/roles', roleRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/resumes', resumeRoutes);

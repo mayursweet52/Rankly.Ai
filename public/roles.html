@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roles & Permissions - Rankly HRMS</title>
+  <link rel="stylesheet" href="/css/tailwind-compiled.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans p-6">
+  
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">Roles & Permissions</h1>
+        <p class="text-gray-500 text-sm">Manage dynamic access control for your organization</p>
+      </div>
+      <button onclick="createNewRole()" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 transition">
+        + Create New Role
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Role List -->
+      <div class="col-span-1 bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3 border-b pb-2">All Roles</h2>
+        <div id="rolesList" class="space-y-2">
+          <p class="text-sm text-gray-500">Loading roles...</p>
+        </div>
+      </div>
+
+      <!-- Role Editor -->
+      <div id="roleEditor" class="col-span-2 bg-white border border-gray-200 rounded-lg shadow-sm p-4 hidden">
+        <h2 id="editorTitle" class="font-bold text-lg mb-4">Create Role</h2>
+        
+        <input type="hidden" id="roleId">
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Role Name</label>
+          <input type="text" id="roleName" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 p-2 border" placeholder="e.g. HR Executive">
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-medium mb-1">Description</label>
+          <input type="text" id="roleDesc" class="w-full border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 p-2 border" placeholder="Optional description">
+        </div>
+
+        <h3 class="font-bold mb-2 text-md">Module Permissions</h3>
+        <p class="text-sm text-gray-500 mb-4">Configure access levels for each HRMS module.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left border-collapse">
+            <thead class="bg-gray-50 border-y border-gray-200">
+              <tr>
+                <th class="py-2 px-3 font-semibold text-gray-700">Module</th>
+                <th class="py-2 px-3 text-center font-semibold text-gray-700">View</th>
+                <th class="py-2 px-3 text-center font-semibold text-gray-700">Add</th>
+                <th class="py-2 px-3 text-center font-semibold text-gray-700">Edit</th>
+                <th class="py-2 px-3 text-center font-semibold text-gray-700">Delete</th>
+                <th class="py-2 px-3 font-semibold text-gray-700">Data Scope</th>
+              </tr>
+            </thead>
+            <tbody id="modulesTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button onclick="saveRole()" class="bg-green-600 text-white px-5 py-2 rounded shadow hover:bg-green-700 transition">Save Changes</button>
+          <button onclick="hideEditor()" class="bg-gray-100 text-gray-700 border border-gray-300 px-5 py-2 rounded hover:bg-gray-200 transition">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let modules = [];
+    let roles = [];
+    let currentPermissions = {};
+    const scopeOptions = [
+      { val: 'NO_DATA', label: 'No Access' },
+      { val: 'MY_DATA', label: 'Only My Data' },
+      { val: 'SUBORDINATES', label: 'Only Subordinates' },
+      { val: 'MY_DATA_AND_SUBORDINATES', label: 'My Data & Subordinates' },
+      { val: 'ALL_DATA', label: 'All Data' }
+    ];
+
+    async function loadData() {
+      try {
+        const [modRes, roleRes] = await Promise.all([
+          fetch('/api/roles/modules').then(r => r.json()),
+          fetch('/api/roles').then(r => r.json())
+        ]);
+        
+        if (modRes.success) modules = modRes.data;
+        if (roleRes.success) {
+          roles = roleRes.data;
+          renderRolesList();
+        }
+      } catch (err) {
+        console.error("Failed to load RBAC data", err);
+      }
+    }
+
+    function renderRolesList() {
+      const container = document.getElementById('rolesList');
+      container.innerHTML = '';
+      if (roles.length === 0) {
+        container.innerHTML = '<p class="text-sm text-gray-500">No roles found.</p>';
+        return;
+      }
+      
+      roles.forEach(role => {
+        const isSelected = document.getElementById('roleId').value === role.id;
+        const div = document.createElement('div');
+        div.className = `p-3 border rounded-md cursor-pointer transition flex justify-between items-center ${isSelected ? 'bg-indigo-50 border-indigo-200' : 'hover:bg-gray-50 border-gray-200'}`;
+        div.onclick = () => editRole(role);
+        
+        let systemTag = role.isSystem ? `<span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ml-2">System</span>` : '';
+        let deleteBtn = role.isSystem ? '' : `<button onclick="deleteRole('${role.id}', event)" class="text-red-500 hover:text-red-700 text-sm px-2 py-1">✕</button>`;
+
+        div.innerHTML = `
+          <div>
+            <div class="font-medium flex items-center">${role.name} ${systemTag}</div>
+            <div class="text-xs text-gray-500 mt-1">${role._count?.userRoles || 0} user(s) assigned</div>
+          </div>
+          ${deleteBtn}
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function createNewRole() {
+      document.getElementById('roleEditor').classList.remove('hidden');
+      document.getElementById('editorTitle').innerText = 'Create New Role';
+      document.getElementById('roleId').value = '';
+      document.getElementById('roleName').value = '';
+      document.getElementById('roleDesc').value = '';
+      document.getElementById('roleName').disabled = false;
+      
+      currentPermissions = {};
+      modules.forEach(m => {
+        currentPermissions[m.key] = { formName: m.key, dataScope: 'NO_DATA', canView: false, canAdd: false, canEdit: false, canDelete: false };
+      });
+      renderPermissionsTable();
+      renderRolesList();
+    }
+
+    function editRole(role) {
+      document.getElementById('roleEditor').classList.remove('hidden');
+      document.getElementById('editorTitle').innerText = `Edit Role: ${role.name}`;
+      document.getElementById('roleId').value = role.id;
+      document.getElementById('roleName').value = role.name;
+      document.getElementById('roleDesc').value = role.description || '';
+      document.getElementById('roleName').disabled = role.isSystem;
+
+      currentPermissions = {};
+      modules.forEach(m => {
+        const existing = role.permissions.find(p => p.formName === m.key);
+        currentPermissions[m.key] = existing ? { ...existing } : { formName: m.key, dataScope: 'NO_DATA', canView: false, canAdd: false, canEdit: false, canDelete: false };
+      });
+      renderPermissionsTable(role.isSystem);
+      renderRolesList();
+    }
+
+    function renderPermissionsTable(disabled = false) {
+      const tbody = document.getElementById('modulesTableBody');
+      tbody.innerHTML = '';
+      
+      modules.forEach(mod => {
+        const p = currentPermissions[mod.key];
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-gray-100 hover:bg-gray-50';
+        
+        let scopeHtml = `<select onchange="updatePerm('${mod.key}', 'dataScope', this.value)" class="border border-gray-300 rounded p-1 text-xs bg-white w-full" ${disabled ? 'disabled' : ''}>`;
+        scopeOptions.forEach(s => {
+          scopeHtml += `<option value="${s.val}" ${p.dataScope === s.val ? 'selected' : ''}>${s.label}</option>`;
+        });
+        scopeHtml += `</select>`;
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-gray-800 font-medium">${mod.label}</td>
+          <td class="text-center"><input type="checkbox" ${disabled?'disabled':''} class="rounded text-indigo-600 focus:ring-indigo-500" ${p.canView ? 'checked' : ''} onchange="updatePerm('${mod.key}', 'canView', this.checked)"></td>
+          <td class="text-center"><input type="checkbox" ${disabled?'disabled':''} class="rounded text-indigo-600 focus:ring-indigo-500" ${p.canAdd ? 'checked' : ''} onchange="updatePerm('${mod.key}', 'canAdd', this.checked)"></td>
+          <td class="text-center"><input type="checkbox" ${disabled?'disabled':''} class="rounded text-indigo-600 focus:ring-indigo-500" ${p.canEdit ? 'checked' : ''} onchange="updatePerm('${mod.key}', 'canEdit', this.checked)"></td>
+          <td class="text-center"><input type="checkbox" ${disabled?'disabled':''} class="rounded text-indigo-600 focus:ring-indigo-500" ${p.canDelete ? 'checked' : ''} onchange="updatePerm('${mod.key}', 'canDelete', this.checked)"></td>
+          <td class="py-2 px-3">${scopeHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updatePerm(moduleKey, field, value) {
+      currentPermissions[moduleKey][field] = value;
+    }
+
+    function hideEditor() {
+      document.getElementById('roleEditor').classList.add('hidden');
+      document.getElementById('roleId').value = '';
+      renderRolesList();
+    }
+
+    async function saveRole() {
+      const id = document.getElementById('roleId').value;
+      const payload = {
+        name: document.getElementById('roleName').value,
+        description: document.getElementById('roleDesc').value,
+        permissions: Object.values(currentPermissions)
+      };
+
+      const url = id ? `/api/roles/${id}` : '/api/roles';
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          alert('Role saved successfully!');
+          await loadData();
+          if (!id) editRole(data.data);
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (err) {
+        alert('Server error while saving.');
+      }
+    }
+
+    async function deleteRole(id, event) {
+      event.stopPropagation();
+      if (!confirm('Are you sure you want to delete this role?')) return;
+      
+      try {
+        const res = await fetch(`/api/roles/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          if (document.getElementById('roleId').value === id) hideEditor();
+          await loadData();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (err) {
+        alert('Server error while deleting.');
+      }
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>
